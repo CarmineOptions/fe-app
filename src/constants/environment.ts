@@ -13,6 +13,6 @@ export const devProviderOptions: ProviderOptions = {
 };
 
 export const defaultSettings: Settings = {
-  autoconnect: false,
+  autoconnect: true,
   theme: ThemeVariants.dark,
 };

@@ -64,7 +64,7 @@ export const WithdrawItem = ({ account, size, value, type }: Props) => {
           ) : (
             <>
               <Button onClick={handleWithdraw}>Withdraw</Button>
-              <Button onClick={handleWithdrawAll}>All</Button>
+              <Button onClick={handleWithdrawAll}>Max</Button>
             </>
           )}
         </ButtonGroup>

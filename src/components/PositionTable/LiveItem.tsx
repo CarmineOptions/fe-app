@@ -133,7 +133,7 @@ export const LiveItem = ({ option }: Props) => {
           ) : (
             <>
               <Button onClick={handleClose}>Close</Button>
-              <Button onClick={handleCloseAll}>All</Button>
+              <Button onClick={handleCloseAll}>Max</Button>
             </>
           )}
         </ButtonGroup>
