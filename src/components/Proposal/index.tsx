@@ -1,6 +1,5 @@
 import { Paper, useTheme } from "@mui/material";
 
-import { Proposal } from "../../types/proposal";
 import { isDarkTheme } from "../../utils/utils";
 import { NoContent } from "../TableNoContent";
 import { activeProposal } from "./fetchProposal";
