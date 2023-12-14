@@ -1,13 +1,14 @@
-import AppBar from "@mui/material/AppBar";
-import { Link as RouterLink } from "react-router-dom";
-import GlobalStyles from "@mui/material/GlobalStyles";
-import { WalletButton } from "./ConnectWallet/Button";
-import { ReactNode } from "react";
-import { Box, Button, useTheme } from "@mui/material";
-import { NetworkSwitch } from "./networkSwitch";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { useAccount } from "../hooks/useAccount";
+import { Box, Button, useTheme } from "@mui/material";
+import AppBar from "@mui/material/AppBar";
+import GlobalStyles from "@mui/material/GlobalStyles";
+import { ReactNode } from "react";
+import { Link as RouterLink } from "react-router-dom";
 import { AccountInterface } from "starknet";
+
+import { useAccount } from "../hooks/useAccount";
+import { WalletButton } from "./ConnectWallet/Button";
+import { NetworkSwitch } from "./networkSwitch";
 
 type NavLinkProps = {
   title: string;
@@ -38,6 +39,10 @@ const navLinks = [
   {
     title: "Dashboard",
     link: "/dashboard",
+  },
+  {
+    title: "Governance",
+    link: "/governance",
   },
 ] as NavLinkProps[];
 

@@ -1,9 +1,10 @@
 import { Button, Typography } from "@mui/material";
-import { WalletIcon } from "../assets";
+
 import { useWallet } from "../../hooks/useWallet";
 import { openAccountDialog } from "../../redux/actions";
 import { debug } from "../../utils/debugger";
 import { addressElision } from "../../utils/utils";
+import { WalletIcon } from "../assets";
 
 const iconStyle = {
   width: 30,
