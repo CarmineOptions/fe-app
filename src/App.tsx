@@ -1,24 +1,26 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Provider } from "react-redux";
-import { store } from "./redux/store";
-import BalancePage from "./pages/balance";
-import NotFound from "./pages/notFound";
-import TradePage from "./pages/trade";
-import StakePage from "./pages/stake";
-import StakingExplainedPage from "./pages/stakeInfo";
-import Settings from "./pages/settings";
-import { Controller } from "./Controller";
 import { CssBaseline } from "@mui/material";
+import { useState } from "react";
+import { Provider } from "react-redux";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+
+import { AlphaRibbon } from "./components/AlphaRibbon/AlphaRibbon";
 import { MultiDialog } from "./components/MultiDialog/MultiDialog";
 import { Toast } from "./components/Toast/Toast";
-import HistoryPage from "./pages/history";
-import TermsAndConditions from "./pages/termsAndConditions";
-import { useState } from "react";
-import { AlphaRibbon } from "./components/AlphaRibbon/AlphaRibbon";
-import { isCookieSet } from "./utils/cookies";
+import { Controller } from "./Controller";
 import APYInfoPage from "./pages/apyInfo";
+import BalancePage from "./pages/balance";
 import TradeDashboardPage from "./pages/dashboard";
+import Governance from "./pages/governance";
+import HistoryPage from "./pages/history";
 import Insurance from "./pages/insurance";
+import NotFound from "./pages/notFound";
+import Settings from "./pages/settings";
+import StakePage from "./pages/stake";
+import StakingExplainedPage from "./pages/stakeInfo";
+import TermsAndConditions from "./pages/termsAndConditions";
+import TradePage from "./pages/trade";
+import { store } from "./redux/store";
+import { isCookieSet } from "./utils/cookies";
 
 const App = () => {
   const [check, rerender] = useState(false);
@@ -46,6 +48,7 @@ const App = () => {
                 <Route path="/history" element={<HistoryPage />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/dashboard" element={<TradeDashboardPage />} />
+                <Route path="/governance" element={<Governance />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Router>
