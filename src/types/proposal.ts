@@ -1,4 +1,4 @@
 export type Proposal = {
-    id: number;
-    discordLink: string;
+  id: number;
+  discordLink?: string;
 };

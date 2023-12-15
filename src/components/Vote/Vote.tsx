@@ -4,16 +4,18 @@ import { debug } from "../../utils/debugger";
 import { useAccount } from "../../hooks/useAccount";
 import GovernanceAbi from "../../abi/amm_abi.json";
 import { getTokenAddresses } from "../../constants/amm";
+import { Proposal } from "../../types/proposal";
 
 enum Opinion {
   YAY = "1",
-  // "-1" felt
-  NAY = "0x800000000000011000000000000000000000000000000000000000000000000",
+  NAY = "2",
 }
 
-const vote = async (account: AccountInterface, opinion: Opinion) => {
-  const propId = "14";
-
+const vote = async (
+  account: AccountInterface,
+  propId: number,
+  opinion: Opinion
+) => {
   const call = {
     contractAddress: getTokenAddresses().GOVERNANCE_CONTRACT_ADDRESS,
     entrypoint: "vote",
@@ -26,10 +28,7 @@ const vote = async (account: AccountInterface, opinion: Opinion) => {
   debug(res);
 };
 
-const voteYes = async (account: AccountInterface) => vote(account, Opinion.YAY);
-const voteNo = async (account: AccountInterface) => vote(account, Opinion.NAY);
-
-export const Vote = () => {
+export const Vote = ({ discordLink, id }: Proposal) => {
   const account = useAccount();
 
   const voteButtonSx = { m: 2 };
@@ -45,16 +44,20 @@ export const Vote = () => {
         mx: 2,
       }}
     >
-      <Typography>
-        This is the second proposal, that fixes standard proposal passing, you
-        can read more about this in the{" "}
-        <Link
-          target="_blank"
-          href="https://discord.com/channels/969228248552706078/1035256265082949722/1116669484124622889"
-        >
-          Discord anouncement
-        </Link>
-      </Typography>
+      {!!discordLink && (
+        <>
+          <Typography>
+            To see proposal details and discuss go to the{" "}
+            <Link
+              target="_blank"
+              href="https://discord.com/channels/969228248552706078/1035256265082949722/1116669484124622889"
+            >
+              Discord thread
+            </Link>
+            .
+          </Typography>
+        </>
+      )}
       {!account && <Typography>Connect your wallet to vote</Typography>}
       <Box
         sx={{
@@ -66,7 +69,7 @@ export const Vote = () => {
         }}
       >
         <Button
-          onClick={() => voteYes(account!)}
+          onClick={() => vote(account!, id, Opinion.YAY)}
           sx={voteButtonSx}
           variant="contained"
           disabled={!account}
@@ -74,7 +77,7 @@ export const Vote = () => {
           Vote Yes
         </Button>
         <Button
-          onClick={() => voteNo(account!)}
+          onClick={() => vote(account!, id, Opinion.NAY)}
           sx={voteButtonSx}
           variant="contained"
           disabled={!account}

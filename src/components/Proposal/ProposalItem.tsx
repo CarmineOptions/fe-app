@@ -1,4 +1,4 @@
-import { TableCell, TableRow } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 import { Proposal } from "../../types/proposal";
 import { Vote } from "../Vote/Vote";
@@ -7,19 +7,18 @@ type Props = {
   data: Proposal;
 };
 
-export const ProposalItem = ({data} : Props) => {
-//   const handleClick = () => {
-//     setCloseOption(option);
-//     openCloseOptionDialog();
-//   };
+export const ProposalItem = ({ data }: Props) => {
+  //   const handleClick = () => {
+  //     setCloseOption(option);
+  //     openCloseOptionDialog();
+  //   };
 
   return (
-    <TableRow>
-      <TableCell>{data.id}</TableCell>
-      <TableCell>{data.discordLink}</TableCell>
-      <TableCell align="right">
-        <Vote />
-      </TableCell>
-    </TableRow>
+    <Box>
+      <Typography variant="h4">Proposal {data.id}</Typography>
+      <Box>
+        <Vote id={data.id} discordLink={data.discordLink} />
+      </Box>
+    </Box>
   );
 };
