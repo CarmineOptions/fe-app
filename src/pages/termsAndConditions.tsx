@@ -3,7 +3,7 @@ import { Box, Button, Link, useTheme } from "@mui/material";
 import { useEffect } from "react";
 import { setCookieWithExpiry } from "../utils/cookies";
 
-const HIDE_TIME_MS = 12 * 60 * 60 * 1000; // 12 hours in ms
+const HIDE_TIME_MS = 1000 * 60 * 30; // 12 hours in ms
 
 const storeTermsAndConditions = (
   check: boolean,
@@ -20,7 +20,7 @@ type Props = {
 
 const TermsAndConditions = ({ check, rerender }: Props) => {
   useEffect(() => {
-    document.title = "Terms & Conditions | Carmine Finance";
+    document.title = "Discord Warning | Carmine Finance";
   });
 
   const theme = useTheme();
@@ -47,21 +47,17 @@ const TermsAndConditions = ({ check, rerender }: Props) => {
 
   return (
     <Box sx={style}>
-      <Typography variant="h4">Terms & Conditions</Typography>
+      <Typography variant="h4">Discord Warning</Typography>
       <Typography variant="body1">
-        Please take a moment to review our terms and conditions, which govern
-        the use of our service. You can access the{" "}
-        <Link color="inherit" href={termsUrl}>
-          document here
-        </Link>
-        . It's important to read and understand these terms before using our
-        service.
+        Our Discord has been hacked and the core team does not have access to it
+        at this time. We urge you to ignore any announcement and information you
+        found on Discord!
       </Typography>
       <Button
         variant="contained"
         onClick={() => storeTermsAndConditions(check, rerender)}
       >
-        Accept Terms and Conditions
+        I am aware of this
       </Button>
     </Box>
   );
