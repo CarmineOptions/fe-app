@@ -32,6 +32,9 @@
   border: 2px solid #1AFF00;
   color: #1AFF00;
 }
+.offset{
+  margin-right: 1rem;
+}
 
 .container button {
   align-items: center;
