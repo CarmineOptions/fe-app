@@ -1,28 +1,25 @@
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
-import { Provider } from "react-redux";
-import { store } from "./redux/store";
-import Portfolio from "./pages/portfolio";
-import NotFound from "./pages/notFound";
-import TradePage from "./pages/trade";
-import StakePage from "./pages/stake";
-import StakingExplainedPage from "./pages/stakeInfo";
-import Settings from "./pages/settings";
-import { Controller } from "./Controller";
 import { CssBaseline } from "@mui/material";
+import { useState } from "react";
+import { Provider } from "react-redux";
+import { Navigate, Route, BrowserRouter as Router, Routes } from "react-router-dom";
+
+import { AlphaRibbon } from "./components/AlphaRibbon/AlphaRibbon";
 import { MultiDialog } from "./components/MultiDialog/MultiDialog";
 import { Toast } from "./components/Toast/Toast";
-import TermsAndConditions from "./pages/termsAndConditions";
-import { useState } from "react";
-import { AlphaRibbon } from "./components/AlphaRibbon/AlphaRibbon";
-import { isCookieSet } from "./utils/cookies";
+import { Controller } from "./Controller";
 import APYInfoPage from "./pages/apyInfo";
 import TradeDashboardPage from "./pages/dashboard";
 import Insurance from "./pages/insurance";
+import NotFound from "./pages/notFound";
+import Portfolio from "./pages/portfolio";
+import Settings from "./pages/settings";
+import StakePage from "./pages/stake";
+import StakingExplainedPage from "./pages/stakeInfo";
+import TermsAndConditions from "./pages/termsAndConditions";
+import TradePage from "./pages/trade";
+import { store } from "./redux/store";
+import { isCookieSet } from "./utils/cookies";
+
 import "./style/base.css";
 
 const App = () => {
@@ -55,7 +52,7 @@ const App = () => {
 
                 <Route path="/" element={<TradePage />} />
                 <Route path="/insurance" element={<Insurance />} />
-                <Route path="/portfolio" element={<Portfolio />} />
+                <Route path="/portfolio/:target?" element={<Portfolio />} />
                 <Route path="/staking" element={<StakePage />} />
                 <Route
                   path="/staking-explained"

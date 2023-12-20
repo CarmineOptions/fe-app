@@ -1,4 +1,5 @@
-import { useEffect, useRef } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { Airdrop } from "../components/Airdrop/Airdrop";
 import { Layout } from "../components/layout";
@@ -10,65 +11,64 @@ const Portfolio = () => {
   const airDrop = useRef<HTMLDivElement>(null);
   const position = useRef<HTMLDivElement>(null);
   const history = useRef<HTMLDivElement>(null);
-  const handleClick= (section: string)=>{
-    switch (section){
-      case "history":
-        if(history.current){
-          history.current.scrollIntoView({ behavior: 'smooth' });
-        }
-        return;
-      case "airdrop":
-        if(airDrop.current){
-          airDrop.current.scrollIntoView({ behavior: 'smooth' });
-        }
-        return;
-      case "position":
-          if(position.current){
-            position.current.scrollIntoView({ behavior: 'smooth' });
-          }
-          return;
+  const [isAirdrop, setAirDrop] = useState(false);
+  const [isPosition, setPosition] = useState(true);
+  const [isHistory, setHistory] = useState(false);
+  const navigate = useNavigate();
+
+  const { target } = useParams();
+  const scrollToTarget = (targetRef: RefObject<HTMLDivElement>) => {
+    if (targetRef.current) {
+      targetRef.current.scrollIntoView({ behavior: 'smooth' });
     }
-  }
+  };
   useEffect(() => {
     document.title = "Portfolio | Carmine Finance";
     // Check if the URL contains the #history hash
-    if (window.location.hash === "#history") {
-      // Scroll to the "History" section
-      const historySection = document.getElementById("history");
-      if (historySection) {
-        historySection.scrollIntoView({ behavior: "smooth" });
-      }
+    switch (target){
+      case "history":
+        scrollToTarget(history);
+        break;
+      case "airdrop":
+        scrollToTarget(airDrop);
+        break;
+      case "position":
+        scrollToTarget(position);
+        break;
+      default:
+        scrollToTarget(position);
+        break;
     }
-  }, []);
+  }, [target]);
 
   return (
     <Layout>
         <button
-          className={`${buttonStyles.button} ${buttonStyles.secondary} ${buttonStyles.offset}`}
-          onClick={()=>handleClick("airdrop")}
+          className={`${buttonStyles.button} ${isAirdrop && buttonStyles.secondary} ${buttonStyles.offset}`}
+          onClick={() => {navigate(`/portfolio/airdrop`); setAirDrop(!isAirdrop);}}
         > Airdrop
         </button>
         <button
-          className={`${buttonStyles.button} ${buttonStyles.secondary} ${buttonStyles.offset}`}
-          onClick={()=>handleClick("position")}
+          className={`${buttonStyles.button} ${isPosition &&buttonStyles.secondary} ${buttonStyles.offset}`}
+          onClick={() => {navigate(`/portfolio/position`); setPosition(!isPosition)}}
         > Position
         </button>
         <button
-          className={`${buttonStyles.button} ${buttonStyles.secondary}`}
-          onClick={()=>handleClick("history")}
+          className={`${buttonStyles.button} ${isHistory &&buttonStyles.secondary}`}
+          onClick={() => {navigate( `/portfolio/history`); setHistory(!isHistory)}}
         > History
         </button>
-
-      <div ref={airDrop}><Airdrop /></div>
-      <div ref={position}><Positions /></div>
-      <h3 id="history">History</h3>
-      <p>
+      {isAirdrop&&(<div ref={airDrop}><Airdrop /></div>)}
+      {isPosition&&(<div ref={position}><Positions /></div>)}
+      {isHistory&&(<h3 id="history">History</h3>)}
+      {isHistory&&(      
+        <p>
         Please be advised that it takes 5-20 minutes for a transaction to
         appear.
-      </p>
-      <div ref={history}>
-        <TradeHistory/>
-      </div>
+        </p>
+      )}
+      {isHistory&&(<div ref={history}><TradeHistory/></div>)}
+
     </Layout>
   );
 };
