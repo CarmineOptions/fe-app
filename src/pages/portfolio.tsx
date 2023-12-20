@@ -26,15 +26,19 @@ const Portfolio = () => {
     switch (target){
       case "history":
         scrollToTarget(history);
+        setSection(2);
         break;
       case "airdrop":
         scrollToTarget(airDrop);
+        setSection(0);
         break;
       case "position":
         scrollToTarget(position);
+        setSection(1);
         break;
       default:
         scrollToTarget(position);
+        setSection(1);
         break;
     }
   }, [target]);

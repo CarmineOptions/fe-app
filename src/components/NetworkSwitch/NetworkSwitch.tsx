@@ -9,7 +9,7 @@ const Ellipse = () => (
   <img
     // TODO: -30px is a hack to cancel MUI styling
     style={{ width: "10px", marginLeft: "10px", marginRight: "-30px" }}
-    src="./ellipse.svg"
+    src="/ellipse.svg"
     alt="green elipse"
   />
 );
