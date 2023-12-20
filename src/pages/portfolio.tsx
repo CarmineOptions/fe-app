@@ -11,9 +11,7 @@ const Portfolio = () => {
   const airDrop = useRef<HTMLDivElement>(null);
   const position = useRef<HTMLDivElement>(null);
   const history = useRef<HTMLDivElement>(null);
-  const [isAirdrop, setAirDrop] = useState(false);
-  const [isPosition, setPosition] = useState(true);
-  const [isHistory, setHistory] = useState(false);
+  const [section, setSection] = useState(1);
   const navigate = useNavigate();
 
   const { target } = useParams();
@@ -44,30 +42,30 @@ const Portfolio = () => {
   return (
     <Layout>
         <button
-          className={`${buttonStyles.button} ${isAirdrop && buttonStyles.secondary} ${buttonStyles.offset}`}
-          onClick={() => {navigate(`/portfolio/airdrop`); setAirDrop(!isAirdrop);}}
+          className={`${buttonStyles.button} ${section===0 && buttonStyles.secondary} ${buttonStyles.offset}`}
+          onClick={() => {navigate(`/portfolio/airdrop`); setSection(0);}}
         > Airdrop
         </button>
         <button
-          className={`${buttonStyles.button} ${isPosition &&buttonStyles.secondary} ${buttonStyles.offset}`}
-          onClick={() => {navigate(`/portfolio/position`); setPosition(!isPosition)}}
+          className={`${buttonStyles.button} ${section===1 &&buttonStyles.secondary} ${buttonStyles.offset}`}
+          onClick={() => {navigate(`/portfolio/position`); setSection(1);}}
         > Position
         </button>
         <button
-          className={`${buttonStyles.button} ${isHistory &&buttonStyles.secondary}`}
-          onClick={() => {navigate( `/portfolio/history`); setHistory(!isHistory)}}
+          className={`${buttonStyles.button} ${section===2 &&buttonStyles.secondary}`}
+          onClick={() => {navigate( `/portfolio/history`); setSection(2);}}
         > History
         </button>
-      {isAirdrop&&(<div ref={airDrop}><Airdrop /></div>)}
-      {isPosition&&(<div ref={position}><Positions /></div>)}
-      {isHistory&&(<h3 id="history">History</h3>)}
-      {isHistory&&(      
+      {section === 0&&(<div ref={airDrop}><Airdrop /></div>)}
+      {section === 1&&(<div ref={position}><Positions /></div>)}
+      {section === 2&&(<h3 id="history">History</h3>)}
+      {section === 2&&(      
         <p>
         Please be advised that it takes 5-20 minutes for a transaction to
         appear.
         </p>
       )}
-      {isHistory&&(<div ref={history}><TradeHistory/></div>)}
+      {section === 2&&(<div ref={history}><TradeHistory/></div>)}
 
     </Layout>
   );
