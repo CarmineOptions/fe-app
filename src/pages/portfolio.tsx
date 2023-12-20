@@ -62,14 +62,16 @@ const Portfolio = () => {
         </button>
       {section === 0&&(<div ref={airDrop}><Airdrop /></div>)}
       {section === 1&&(<div ref={position}><Positions /></div>)}
-      {section === 2&&(<h3 id="history">History</h3>)}
-      {section === 2&&(      
-        <p>
-        Please be advised that it takes 5-20 minutes for a transaction to
-        appear.
-        </p>
+      {section === 2 && (
+        <div ref={history}>
+          <h3 id="history">History</h3>
+          <p>
+            Please be advised that it takes 5-20 minutes for a transaction to
+            appear.
+          </p>
+          <TradeHistory />
+        </div>
       )}
-      {section === 2&&(<div ref={history}><TradeHistory/></div>)}
 
     </Layout>
   );
