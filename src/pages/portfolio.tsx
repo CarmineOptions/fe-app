@@ -27,18 +27,42 @@ const Portfolio = () => {
       case "history":
         scrollToTarget(history);
         setSection(2);
+        window.localStorage.setItem("rParam","history");
         break;
       case "airdrop":
         scrollToTarget(airDrop);
         setSection(0);
+        window.localStorage.setItem("rParam","airdrop");
         break;
       case "position":
         scrollToTarget(position);
         setSection(1);
+        window.localStorage.setItem("rParam","position");
         break;
       default:
-        scrollToTarget(position);
-        setSection(1);
+        const rParam = window.localStorage.getItem("rParam");
+        if(rParam === undefined) {
+          scrollToTarget(position);
+          setSection(1);  
+        } else {
+          switch(rParam){
+            case "history":
+              scrollToTarget(history);
+              setSection(2);
+              window.localStorage.setItem("rParam","history");
+              break;
+            case "airdrop":
+              scrollToTarget(airDrop);
+              setSection(0);
+              window.localStorage.setItem("rParam","airdrop");
+              break;
+            case "position":
+              scrollToTarget(position);
+              setSection(1);
+              window.localStorage.setItem("rParam","position");
+              break;
+          }
+        }
         break;
     }
   }, [target]);
@@ -72,7 +96,6 @@ const Portfolio = () => {
           <TradeHistory />
         </div>
       )}
-
     </Layout>
   );
 };
