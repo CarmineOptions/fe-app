@@ -1,19 +1,21 @@
-import { RefObject, useEffect, useRef, useState } from "react";
+import { RefObject, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { Airdrop } from "../components/Airdrop/Airdrop";
 import { Layout } from "../components/layout";
 import { Positions } from "../components/PositionTable";
 import { TradeHistory } from "../components/TradeHistory/TradeHistory";
+import { usePortfolioParam } from "../hooks/usePortfolio";
+import { setPortfolioParam } from "../redux/actions";
+import { PortfolioParamType } from "../redux/reducers/ui";
 import buttonStyles from "../style/button.module.css";
 
 const Portfolio = () => {
   const airDrop = useRef<HTMLDivElement>(null);
   const position = useRef<HTMLDivElement>(null);
   const history = useRef<HTMLDivElement>(null);
-  const [section, setSection] = useState(1);
+  const portfolioParam = usePortfolioParam();
   const navigate = useNavigate();
-
   const { target } = useParams();
   const scrollToTarget = (targetRef: RefObject<HTMLDivElement>) => {
     if (targetRef.current) {
@@ -26,67 +28,59 @@ const Portfolio = () => {
     switch (target){
       case "history":
         scrollToTarget(history);
-        setSection(2);
-        window.localStorage.setItem("rParam","history");
+        setPortfolioParam(PortfolioParamType.History);
         break;
       case "airdrop":
         scrollToTarget(airDrop);
-        setSection(0);
-        window.localStorage.setItem("rParam","airdrop");
+        setPortfolioParam(PortfolioParamType.AirDrop);
         break;
       case "position":
         scrollToTarget(position);
-        setSection(1);
-        window.localStorage.setItem("rParam","position");
+        setPortfolioParam(PortfolioParamType.Position);
         break;
       default:
-        const rParam = window.localStorage.getItem("rParam");
-        if(rParam === undefined) {
-          scrollToTarget(position);
-          setSection(1);  
-        } else {
-          switch(rParam){
-            case "history":
-              scrollToTarget(history);
-              setSection(2);
-              window.localStorage.setItem("rParam","history");
-              break;
-            case "airdrop":
-              scrollToTarget(airDrop);
-              setSection(0);
-              window.localStorage.setItem("rParam","airdrop");
-              break;
-            case "position":
-              scrollToTarget(position);
-              setSection(1);
-              window.localStorage.setItem("rParam","position");
-              break;
-          }
+        switch (portfolioParam){
+          case PortfolioParamType.History:
+            scrollToTarget(history);
+            setPortfolioParam(PortfolioParamType.History);
+            break;
+          case PortfolioParamType.AirDrop:
+            scrollToTarget(airDrop);
+            setPortfolioParam(PortfolioParamType.AirDrop);
+            break;
+          case PortfolioParamType.Position:
+            scrollToTarget(position);
+            setPortfolioParam(PortfolioParamType.Position);
+            break;
+          default:
+            scrollToTarget(position);
+            setPortfolioParam(PortfolioParamType.Position);
+            break;
         }
         break;
     }
-  }, [target]);
+  }, [target, portfolioParam]);
 
   return (
     <Layout>
         <button
-          className={`${buttonStyles.button} ${section===0 && buttonStyles.secondary} ${buttonStyles.offset}`}
-          onClick={() => {navigate(`/portfolio/airdrop`); setSection(0);}}
+          className={`${buttonStyles.button} ${portfolioParam===PortfolioParamType.AirDrop && buttonStyles.secondary} ${buttonStyles.offset}`}
+          onClick={() => {navigate(`/portfolio/airdrop`);}}
         > Airdrop
         </button>
         <button
-          className={`${buttonStyles.button} ${section===1 &&buttonStyles.secondary} ${buttonStyles.offset}`}
-          onClick={() => {navigate(`/portfolio/position`); setSection(1);}}
+          className={`${buttonStyles.button} ${portfolioParam===PortfolioParamType.Position &&buttonStyles.secondary} ${buttonStyles.offset}`}
+          onClick={() => {navigate(`/portfolio/position`);}}
         > Position
         </button>
         <button
-          className={`${buttonStyles.button} ${section===2 &&buttonStyles.secondary}`}
-          onClick={() => {navigate( `/portfolio/history`); setSection(2);}}
+          className={`${buttonStyles.button} ${portfolioParam===PortfolioParamType.History &&buttonStyles.secondary}`}
+          onClick={() => {navigate( `/portfolio/history`);  }}
         > History
         </button>
-      {section === 0&&(<div ref={airDrop}><Airdrop /></div>)}
-      {section === 1&&(<div ref={position}><Positions /></div>)}
-      {section === 2 && (
+      {portfolioParam === PortfolioParamType.AirDrop&&(<div ref={airDrop}><Airdrop /></div>)}
+      {portfolioParam === PortfolioParamType.Position&&(<div ref={position}><Positions /></div>)}
+      {portfolioParam === PortfolioParamType.History && (
         <div ref={history}>
           <h3 id="history">History</h3>
           <p>

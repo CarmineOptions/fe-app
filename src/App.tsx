@@ -24,9 +24,7 @@ import "./style/base.css";
 
 const App = () => {
   const [check, rerender] = useState(false);
-
   const acceptedTermsAndConditions = isCookieSet("carmine-t&c");
-
   const oldPathRedirects = [
     ["/trade", "/"],
     ["/position", "/portfolio"],
