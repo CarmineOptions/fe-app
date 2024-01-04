@@ -1,11 +1,11 @@
-import { connect } from "starknetkit";
+import { useAccount, useConnect } from "@starknet-react/core";
+import { connect as connectModal } from "starknetkit"
 
-import { useAccount } from "../../hooks/useAccount";
+import { isMainnet } from "../../constants/amm";
 import { connect as accountConnect } from "../../network/account";
+import { SupportedWalletIds } from "../../types/wallet";
 import { AccountInfo } from "./AccountInfo";
 import styles from "./connect.module.css";
-import { isMainnet } from "../../constants/amm";
-import { SupportedWalletIds } from "../../types/wallet";
 
 type CustomWallet = {
   id: SupportedWalletIds;
@@ -82,35 +82,40 @@ const addCustomWallet = (wallet: CustomWallet) => {
 };
 
 export const WalletButton = () => {
-  const account = useAccount();
-
+  const { account } = useAccount();
+  const { connectors, connect } = useConnect();
+  // const { disconnect } = useDisconnect();
   const handleConnect = async () => {
-    connect({
+    const connection = await connectModal({
       modalMode: "alwaysAsk",
-      dappName: "Carmine Options AMM",
-      // app currently has only dark theme
+      dappName: "Carmine Options Gov.",
       modalTheme: "dark",
-    }).then((wallet) => {
-      if (wallet && wallet.isConnected) {
-        accountConnect(wallet);
-      }
     });
 
+    if (connection && connection.isConnected) {
+
+      const c = connectors.find((connector) => connector.id === connection.id);
+
+      if (c) {
+        connect({ connector: c });
+        accountConnect(connection);
+      }
+    }
     // OKX Wallet currently supports only Mainnet
     if (isMainnet) {
       // call inside timeout to make sure modal is present in the DOM
       setTimeout(() => addCustomWallet(okxWallet), 1);
     }
   };
-
+  console.log(account);
   if (account) {
-    // wallet connected
-    return <AccountInfo />;
+    console.log("abc",account);
+    return (<AccountInfo />)
+  } else {
+    return (
+      <button className={styles.button} onClick={handleConnect}>
+        Connect
+      </button>
+    );  
   }
-
-  return (
-    <button className={styles.button} onClick={handleConnect}>
-      Connect
-    </button>
-  );
 };

@@ -1,9 +1,11 @@
-import { NavLink } from "react-router-dom";
-import { WalletButton } from "../ConnectWallet/Button";
 import { ReactNode } from "react";
-import { NetworkSwitch } from "../NetworkSwitch/NetworkSwitch";
-import styles from "./header.module.css";
+import { NavLink } from "react-router-dom";
+
+import { WalletButton } from "../ConnectWallet/Button";
 import { LinksMenu } from "../LinksMenu/LinksMenu";
+import { NetworkSwitch } from "../NetworkSwitch/NetworkSwitch";
+import { StarknetProvider } from "../StarknetProvider";
+import styles from "./header.module.css";
 
 type NavLinkProps = {
   title: string;
@@ -49,7 +51,9 @@ export const Header = () => (
       </NavLink>
       <NetworkSwitch />
       {navLinks.map((navData, i) => navLink(navData, i))}
-      <WalletButton />
+      <StarknetProvider>
+        <WalletButton />
+      </StarknetProvider>
       <LinksMenu />
     </div>
   </header>

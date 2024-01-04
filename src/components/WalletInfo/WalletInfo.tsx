@@ -1,12 +1,13 @@
+import { ContentCopy, Info, PowerSettingsNew } from "@mui/icons-material";
 import { IconButton, Link, Skeleton, Tooltip, Typography } from "@mui/material";
+
 import { useWallet } from "../../hooks/useWallet";
 import { disconnect } from "../../network/account";
 import { closeDialog, showToast } from "../../redux/actions";
-import { WalletIcon } from "../assets";
-import { ContentCopy, Info, PowerSettingsNew } from "@mui/icons-material";
 import { ToastType } from "../../redux/reducers/ui";
-import { RecentTransaction } from "./RecentTransactions";
 import { addressElision, getStarkscanUrl } from "../../utils/utils";
+import { WalletIcon } from "../assets";
+import { RecentTransaction } from "./RecentTransactions";
 import styles from "./walletinfo.module.css";
 
 const handleDisconnect = () => {
@@ -33,7 +34,6 @@ const buttonStyle = {
 
 export const WalletInfo = () => {
   const wallet = useWallet();
-
   if (!wallet) {
     return <Skeleton width={256} height={88} />;
   }
