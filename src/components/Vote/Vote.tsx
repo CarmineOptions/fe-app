@@ -48,10 +48,7 @@ export const Vote = ({ discordLink, id }: Proposal) => {
         <>
           <Typography>
             To see proposal details and discuss go to the{" "}
-            <Link
-              target="_blank"
-              href="https://discord.com/channels/969228248552706078/1035256265082949722/1116669484124622889"
-            >
+            <Link target="_blank" href={discordLink}>
               Discord thread
             </Link>
             .

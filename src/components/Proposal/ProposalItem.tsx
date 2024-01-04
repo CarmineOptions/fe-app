@@ -7,18 +7,11 @@ type Props = {
   data: Proposal;
 };
 
-export const ProposalItem = ({ data }: Props) => {
-  //   const handleClick = () => {
-  //     setCloseOption(option);
-  //     openCloseOptionDialog();
-  //   };
-
-  return (
+export const ProposalItem = ({ data }: Props) => (
+  <Box>
+    <Typography variant="h4">Proposal {data.id}</Typography>
     <Box>
-      <Typography variant="h4">Proposal {data.id}</Typography>
-      <Box>
-        <Vote id={data.id} discordLink={data.discordLink} />
-      </Box>
+      <Vote id={data.id} discordLink={data.discordLink} />
     </Box>
-  );
-};
+  </Box>
+);
