@@ -1,15 +1,12 @@
-import { openNetworkMismatchDialog, updateNetwork } from "../redux/actions";
-import {
-  StarknetWindowObject,
-  getStarknet,
-  ConnectedStarknetWindowObject,
-} from "get-starknet-core";
-import { debug } from "../utils/debugger";
-import { store } from "../redux/store";
-import { SupportedWalletIds } from "../types/wallet";
-import { addWalletEventHandlers } from "./walletEvents";
-import { NetworkName } from "../types/network";
 import { addWalnutLogs } from "@walnuthq/sdk";
+import { ConnectedStarknetWindowObject, getStarknet, StarknetWindowObject } from "get-starknet-core";
+
+import { openNetworkMismatchDialog, updateNetwork } from "../redux/actions";
+import { store } from "../redux/store";
+import { NetworkName } from "../types/network";
+import { SupportedWalletIds } from "../types/wallet";
+import { debug } from "../utils/debugger";
+import { addWalletEventHandlers } from "./walletEvents";
 
 const isConnectedWallet = (
   wallet: StarknetWindowObject | undefined
