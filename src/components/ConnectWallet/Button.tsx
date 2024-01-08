@@ -88,7 +88,7 @@ export const WalletButton = () => {
   const handleConnect = async () => {
     const connection = await connectModal({
       modalMode: "alwaysAsk",
-      dappName: "Carmine Options Gov.",
+      dappName: "Carmine Options AMM.",
       modalTheme: "dark",
     });
 
@@ -107,15 +107,12 @@ export const WalletButton = () => {
       setTimeout(() => addCustomWallet(okxWallet), 1);
     }
   };
-  console.log(account);
   if (account) {
-    console.log("abc",account);
     return (<AccountInfo />)
-  } else {
-    return (
-      <button className={styles.button} onClick={handleConnect}>
-        Connect
-      </button>
-    );  
   }
+  return (
+    <button className={styles.button} onClick={handleConnect}>
+      Connect
+    </button>
+  );  
 };

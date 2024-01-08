@@ -50,7 +50,8 @@ export const getWallet = (): ConnectedStarknetWindowObject | undefined => {
 export const disconnect = () => {
   const sn = getStarknet();
   sn.disconnect().then(() => {
-    updateNetwork({ walletId: undefined });
+    // updateNetwork({ walletId: undefined });
+    console.log("abc");
     debug("Wallet disconnected");
   });
 };
