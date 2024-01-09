@@ -22,7 +22,10 @@ const vote = async (
   propId: number,
   opinion: Opinion
 ) => {
-  const bal = await balanceOfCarmineToken(account!);
+  var bal=ZERO;
+  if(account) {
+    bal = await balanceOfCarmineToken(account!);
+  }
   if(bal.gtn(0)){
     const call = {
       contractAddress: getTokenAddresses().GOVERNANCE_CONTRACT_ADDRESS,
@@ -73,32 +76,35 @@ export const Vote = ({ discordLink, id }: Proposal) => {
         </>
       )}
       {!account && <Typography>Connect your wallet to vote</Typography>}
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          flexFlow: "row",
-          gap: 2,
-        }}
-      >
-        <Button
-          onClick={() => vote(account!, id, Opinion.YAY)}
-          sx={voteButtonSx}
-          variant="contained"
-          disabled={!account || balCarmine.gtn(0)}
+      {account && !balCarmine.gtn(0) && <Typography>Only Carmine Token holders can vote. </Typography>}
+      {account && balCarmine.gtn(0) && (
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexFlow: "row",
+            gap: 2,
+          }}
         >
-          Vote Yes
-        </Button>
-        <Button
-          onClick={() => vote(account!, id, Opinion.NAY)}
-          sx={voteButtonSx}
-          variant="contained"
-          disabled={!account || balCarmine.gtn(0)}
-        >
-          Vote No
-        </Button>
-      </Box>
+          <Button
+            onClick={() => vote(account!, id, Opinion.YAY)}
+            sx={voteButtonSx}
+            variant="contained"
+            disabled={!account || balCarmine.gtn(0)}
+          >
+            Vote Yes
+          </Button>
+          <Button
+            onClick={() => vote(account!, id, Opinion.NAY)}
+            sx={voteButtonSx}
+            variant="contained"
+            disabled={!account || balCarmine.gtn(0)}
+          >
+            Vote No
+          </Button>
+        </Box>
+      )}
     </Box>
   );
 };
