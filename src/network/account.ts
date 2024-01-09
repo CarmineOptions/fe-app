@@ -1,3 +1,4 @@
+import { useDisconnect } from "@starknet-react/core";
 import { ConnectedStarknetWindowObject, getStarknet, StarknetWindowObject } from "get-starknet-core";
 
 import { openNetworkMismatchDialog, updateNetwork } from "../redux/actions";
@@ -50,8 +51,7 @@ export const getWallet = (): ConnectedStarknetWindowObject | undefined => {
 export const disconnect = () => {
   const sn = getStarknet();
   sn.disconnect().then(() => {
-    // updateNetwork({ walletId: undefined });
-    console.log("abc");
+    updateNetwork({ walletId: undefined });
     debug("Wallet disconnected");
   });
 };

@@ -1,5 +1,6 @@
 import { ContentCopy, Info, PowerSettingsNew } from "@mui/icons-material";
 import { IconButton, Link, Skeleton, Tooltip, Typography } from "@mui/material";
+import { useDisconnect } from "@starknet-react/core";
 
 import { useWallet } from "../../hooks/useWallet";
 import { disconnect } from "../../network/account";
@@ -34,6 +35,7 @@ const buttonStyle = {
 
 export const WalletInfo = () => {
   const wallet = useWallet();
+  const {disconnect} = useDisconnect()
   if (!wallet) {
     return <Skeleton width={256} height={88} />;
   }
@@ -72,7 +74,7 @@ export const WalletInfo = () => {
         </Tooltip>
 
         <Tooltip title="Disconnect">
-          <IconButton sx={buttonStyle} onClick={handleDisconnect}>
+          <IconButton sx={buttonStyle} onClick={()=>{handleDisconnect();disconnect();}}>
             <PowerSettingsNew />
           </IconButton>
         </Tooltip>

@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
+
+import { networkObject, provider } from "../../network/provider";
 import { NetworkState } from "../../types/network";
-import { provider, networkObject } from "../../network/provider";
 
 const getInitialNetworkState = (): NetworkState => {
   return {

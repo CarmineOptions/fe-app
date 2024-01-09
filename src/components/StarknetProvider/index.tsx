@@ -1,4 +1,4 @@
-import { mainnet } from "@starknet-react/chains";
+import { devnet } from "@starknet-react/chains";
 import { argent, braavos, publicProvider, StarknetConfig, starkscan, useInjectedConnectors } from "@starknet-react/core";
 import { ReactNode } from "react";
 
@@ -18,7 +18,7 @@ export const StarknetProvider = ({ children }: Props) => {
 
   return (
     <StarknetConfig
-      chains={[mainnet]}
+      chains={[devnet]}
       provider={publicProvider()}
       connectors={connectors}
       explorer={starkscan}
