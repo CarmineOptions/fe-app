@@ -1,10 +1,11 @@
 import { Typography } from "@mui/material";
 import { useQuery } from "react-query";
+
 import { useAccount } from "../../hooks/useAccount";
 import { QueryKeys } from "../../queries/keys";
 import { LoadingAnimation } from "../Loading/Loading";
-import { TransactionTable } from "./TransactionDisplay";
 import { fetchHistoricalData } from "./fetchHistoricalData";
+import { TransactionTable } from "./TransactionDisplay";
 
 type PropsAddress = {
   address: string;

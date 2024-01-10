@@ -1,16 +1,17 @@
 import { FunctionComponent } from "react";
-import { fetchPositions } from "./fetchPositions";
-import { TableWrapper } from "../TableWrapper/TableWrapper";
 import { useQuery } from "react-query";
-import { QueryKeys } from "../../queries/keys";
-import { NoContent } from "../TableNoContent";
-import { LoadingAnimation } from "../Loading/Loading";
+
 import { OptionWithPosition } from "../../classes/Option";
-import { TableElement } from "./TableElement";
-import { LiveItem } from "./LiveItem";
-import { InMoneyItem } from "./InMoneyItem";
-import { OutOfMoneyItem } from "./OutOfMoneyItem";
 import { useAccount } from "../../hooks/useAccount";
+import { QueryKeys } from "../../queries/keys";
+import { LoadingAnimation } from "../Loading/Loading";
+import { NoContent } from "../TableNoContent";
+import { TableWrapper } from "../TableWrapper/TableWrapper";
+import { fetchPositions } from "./fetchPositions";
+import { InMoneyItem } from "./InMoneyItem";
+import { LiveItem } from "./LiveItem";
+import { OutOfMoneyItem } from "./OutOfMoneyItem";
+import { TableElement } from "./TableElement";
 
 type PositionsTemplateProps = {
   Live: FunctionComponent;

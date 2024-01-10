@@ -1,24 +1,18 @@
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  DialogContentText,
-  IconButton,
-  Link,
-} from "@mui/material";
-import { timestampToReadableDate } from "../../utils/utils";
+import { Close } from "@mui/icons-material";
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Link } from "@mui/material";
+import { ReactNode } from "react";
+
 import { useDialog } from "../../hooks/useDialog";
 import { closeDialog } from "../../redux/actions";
 import { DialogContentElem } from "../../redux/reducers/ui";
-import { WalletBox } from "../ConnectWallet/Content";
-import { SlippageContent } from "../Slippage/SlippageContent";
-import { Close } from "@mui/icons-material";
-import { ClosePosition } from "../ClosePosition/ClosePosition";
-import { WalletInfo } from "../WalletInfo/WalletInfo";
-import { ReactNode } from "react";
-import { BuyInsuranceModal } from "../Insurance/BuyInsuranceModal";
 import buttonStyles from "../../style/button.module.css";
+import { timestampToReadableDate } from "../../utils/utils";
+import { ClosePosition } from "../ClosePosition/ClosePosition";
+import { WalletBox } from "../ConnectWallet/Content";
+import { BuyInsuranceModal } from "../Insurance/BuyInsuranceModal";
+import { SlippageContent } from "../Slippage/SlippageContent";
+import { StarknetProvider } from "../StarknetProvider";
+import { WalletInfo } from "../WalletInfo/WalletInfo";
 
 const NetworkMismatch = () => (
   <>
@@ -176,7 +170,9 @@ export const MultiDialog = () => {
       )}
       {dialogContent === DialogContentElem.Account && (
         <Border>
-          <WalletInfo />
+          <StarknetProvider>
+            <WalletInfo />
+          </StarknetProvider>
         </Border>
       )}
       {dialogContent === DialogContentElem.MetamaskMissing && (

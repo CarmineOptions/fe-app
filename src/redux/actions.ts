@@ -1,25 +1,12 @@
-import { setSlippageState, updateSettingsState } from "./reducers/settings";
-import { updateNetworkState } from "./reducers/network";
-import {
-  DialogContentElem,
-  setBuyInsuranceModalState,
-  setCloseOptionState,
-  setToastState,
-  ToastType,
-  toggleDialog,
-} from "./reducers/ui";
-import { store } from "./store";
-import { Settings } from "../types/settings";
-import { NetworkState } from "../types/network";
 import { OptionWithPosition } from "../classes/Option";
-import {
-  addTxReducer,
-  setTxStatusReducer,
-  Transaction,
-  TransactionAction,
-  TransactionStatus,
-} from "./reducers/transactions";
 import { BuyInsuranceModalData } from "../components/Insurance/BuyInsuranceModal";
+import { NetworkState } from "../types/network";
+import { Settings } from "../types/settings";
+import { updateNetworkState } from "./reducers/network";
+import { setSlippageState, updateSettingsState } from "./reducers/settings";
+import { addTxReducer, setTxStatusReducer, Transaction, TransactionAction, TransactionStatus } from "./reducers/transactions";
+import { DialogContentElem, PortfolioParamType, setBuyInsuranceModalState, setCloseOptionState, setParamState, setToastState, ToastType, toggleDialog } from "./reducers/ui";
+import { store } from "./store";
 
 export const updateSettings = (v: Partial<Settings>) =>
   store.dispatch(updateSettingsState(v));
@@ -73,6 +60,7 @@ export const setCloseOption = (option: OptionWithPosition) =>
 
 export const setBuyInsuranceModal = (data: BuyInsuranceModalData) =>
   store.dispatch(setBuyInsuranceModalState(data));
+export const setPortfolioParam = (option: PortfolioParamType) => store.dispatch(setParamState(option));
 
 export const showToast = (message: string, type: ToastType = ToastType.Info) =>
   store.dispatch(setToastState({ message, open: true, type }));

@@ -1,8 +1,4 @@
-import {
-  ConnectedStarknetWindowObject,
-  getStarknet,
-  StarknetWindowObject,
-} from "get-starknet-core";
+import { ConnectedStarknetWindowObject, getStarknet, StarknetWindowObject } from "get-starknet-core";
 
 import { openNetworkMismatchDialog, updateNetwork } from "../redux/actions";
 import { store } from "../redux/store";
