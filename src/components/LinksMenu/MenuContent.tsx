@@ -25,7 +25,11 @@ export const MenuContent = ({ handleClose }: Props) => {
         </NavLink>
       </div>
       <div className={styles.stack}>
-        <a href="https://carmine.finance/" target="_blank" rel="noreferrer">
+        <a
+          href="https://carmine.finance/developers"
+          target="_blank"
+          rel="noreferrer"
+        >
           <div className={styles.iconholder}>
             <Developers />
           </div>
@@ -41,7 +45,11 @@ export const MenuContent = ({ handleClose }: Props) => {
           </div>
           Documentation
         </a>
-        <a href="https://carmine.finance/" target="_blank" rel="noreferrer">
+        <a
+          href="https://carmine.finance/about"
+          target="_blank"
+          rel="noreferrer"
+        >
           <div className={styles.iconholder}>
             <About />
           </div>
