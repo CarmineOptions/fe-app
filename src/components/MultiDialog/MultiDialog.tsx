@@ -11,7 +11,6 @@ import { ClosePosition } from "../ClosePosition/ClosePosition";
 import { WalletBox } from "../ConnectWallet/Content";
 import { BuyInsuranceModal } from "../Insurance/BuyInsuranceModal";
 import { SlippageContent } from "../Slippage/SlippageContent";
-import { StarknetProvider } from "../StarknetProvider";
 import { WalletInfo } from "../WalletInfo/WalletInfo";
 
 const NetworkMismatch = () => (
@@ -170,9 +169,7 @@ export const MultiDialog = () => {
       )}
       {dialogContent === DialogContentElem.Account && (
         <Border>
-          <StarknetProvider>
             <WalletInfo />
-          </StarknetProvider>
         </Border>
       )}
       {dialogContent === DialogContentElem.MetamaskMissing && (

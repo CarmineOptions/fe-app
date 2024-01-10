@@ -1,7 +1,7 @@
-import { useAccount, useConnect } from "@starknet-react/core";
-import { connect as connectModal } from "starknetkit"
+import { connect } from "starknetkit";
 
 import { isMainnet } from "../../constants/amm";
+import { useAccount } from "../../hooks/useAccount";
 import { connect as accountConnect } from "../../network/account";
 import { SupportedWalletIds } from "../../types/wallet";
 import { AccountInfo } from "./AccountInfo";
@@ -82,25 +82,17 @@ const addCustomWallet = (wallet: CustomWallet) => {
 };
 
 export const WalletButton = () => {
-  const { account } = useAccount();
-  const { connectors, connect } = useConnect();
-  // const { disconnect } = useDisconnect();
+  const  account = useAccount();
   const handleConnect = async () => {
-    const connection = await connectModal({
+    connect({
       modalMode: "alwaysAsk",
       dappName: "Carmine Options AMM.",
       modalTheme: "dark",
-    });
-
-    if (connection && connection.isConnected) {
-
-      const c = connectors.find((connector) => connector.id === connection.id);
-
-      if (c) {
-        connect({ connector: c });
-        accountConnect(connection);
+    }).then((wallet) => {
+      if (wallet && wallet.isConnected) {
+        accountConnect(wallet);
       }
-    }
+    });
     // OKX Wallet currently supports only Mainnet
     if (isMainnet) {
       // call inside timeout to make sure modal is present in the DOM
