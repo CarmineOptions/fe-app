@@ -1,16 +1,13 @@
-import { bnToOptionSide } from "../utils/conversions";
-import {
-  timestampToReadableDate,
-  timestampToShortTimeDate,
-  toHex,
-} from "../utils/utils";
-import { OptionSide, FinancialData, OptionStruct } from "../types/options";
-import { AMM_ADDRESS, AMM_METHODS, BASE_MATH_64 } from "../constants/amm";
-import { Pool } from "./Pool";
-import { longInteger, shortInteger } from "../utils/computations";
 import { BigNumberish, Call } from "starknet";
-import { Cubit } from "../types/units";
+
 import { sendGtagEvent } from "../analytics";
+import { AMM_ADDRESS, AMM_METHODS, BASE_MATH_64 } from "../constants/amm";
+import { FinancialData, OptionSide, OptionStruct } from "../types/options";
+import { Cubit } from "../types/units";
+import { longInteger, shortInteger } from "../utils/computations";
+import { bnToOptionSide } from "../utils/conversions";
+import { timestampToReadableDate, timestampToShortTimeDate, toHex } from "../utils/utils";
+import { Pool } from "./Pool";
 
 export class Option extends Pool {
   public maturity: number;

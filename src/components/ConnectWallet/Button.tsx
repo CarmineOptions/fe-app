@@ -1,11 +1,11 @@
 import { connect } from "starknetkit";
 
+import { isMainnet } from "../../constants/amm";
 import { useAccount } from "../../hooks/useAccount";
 import { connect as accountConnect } from "../../network/account";
+import { SupportedWalletIds } from "../../types/wallet";
 import { AccountInfo } from "./AccountInfo";
 import styles from "./connect.module.css";
-import { isMainnet } from "../../constants/amm";
-import { SupportedWalletIds } from "../../types/wallet";
 
 type CustomWallet = {
   id: SupportedWalletIds;
@@ -82,35 +82,29 @@ const addCustomWallet = (wallet: CustomWallet) => {
 };
 
 export const WalletButton = () => {
-  const account = useAccount();
-
+  const  account = useAccount();
   const handleConnect = async () => {
     connect({
       modalMode: "alwaysAsk",
-      dappName: "Carmine Options AMM",
-      // app currently has only dark theme
+      dappName: "Carmine Options AMM.",
       modalTheme: "dark",
     }).then((wallet) => {
       if (wallet && wallet.isConnected) {
         accountConnect(wallet);
       }
     });
-
     // OKX Wallet currently supports only Mainnet
     if (isMainnet) {
       // call inside timeout to make sure modal is present in the DOM
       setTimeout(() => addCustomWallet(okxWallet), 1);
     }
   };
-
   if (account) {
-    // wallet connected
-    return <AccountInfo />;
+    return (<AccountInfo />)
   }
-
   return (
     <button className={styles.button} onClick={handleConnect}>
       Connect
     </button>
-  );
+  );  
 };
