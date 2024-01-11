@@ -139,7 +139,7 @@ export const StakeCapitalItem = ({ account, pool }: Props) => {
       </TableCell>
       <TableCell sx={{ display: "flex", alignItems: "center" }} align="right">
         <button
-          className={`${buttonStyles.button} ${buttonStyles.secondary}`}
+          className={buttonStyles.secondary}
           disabled={loading || !account || txPending}
           onClick={handleStakeClick}
         >

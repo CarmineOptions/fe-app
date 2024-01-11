@@ -4,7 +4,6 @@ import { TableCell, TableRow, Tooltip } from "@mui/material";
 import { openCloseOptionDialog, setCloseOption } from "../../redux/actions";
 import { useTxPending } from "../../hooks/useRecentTxs";
 import { TransactionAction } from "../../redux/reducers/transactions";
-import buttonStyles from "../../style/button.module.css";
 
 type Props = {
   option: OptionWithPosition;
@@ -42,11 +41,7 @@ export const LiveItem = ({ option }: Props) => {
         </Tooltip>
       </TableCell>
       <TableCell align="right">
-        <button
-          className={buttonStyles.button}
-          onClick={handleClick}
-          disabled={txPending}
-        >
+        <button onClick={handleClick} disabled={txPending}>
           {txPending ? "Processing..." : "Close"}
         </button>
       </TableCell>

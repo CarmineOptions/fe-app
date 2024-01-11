@@ -120,7 +120,7 @@ const WithOption = ({ option, size, updateTradeState }: Props) => {
         </Box>
       </Box>
       <button
-        className={`${buttonStyles.button} ${buttonStyles.green}`}
+        className={buttonStyles.green}
         disabled={!account}
         onClick={handleClick}
       >

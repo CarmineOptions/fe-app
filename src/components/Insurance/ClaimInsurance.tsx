@@ -41,7 +41,7 @@ const ClaimItem = ({
           You are eligible to claim ${option.value.toFixed(4)}
         </Typography>
         <button
-          className={`${styles.button} ${styles.green}`}
+          className={styles.green}
           onClick={handleButtonClick}
           disabled={txPending}
         >

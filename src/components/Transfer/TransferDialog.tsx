@@ -5,7 +5,6 @@ import {
   DialogActions,
 } from "@mui/material";
 import { closeDialog } from "../../redux/actions";
-import buttonStyles from "../../style/button.module.css";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { shortInteger } from "../../utils/computations";
@@ -56,11 +55,7 @@ export const TransferDialog = () => {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <button
-              className={buttonStyles.button}
-              onClick={handleClick}
-              autoFocus
-            >
+            <button onClick={handleClick} autoFocus>
               Transfer Capital
             </button>
           </DialogActions>
@@ -74,11 +69,7 @@ export const TransferDialog = () => {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <button
-              className={buttonStyles.button}
-              onClick={closeDialog}
-              autoFocus
-            >
+            <button onClick={closeDialog} autoFocus>
               Close
             </button>
           </DialogActions>
@@ -92,11 +83,7 @@ export const TransferDialog = () => {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <button
-              className={buttonStyles.button}
-              onClick={closeDialog}
-              autoFocus
-            >
+            <button onClick={closeDialog} autoFocus>
               Close
             </button>
           </DialogActions>
@@ -110,11 +97,7 @@ export const TransferDialog = () => {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <button
-              className={buttonStyles.button}
-              onClick={closeDialog}
-              autoFocus
-            >
+            <button onClick={closeDialog} autoFocus>
               Close
             </button>
           </DialogActions>

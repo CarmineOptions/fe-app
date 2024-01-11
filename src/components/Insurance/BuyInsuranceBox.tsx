@@ -76,7 +76,7 @@ const BuyInsuranceButton = ({ option, size }: BuyButtonProps) => {
 
   return (
     <button
-      className={`${buttonStyles.button} ${buttonStyles.secondary}`}
+      className={buttonStyles.secondary}
       disabled={txPending}
       onClick={handleButtonClick}
     >

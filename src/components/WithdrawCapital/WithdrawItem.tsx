@@ -71,22 +71,18 @@ export const WithdrawItem = ({ account, userPoolInfo }: Props) => {
           disabled={processing || txPending}
         >
           {processing || txPending ? (
-            <button
-              className={`${buttonStyles.button} ${buttonStyles.secondary}`}
-            >
-              Processing...
-            </button>
+            <button className={buttonStyles.secondary}>Processing...</button>
           ) : (
             <>
               <button
                 style={{ borderRight: 0 }}
-                className={`${buttonStyles.button} ${buttonStyles.secondary}`}
+                className={buttonStyles.secondary}
                 onClick={handleWithdraw}
               >
                 Unstake
               </button>
               <button
-                className={`${buttonStyles.button} ${buttonStyles.secondary}`}
+                className={buttonStyles.secondary}
                 onClick={handleWithdrawAll}
               >
                 Max

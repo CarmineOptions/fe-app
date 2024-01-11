@@ -3,7 +3,7 @@ import { connect } from "starknetkit";
 import { useAccount } from "../../hooks/useAccount";
 import { connect as accountConnect } from "../../network/account";
 import { AccountInfo } from "./AccountInfo";
-import styles from "./connect.module.css";
+import styles from "../../style/button.module.css";
 import { isMainnet } from "../../constants/amm";
 import { SupportedWalletIds } from "../../types/wallet";
 import { userLpBalance } from "../Transfer/transfer";
@@ -121,7 +121,7 @@ export const WalletButton = () => {
   }
 
   return (
-    <button className={styles.button} onClick={handleConnect}>
+    <button className={styles.secondary} onClick={handleConnect}>
       Connect
     </button>
   );

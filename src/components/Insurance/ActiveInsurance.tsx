@@ -36,7 +36,7 @@ const InsuranceDisplay = ({ option }: { option: OptionWithPosition }) => {
           expires {option.dateRich}
         </Typography>
         <button
-          className={`${styles.button} ${styles.green}`}
+          className={styles.green}
           disabled={txPending}
           onClick={handleButtonClick}
         >

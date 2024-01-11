@@ -128,11 +128,7 @@ export const TradeCard = ({ option }: TradeCardProps) => {
   if (loading || !data || !premiaMath64) {
     const graph = () => <LoadingAnimation />;
     const profitTable = () => <ProfitTableSkeleton symbol={option.symbol} />;
-    const buyButton = () => (
-      <button className={`${buttonStyles.button}`} disabled>
-        Loading...
-      </button>
-    );
+    const buyButton = () => <button disabled>Loading...</button>;
 
     return (
       <TradeCardTemplate
@@ -193,7 +189,7 @@ export const TradeCard = ({ option }: TradeCardProps) => {
 
   const BuyButton = () => (
     <button
-      className={`${buttonStyles.button} ${buttonStyles.green}`}
+      className={buttonStyles.green}
       disabled={tradeState.processing || !account || loading}
       onClick={handleBuy}
     >

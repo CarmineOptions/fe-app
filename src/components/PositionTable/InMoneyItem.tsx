@@ -62,7 +62,7 @@ export const InMoneyItem = ({ option }: Props) => {
       </TableCell>
       <TableCell align="right">
         <button
-          className={`${buttonStyles.button} ${buttonStyles.green}`}
+          className={buttonStyles.green}
           onClick={handleSettle}
           disabled={txPending}
         >

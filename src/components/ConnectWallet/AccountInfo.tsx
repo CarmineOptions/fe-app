@@ -2,7 +2,7 @@ import { WalletIcon } from "../assets";
 import { useWallet } from "../../hooks/useWallet";
 import { openAccountDialog } from "../../redux/actions";
 import { addressElision } from "../../utils/utils";
-import styles from "./connect.module.css";
+import styles from "../../style/button.module.css";
 
 export const AccountInfo = () => {
   const wallet = useWallet();
@@ -24,7 +24,7 @@ export const AccountInfo = () => {
   const { address } = account;
 
   return (
-    <button onClick={handleClick} className={styles.button}>
+    <button className={styles.secondary} onClick={handleClick}>
       <>
         <WalletIcon sx={iconStyle} wallet={wallet} />
         {addressElision(address)}

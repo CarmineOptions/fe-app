@@ -75,7 +75,7 @@ const Template = ({
           onChange={handleChange}
         />
         <button
-          className={`${buttonStyles.button} ${buttonStyles.secondary}`}
+          className={buttonStyles.secondary}
           onClick={() => handleClick(max)}
         >
           Max
@@ -149,9 +149,7 @@ const WithOption = ({ option }: Props) => {
               <Typography>Cannot close size 0</Typography>
             </Box>
           </Box>
-          <button className={buttonStyles.button} disabled>
-            Close selected
-          </button>
+          <button disabled>Close selected</button>
         </Box>
       </Template>
     );
@@ -181,9 +179,7 @@ const WithOption = ({ option }: Props) => {
               <Typography>Loading...</Typography>
             </Box>
           </Box>
-          <button className={buttonStyles.button} disabled>
-            Loading...
-          </button>
+          <button disabled>Loading...</button>
         </Box>
       </Template>
     );
@@ -270,7 +266,7 @@ const WithOption = ({ option }: Props) => {
           </Box>
         </Box>
         <button
-          className={`${buttonStyles.button} ${buttonStyles.green}`}
+          className={buttonStyles.green}
           onClick={() => close(premiaMath64)}
         >
           Close selected

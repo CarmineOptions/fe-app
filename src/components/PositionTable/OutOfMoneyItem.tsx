@@ -47,7 +47,7 @@ export const OutOfMoneyItem = ({ option }: Props) => {
       <TableCell>{size.toFixed(decimals)}</TableCell>
       <TableCell align="right">
         <button
-          className={`${buttonStyles.button} ${buttonStyles.green}`}
+          className={buttonStyles.green}
           onClick={handleSettle}
           disabled={txPending}
         >

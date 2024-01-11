@@ -68,15 +68,9 @@ export const SlippageContent = () => {
             variant="contained"
             aria-label="outlined primary button group"
           >
-            <button className={styles.button} onClick={() => handleClick(1)}>
-              1%
-            </button>
-            <button className={styles.button} onClick={() => handleClick(5)}>
-              5%
-            </button>
-            <button className={styles.button} onClick={() => handleClick(10)}>
-              10%
-            </button>
+            <button onClick={() => handleClick(1)}>1%</button>
+            <button onClick={() => handleClick(5)}>5%</button>
+            <button onClick={() => handleClick(10)}>10%</button>
           </ButtonGroup>
         </div>
         <div>

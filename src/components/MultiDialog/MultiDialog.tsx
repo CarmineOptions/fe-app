@@ -18,7 +18,6 @@ import { ClosePosition } from "../ClosePosition/ClosePosition";
 import { WalletInfo } from "../WalletInfo/WalletInfo";
 import { ReactNode } from "react";
 import { BuyInsuranceModal } from "../Insurance/BuyInsuranceModal";
-import buttonStyles from "../../style/button.module.css";
 import { TransferDialog } from "../Transfer";
 
 const NetworkMismatch = () => (
@@ -35,7 +34,7 @@ const NetworkMismatch = () => (
       </DialogContentText>
     </DialogContent>
     <DialogActions>
-      <button className={buttonStyles.button} onClick={closeDialog} autoFocus>
+      <button onClick={closeDialog} autoFocus>
         Close
       </button>
     </DialogActions>
@@ -61,7 +60,7 @@ const MetamaskMissing = () => (
       </DialogContentText>
     </DialogContent>
     <DialogActions>
-      <button className={buttonStyles.button} onClick={closeDialog} autoFocus>
+      <button onClick={closeDialog} autoFocus>
         Close
       </button>
     </DialogActions>
@@ -91,7 +90,7 @@ const NotEnoughUnlocked = () => (
       </DialogContentText>
     </DialogContent>
     <DialogActions>
-      <button className={buttonStyles.button} onClick={closeDialog} autoFocus>
+      <button onClick={closeDialog} autoFocus>
         Close
       </button>
     </DialogActions>
