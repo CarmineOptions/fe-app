@@ -1,12 +1,7 @@
 import { CssBaseline } from "@mui/material";
 import { useState } from "react";
 import { Provider } from "react-redux";
-import {
-  Navigate,
-  Route,
-  BrowserRouter as Router,
-  Routes,
-} from "react-router-dom";
+import { Navigate, Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
 import { AlphaRibbon } from "./components/AlphaRibbon/AlphaRibbon";
 import { MultiDialog } from "./components/MultiDialog/MultiDialog";
@@ -44,7 +39,7 @@ const App = () => {
         <CssBaseline />
         {acceptedTermsAndConditions ? (
           <>
-            <div
+            {/* <div
               style={{
                 width: "100vw",
                 height: "100vh",
@@ -54,8 +49,8 @@ const App = () => {
               }}
             >
               <h3>App is currently undergoing maintainance</h3>
-            </div>
-            {/* <Slip />
+            </div> */}
+            <Slip />
             <Router>
               <Routes>
                 {oldPathRedirects.map(([oldPath, newPath], i) => (
@@ -82,7 +77,7 @@ const App = () => {
             </Router>
             <MultiDialog />
             <Toast />
-            <AlphaRibbon /> */}
+            <AlphaRibbon />
           </>
         ) : (
           <TermsAndConditions check={check} rerender={rerender} />

@@ -4,7 +4,6 @@ import GovernanceAbi from "../../abi/amm_abi.json";
 import { GOVERNANCE_ADDRESS } from "../../constants/amm";
 import { Proposal } from "../../types/proposal";
 import { debug } from "../../utils/debugger";
-
 import styles from "./Vote.module.css";
 
 enum Opinion {

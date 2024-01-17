@@ -9,6 +9,8 @@
     "@mui/icons-material": "^5.10.6",
     "@mui/material": "^5.10.7",
     "@reduxjs/toolkit": "^1.8.6",
+    "@starknet-react/chains": "^0.1.5",
+    "@starknet-react/core": "^2.2.2",
     "bn.js": "^5.2.1",
     "ethers": "^5.7.2",
     "get-starknet-core": "^3.0.1",
