@@ -1,8 +1,8 @@
-import { WalletIcon } from "../assets";
 import { useWallet } from "../../hooks/useWallet";
 import { openAccountDialog } from "../../redux/actions";
-import { addressElision } from "../../utils/utils";
 import styles from "../../style/button.module.css";
+import { addressElision } from "../../utils/utils";
+import { WalletIcon } from "../assets";
 
 export const AccountInfo = () => {
   const wallet = useWallet();

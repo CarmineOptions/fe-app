@@ -12,6 +12,7 @@ import APYInfoPage from "./pages/apyInfo";
 import TradeDashboardPage from "./pages/dashboard";
 import Governance from "./pages/governance";
 import Insurance from "./pages/insurance";
+import Maintainance from "./pages/maintainance";
 import NotFound from "./pages/notFound";
 import Portfolio from "./pages/portfolio";
 import Settings from "./pages/settings";
@@ -23,7 +24,6 @@ import { store } from "./redux/store";
 import { isCookieSet } from "./utils/cookies";
 
 import "./style/base.css";
-import Maintainance from "./pages/maintainance";
 
 const App = () => {
   const [check, rerender] = useState(false);
