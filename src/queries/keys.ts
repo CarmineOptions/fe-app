@@ -6,4 +6,6 @@ export enum QueryKeys {
   premia = "GET_PREMIA",
   tradeHistory = "TRADE_HISTORY",
   userBalance = "USER_BALANCE",
+  topUserPoints = "TOP_USER_POINTS",
+  userPoints = "USER_POINTS",
 }

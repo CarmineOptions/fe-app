@@ -28,6 +28,7 @@ import { store } from "./redux/store";
 import { isCookieSet } from "./utils/cookies";
 
 import "./style/base.css";
+import PointsPage from "./pages/points";
 
 const App = () => {
   const [check, rerender] = useState(false);
@@ -66,6 +67,7 @@ const App = () => {
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/dashboard" element={<TradeDashboardPage />} />
                 <Route path="/governance" element={<Governance />} />
+                <Route path="/points" element={<PointsPage />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Router>
