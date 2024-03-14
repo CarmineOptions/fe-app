@@ -11,8 +11,10 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
 } from "@mui/material";
 import tableStyles from "../../style/table.module.css";
+import { ClickableUser } from "./Leaderboard";
 
 type Props = {
   account: AccountInterface;
@@ -47,16 +49,24 @@ const WithAccount = ({ account }: Props) => {
       <Table className={tableStyles.table} aria-label="collapsible table">
         <TableHead>
           <TableRow>
-            <TableCell align="left">Trading</TableCell>
+            <TableCell>#</TableCell>
+            <TableCell>User</TableCell>
             <TableCell align="left">Liquidity</TableCell>
+            <TableCell align="left">Trading</TableCell>
             <TableCell align="left">Referral</TableCell>
             <TableCell align="left">Total</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           <TableRow>
-            <TableCell>{tradePoints}</TableCell>
+            <Tooltip title="Position comming soon!">
+              <TableCell>--</TableCell>
+            </Tooltip>
+            <TableCell>
+              <ClickableUser address={account.address} />
+            </TableCell>
             <TableCell>{liqPoints}</TableCell>
+            <TableCell>{tradePoints}</TableCell>
             <TableCell>{refPoints}</TableCell>
             <TableCell>{tradePoints + liqPoints + refPoints}</TableCell>
           </TableRow>

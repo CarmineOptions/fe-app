@@ -13,6 +13,16 @@ import {
 } from "@mui/material";
 import { addressElision } from "../../utils/utils";
 
+export const ClickableUser = ({ address }: { address: string }) => (
+  <a
+    target="_blank"
+    rel="noopener nofollow noreferrer"
+    href={`https://starkscan.co/contract/${address}`}
+  >
+    {addressElision(address)}
+  </a>
+);
+
 const Item = ({ data, position }: { data: UserPoints; position: number }) => {
   const {
     address,
@@ -23,9 +33,11 @@ const Item = ({ data, position }: { data: UserPoints; position: number }) => {
   return (
     <TableRow>
       <TableCell>{position}</TableCell>
-      <TableCell>{addressElision(address)}</TableCell>
-      <TableCell>{tradePoints}</TableCell>
+      <TableCell>
+        <ClickableUser address={address} />
+      </TableCell>
       <TableCell>{liqPoints}</TableCell>
+      <TableCell>{tradePoints}</TableCell>
       <TableCell>{refPoints}</TableCell>
       <TableCell>{tradePoints + liqPoints + refPoints}</TableCell>
     </TableRow>
@@ -53,8 +65,8 @@ export const Leaderboard = () => {
           <TableRow>
             <TableCell>#</TableCell>
             <TableCell>User</TableCell>
-            <TableCell align="left">Trading</TableCell>
             <TableCell align="left">Liquidity</TableCell>
+            <TableCell align="left">Trading</TableCell>
             <TableCell align="left">Referral</TableCell>
             <TableCell align="left">Total</TableCell>
           </TableRow>
