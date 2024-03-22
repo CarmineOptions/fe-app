@@ -12,7 +12,7 @@ const TradePage = () => {
   return (
     <Layout>
       <TradeTable />
-      <div style={{ width: "100%", height: "500px" }}>
+      <div style={{ width: "100%", height: "500px", marginTop: "50px" }}>
         <AlternativeTradingView />
       </div>
     </Layout>
