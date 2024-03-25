@@ -89,7 +89,7 @@ const TradeTable = () => {
           display: "flex",
           flexFlow: "column",
           gap: "20px",
-          marginTop: "100px",
+          marginTop: "20px",
         }}
       >
         <div className={styles.container}>

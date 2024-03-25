@@ -5,6 +5,8 @@ export type UserPoints = {
   trading_points: number;
   liquidity_points: number;
   referral_points: number;
+  total_points: number;
+  position: number;
 };
 
 export const fetchTopUserPoints = async (): Promise<UserPoints[]> =>

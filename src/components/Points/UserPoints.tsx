@@ -11,7 +11,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Tooltip,
 } from "@mui/material";
 import tableStyles from "../../style/table.module.css";
 import { ClickableUser } from "./Leaderboard";
@@ -42,6 +41,8 @@ const WithAccount = ({ account }: Props) => {
     trading_points: tradePoints,
     liquidity_points: liqPoints,
     referral_points: refPoints,
+    total_points: totalPoints,
+    position,
   } = data;
 
   return (
@@ -59,16 +60,14 @@ const WithAccount = ({ account }: Props) => {
         </TableHead>
         <TableBody>
           <TableRow>
-            <Tooltip title="Position comming soon!">
-              <TableCell>--</TableCell>
-            </Tooltip>
+            <TableCell>{position}</TableCell>
             <TableCell>
               <ClickableUser address={account.address} />
             </TableCell>
             <TableCell>{liqPoints}</TableCell>
             <TableCell>{tradePoints}</TableCell>
             <TableCell>{refPoints}</TableCell>
-            <TableCell>{tradePoints + liqPoints + refPoints}</TableCell>
+            <TableCell>{totalPoints}</TableCell>
           </TableRow>
         </TableBody>
       </Table>

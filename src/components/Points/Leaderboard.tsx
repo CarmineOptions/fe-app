@@ -23,12 +23,14 @@ export const ClickableUser = ({ address }: { address: string }) => (
   </a>
 );
 
-const Item = ({ data, position }: { data: UserPoints; position: number }) => {
+const Item = ({ data }: { data: UserPoints }) => {
   const {
     address,
     trading_points: tradePoints,
     liquidity_points: liqPoints,
     referral_points: refPoints,
+    total_points: totalPoints,
+    position,
   } = data;
   return (
     <TableRow>
@@ -39,7 +41,7 @@ const Item = ({ data, position }: { data: UserPoints; position: number }) => {
       <TableCell>{liqPoints}</TableCell>
       <TableCell>{tradePoints}</TableCell>
       <TableCell>{refPoints}</TableCell>
-      <TableCell>{tradePoints + liqPoints + refPoints}</TableCell>
+      <TableCell>{totalPoints}</TableCell>
     </TableRow>
   );
 };
@@ -73,7 +75,7 @@ export const Leaderboard = () => {
         </TableHead>
         <TableBody>
           {data!.map((userPoints, i) => (
-            <Item data={userPoints} position={i + 1} key={i} />
+            <Item data={userPoints} key={i} />
           ))}
         </TableBody>
       </Table>
