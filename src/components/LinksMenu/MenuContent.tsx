@@ -8,6 +8,8 @@ import { ReactComponent as Github } from "./icons/github.svg";
 import { ReactComponent as Home } from "./icons/home.svg";
 import { ReactComponent as Settings } from "./icons/settings.svg";
 import { ReactComponent as Twitter } from "./icons/twitter.svg";
+import LeaderboardIcon from "@mui/icons-material/Leaderboard";
+
 import styles from "./linksmenu.module.css";
 
 type Props = {
@@ -43,6 +45,16 @@ export const MenuContent = ({ handleClose }: Props) => {
             <Developers />
           </div>
           Governance
+        </NavLink>
+        <NavLink
+          className={styles.homelink}
+          to="/leaderboard"
+          onClick={handleClose}
+        >
+          <div className={styles.iconholder} style={{ transform: "scale(.7)" }}>
+            <LeaderboardIcon />
+          </div>
+          Leaderboard
         </NavLink>
         <a
           href="https://legacy.app.carmine.finance"
