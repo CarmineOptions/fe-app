@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 import { QueryKeys } from "../../queries/keys";
-import { UserPoints, fetchTopUserPoints } from "./fetch";
+import { UserPoints, fetchTopUserPoints, fetchUserPoints } from "./fetch";
 import { LoadingAnimation } from "../Loading/Loading";
 import tableStyles from "../../style/table.module.css";
 import {
@@ -12,6 +12,8 @@ import {
   TableRow,
 } from "@mui/material";
 import { addressElision } from "../../utils/utils";
+import { useAccount } from "../../hooks/useAccount";
+import { AccountInterface } from "starknet";
 
 export const ClickableUser = ({ address }: { address: string }) => (
   <a
@@ -23,7 +25,7 @@ export const ClickableUser = ({ address }: { address: string }) => (
   </a>
 );
 
-const Item = ({ data }: { data: UserPoints }) => {
+const Item = ({ data, sx }: { data: UserPoints; sx?: any }) => {
   const {
     address,
     trading_points: tradePoints,
@@ -32,9 +34,19 @@ const Item = ({ data }: { data: UserPoints }) => {
     total_points: totalPoints,
     position,
   } = data;
+
+  const displayPosition =
+    position > 3
+      ? position + ""
+      : position === 1
+      ? "🥇"
+      : position === 2
+      ? "🥈"
+      : "🥉";
+
   return (
-    <TableRow>
-      <TableCell>{position}</TableCell>
+    <TableRow sx={sx}>
+      <TableCell>{displayPosition}</TableCell>
       <TableCell>
         <ClickableUser address={address} />
       </TableCell>
@@ -44,6 +56,28 @@ const Item = ({ data }: { data: UserPoints }) => {
       <TableCell>{totalPoints}</TableCell>
     </TableRow>
   );
+};
+
+const UserItemWithAccount = ({ account }: { account: AccountInterface }) => {
+  const { isLoading, isError, data } = useQuery(QueryKeys.userPoints, () =>
+    fetchUserPoints(account.address)
+  );
+
+  if (isLoading || isError || !data) {
+    return null;
+  }
+
+  return <Item data={data} sx={{ background: "#323232" }} />;
+};
+
+const UserItem = () => {
+  const account = useAccount();
+
+  if (!account) {
+    return null;
+  }
+
+  return <UserItemWithAccount account={account} />;
 };
 
 export const Leaderboard = () => {
@@ -74,6 +108,7 @@ export const Leaderboard = () => {
           </TableRow>
         </TableHead>
         <TableBody>
+          <UserItem />
           {data!.map((userPoints, i) => (
             <Item data={userPoints} key={i} />
           ))}
