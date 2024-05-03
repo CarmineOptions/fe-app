@@ -2,7 +2,6 @@
   padding: 0 var(--CONTENT-PADDING);
   justify-content: center;
   align-items: center;
-  max-width: var(--CONTENT-WIDTH);
   margin: 50px auto;
 }
 
@@ -29,6 +28,12 @@
   display: flex;
   margin-right: auto;
   padding-right: 4rem;
+}
+
+.rewardsheader {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
 @media (max-width: 720px) {

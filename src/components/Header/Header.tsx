@@ -4,6 +4,8 @@ import { NavLink } from "react-router-dom";
 import { WalletButton } from "../ConnectWallet/Button";
 import { LinksMenu } from "../LinksMenu/LinksMenu";
 import { NetworkSwitch } from "../NetworkSwitch/NetworkSwitch";
+import { StarknetIcon } from "../Icons";
+
 import styles from "./header.module.css";
 
 type NavLinkProps = {
@@ -32,7 +34,17 @@ const navLinks = [
     title: "Leaderboard",
     link: "/leaderboard",
   },
+  {
+    title: "Rewards",
+    link: "/rewards",
+  },
 ] as NavLinkProps[];
+
+const RewardsTitle = () => (
+  <div className={styles.rewardsheader}>
+    <StarknetIcon style={{ width: "32px", height: "32px" }} /> Rewards
+  </div>
+);
 
 const navLink = ({ title, link }: NavLinkProps, i: number): ReactNode => (
   <NavLink
@@ -50,7 +62,7 @@ const navLink = ({ title, link }: NavLinkProps, i: number): ReactNode => (
     to={link}
     key={i}
   >
-    {title}
+    {title === "Rewards" ? <RewardsTitle /> : title}
   </NavLink>
 );
 
