@@ -34,11 +34,10 @@ export const RewardsWithAccount = ({
   const [isClaimReady, setIsClaimReady] = useState<boolean>(false);
   const [errors, setErrors] = useState<String>("");
 
-  const {
-    isLoading,
-    isError,
-    data: alreadyClaimed,
-  } = useQuery([QueryKeys.defiSpringClaimed, address], getDefiSpringClaimed);
+  const { data: alreadyClaimed } = useQuery(
+    [QueryKeys.defiSpringClaimed, address],
+    getDefiSpringClaimed
+  );
 
   useEffect(() => {
     if (account) {
@@ -92,7 +91,8 @@ export const RewardsWithAccount = ({
     await defiSpringClaim(account, calls);
   };
 
-  const claimed = alreadyClaimed && shortInteger(alreadyClaimed, 18);
+  const claimed =
+    alreadyClaimed !== undefined && shortInteger(alreadyClaimed, 18);
   const totalAllocation = shortInteger(allocationAmount.toString(), 18);
 
   return (
@@ -110,13 +110,19 @@ export const RewardsWithAccount = ({
           </div>
         )}
       </div>
-      {isClaimReady && (
+      {isClaimReady && claimed !== false && (
         <div>
           <div>
-            {typeof claimed == "number" && (
-              <p>Claimable: STRK {totalAllocation - claimed}</p>
-            )}
-            <button className={buttonStyles.secondary} onClick={claim}>
+            <p>Claimable: STRK {totalAllocation - claimed}</p>
+            <button
+              disabled={totalAllocation === claimed}
+              className={
+                totalAllocation === claimed
+                  ? buttonStyles.disabled
+                  : buttonStyles.secondary
+              }
+              onClick={claim}
+            >
               Claim allocation
             </button>
           </div>
