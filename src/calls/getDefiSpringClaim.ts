@@ -1,0 +1,40 @@
+import { provider } from "../network/provider";
+import { debug } from "../utils/debugger";
+import { AccountInterface, Contract, Result } from "starknet";
+
+import ABI from "../abi/defi_spring_abi.json";
+import { QueryFunctionContext } from "react-query";
+
+const defiSpringContractAddress =
+  "0x07838fe8cdd61eb445f7773d9648476b571f17242058859ed7fba9074ee915d1";
+
+export const getDefiSpringClaimed = async ({
+  queryKey,
+}: QueryFunctionContext<[string, string]>): Promise<Result> => {
+  const address = queryKey[1];
+  const contract = new Contract(ABI, defiSpringContractAddress, provider);
+  const res = await contract
+    .call("amount_already_claimed", [address])
+    .catch((e: Error) => {
+      debug("Failed getting defi spring claimed", e.message);
+      throw Error(e.message);
+    });
+
+  return res;
+};
+
+export const defiSpringClaim = async (
+  account: AccountInterface,
+  calldata: (string | number)[]
+) => {
+  const call = {
+    entrypoint: "claim",
+    calldata,
+    contractAddress: defiSpringContractAddress,
+  };
+  console.log("CALL", call);
+  await account.execute(call, [ABI]).catch((e) => {
+    debug("Trade open rejected or failed", e.message);
+    throw Error("Trade open rejected or failed");
+  });
+};

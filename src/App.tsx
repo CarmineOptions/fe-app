@@ -29,6 +29,7 @@ import { isCookieSet } from "./utils/cookies";
 
 import "./style/base.css";
 import LeaderboardPage from "./pages/leaderboard";
+import StarknetRewards from "./pages/starknetRewards";
 
 const App = () => {
   const [check, rerender] = useState(false);
@@ -68,6 +69,7 @@ const App = () => {
                 <Route path="/dashboard" element={<TradeDashboardPage />} />
                 <Route path="/governance" element={<Governance />} />
                 <Route path="/leaderboard" element={<LeaderboardPage />} />
+                <Route path="/rewards" element={<StarknetRewards />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Router>
