@@ -29,7 +29,6 @@ export const RewardsWithAccount = ({
     proof: string[];
   }
 
-  const [alreadyClaimed, setAlreadyClaimed] = useState<BigInt>(BigInt(0));
   const [allocationAmount, setAllocationAmount] = useState<BigInt>(BigInt(0));
   const [receivedcalldata, setReceivedCalldata] = useState<ClaimCalldata>();
   const [isClaimReady, setIsClaimReady] = useState<boolean>(false);
@@ -38,7 +37,7 @@ export const RewardsWithAccount = ({
   const {
     isLoading,
     isError,
-    data: alreadyClaimedData,
+    data: alreadyClaimed,
   } = useQuery([QueryKeys.defiSpringClaimed, address], getDefiSpringClaimed);
 
   useEffect(() => {
@@ -46,12 +45,6 @@ export const RewardsWithAccount = ({
       prepareClaim(account.address);
     }
   }, [account]);
-
-  useEffect(() => {
-    if (!isLoading && !isError) {
-      setAlreadyClaimed(alreadyClaimedData as BigInt);
-    }
-  }, [isLoading, isError, alreadyClaimedData]);
 
   useEffect(() => {
     if (account) {
@@ -99,17 +92,17 @@ export const RewardsWithAccount = ({
     await defiSpringClaim(account, calls);
   };
 
+  const claimed = alreadyClaimed && shortInteger(alreadyClaimed, 18);
+  const totalAllocation = shortInteger(allocationAmount.toString(), 18);
+
   return (
     <div>
       <div>
-        {alreadyClaimed !== undefined && (
-          <div>Already claimed: {alreadyClaimed.toString()}</div>
+        {typeof claimed === "number" && (
+          <div>Already claimed: STRK {claimed.toFixed(4)}</div>
         )}
         <div>
-          <p>
-            Total allocated amount: STRK{" "}
-            {shortInteger(allocationAmount.toString(), 18).toFixed(4)}
-          </p>
+          <p>Total allocated amount: STRK {totalAllocation.toFixed(4)}</p>
         </div>
         {errors && (
           <div>
@@ -120,6 +113,9 @@ export const RewardsWithAccount = ({
       {isClaimReady && (
         <div>
           <div>
+            {typeof claimed == "number" && (
+              <p>Claimable: STRK {totalAllocation - claimed}</p>
+            )}
             <button className={buttonStyles.secondary} onClick={claim}>
               Claim allocation
             </button>

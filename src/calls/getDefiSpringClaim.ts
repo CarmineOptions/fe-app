@@ -1,6 +1,6 @@
 import { provider } from "../network/provider";
 import { debug } from "../utils/debugger";
-import { AccountInterface, Contract, Result } from "starknet";
+import { AccountInterface, Contract } from "starknet";
 
 import ABI from "../abi/defi_spring_abi.json";
 import { QueryFunctionContext } from "react-query";
@@ -10,7 +10,7 @@ const defiSpringContractAddress =
 
 export const getDefiSpringClaimed = async ({
   queryKey,
-}: QueryFunctionContext<[string, string]>): Promise<Result> => {
+}: QueryFunctionContext<[string, string]>): Promise<bigint> => {
   const address = queryKey[1];
   const contract = new Contract(ABI, defiSpringContractAddress, provider);
   const res = await contract
@@ -20,7 +20,7 @@ export const getDefiSpringClaimed = async ({
       throw Error(e.message);
     });
 
-  return res;
+  return res as bigint;
 };
 
 export const defiSpringClaim = async (
