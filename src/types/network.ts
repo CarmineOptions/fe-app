@@ -1,5 +1,5 @@
 import { RpcProvider } from "starknet";
-import { SupportedWalletIds } from "./wallet";
+import { SupportedWalletIds, UserBalance } from "./wallet";
 import { constants } from "starknet";
 
 export enum NetworkName {
@@ -20,11 +20,9 @@ export interface NetworkState {
   network: Network;
 }
 
-export enum TransactionState {
-  Initial,
-  Processing,
-  Success,
-  Fail,
+export interface WalletState {
+  address?: string,
+  balance?: UserBalance
 }
 
 export type TxTracking = (s: TransactionState) => void;

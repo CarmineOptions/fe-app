@@ -10,6 +10,7 @@ import { NetworkName } from "../types/network";
 import { SupportedWalletIds } from "../types/wallet";
 import { debug } from "../utils/debugger";
 import { addWalletEventHandlers } from "./walletEvents";
+import { updateWalletState } from "../redux/reducers/wallet";
 
 const isConnectedWallet = (
   wallet: StarknetWindowObject | undefined
@@ -76,6 +77,9 @@ export const connect = (
     const network = store.getState().network.network;
 
     const accountChainId = await wallet.account.getChainId();
+    const accountAddress = wallet.selectedAddress;
+
+    store.dispatch(updateWalletState({ address: accountAddress }));
 
     debug("Connecting wallet", {
       walletNetworkName: wallet.chainId,
