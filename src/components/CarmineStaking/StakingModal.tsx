@@ -106,14 +106,13 @@ export const stateToClassName = (state: TransactionState) => {
 export const StakingModal = ({ account, amount, open, setOpen }: Props) => {
   const numCarmBalance = shortInteger(amount, 18);
   const [inputValue, setInputValue] = useState(numCarmBalance.toString(10));
+  const [selectedAmount, setSelectedAmount] = useState(amount);
   const [unstakeState, setUnstakeState] = useState(TransactionState.Initial);
   const [monthState, setMonthState] = useState(TransactionState.Initial);
   const [sixMonthsState, setSixMonthsState] = useState(
     TransactionState.Initial
   );
   const [yearState, setYearState] = useState(TransactionState.Initial);
-
-  const selectedAmount = longInteger(parseFloat(inputValue), 18);
 
   const handleClose = () => {
     setOpen(false);
@@ -171,16 +170,21 @@ export const StakingModal = ({ account, amount, open, setOpen }: Props) => {
       value === "" || /^\d*\.?\d{0,6}$/.test(value) ? value : inputValue;
 
     const num = parseFloat(numericValue);
+    const long = longInteger(num, 18);
 
-    if (num && num > numCarmBalance) {
+    if (long > amount) {
       // cannot set more than holds
       return;
     }
 
     setInputValue(numericValue);
+    setSelectedAmount(long);
   };
 
-  const handleAll = () => setInputValue(numCarmBalance.toString(10));
+  const handleAll = () => {
+    setInputValue(numCarmBalance.toString(10));
+    setSelectedAmount(amount);
+  };
 
   return (
     <Dialog

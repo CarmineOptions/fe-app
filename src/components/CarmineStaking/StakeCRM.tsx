@@ -85,6 +85,7 @@ const stake = async (
 
 export const StakeCrm = ({ account, carmBalance }: Props) => {
   const [inputValue, setInputValue] = useState("");
+  const [amount, setSelectedAmount] = useState(0n);
 
   const [monthState, setMonthState] = useState(TransactionState.Initial);
   const [sixMonthsState, setSixMonthsState] = useState(
@@ -93,7 +94,6 @@ export const StakeCrm = ({ account, carmBalance }: Props) => {
   const [yearState, setYearState] = useState(TransactionState.Initial);
 
   const numCarmBalance = shortInteger(carmBalance, 18);
-  const amount = longInteger(parseFloat(inputValue), 18);
 
   const handle1month = () => {
     setSixMonthsState(TransactionState.Processing);
@@ -128,16 +128,21 @@ export const StakeCrm = ({ account, carmBalance }: Props) => {
       value === "" || /^\d*\.?\d{0,6}$/.test(value) ? value : inputValue;
 
     const num = parseFloat(numericValue);
+    const long = longInteger(num, 18);
 
-    if (num && num > numCarmBalance) {
+    if (long > carmBalance) {
       // cannot set more than holds
       return;
     }
 
     setInputValue(numericValue);
+    setSelectedAmount(long);
   };
 
-  const handleAll = () => setInputValue(numCarmBalance.toString(10));
+  const handleAll = () => {
+    setInputValue(numCarmBalance.toString(10));
+    setSelectedAmount(carmBalance);
+  };
 
   return (
     <div>
