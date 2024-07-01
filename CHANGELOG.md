@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/CarmineOptions/fe-app/compare/v1.3.0...v1.3.1) (2024-07-01)
+
+
+### Bug Fixes
+
+* handle input as bigint ([0299ac6](https://github.com/CarmineOptions/fe-app/commit/0299ac6ee502e8a3463bcfb5f4a98923ce35ac23))
+
 # [1.3.0](https://github.com/CarmineOptions/fe-app/compare/v1.2.0...v1.3.0) (2024-06-28)
 
 
