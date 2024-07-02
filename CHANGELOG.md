@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/CarmineOptions/fe-app/compare/v1.3.1...v1.4.0) (2024-07-02)
+
+
+### Features
+
+* add season 2 text ([0bcd21f](https://github.com/CarmineOptions/fe-app/commit/0bcd21f63d3ca917d2f10c2ebe1cb9198ad062a6))
+
 ## [1.3.1](https://github.com/CarmineOptions/fe-app/compare/v1.3.0...v1.3.1) (2024-07-01)
 
 
