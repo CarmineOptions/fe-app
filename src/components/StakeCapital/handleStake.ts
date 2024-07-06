@@ -8,7 +8,7 @@ import { ToastType } from "../../redux/reducers/ui";
 import { longInteger, shortInteger } from "../../utils/computations";
 import { debug } from "../../utils/debugger";
 import { decimalToInt } from "../../utils/units";
-import { getUserBalance } from "./../../calls/balanceOf";
+import { balanceOf } from "./../../calls/balanceOf";
 
 export const handleStake = async (
   account: AccountInterface,
@@ -23,7 +23,7 @@ export const handleStake = async (
   debug(`Staking ${amount} into ${pool.typeAsText} pool`);
   setLoading(true);
 
-  const balance = await getUserBalance(account);
+  const balance = await balanceOf(account.address, pool.underlying.address);
 
   if (!balance) {
     setLoading(false);
@@ -33,9 +33,9 @@ export const handleStake = async (
 
   const bnAmount = longInteger(amount, pool.digits);
 
-  if (balance[pool.underlying.id] < bnAmount) {
+  if (balance < bnAmount) {
     const [has, needs] = [
-      shortInteger(balance[pool.underlying.id].toString(10), pool.digits),
+      shortInteger(balance.toString(10), pool.digits),
       amount,
     ];
     showToast(
