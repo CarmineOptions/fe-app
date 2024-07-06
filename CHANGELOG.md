@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/CarmineOptions/fe-app/compare/v1.4.0...v1.4.1) (2024-07-06)
+
+
+### Bug Fixes
+
+* only fetch necessary balance ([b291018](https://github.com/CarmineOptions/fe-app/commit/b29101831a0a7f68fe39a72030882ce52b2057d7))
+
 # [1.4.0](https://github.com/CarmineOptions/fe-app/compare/v1.3.1...v1.4.0) (2024-07-02)
 
 
