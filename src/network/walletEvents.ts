@@ -4,7 +4,6 @@ import {
 } from "get-starknet-core";
 import { store } from "../redux/store";
 import { NetworkName } from "../types/network";
-import { openNetworkMismatchDialog } from "../redux/actions";
 
 export const walletNetworkChangeHandlerFactory =
   (wallet: StarknetWindowObject): NetworkChangeEventHandler =>

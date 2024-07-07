@@ -9,6 +9,7 @@ import { SupportedWalletIds } from "../../types/wallet";
 import { onConnect } from "../../network/hooks";
 import ReactDOM from "react-dom";
 import { BraavosBanner } from "./BraavosBanner";
+import { StarknetWindowObject } from "get-starknet-core";
 
 type CustomWallet = {
   id: SupportedWalletIds;
@@ -84,7 +85,9 @@ const addBanner = () => {
 // to "starknetkit" modal with custom callback
 const addCustomWallet = (wallet: CustomWallet) => {
   // starknet wallet object or undefined
-  const walletWindowObject = window[wallet.windowPropName];
+  const walletWindowObject = window[wallet.windowPropName] as
+    | StarknetWindowObject
+    | undefined;
 
   const shadowParent = document.getElementById("starknetkit-modal-container");
 
@@ -140,7 +143,10 @@ export const openWalletConnectDialog = async () => {
     // app currently has only dark theme
     modalTheme: "dark",
   }).then((modalResult) => {
-    const { wallet } = modalResult;
+    const wallet = modalResult.wallet as
+      | StarknetWindowObject
+      | undefined
+      | null;
     if (wallet && wallet.isConnected) {
       accountConnect(wallet);
     }

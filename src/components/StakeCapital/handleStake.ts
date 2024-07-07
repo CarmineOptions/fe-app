@@ -25,12 +25,6 @@ export const handleStake = async (
 
   const balance = await balanceOf(account.address, pool.underlying.address);
 
-  if (!balance) {
-    setLoading(false);
-    showToast("Could not read user wallet balance", ToastType.Error);
-    return;
-  }
-
   const bnAmount = longInteger(amount, pool.digits);
 
   if (balance < bnAmount) {

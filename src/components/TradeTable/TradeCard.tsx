@@ -14,7 +14,6 @@ import { ProfitTable, ProfitTableSkeleton } from "./ProfitTable";
 import { useAccount } from "../../hooks/useAccount";
 import { showToast } from "../../redux/actions";
 import { ToastType } from "../../redux/reducers/ui";
-import { UserBalance } from "../../types/wallet";
 import { OptionWithPremia } from "../../classes/Option";
 import style from "./card.module.css";
 import buttonStyles from "../../style/button.module.css";
@@ -97,7 +96,7 @@ export const TradeCard = ({ option }: TradeCardProps) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [data, setData] = useState<FinancialData | null>(null);
   const [premiaMath64, setPremiaMath64] = useState<bigint | undefined>();
-  const [balance, setBalance] = useState<UserBalance | undefined>(undefined);
+  const [balance, setBalance] = useState<bigint | undefined>(undefined);
   const [tradeState, updateTradeState] = useState<TradeState>({
     failed: false,
     processing: false,
@@ -162,7 +161,7 @@ export const TradeCard = ({ option }: TradeCardProps) => {
       return;
     }
 
-    if (!balance) {
+    if (balance === undefined) {
       debug(LogTypes.WARN, "No user balance");
       return;
     }

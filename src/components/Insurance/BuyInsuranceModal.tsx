@@ -33,7 +33,7 @@ type Props = {
 
 const WithOption = ({ option, size, updateTradeState }: Props) => {
   const account = useAccount();
-  const balance = useUserBalance();
+  const balance = useUserBalance(option.underlying.address);
 
   const {
     data: premiaMath64,

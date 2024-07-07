@@ -1,7 +1,7 @@
 import { Decimal, Int, Math64 } from "../types/units";
 import { longInteger, shortInteger } from "./computations";
 import { BASE_MATH_64 } from "../constants/amm";
-import { BigNumberish, uint256 } from "starknet";
+import { BigNumberish, Uint256, uint256 } from "starknet";
 
 const PRECISSION_DIGITS = 20;
 const PRECISSION_BASE_VALUE = BigInt(10) ** BigInt(PRECISSION_DIGITS);
@@ -37,7 +37,7 @@ export const math64ToInt = (n: BigNumberish, digits: number): Int =>
 export const intToMath64 = (n: BigNumberish, digits: number): Math64 =>
   ((BigInt(n) * BASE_MATH_64) / 10n ** BigInt(digits)).toString(10);
 
-export const decimalToUint256 = (n: Decimal, digits: number): uint256.Uint256 =>
+export const decimalToUint256 = (n: Decimal, digits: number): Uint256 =>
   uint256.bnToUint256(longInteger(n, digits));
 
 export const uint256toDecimal = (n: bigint, digits: number): Decimal =>

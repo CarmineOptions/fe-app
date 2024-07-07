@@ -1,4 +1,3 @@
-import { UserBalance } from "./../types/wallet";
 import {
   addTx,
   markTxAsDone,
@@ -25,7 +24,7 @@ export const approveAndTradeOpen = async (
   size: number,
   premiaNum: number,
   premiaMath64: bigint,
-  balance: UserBalance,
+  balance: bigint | undefined,
   updateTradeState: ({
     failed,
     processing,
@@ -41,11 +40,13 @@ export const approveAndTradeOpen = async (
 
   debug({ premiaMath64, toApprove, toApproveNumber });
 
-  const tokenId = option.underlying.id;
+  if (balance === undefined) {
+    return false;
+  }
 
-  if (balance[tokenId] < toApproveNumber) {
+  if (balance < toApproveNumber) {
     const [has, needs] = [
-      shortInteger(balance[tokenId].toString(10), option.digits),
+      shortInteger(balance.toString(10), option.digits),
       toApproveNumber,
     ];
     debug({

@@ -1,6 +1,6 @@
 import { OptionSide, OptionType } from "../types/options";
 import { ETH_DIGITS } from "../constants/amm";
-import { BigNumberish, uint256 } from "starknet";
+import { BigNumberish, Uint256, uint256 } from "starknet";
 import { longInteger } from "./computations";
 
 export const getBaseAmountWei = (amount: number) =>
@@ -12,7 +12,7 @@ export const getBaseAmountUsd = (amount: number) =>
 export const convertSizeToInt = (size: number): string =>
   longInteger(size, ETH_DIGITS).toString(10);
 
-export const convertSizeToUint256 = (size: number): uint256.Uint256 => {
+export const convertSizeToUint256 = (size: number): Uint256 => {
   return uint256.bnToUint256(longInteger(size, ETH_DIGITS));
 };
 

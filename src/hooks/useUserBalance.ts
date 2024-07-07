@@ -1,25 +1,29 @@
-import { UserBalance } from "./../types/wallet";
-import { getUserBalance } from "./../calls/balanceOf";
+import { balanceOf } from "./../calls/balanceOf";
 import { useAccount } from "./useAccount";
 import { QueryFunctionContext, useQuery } from "react-query";
-import { QueryKeys } from "../queries/keys";
-import { AccountInterface } from "starknet";
 
 export const queryUserBalance = async ({
   queryKey,
-}: QueryFunctionContext<[string, AccountInterface | undefined]>): Promise<
-  UserBalance | undefined
+}: QueryFunctionContext<[string, string | undefined, string]>): Promise<
+  bigint | undefined
 > => {
-  const account = queryKey[1];
-  if (!account) {
-    return;
+  const userAddress = queryKey[1];
+  const tokenAddress = queryKey[2];
+
+  if (!userAddress) {
+    return undefined;
   }
-  return getUserBalance(account);
+
+  return balanceOf(userAddress, tokenAddress);
 };
 
-export const useUserBalance = (): UserBalance | undefined => {
+export const useUserBalance = (tokenAddress: string): bigint | undefined => {
   const account = useAccount();
-  const { data } = useQuery([QueryKeys.userBalance, account], queryUserBalance);
+
+  const { data } = useQuery(
+    [`user-balance-${tokenAddress}`, account?.address, tokenAddress],
+    queryUserBalance
+  );
 
   return data;
 };

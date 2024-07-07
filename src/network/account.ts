@@ -4,7 +4,7 @@ import {
   StarknetWindowObject,
 } from "get-starknet-core";
 
-import { openNetworkMismatchDialog, updateNetwork } from "../redux/actions";
+import { updateNetwork } from "../redux/actions";
 import { store } from "../redux/store";
 import { NetworkName } from "../types/network";
 import { SupportedWalletIds } from "../types/wallet";

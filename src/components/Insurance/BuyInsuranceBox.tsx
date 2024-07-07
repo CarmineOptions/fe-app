@@ -86,12 +86,12 @@ const BuyInsuranceButton = ({ option, size }: BuyButtonProps) => {
 };
 
 export const BuyInsuranceBox = () => {
-  const account = useAccount();
-  const balance = useUserBalance();
   const [currency, setCurrency] = useState<TokenKey>(TokenKey.ETH);
   const token = Token.byKey(currency);
+  const account = useAccount();
+  const balance = useUserBalance(token.address);
   const displayBalance = balance
-    ? shortInteger(balance[currency].toString(10), token.decimals).toFixed(4)
+    ? shortInteger(balance.toString(10), token.decimals).toFixed(4)
     : undefined;
   const valueInUsd = useCurrency(currency);
   const { isLoading, isError, data } = useQuery(
