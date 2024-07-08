@@ -3,6 +3,7 @@ import {
   AccountInterface,
   Contract,
   InvokeFunctionResponse,
+  Uint256,
   uint256,
 } from "starknet";
 import { AMM_METHODS, LEGACY_AMM } from "../../constants/amm";
@@ -16,8 +17,8 @@ import { afterTransaction } from "../../utils/blockchain";
 
 type LegacyPoolInfo = {
   pool_info: { lptoken_address: bigint };
-  size_of_users_tokens: uint256.Uint256;
-  value_of_user_stake: uint256.Uint256;
+  size_of_users_tokens: Uint256;
+  value_of_user_stake: Uint256;
 };
 
 type LegacyRes = {
