@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/CarmineOptions/fe-app/compare/v1.4.1...v1.5.0) (2024-07-08)
+
+
+### Features
+
+* use starknetjs v6 ([c9eb409](https://github.com/CarmineOptions/fe-app/commit/c9eb4099db017cb94170912528ff445b231df886))
+
 ## [1.4.1](https://github.com/CarmineOptions/fe-app/compare/v1.4.0...v1.4.1) (2024-07-06)
 
 
