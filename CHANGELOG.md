@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/CarmineOptions/fe-app/compare/v1.5.0...v1.5.1) (2024-07-09)
+
+
+### Bug Fixes
+
+* wallet connection ([55f1187](https://github.com/CarmineOptions/fe-app/commit/55f11871510e0b78a2b0906d839ad86b6448e9a4))
+
 # [1.5.0](https://github.com/CarmineOptions/fe-app/compare/v1.4.1...v1.5.0) (2024-07-08)
 
 
