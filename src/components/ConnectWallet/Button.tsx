@@ -10,6 +10,7 @@ import { onConnect } from "../../network/hooks";
 import ReactDOM from "react-dom";
 import { BraavosBanner } from "./BraavosBanner";
 import { StarknetWindowObject } from "get-starknet-core";
+import { debug } from "../../utils/debugger";
 
 type CustomWallet = {
   id: SupportedWalletIds;
@@ -142,15 +143,19 @@ export const openWalletConnectDialog = async () => {
     dappName: "Carmine Options AMM",
     // app currently has only dark theme
     modalTheme: "dark",
-  }).then((modalResult) => {
-    const wallet = modalResult.wallet as
-      | StarknetWindowObject
-      | undefined
-      | null;
-    if (wallet && wallet.isConnected) {
-      accountConnect(wallet);
-    }
-  });
+  })
+    .then((modalResult) => {
+      const wallet = modalResult.wallet as
+        | StarknetWindowObject
+        | undefined
+        | null;
+      if (wallet) {
+        accountConnect(wallet);
+      }
+    })
+    .catch((error: any) => {
+      debug("FAILED CONNECTING WALLET", error);
+    });
 
   // OKX Wallet currently supports only Mainnet
   if (isMainnet) {
