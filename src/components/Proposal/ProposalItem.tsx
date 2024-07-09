@@ -1,17 +1,18 @@
 import { AccountInterface } from "starknet";
-import { Vote } from "../Vote/Vote";
+import { VoteButtons } from "../Vote/Vote";
+import { ProposalWithOpinion } from "../../calls/liveProposals";
 
 type Props = {
-  proposal: number;
+  proposal: ProposalWithOpinion;
   balance: bigint;
   account?: AccountInterface;
 };
 
 export const ProposalItem = ({ proposal, balance, account }: Props) => (
   <div>
-    <h3>Proposal {proposal}</h3>
+    <h3>Proposal {proposal.propId}</h3>
     <div>
-      <Vote proposal={proposal} balance={balance} account={account} />
+      <VoteButtons proposal={proposal} balance={balance} account={account} />
     </div>
   </div>
 );

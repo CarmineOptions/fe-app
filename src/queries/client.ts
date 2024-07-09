@@ -18,5 +18,5 @@ export const invalidatePositions = () =>
   queryClient.invalidateQueries(QueryKeys.position);
 export const invalidateStake = () =>
   queryClient.invalidateQueries(QueryKeys.stake);
-export const invalidateKey = (queryKey: QueryKeys) =>
+export const invalidateKey = (queryKey: QueryKeys | string) =>
   queryClient.invalidateQueries(queryKey);
