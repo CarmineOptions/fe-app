@@ -21,7 +21,7 @@ export const useUserBalance = (tokenAddress: string): bigint | undefined => {
   const account = useAccount();
 
   const { data } = useQuery(
-    [`user-balance-${tokenAddress}`, account?.address, tokenAddress],
+    [`${account?.address}-${tokenAddress}`, account?.address, tokenAddress],
     queryUserBalance
   );
 

@@ -1,8 +1,9 @@
 import { ProposalItem } from "./ProposalItem";
 import { useAccount } from "../../hooks/useAccount";
-import { useState, useEffect } from "react";
-import { balanceOfCarmineToken } from "../../calls/balanceOf";
 import styles from "./Proposal.module.css";
+import { VE_CRM_ADDRESS } from "../../constants/amm";
+import { useUserBalance } from "../../hooks/useUserBalance";
+import { LoadingAnimation } from "../Loading/Loading";
 
 type Props = {
   activeData: number[];
@@ -10,15 +11,11 @@ type Props = {
 
 const ProposalTable = ({ activeData }: Props) => {
   const account = useAccount();
-  const [balance, setBalance] = useState(0n);
+  const balance = useUserBalance(VE_CRM_ADDRESS);
 
-  useEffect(() => {
-    // when account changes assume balance 0 until new is fetched
-    setBalance(0n);
-    if (account) {
-      balanceOfCarmineToken(account).then((res) => setBalance(res));
-    }
-  }, [account]);
+  if (balance === undefined) {
+    return <LoadingAnimation />;
+  }
 
   return (
     <div className={styles.listcontainer}>
