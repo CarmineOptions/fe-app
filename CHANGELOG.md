@@ -1,3 +1,10 @@
+## [1.5.2](https://github.com/CarmineOptions/fe-app/compare/v1.5.1...v1.5.2) (2024-07-09)
+
+
+### Bug Fixes
+
+* voting balance check ([2e91132](https://github.com/CarmineOptions/fe-app/commit/2e9113283b05ba07e2a00d178fb16e45eb3da1ac))
+
 ## [1.5.1](https://github.com/CarmineOptions/fe-app/compare/v1.5.0...v1.5.1) (2024-07-09)
 
 
