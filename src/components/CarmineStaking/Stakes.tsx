@@ -140,9 +140,11 @@ export const Stakes = ({ stakes, veBalance, account }: Props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {active.map((stake, i) => (
-                <Item stake={stake} key={i} />
-              ))}
+              {active
+                .sort((a, b) => b.start - a.start)
+                .map((stake, i) => (
+                  <Item stake={stake} key={i} />
+                ))}
             </TableBody>
           </Table>
         </TableContainer>
