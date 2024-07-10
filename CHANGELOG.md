@@ -1,3 +1,15 @@
+# [1.6.0](https://github.com/CarmineOptions/fe-app/compare/v1.5.2...v1.6.0) (2024-07-10)
+
+
+### Bug Fixes
+
+* show proposal even if no wallet ([cfd8111](https://github.com/CarmineOptions/fe-app/commit/cfd8111ab4ab99aeafaebdcd2fd835273a160f00))
+
+
+### Features
+
+* show user voted ([62b7755](https://github.com/CarmineOptions/fe-app/commit/62b7755e4bb6a2c5ea52e338e7dd33033e8781ed))
+
 ## [1.5.2](https://github.com/CarmineOptions/fe-app/compare/v1.5.1...v1.5.2) (2024-07-09)
 
 
