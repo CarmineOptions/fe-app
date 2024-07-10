@@ -1,3 +1,11 @@
+## [1.6.1](https://github.com/CarmineOptions/fe-app/compare/v1.6.0...v1.6.1) (2024-07-10)
+
+
+### Bug Fixes
+
+* order votes by prop id ([f694287](https://github.com/CarmineOptions/fe-app/commit/f694287216526efb25ca10038c1dec2f48338a24))
+* sort active crm stakes by start timestamp ([83135f6](https://github.com/CarmineOptions/fe-app/commit/83135f68a11d3ed3e827193031c35ff7ec7d1b72))
+
 # [1.6.0](https://github.com/CarmineOptions/fe-app/compare/v1.5.2...v1.6.0) (2024-07-10)
 
 
