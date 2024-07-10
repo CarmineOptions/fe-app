@@ -1,25 +1,19 @@
 import { ProposalItem } from "./ProposalItem";
-import { useAccount } from "../../hooks/useAccount";
 import styles from "./Proposal.module.css";
-import { VE_CRM_ADDRESS } from "../../constants/amm";
-import { useUserBalance } from "../../hooks/useUserBalance";
 import { LoadingAnimation } from "../Loading/Loading";
+import { ProposalWithOpinion } from "../../calls/liveProposals";
+import { AccountInterface } from "starknet";
 
 type Props = {
-  activeData: number[];
+  proposals: ProposalWithOpinion[];
+  balance?: bigint;
+  account?: AccountInterface;
 };
 
-const ProposalTable = ({ activeData }: Props) => {
-  const account = useAccount();
-  const balance = useUserBalance(VE_CRM_ADDRESS);
-
-  if (balance === undefined) {
-    return <LoadingAnimation />;
-  }
-
+const ProposalTable = ({ proposals, balance, account }: Props) => {
   return (
     <div className={styles.listcontainer}>
-      {activeData.map((item, i) => (
+      {proposals.map((item, i) => (
         <ProposalItem
           proposal={item}
           account={account}
