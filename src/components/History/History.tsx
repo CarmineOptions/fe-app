@@ -36,7 +36,7 @@ const TradeHistoryWithAddress = ({ address }: PropsAddress) => {
 
   const sortedTrades = tradeData.sort((a, b) => b.timestamp - a.timestamp);
 
-  const sortedVotes = votes.sort((a, b) => b.timestamp - a.timestamp);
+  const sortedVotes = votes.sort((a, b) => b.prop_id - a.prop_id);
 
   const trades = sortedTrades
     .filter((tx) => tx.option)
