@@ -11,10 +11,6 @@ type Props = {
 };
 
 const ProposalTable = ({ proposals, balance, account }: Props) => {
-  if (balance === undefined) {
-    return <LoadingAnimation />;
-  }
-
   return (
     <div className={styles.listcontainer}>
       {proposals.map((item, i) => (

@@ -4,7 +4,7 @@ import { ProposalWithOpinion } from "../../calls/liveProposals";
 
 type Props = {
   proposal: ProposalWithOpinion;
-  balance: bigint;
+  balance?: bigint;
   account?: AccountInterface;
 };
 

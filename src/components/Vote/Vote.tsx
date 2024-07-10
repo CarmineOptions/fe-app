@@ -65,7 +65,7 @@ const vote = async (
 type VoteButtonsProps = {
   account?: AccountInterface;
   proposal: ProposalWithOpinion;
-  balance: bigint;
+  balance?: bigint;
 };
 
 export const VoteButtons = ({
@@ -90,7 +90,7 @@ export const VoteButtons = ({
   if (!account) {
     return <p>Connect wallet to vote</p>;
   }
-  if (balance === 0n) {
+  if (!balance) {
     return <p>Only Carmine Token holders can vote</p>;
   }
   if (proposal.opinion === UserVote.NotVoted) {
@@ -116,8 +116,8 @@ export const VoteButtons = ({
 
   const message =
     proposal.opinion === UserVote.Yay
-      ? "Already voted Yes"
-      : "Already voted No";
+      ? "Already voted Yes ✅"
+      : "Already voted No ❌";
 
   return (
     <div className={styles.votebuttoncontainer}>
