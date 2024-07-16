@@ -1,0 +1,26 @@
+.datecontainer {
+  width: 170px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.slidebase {
+  position: relative;
+  width: 200px;
+  height: 20px;
+  outline: solid white 1px;
+  border-radius: 5px;
+}
+
+.slide {
+  background-color: var(--GOLD);
+  z-index: 1;
+  height: 20px;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.alloccontainer {
+  display: flex;
+  flex-flow: column;
+}

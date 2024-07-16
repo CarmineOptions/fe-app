@@ -16,21 +16,38 @@ export enum DefiSpringStatus {
 export type DefiSpringData = {
   amount: string;
   proof: string[];
-  allocation: bigint;
+  allocation: bigint[];
   claimed: bigint;
 };
 
 const defiSpringUrl =
   "https://defi-spring-distribution-h5cslfrcca-ew.a.run.app";
 
-export const fetchUserAllocation = async (address: string): Promise<bigint> => {
+export const fetchUserRoundAllocation = async (
+  address: string,
+  round: number
+): Promise<bigint> => {
   const res = await fetch(
-    `${defiSpringUrl}/get_allocation_amount?address=${address}`
+    `${defiSpringUrl}/get_allocation_amount?round=${round}&address=${address}`
   );
 
   const body = await res.json();
 
   return BigInt(body);
+};
+
+export const fetchUserAllocation = async (
+  address: string
+): Promise<bigint[]> => {
+  const currentRound = 6;
+  const promises = [];
+
+  for (let round = 1; round <= currentRound; round++) {
+    promises.push(fetchUserRoundAllocation(address, round));
+  }
+  const res = await Promise.all(promises);
+
+  return res;
 };
 
 export const fetchCalldata = async (
@@ -74,7 +91,7 @@ export const getDefiSpringData = async ({
 
       if (message.includes("Address not found in tree")) {
         return {
-          allocation: 0n,
+          allocation: [],
           claimed: 0n,
           amount: "0",
           proof: [],

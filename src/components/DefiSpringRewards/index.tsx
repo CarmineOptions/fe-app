@@ -23,6 +23,7 @@ import styles from "./defi.module.css";
 import { QueryKeys } from "../../queries/keys";
 import { useQuery } from "react-query";
 import { invalidateKey } from "../../queries/client";
+import { DefiSpringHistory } from "./History";
 
 export const RewardsWithAccount = ({
   account,
@@ -119,10 +120,12 @@ export const RewardsWithAccount = ({
 
   const { allocation, claimed } = data;
 
-  const claimedHumanReadable = shortInteger(claimed, 18);
-  const claimableHumanReadable = shortInteger(allocation - claimed, 18);
+  const lastAllocation = allocation.at(-1) || 0n;
 
-  const isAllClaimed = allocation === claimed;
+  const claimedHumanReadable = shortInteger(claimed, 18);
+  const claimableHumanReadable = shortInteger(lastAllocation - claimed, 18);
+
+  const isAllClaimed = lastAllocation === claimed;
 
   return (
     <div className={styles.outer}>
@@ -144,13 +147,14 @@ export const RewardsWithAccount = ({
               {claiming ? (
                 <LoadingAnimation />
               ) : (
-                `Claim ${shortInteger(allocation - claimed, 18).toFixed(
+                `Claim ${shortInteger(lastAllocation - claimed, 18).toFixed(
                   4
                 )} STRK`
               )}
             </button>
           </div>
         )}
+        <DefiSpringHistory allocation={allocation} claimed={claimed} />
       </div>
     </div>
   );
