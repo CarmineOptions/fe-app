@@ -123,14 +123,19 @@ export const BuyInsuranceBox = () => {
 
   const options = data.filter(
     // only Long Puts for the chosen currency
-    (o) => o.baseToken.id === currency && o.isPut && o.isLong && o.isFresh
+    (o) =>
+      o.baseToken.id === currency &&
+      o.quoteToken.id === TokenKey.USDC &&
+      o.isPut &&
+      o.isLong &&
+      o.isFresh
   );
 
   const handleCurrencyChange = (event: SelectChangeEvent) => {
     setCurrency(event.target.value as TokenKey);
   };
   const handleStrikeChange = (event: SelectChangeEvent) => {
-    setCurrentStrike(parseInt(event.target.value) as number);
+    setCurrentStrike(parseFloat(event.target.value) as number);
   };
   const handleExpiryChange = (event: SelectChangeEvent) => {
     setExpiry(parseInt(event.target.value) as number);
@@ -154,7 +159,7 @@ export const BuyInsuranceBox = () => {
     setExpiry(expiries[0]);
   }
 
-  // // show strikes for current expiry
+  // show strikes for current expiry
   const strikes = options
     .filter((o) => o.maturity === expiry)
     .map((o) => o.strike)
@@ -205,6 +210,7 @@ export const BuyInsuranceBox = () => {
                 onChange={handleCurrencyChange}
               >
                 <MenuItem value={TokenKey.ETH}>ETH</MenuItem>
+                <MenuItem value={TokenKey.STRK}>STRK</MenuItem>
                 {/* <MenuItem value={TokenKey.BTC}>BTC</MenuItem> */}
               </Select>
             </TableCell>
