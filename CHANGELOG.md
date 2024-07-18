@@ -1,3 +1,10 @@
+## [1.6.2](https://github.com/CarmineOptions/fe-app/compare/v1.6.1...v1.6.2) (2024-07-18)
+
+
+### Bug Fixes
+
+* insurance quote usdc ([a90db50](https://github.com/CarmineOptions/fe-app/commit/a90db508327422355b7d35de7da928fb83061d4d))
+
 ## [1.6.1](https://github.com/CarmineOptions/fe-app/compare/v1.6.0...v1.6.1) (2024-07-10)
 
 
