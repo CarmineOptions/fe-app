@@ -1,3 +1,10 @@
+## [1.6.3](https://github.com/CarmineOptions/fe-app/compare/v1.6.2...v1.6.3) (2024-07-30)
+
+
+### Bug Fixes
+
+* update to price guard ([d1cea07](https://github.com/CarmineOptions/fe-app/commit/d1cea0798d373a50b9045468887f33686fb75db2))
+
 ## [1.6.2](https://github.com/CarmineOptions/fe-app/compare/v1.6.1...v1.6.2) (2024-07-18)
 
 
