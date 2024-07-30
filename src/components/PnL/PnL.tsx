@@ -6,13 +6,14 @@ import {
   Legend,
   Line,
   LineChart,
+  ReferenceLine,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
 
-export const ProfitAndLossWithAddress = ({ address }: { address: string }) => {
+const ProfitAndLossWithAddress = ({ address }: { address: string }) => {
   const { isLoading, isError, data } = useQuery(
     [`trades-with-prices-${address}`, address],
     userPnLQuery
@@ -33,12 +34,13 @@ export const ProfitAndLossWithAddress = ({ address }: { address: string }) => {
   }));
 
   const formatDomain = ([min, max]: [number, number]): [number, number] => {
-    const minPadding = Math.max(Math.abs(min) * 0.1, 1);
-    const maxPadding = Math.max(Math.abs(max) * 0.1, 1);
+    const minPadding = Math.ceil(Math.max(Math.abs(min) * 0.2, 1));
+    const maxPadding = Math.ceil(Math.max(Math.abs(max) * 0.2, 1));
+    const padding = Math.max(minPadding, maxPadding);
 
     const finalDomain = [
-      Math.round(min) - minPadding,
-      Math.round(max) + maxPadding,
+      Math.min(Math.round(min) - padding, 0),
+      Math.round(max) + padding,
     ] as [number, number];
 
     return finalDomain;
@@ -74,6 +76,7 @@ export const ProfitAndLossWithAddress = ({ address }: { address: string }) => {
           stroke="#8884d8"
           activeDot={{ r: 8 }}
         />
+        <ReferenceLine y={0} stroke="white" />
       </LineChart>
     </ResponsiveContainer>
   );
