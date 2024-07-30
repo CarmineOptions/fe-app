@@ -32,6 +32,18 @@ export const ProfitAndLossWithAddress = ({ address }: { address: string }) => {
     date: new Date(item.ts * 1000).toLocaleDateString(),
   }));
 
+  const formatDomain = ([min, max]: [number, number]): [number, number] => {
+    const minPadding = Math.max(Math.abs(min) * 0.1, 1);
+    const maxPadding = Math.max(Math.abs(max) * 0.1, 1);
+
+    const finalDomain = [
+      Math.round(min) - minPadding,
+      Math.round(max) + maxPadding,
+    ] as [number, number];
+
+    return finalDomain;
+  };
+
   console.log(formattedData);
 
   return (
@@ -47,7 +59,7 @@ export const ProfitAndLossWithAddress = ({ address }: { address: string }) => {
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="date" />
-        <YAxis />
+        <YAxis domain={formatDomain} />
         <Tooltip
           contentStyle={{
             backgroundColor: "black",
@@ -57,7 +69,7 @@ export const ProfitAndLossWithAddress = ({ address }: { address: string }) => {
         />
         <Legend />
         <Line
-          type="monotone"
+          type="linear"
           dataKey="usd"
           stroke="#8884d8"
           activeDot={{ r: 8 }}
