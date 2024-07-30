@@ -16,7 +16,7 @@ import { Controller } from "./Controller";
 import APYInfoPage from "./pages/apyInfo";
 import TradeDashboardPage from "./pages/dashboard";
 import Governance from "./pages/governance";
-import Insurance from "./pages/insurance";
+import PriceGuard from "./pages/priceGuard";
 import NotFound from "./pages/notFound";
 import Portfolio from "./pages/portfolio";
 import Settings from "./pages/settings";
@@ -57,7 +57,7 @@ const App = () => {
                 ))}
                 <Route path="/" element={<TradePage />} />
                 <Route path="/trade" element={<TradePage />} />
-                <Route path="/insurance" element={<Insurance />} />
+                {/* <Route path="/priceGuard" element={<PriceGuard />} /> */}
                 <Route path="/portfolio/:target?" element={<Portfolio />} />
                 <Route path="/staking" element={<StakePage />} />
                 <Route

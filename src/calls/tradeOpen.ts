@@ -32,7 +32,7 @@ export const approveAndTradeOpen = async (
     failed: boolean;
     processing: boolean;
   }) => void,
-  isInsurance = false
+  isPriceGuard = false
 ): Promise<boolean> => {
   const premiaTokenCount = math64ToInt(premiaMath64, option.digits);
   const toApprove = getToApprove(option, size, BigInt(premiaTokenCount));
@@ -69,7 +69,7 @@ export const approveAndTradeOpen = async (
   const approve = option.underlying.approveCalldata(toApprove);
   const tradeOpen = option.tradeOpenCalldata(size, premiaMath64);
 
-  option.sendBeginCheckoutEvent(size, premiaNum, isInsurance);
+  option.sendBeginCheckoutEvent(size, premiaNum, isPriceGuard);
 
   const res = await account
     .execute([approve, tradeOpen], [LpAbi, AmmAbi])
@@ -78,9 +78,9 @@ export const approveAndTradeOpen = async (
       throw Error("Trade open rejected or failed");
     });
 
-  option.sendPurchaseEvent(size, premiaNum, isInsurance);
+  option.sendPurchaseEvent(size, premiaNum, isPriceGuard);
 
-  if (isInsurance && isMainnet) {
+  if (isPriceGuard && isMainnet) {
     const options = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -90,12 +90,12 @@ export const approveAndTradeOpen = async (
       }),
     };
 
-    fetch(apiUrl("insurance-event"), options)
+    fetch(apiUrl("priceGuard-event"), options)
       .then((response) => {
-        debug("Insurance event sent", response);
+        debug("PriceGuard event sent", response);
       })
       .catch((err) => {
-        debug("Insurance event failed", err);
+        debug("PriceGuard event failed", err);
         console.error(err);
       });
   }

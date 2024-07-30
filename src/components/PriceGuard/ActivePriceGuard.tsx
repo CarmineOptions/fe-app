@@ -6,24 +6,18 @@ import { useAccount } from "../../hooks/useAccount";
 import { AccountInterface } from "starknet";
 import { fetchPositions } from "../PositionTable/fetchPositions";
 import { OptionWithPosition } from "../../classes/Option";
-import { tradeSettle } from "../../calls/tradeSettle";
+import { openCloseOptionDialog, setCloseOption } from "../../redux/actions";
 import { useTxPending } from "../../hooks/useRecentTxs";
 import { TransactionAction } from "../../redux/reducers/transactions";
 import styles from "../../style/button.module.css";
-import { debug } from "../../utils/debugger";
 
-const ClaimItem = ({
-  option,
-  account,
-}: {
-  option: OptionWithPosition;
-  account: AccountInterface;
-}) => {
-  const txPending = useTxPending(option.optionId, TransactionAction.Settle);
+const PriceGuardDisplay = ({ option }: { option: OptionWithPosition }) => {
+  const txPending = useTxPending(option.optionId, TransactionAction.TradeClose);
   const symbol = option.baseToken.symbol;
-
-  const handleButtonClick = () => tradeSettle(account, option);
-
+  const handleButtonClick = () => {
+    setCloseOption(option);
+    openCloseOptionDialog();
+  };
   return (
     <Box sx={{ display: "flex", flexFlow: "column" }}>
       <Typography variant="h6">
@@ -38,14 +32,15 @@ const ClaimItem = ({
         }}
       >
         <Typography>
-          You are eligible to claim ${option.value.toFixed(4)}
+          PriceGuard covers {option.size} {symbol} at price ${option.strike} and
+          expires {option.dateRich}
         </Typography>
         <button
           className={styles.green}
-          onClick={handleButtonClick}
           disabled={txPending}
+          onClick={handleButtonClick}
         >
-          {txPending ? "Processing..." : "Claim"}
+          {txPending ? "Processing..." : "Close"}
         </button>
       </Box>
     </Box>
@@ -71,17 +66,13 @@ const WithAccount = ({ account }: { account: AccountInterface }) => {
     );
   }
 
-  debug("INSURANCE OPTIONS", data);
+  const priceGuard = data.filter((o) => o.isPut && o.isLong && o.isFresh);
 
-  const insurance = data.filter((o) => o.isPut && o.isLong && o.isInTheMoney);
-
-  if (insurance.length === 0) {
+  if (priceGuard.length === 0) {
     // no options for the given currency
     return (
       <Box sx={{ display: "flex", flexFlow: "column", gap: 2 }}>
-        <Typography>
-          You currently do not have any claimable insurance
-        </Typography>
+        <Typography>You currently do not have any active priceGuard</Typography>
       </Box>
     );
   }
@@ -95,21 +86,23 @@ const WithAccount = ({ account }: { account: AccountInterface }) => {
       }}
     >
       <Typography>
-        You have {insurance.length} claimable insurance event
-        {insurance.length > 1 ? "s" : ""}:
+        Your Carmine portfolio consists of {priceGuard.length} Long Put option
+        {priceGuard.length > 1 ? "s" : ""} which insures these crypto assets
       </Typography>
-      {insurance.map((o, i) => (
-        <ClaimItem key={i} option={o} account={account} />
+      {priceGuard.map((o, i) => (
+        <PriceGuardDisplay key={i} option={o} />
       ))}
     </Box>
   );
 };
 
-export const ClaimInsurance = () => {
+export const ActivePriceGuard = () => {
   const account = useAccount();
 
   if (!account) {
-    return <Typography>Connect wallet to see claimable insurance</Typography>;
+    return (
+      <Typography>Connect wallet to see your active priceGuard</Typography>
+    );
   }
 
   return <WithAccount account={account} />;

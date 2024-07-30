@@ -6,7 +6,7 @@ import {
   GovernanceSubpage,
   PortfolioParamType,
   ReferralSent,
-  setBuyInsuranceModalState,
+  setBuyPriceGuardModalState,
   setCloseOptionState,
   setGovernanceSubpageState,
   setParamState,
@@ -20,7 +20,7 @@ import { store } from "./store";
 import { Settings } from "../types/settings";
 import { NetworkState } from "../types/network";
 import { OptionWithPosition } from "../classes/Option";
-import { BuyInsuranceModalData } from "../components/Insurance/BuyInsuranceModal";
+import { BuyPriceGuardModalData } from "../components/PriceGuard/BuyPriceGuardModal";
 import { TransferData } from "../components/Transfer/transfer";
 import {
   addTxReducer,
@@ -64,8 +64,8 @@ export const openSlippageDialog = () =>
 export const openCloseOptionDialog = () =>
   openDialogWithContent(DialogContentElem.CloseOption);
 
-export const openBuyInsuranceDialog = () =>
-  openDialogWithContent(DialogContentElem.BuyInsurance);
+export const openBuyPriceGuardDialog = () =>
+  openDialogWithContent(DialogContentElem.BuyPriceGuard);
 
 export const openAccountDialog = () =>
   openDialogWithContent(DialogContentElem.Account);
@@ -84,8 +84,8 @@ export const setSlippage = (n: number) => store.dispatch(setSlippageState(n));
 export const setCloseOption = (option: OptionWithPosition) =>
   store.dispatch(setCloseOptionState(option));
 
-export const setBuyInsuranceModal = (data: BuyInsuranceModalData) =>
-  store.dispatch(setBuyInsuranceModalState(data));
+export const setBuyPriceGuardModal = (data: BuyPriceGuardModalData) =>
+  store.dispatch(setBuyPriceGuardModalState(data));
 export const setPortfolioParam = (option: PortfolioParamType) =>
   store.dispatch(setParamState(option));
 

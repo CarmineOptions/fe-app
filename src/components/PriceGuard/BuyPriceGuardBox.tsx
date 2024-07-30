@@ -21,14 +21,14 @@ import { useQuery } from "react-query";
 import { QueryKeys } from "../../queries/keys";
 import { fetchOptions } from "../TradeTable/fetchOptions";
 import {
-  timestampToInsuranceDate,
+  timestampToPriceGuardDate,
   uniquePrimitiveValues,
 } from "../../utils/utils";
 import { debug } from "../../utils/debugger";
 import { handleNumericChangeFactory } from "../../utils/inputHandling";
 import {
-  openBuyInsuranceDialog,
-  setBuyInsuranceModal,
+  openBuyPriceGuardDialog,
+  setBuyPriceGuardModal,
   showToast,
 } from "../../redux/actions";
 import { ToastType } from "../../redux/reducers/ui";
@@ -57,7 +57,7 @@ const PlusIcon = () => (
   </span>
 );
 
-const BuyInsuranceButton = ({ option, size }: BuyButtonProps) => {
+const BuyPriceGuardButton = ({ option, size }: BuyButtonProps) => {
   const txPending = useTxPending(option.optionId, TransactionAction.TradeOpen);
   const handleButtonClick = () => {
     if (size === 0) {
@@ -65,13 +65,13 @@ const BuyInsuranceButton = ({ option, size }: BuyButtonProps) => {
       return;
     }
     if (!option) {
-      showToast("Select an insurance first", ToastType.Warn);
+      showToast("Select an priceGuard first", ToastType.Warn);
       return;
     }
     debug("Buying this option", option, "with size", size);
-    setBuyInsuranceModal({ option: option, size });
+    setBuyPriceGuardModal({ option: option, size });
     option.sendViewEvent(true);
-    openBuyInsuranceDialog();
+    openBuyPriceGuardDialog();
   };
 
   return (
@@ -85,7 +85,7 @@ const BuyInsuranceButton = ({ option, size }: BuyButtonProps) => {
   );
 };
 
-export const BuyInsuranceBox = () => {
+export const BuyPriceGuardBox = () => {
   const [currency, setCurrency] = useState<TokenKey>(TokenKey.ETH);
   const token = Token.byKey(currency);
   const account = useAccount();
@@ -233,7 +233,7 @@ export const BuyInsuranceBox = () => {
               >
                 {expiries.map((e, i) => (
                   <MenuItem key={i} value={e}>
-                    {timestampToInsuranceDate(e * 1000)}
+                    {timestampToPriceGuardDate(e * 1000)}
                   </MenuItem>
                 ))}
               </Select>
@@ -268,7 +268,7 @@ export const BuyInsuranceBox = () => {
             </TableCell>
             <TableCell>
               {options.length > 0 && account && (
-                <BuyInsuranceButton option={pickedOption} size={size} />
+                <BuyPriceGuardButton option={pickedOption} size={size} />
               )}
             </TableCell>
           </TableRow>
@@ -277,11 +277,11 @@ export const BuyInsuranceBox = () => {
 
       {options.length === 0 && (
         <Typography>
-          We currently do not have any available insurance, please try again
+          We currently do not have any available priceGuard, please try again
           later
         </Typography>
       )}
-      {!account && <Typography>Connect wallet to buy insurance</Typography>}
+      {!account && <Typography>Connect wallet to buy priceGuard</Typography>}
     </Box>
   );
 };
