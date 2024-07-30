@@ -184,8 +184,8 @@ export class Option extends Pool {
     return this._tradeOpenCloseCalldata(size, premia, true);
   }
 
-  sendViewEvent(isInsurance = false) {
-    const category = isInsurance ? "insurance" : "option";
+  sendViewEvent(isPriceGuard = false) {
+    const category = isPriceGuard ? "priceGuard" : "option";
     const params = {
       event_category: category,
       event_label: "option dialog opened",
@@ -198,8 +198,8 @@ export class Option extends Pool {
     sendGtagEvent("view_item", params);
   }
 
-  sendBeginCheckoutEvent(size: number, premia: number, isInsurance = false) {
-    const category = isInsurance ? "insurance" : "option";
+  sendBeginCheckoutEvent(size: number, premia: number, isPriceGuard = false) {
+    const category = isPriceGuard ? "priceGuard" : "option";
     const params = {
       event_category: category,
       event_label: "buy button clicked",
@@ -214,8 +214,8 @@ export class Option extends Pool {
     sendGtagEvent("begin_checkout", params);
   }
 
-  sendPurchaseEvent(size: number, premia: number, isInsurance = false) {
-    const category = isInsurance ? "insurance" : "option";
+  sendPurchaseEvent(size: number, premia: number, isPriceGuard = false) {
+    const category = isPriceGuard ? "priceGuard" : "option";
     const params = {
       event_category: category,
       event_label: "confirmed in wallet",

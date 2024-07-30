@@ -17,7 +17,7 @@ import { Close } from "@mui/icons-material";
 import { ClosePosition } from "../ClosePosition/ClosePosition";
 import { WalletInfo } from "../WalletInfo/WalletInfo";
 import { ReactNode } from "react";
-import { BuyInsuranceModal } from "../Insurance/BuyInsuranceModal";
+import { BuyPriceGuardModal } from "../PriceGuard/BuyPriceGuardModal";
 import { TransferDialog } from "../Transfer";
 import { BraavosDialog } from "./BraavosDialog";
 
@@ -171,9 +171,9 @@ export const MultiDialog = () => {
           <ClosePosition />
         </Border>
       )}
-      {dialogContent === DialogContentElem.BuyInsurance && (
+      {dialogContent === DialogContentElem.BuyPriceGuard && (
         <Border>
-          <BuyInsuranceModal />
+          <BuyPriceGuardModal />
         </Border>
       )}
       {dialogContent === DialogContentElem.Account && (

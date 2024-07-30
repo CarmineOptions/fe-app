@@ -6,7 +6,7 @@ import { getPremiaWithSlippage } from "../../utils/computations";
 import { useAccount } from "../../hooks/useAccount";
 import { store } from "../../redux/store";
 import { Option } from "../../classes/Option";
-import { useBuyInsuranceData } from "../../hooks/useBuyInsuranceData";
+import { useBuyPriceGuardData } from "../../hooks/useBuyPriceGuardData";
 import { LoadingAnimation } from "../Loading/Loading";
 import { useState } from "react";
 import { TradeState } from "../TradeTable/TradeCard";
@@ -14,7 +14,7 @@ import { approveAndTradeOpen } from "../../calls/tradeOpen";
 import { useUserBalance } from "../../hooks/useUserBalance";
 import buttonStyles from "../../style/button.module.css";
 
-export type BuyInsuranceModalData = {
+export type BuyPriceGuardModalData = {
   option: Option;
   size: number;
 };
@@ -95,7 +95,7 @@ const WithOption = ({ option, size, updateTradeState }: Props) => {
             justifyContent: "space-between",
           }}
         >
-          <Typography sx={{ fontSize: "1.2rem" }}>Insurance price</Typography>
+          <Typography sx={{ fontSize: "1.2rem" }}>PriceGuard price</Typography>
           <Tooltip title={`$${premiaNumber}`} placement="top">
             <Typography sx={{ fontSize: "1.2rem" }}>
               ${premiaNumber.toFixed(2)}
@@ -124,14 +124,14 @@ const WithOption = ({ option, size, updateTradeState }: Props) => {
         disabled={!account}
         onClick={handleClick}
       >
-        Buy Insurance
+        Buy PriceGuard
       </button>
     </Box>
   );
 };
 
-export const BuyInsuranceModal = () => {
-  const data = useBuyInsuranceData();
+export const BuyPriceGuardModal = () => {
+  const data = useBuyPriceGuardData();
   const [tradeState, updateTradeState] = useState<TradeState>({
     failed: false,
     processing: false,
@@ -142,7 +142,7 @@ export const BuyInsuranceModal = () => {
   if (!data) {
     return (
       <Box sx={containerSx}>
-        <CustomDialogTitle title="Buy Insurance" />
+        <CustomDialogTitle title="Buy PriceGuard" />
         There was a problem, please try again
       </Box>
     );
@@ -151,7 +151,7 @@ export const BuyInsuranceModal = () => {
   if (tradeState.failed) {
     return (
       <Box sx={containerSx}>
-        <CustomDialogTitle title="Buy Insurance" />
+        <CustomDialogTitle title="Buy PriceGuard" />
         <Typography>Transaction failed, please try again</Typography>
       </Box>
     );
@@ -160,7 +160,7 @@ export const BuyInsuranceModal = () => {
   if (tradeState.processing) {
     return (
       <Box sx={containerSx}>
-        <CustomDialogTitle title="Buy Insurance" />
+        <CustomDialogTitle title="Buy PriceGuard" />
         <Typography>
           Transaction is being processed, you can close this modal.
         </Typography>
@@ -174,12 +174,12 @@ export const BuyInsuranceModal = () => {
 
   const { option, size } = data;
 
-  const title = `Buy Insurance for ${size} ${option.baseToken.symbol}`;
+  const title = `Buy PriceGuard for ${size} ${option.baseToken.symbol}`;
 
   return (
     <Box sx={containerSx}>
       <CustomDialogTitle title={title} />
-      <Typography>Insurance will expire on {option.dateRich}</Typography>
+      <Typography>PriceGuard will expire on {option.dateRich}</Typography>
       <WithOption
         option={option}
         size={size}

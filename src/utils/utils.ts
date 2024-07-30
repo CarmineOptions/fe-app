@@ -54,7 +54,7 @@ export const timestampToShortTimeDate = (ts: number): string =>
     day: "numeric",
   }).format(ts);
 
-export const timestampToInsuranceDate = (ts: number): string =>
+export const timestampToPriceGuardDate = (ts: number): string =>
   new Intl.DateTimeFormat("en-US", {
     weekday: "short",
     month: "short",

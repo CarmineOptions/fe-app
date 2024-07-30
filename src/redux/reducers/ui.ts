@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import { OptionWithPosition } from "../../classes/Option";
-import { BuyInsuranceModalData } from "../../components/Insurance/BuyInsuranceModal";
+import { BuyPriceGuardModalData } from "../../components/PriceGuard/BuyPriceGuardModal";
 import { TransferData } from "../../components/Transfer/transfer";
 
 export enum DialogContentElem {
@@ -10,7 +10,7 @@ export enum DialogContentElem {
   NetworkMismatch = "NetworkMismatch",
   Slippage = "Slippage",
   CloseOption = "CloseOption",
-  BuyInsurance = "BuyInsurance",
+  BuyPriceGuard = "BuyPriceGuard",
   MetamaskMissing = "MetamaskMissing",
   NotEnoughUnlocked = "NotEnoughUnlocked",
   TransferCapital = "TransferCapital",
@@ -52,7 +52,7 @@ export interface UiState {
   dialogContent: DialogContentElem;
   toastState: ToastState;
   activeCloseOption?: OptionWithPosition;
-  buyInsuranceModalData?: BuyInsuranceModalData;
+  buyPriceGuardModalData?: BuyPriceGuardModalData;
   transferData?: TransferData;
   transferDialogShown: boolean;
   portfolioParam?: PortfolioParamType;
@@ -84,11 +84,11 @@ export const ui = createSlice({
       state.activeCloseOption = action.payload;
       return state;
     },
-    setBuyInsuranceModalState: (
+    setBuyPriceGuardModalState: (
       state,
-      action: { payload: BuyInsuranceModalData }
+      action: { payload: BuyPriceGuardModalData }
     ) => {
-      state.buyInsuranceModalData = action.payload;
+      state.buyPriceGuardModalData = action.payload;
       return state;
     },
     setToastState: (state, action: { payload: Partial<ToastState> }) => {
@@ -125,7 +125,7 @@ export const ui = createSlice({
 
 export const {
   toggleDialog,
-  setBuyInsuranceModalState,
+  setBuyPriceGuardModalState,
   setCloseOptionState,
   setToastState,
   setTransferDataModalState,
