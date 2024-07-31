@@ -1,3 +1,10 @@
+## [1.6.4](https://github.com/CarmineOptions/fe-app/compare/v1.6.3...v1.6.4) (2024-07-31)
+
+
+### Bug Fixes
+
+* rename priceGuard css file ([670fc9b](https://github.com/CarmineOptions/fe-app/commit/670fc9b0d6cc35f463a7824b31e4182c8144f6f5))
+
 ## [1.6.3](https://github.com/CarmineOptions/fe-app/compare/v1.6.2...v1.6.3) (2024-07-30)
 
 
