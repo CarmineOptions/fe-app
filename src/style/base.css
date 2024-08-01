@@ -2,13 +2,18 @@
 :root {
   --CONTENT-WIDTH: 1440px;
   --CONTENT-PADDING: 3em;
+  --WHITE: #fff;
+  --BLACK: #000;
   --GOLD: #fab000;
+  --GREEN: #37CB4F;
+  --RED: #CB3737;
   --LIGHT-GREY: #888;
+  --DARK-GREY: #414142;
 }
 
 * {
   color: white;
-  font-family: "Neue Haas Grotesk", sans-serif;
+  font-family: IBM Plex Sans Condensed;
 }
 
 ul {
@@ -30,28 +35,57 @@ h4 {
 }
 
 button {
-  align-items: center;
-  background-color: transparent;
-  border: 2px solid white;
-  border-radius: 2px;
-  box-sizing: border-box;
-  color: white;
-  cursor: pointer;
-  display: inline-flex;
-  font-size: 18px;
+  margin: 0;
+  padding: 0;
+  font-size: 15px;
   font-weight: 500;
-  height: 50px;
-  justify-content: center;
-  line-height: 24px;
-  min-width: 140px;
-  outline: 0;
-  padding: 0 17px;
-  text-align: center;
-  text-decoration: none;
-  transition: all .3s;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
+  line-height: 19.5px;
+  min-width: 72px;
+  min-height: 24px;
+  padding: 2px 4px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  --bg-color: var(--LIGHT-GREY);
+  --text-color: var(--BLACK);
+  border: 1px solid var(--bg-color);
+  color: var(--bg-color);
+  background: none;
+}
+
+.primary {
+  --bg-color: var(--GOLD);
+  --text-color: var(--BLACK);
+}
+
+.secondary {
+  --bg-color: var(--WHITE);
+  --text-color: var(--BLACK);
+}
+
+.green {
+  --bg-color: var(--GREEN);
+  --text-color: var(--WHITE);
+}
+
+.red {
+  --bg-color: var(--RED);
+  --text-color: var(--WHITE);
+}
+
+.divider {
+  height: 1px;
+  border-top: 1px solid var(--DARK-GREY);
+}
+
+button.active {
+  color: var(--text-color);
+  background-color: var(--bg-color);
+}
+
+main {
+  width: 100%;
+  padding: 80px 200px;
 }
 
 input[type='number']::-webkit-inner-spin-button,

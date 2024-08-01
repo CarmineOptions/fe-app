@@ -1,22 +1,11 @@
 import { Helmet } from "react-helmet";
-import { useState } from "react";
-
 import { AlternativeTradingView } from "../components/CryptoGraph/AlternativeTradingView";
 import { Layout } from "../components/Layout";
-import TradeTable from "../components/TradeTable";
 
-import buttonStyles from "../style/button.module.css";
 import style from "./trade.module.css";
-import { AvnuWidget } from "../components/AvnuWidget";
-import { CrmBanner } from "../components/Banner";
-
-enum Variant {
-  Options,
-  Swap,
-}
+import { TradeTable } from "../components/TradeTable";
 
 const TradePage = () => {
-  const [variant, setVariant] = useState(Variant.Options);
   return (
     <Layout>
       <Helmet>
@@ -26,28 +15,12 @@ const TradePage = () => {
           content="Buy and sell crypto options with Carmine Options AMM"
         />
       </Helmet>
-      <CrmBanner />
-      <div>
-        <button
-          onClick={() => setVariant(Variant.Options)}
-          className={variant === Variant.Options ? buttonStyles.green : ""}
-        >
-          Options
-        </button>
-        <button
-          onClick={() => setVariant(Variant.Swap)}
-          className={variant === Variant.Swap ? buttonStyles.green : ""}
-        >
-          Swap
-        </button>
-      </div>
+      <TradeTable />
       <div className={style.graphwidgetwrapper}>
         <div className={style.graphcontainer}>
           <AlternativeTradingView />
         </div>
-        {variant === Variant.Swap && <AvnuWidget />}
       </div>
-      {variant === Variant.Options && <TradeTable />}
     </Layout>
   );
 };

@@ -1,0 +1,32 @@
+.container {
+  border: 1px solid var(--LIGHT-GREY);
+  border-top: none;
+}
+
+.sidebar {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-around;
+  width: 200px;
+  height: 825px;
+  padding: 20px;
+  font-family: IBM Plex Sans Condensed;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 19.5px;
+  text-align: left;
+}
+
+.sidebar a {
+  text-decoration: none;
+}
+
+.topborder {
+  border-top: 1px solid var(--LIGHT-GREY);
+  padding-top: 10px;
+}
+
+.sidebar ul li {
+  padding: 4px;
+  margin-bottom: 8px;
+}

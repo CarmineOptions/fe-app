@@ -48,7 +48,6 @@ const App = () => {
         {acceptedTermsAndConditions ? (
           <>
             <Router>
-              <Slip />
               <Routes>
                 {oldPathRedirects.map(([oldPath, newPath], i) => (
                   <Route

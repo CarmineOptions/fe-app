@@ -1,37 +1,21 @@
-.container button {
+.container {
+  display: flex;
+  flex-flow: column;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.buttons {
+  display: flex;
   align-items: center;
-  background-color: transparent;
-  border: 2px solid white;
-  box-sizing: border-box;
-  color: white;
-  cursor: pointer;
-  display: inline-flex;
-  font-size: 18px;
-  font-weight: 500;
-  height: 50px;
-  justify-content: center;
-  line-height: 24px;
-  min-width: 140px;
-  outline: 0;
-  padding: 0 17px;
-  text-align: center;
-  text-decoration: none;
-  transition: all .3s;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
+  gap: 5px;
 }
 
-.container button:nth-child(odd) {
-  border-radius: 5px 0 0 5px;
-}
-
-.container button:nth-child(even) {
-  border-radius: 0 5px 5px 0;
-  margin-right: 15px;
-}
-
-.container>button.active {
-  border-color: #1AFF00;
-  color: #1AFF00;
+.maturity {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 14.4px;
+  letter-spacing: 0.04em;
+  text-align: left;
+  color: var(--DARK-GREY);
 }
