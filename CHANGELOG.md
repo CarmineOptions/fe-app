@@ -1,3 +1,10 @@
+## [1.6.5](https://github.com/CarmineOptions/fe-app/compare/v1.6.4...v1.6.5) (2024-08-01)
+
+
+### Bug Fixes
+
+* implement unstaking ([cb9ce02](https://github.com/CarmineOptions/fe-app/commit/cb9ce0236c3706bc4e0759b67123b46e33b450d1))
+
 ## [1.6.4](https://github.com/CarmineOptions/fe-app/compare/v1.6.3...v1.6.4) (2024-07-31)
 
 
