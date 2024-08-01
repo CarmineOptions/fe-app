@@ -1,5 +1,5 @@
 import { CARMINE_STAKING_MONTH, CARMINE_STAKING_YEAR } from "../constants/amm";
-import { CarmineStakeResult } from "../types/governance";
+import { CarmineStakeResultWithId } from "../types/governance";
 import { shortInteger } from "../utils/computations";
 
 const formatDate = (ts: number) =>
@@ -19,6 +19,7 @@ export class CarmineStake {
   public length;
   public withdrawn;
   public end;
+  public id;
 
   constructor({
     amount_staked,
@@ -26,7 +27,8 @@ export class CarmineStake {
     start_date,
     length,
     withdrawn,
-  }: CarmineStakeResult) {
+    id,
+  }: CarmineStakeResultWithId) {
     const numStart = Number(start_date);
     const numLength = Number(length);
     this.amountStaked = amount_staked;
@@ -35,6 +37,7 @@ export class CarmineStake {
     this.length = numLength;
     this.withdrawn = withdrawn;
     this.end = numStart + numLength;
+    this.id = id;
   }
 
   get isActive(): boolean {

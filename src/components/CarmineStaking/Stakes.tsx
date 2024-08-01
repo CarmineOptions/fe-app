@@ -15,6 +15,7 @@ import { StakingModal } from "./StakingModal";
 
 import tableStyles from "../../style/table.module.css";
 import buttonStyles from "../../style/button.module.css";
+import { UnstakeModal } from "./UnstakeModal";
 
 const Item = ({ stake }: { stake: CarmineStake }) => {
   return (
@@ -62,7 +63,14 @@ const InitialVeCarmItem = ({
   );
 };
 
-const ExpiredItem = ({ stake }: { stake: CarmineStake }) => {
+const ExpiredItem = ({
+  stake,
+  account,
+}: {
+  stake: CarmineStake;
+  account: AccountInterface;
+}) => {
+  const [open, setOpen] = useState(false);
   return (
     <TableRow>
       <TableCell>{stake.startDate}</TableCell>
@@ -71,7 +79,18 @@ const ExpiredItem = ({ stake }: { stake: CarmineStake }) => {
       <TableCell>{stake.amountStakedHumanReadable}</TableCell>
       <TableCell>0</TableCell>
       <TableCell>
-        <button className={buttonStyles.secondary}>Restake & Unstake</button>
+        <button
+          onClick={() => setOpen(true)}
+          className={buttonStyles.secondary}
+        >
+          Restake & Unstake
+        </button>
+        <UnstakeModal
+          account={account}
+          stake={stake}
+          open={open}
+          setOpen={setOpen}
+        />
       </TableCell>
     </TableRow>
   );
@@ -117,7 +136,7 @@ export const Stakes = ({ stakes, veBalance, account }: Props) => {
                 <InitialVeCarmItem account={account} amount={initialVeCarm} />
               )}
               {expired.map((stake, i) => (
-                <ExpiredItem stake={stake} key={i} />
+                <ExpiredItem stake={stake} account={account} key={i} />
               ))}
             </TableBody>
           </Table>

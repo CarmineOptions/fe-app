@@ -29,19 +29,30 @@ export const getStakes = async (address: string): Promise<CarmineStake[]> => {
   let lastId = 0;
 
   while (true) {
-    const promises = [];
+    const promises: { id: number; promise: Promise<CarmineStakeResult> }[] = [];
     for (let i = lastId; i < lastId + increment; i++) {
-      promises.push(governanceContract.get_stake(address, i));
+      promises.push({
+        id: i,
+        promise: governanceContract.get_stake(
+          address,
+          i
+        ) as Promise<CarmineStakeResult>,
+      });
     }
-    const values = (await Promise.all(promises)) as CarmineStakeResult[];
-    stakes.push(...values.filter((v) => !isEmptyStake(v)));
-    if (values.find((v) => isEmptyStake(v))) {
+    const results = await Promise.all(promises.map((p) => p.promise));
+    const values = results.map((result, index) => ({
+      id: promises[index].id,
+      result,
+    }));
+
+    stakes.push(...values.filter((v) => !isEmptyStake(v.result)));
+    if (values.find((v) => isEmptyStake(v.result))) {
       break;
     }
     lastId += increment;
   }
 
-  return stakes.map((s) => new CarmineStake(s));
+  return stakes.map((s) => new CarmineStake({ ...s.result, id: s.id }));
 };
 
 export const stakeCarmineToken = async (
@@ -144,6 +155,45 @@ export const unstakeAirdrop = async (
     calldata: [],
   };
   const res = await account.execute(call, [GovernanceABI]).catch(() => {
+    showToast("Failed to unstake", ToastType.Error);
+    return undefined;
+  });
+
+  if (!res) {
+    setTxState(TransactionState.Fail);
+    return;
+  }
+
+  const { transaction_hash: hash } = res;
+
+  addTx(hash, `unstake-${hash}`, TransactionAction.ClaimAirdrop);
+  afterTransaction(
+    hash,
+    () => {
+      markTxAsDone(hash);
+      showToast("Successfully unstaked CRM", ToastType.Success);
+      setTxState(TransactionState.Success);
+    },
+    () => {
+      markTxAsFailed(hash);
+      showToast("Failed to unstake CRM", ToastType.Error);
+      setTxState(TransactionState.Fail);
+    }
+  );
+};
+
+export const unstake = async (
+  account: AccountInterface,
+  stake: CarmineStake,
+  setTxState: TxTracking
+) => {
+  setTxState(TransactionState.Processing);
+  const call = {
+    contractAddress: GOVERNANCE_ADDRESS,
+    entrypoint: "unstake",
+    calldata: [stake.id],
+  };
+  const res = await account.execute(call).catch(() => {
     showToast("Failed to unstake", ToastType.Error);
     return undefined;
   });
