@@ -1,0 +1,103 @@
+.leaderboard {
+  margin: 0 auto;
+  border-collapse: separate;
+  width: 100%;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.leaderboard thead th {
+  text-align: left;
+  color: #969696;
+  text-transform: uppercase;
+}
+
+.leaderboard thead tr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.leaderboard tbody tr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 2px;
+}
+
+.wallet {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.user {
+  border: solid 1px var(--LIGHT-GREY);
+}
+
+.first {
+  background: #FFC640;
+}
+
+.first td {
+  color: black;
+}
+
+.first td span {
+  color: black;
+}
+
+.first td div {
+  color: black;
+}
+
+.second {
+  background: #E1E1E1;
+  color: black;
+}
+
+.second td {
+  color: black;
+}
+
+.second td span {
+  color: black;
+}
+
+.second td div {
+  color: black;
+}
+
+
+.third {
+  background: #381E0F;
+}
+
+.leaderboard thead th {
+  width: 150px;
+}
+
+.leaderboard thead th:nth-child(1) {
+  width: 50px;
+}
+
+.leaderboard thead th:nth-child(2) {
+  width: 250px;
+}
+
+.leaderboard td {
+  width: 150px;
+}
+
+.leaderboard td:nth-child(1) {
+  width: 50px;
+}
+
+.leaderboard td:nth-child(2) {
+  width: 250px;
+}

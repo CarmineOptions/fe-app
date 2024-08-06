@@ -16,7 +16,6 @@ import { Controller } from "./Controller";
 import APYInfoPage from "./pages/apyInfo";
 import TradeDashboardPage from "./pages/dashboard";
 import Governance from "./pages/governance";
-import PriceGuard from "./pages/priceGuard";
 import NotFound from "./pages/notFound";
 import Portfolio from "./pages/portfolio";
 import Settings from "./pages/settings";
@@ -30,6 +29,7 @@ import { isCookieSet } from "./utils/cookies";
 import "./style/base.css";
 import LeaderboardPage from "./pages/leaderboard";
 import StarknetRewards from "./pages/starknetRewards";
+import BattlechartsPage from "./pages/battlecharts";
 
 const App = () => {
   const [check, rerender] = useState(false);
@@ -70,6 +70,7 @@ const App = () => {
                 <Route path="/governance/:target?" element={<Governance />} />
                 <Route path="/leaderboard" element={<LeaderboardPage />} />
                 <Route path="/rewards" element={<StarknetRewards />} />
+                <Route path="/battlecharts" element={<BattlechartsPage />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Router>

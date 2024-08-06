@@ -223,9 +223,73 @@ const calculateNotionalVolume = (
   return result;
 };
 
-export const notionalVolumeQuery = async ({
-  queryKey,
-}: QueryFunctionContext<[string]>): Promise<{ [key: string]: number }> => {
+type TradeLeaderboardData = {
+  address: string;
+  notionalVolume: number;
+  pnl: number;
+  position: number;
+};
+
+const calculateLeaderboardData = (
+  trades: TradeWithPrices[],
+  address?: string
+): [TradeLeaderboardData[], TradeLeaderboardData | undefined] => {
+  const userMap: { [key: string]: TradeWithPrices[] } = trades.reduce(
+    (acc, obj) => {
+      const key = obj.caller;
+      if (!acc[key]) {
+        acc[key] = [];
+      }
+      acc[key].push(obj);
+      return acc;
+    },
+    {} as { [key: string]: TradeWithPrices[] }
+  );
+
+  const result = Object.keys(userMap).reduce((acc, key) => {
+    acc[key] = calculateNotionalVolumeSingleUser(userMap[key]);
+    return acc;
+  }, {} as { [key: string]: number });
+
+  const sortedCallers = Object.entries(result).sort(([, a], [, b]) => b - a);
+
+  const topUsers = sortedCallers.slice(0, 20); // Extract the top 20 callers
+
+  const tradeLeaderboardData = topUsers.map(([address, notionalVolume], i) => ({
+    address,
+    notionalVolume,
+    position: i + 1,
+    pnl: calculatePnL(userMap[address]).at(-1)?.usd || 0,
+  }));
+
+  if (!address) {
+    return [tradeLeaderboardData, undefined];
+  }
+
+  const index = sortedCallers.findIndex(([a, _]) => a === address);
+
+  const user = {
+    address,
+    notionalVolume: calculateNotionalVolumeSingleUser(userMap[address]),
+    position: index + 1,
+    pnl: calculatePnL(userMap[address]).at(-1)?.usd || 0,
+  };
+
+  return [tradeLeaderboardData, user];
+};
+
+export const notionalVolumeQuery = async (): Promise<{
+  [key: string]: number;
+}> => {
   const allTrades = await getAllTrades();
   return calculateNotionalVolume(allTrades);
+};
+
+export const tradeLeaderboardDataQuery = async ({
+  queryKey,
+}: QueryFunctionContext<[string, string | undefined]>): Promise<
+  [TradeLeaderboardData[], TradeLeaderboardData | undefined]
+> => {
+  const allTrades = await getAllTrades();
+  return calculateLeaderboardData(allTrades, queryKey[1]);
 };

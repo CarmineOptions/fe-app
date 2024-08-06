@@ -46,8 +46,6 @@ const ProfitAndLossWithAddress = ({ address }: { address: string }) => {
     return finalDomain;
   };
 
-  console.log(formattedData);
-
   return (
     <ResponsiveContainer width="100%" height={400}>
       <LineChart
