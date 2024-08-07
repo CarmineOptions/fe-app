@@ -9,6 +9,7 @@ import buttonStyles from "../style/button.module.css";
 import style from "./trade.module.css";
 import { AvnuWidget } from "../components/AvnuWidget";
 import { CrmBanner } from "../components/Banner";
+import { getNonExpiredFromChain } from "../calls/getNonExpiredOptions";
 
 enum Variant {
   Options,
@@ -27,6 +28,7 @@ const TradePage = () => {
         />
       </Helmet>
       <CrmBanner />
+      <button onClick={getNonExpiredFromChain}>CLICK ME!</button>
       <div>
         <button
           onClick={() => setVariant(Variant.Options)}

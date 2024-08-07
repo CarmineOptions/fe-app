@@ -1,6 +1,9 @@
 import { debug } from "../../utils/debugger";
 import { OptionWithPremia } from "../../classes/Option";
-import { getNonExpiredOptions } from "../../calls/getNonExpiredOptions";
+import {
+  getNonExpiredFromChain,
+  getNonExpiredOptions,
+} from "../../calls/getNonExpiredOptions";
 import { chooseType } from "./chooseType";
 import { OptionType } from "../../types/options";
 
@@ -8,7 +11,7 @@ export const fetchOptionsWithType = async (): Promise<
   [OptionWithPremia[], OptionType]
 > => {
   const [optionsResult, chosenTypeResult] = await Promise.allSettled([
-    getNonExpiredOptions(),
+    getNonExpiredFromChain(),
     chooseType(),
   ]);
 

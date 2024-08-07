@@ -54,17 +54,8 @@ const TradeTable = () => {
     fetchOptionsWithType
   );
   const [side, setLongShort] = useState<OptionSide>(OptionSide.Long);
-  const [type, setCallPut] = useState<OptionType>(
-    data ? data[1] : OptionType.Call
-  );
-  const [typeSet, setTypeSet] = useState(false);
-
+  const [type, setCallPut] = useState<OptionType>(OptionType.Call);
   const [pair, setPair] = useState<PairKey>(PairKey.STRK_USDC);
-
-  if (!typeSet && data && data[1]) {
-    setCallPut(data[1]);
-    setTypeSet(true);
-  }
 
   const filtered = data
     ? data[0].filter(

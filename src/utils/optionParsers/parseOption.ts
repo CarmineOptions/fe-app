@@ -6,5 +6,7 @@ export const parseOption = (arr: bigint[]): Option => {
 
   assert(arr.length === expectedLength, "option with position length");
 
+  console.log("parsing option from", arr);
+
   return new Option(arr[5], arr[4], arr[6], arr[0], arr[1], arr[2]);
 };
