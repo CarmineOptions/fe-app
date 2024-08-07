@@ -1,3 +1,19 @@
+# [1.7.0](https://github.com/CarmineOptions/fe-app/compare/v1.6.5...v1.7.0) (2024-08-07)
+
+
+### Bug Fixes
+
+* better domain ([75c3331](https://github.com/CarmineOptions/fe-app/commit/75c3331d8b7508297adf034179a3477a0b3d1e2e))
+* format pnl domain ([517310f](https://github.com/CarmineOptions/fe-app/commit/517310f34a1532b6b73366148bb591f97c451280))
+* remove pnl graph ([9fbae03](https://github.com/CarmineOptions/fe-app/commit/9fbae03ecfb9b330dd2b82e0a279930116c5f989))
+
+
+### Features
+
+* add battlecharts header link ([6f1f7c1](https://github.com/CarmineOptions/fe-app/commit/6f1f7c1513a86b0f73fb9373e278685bb5b9c288))
+* new leaderboard design ([06e0f35](https://github.com/CarmineOptions/fe-app/commit/06e0f355f215d1bba5e9cc587a88ddeac35c5640))
+* profit and loss ([634aa96](https://github.com/CarmineOptions/fe-app/commit/634aa96716b799c6436560967d82b5674b72cff1))
+
 ## [1.6.5](https://github.com/CarmineOptions/fe-app/compare/v1.6.4...v1.6.5) (2024-08-01)
 
 
