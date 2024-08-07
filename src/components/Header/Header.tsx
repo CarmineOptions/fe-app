@@ -37,11 +37,21 @@ const navLinks = [
     title: "Rewards",
     link: "/rewards",
   },
+  {
+    title: "Battlecharts",
+    link: "/battlecharts",
+  },
 ] as NavLinkProps[];
 
 const RewardsTitle = () => (
   <div className={styles.rewardsheader}>
     <StarknetIcon style={{ width: "32px", height: "32px" }} /> Rewards
+  </div>
+);
+
+const NewTitle = ({ title }: { title: string }) => (
+  <div className={styles.rewardsheader}>
+    <div className={styles.badge}>NEW</div> {title}
   </div>
 );
 
@@ -61,7 +71,13 @@ const navLink = ({ title, link }: NavLinkProps, i: number): ReactNode => (
     to={link}
     key={i}
   >
-    {title === "Rewards" ? <RewardsTitle /> : title}
+    {title === "Rewards" ? (
+      <RewardsTitle />
+    ) : title === "Battlecharts" ? (
+      <NewTitle title={title} />
+    ) : (
+      title
+    )}
   </NavLink>
 );
 
