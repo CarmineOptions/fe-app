@@ -23,6 +23,7 @@
 
 .leaderboard tbody tr {
   display: flex;
+  position: relative;
   align-items: center;
   justify-content: space-between;
   padding: 12px;
@@ -38,6 +39,17 @@
 
 .user {
   border: solid 1px var(--LIGHT-GREY);
+}
+
+.badge {
+  background: #FAB000;
+  color: black;
+  font-size: 12px;
+  padding: 0 5px;
+  border-radius: 3px;
+  position: absolute;
+  top: -10px;
+  left: 9px;
 }
 
 .first {

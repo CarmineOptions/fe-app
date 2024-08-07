@@ -32,6 +32,7 @@ const LeaderboardItem = ({ position, address, data, className }: ItemProps) => {
       {data.map((v) => (
         <td>{v}</td>
       ))}
+      {className === styles.user && <div className={styles.badge}>YOU</div>}
     </tr>
   );
 };
