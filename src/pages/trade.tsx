@@ -9,7 +9,6 @@ import buttonStyles from "../style/button.module.css";
 import style from "./trade.module.css";
 import { AvnuWidget } from "../components/AvnuWidget";
 import { CrmBanner } from "../components/Banner";
-import { ProfitAndLoss } from "../components/PnL";
 
 enum Variant {
   Options,
@@ -49,10 +48,6 @@ const TradePage = () => {
         {variant === Variant.Swap && <AvnuWidget />}
       </div>
       {variant === Variant.Options && <TradeTable />}
-
-      <div style={{ marginTop: "50px" }}>
-        <ProfitAndLoss />
-      </div>
     </Layout>
   );
 };
