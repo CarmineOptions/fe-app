@@ -18,6 +18,10 @@ const PriceGuard = () => {
       </Helmet>
       <CrmBanner />
       <h3>Price Guard</h3>
+      <p>
+        Choose how much of your STRK holdings you'd like to protect, set your
+        safety threshold, and select a duration for your coverage.
+      </p>
       <BuyPriceGuardBox />
       <div className={styles.container}>
         <div>
@@ -29,6 +33,13 @@ const PriceGuard = () => {
           <ClaimPriceGuard />
         </div>
       </div>
+      <p>
+        Note: This feature is designed to help manage the risk of STRK price
+        volatility by allowing you to set a protective value. It offers a way to
+        safeguard your holdings from significant declines but does not eliminate
+        all risks or guarantee against losses. This is not an insurance product,
+        but a tool for managing potential downside exposure.
+      </p>
     </Layout>
   );
 };

@@ -25,11 +25,13 @@ import { useTxPending } from "../../hooks/useRecentTxs";
 import { TransactionAction } from "../../redux/reducers/transactions";
 import buttonStyles from "../../style/button.module.css";
 import { Token, TokenKey } from "../../classes/Token";
-
-import styles from "./priceguard.module.css";
 import { getPremia } from "../../calls/getPremia";
 import { math64toDecimal } from "../../utils/units";
 import { openWalletConnectDialog } from "../ConnectWallet/Button";
+import { Info } from "@mui/icons-material";
+
+import styles from "./priceguard.module.css";
+import { Tooltip } from "@mui/material";
 
 type BuyButtonProps = {
   option: Option;
@@ -61,6 +63,16 @@ const BuyPriceGuardButton = ({ option, size }: BuyButtonProps) => {
     >
       {txPending ? "Processing" : `Protect my ${option.baseToken.symbol}`}
     </button>
+  );
+};
+
+const InfoIcon = ({ msg }: { msg: string }) => {
+  return (
+    <Tooltip title={msg}>
+      <div className={styles.info}>
+        <Info />
+      </div>
+    </Tooltip>
   );
 };
 
@@ -223,11 +235,36 @@ export const BuyPriceGuardBox = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.item}>Asset to protect</div>
-      <div className={styles.item}>Amount to protect</div>
-      <div className={styles.item}>Price to secure</div>
-      <div className={styles.item}>Duration / Until</div>
-      <div className={styles.item}>Total coverage price</div>
+      <div className={styles.item}>
+        <div className={styles.title}>
+          Asset to protect
+          <InfoIcon msg="This is the asset you want to shield against price drops." />
+        </div>
+      </div>
+      <div className={styles.item}>
+        <div className={styles.title}>
+          Amount to protect
+          <InfoIcon msg="Enter the number of STRK tokens you want to protect. This defines the portion of your holdings that will be covered by this plan, shielding them when the market starts dropping." />
+        </div>
+      </div>
+      <div className={styles.item}>
+        <div className={styles.title}>
+          Price to secure
+          <InfoIcon msg="Set the price point for your STRK holdings, ensuring protection if the asset falls below this point." />
+        </div>
+      </div>
+      <div className={styles.item}>
+        <div className={styles.title}>
+          Duration/Until
+          <InfoIcon msg="Select how long you want the protection to last. This date marks the end of the plan." />
+        </div>
+      </div>
+      <div className={styles.item}>
+        <div className={styles.title}>
+          Total coverage price
+          <InfoIcon msg="This is the total STRK cost for your protection plan, calculated based on your selections." />
+        </div>
+      </div>
       <div className={styles.item}>
         <select id="currency" value={currency} onChange={handleCurrencyChange}>
           <option value={TokenKey.STRK}>STRK</option>
