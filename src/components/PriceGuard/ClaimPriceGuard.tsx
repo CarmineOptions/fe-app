@@ -10,7 +10,6 @@ import { tradeSettle } from "../../calls/tradeSettle";
 import { useTxPending } from "../../hooks/useRecentTxs";
 import { TransactionAction } from "../../redux/reducers/transactions";
 import styles from "../../style/button.module.css";
-import { debug } from "../../utils/debugger";
 
 const ClaimItem = ({
   option,
@@ -71,8 +70,6 @@ const WithAccount = ({ account }: { account: AccountInterface }) => {
     );
   }
 
-  debug("INSURANCE OPTIONS", data);
-
   const priceGuard = data.filter((o) => o.isPut && o.isLong && o.isInTheMoney);
 
   if (priceGuard.length === 0) {
@@ -80,7 +77,7 @@ const WithAccount = ({ account }: { account: AccountInterface }) => {
     return (
       <Box sx={{ display: "flex", flexFlow: "column", gap: 2 }}>
         <Typography>
-          You currently do not have any claimable priceGuard
+          You currently do not have any claimable Price Guard
         </Typography>
       </Box>
     );
@@ -95,7 +92,7 @@ const WithAccount = ({ account }: { account: AccountInterface }) => {
       }}
     >
       <Typography>
-        You have {priceGuard.length} claimable priceGuard event
+        You have {priceGuard.length} claimable Price Guard event
         {priceGuard.length > 1 ? "s" : ""}:
       </Typography>
       {priceGuard.map((o, i) => (
@@ -109,7 +106,7 @@ export const ClaimPriceGuard = () => {
   const account = useAccount();
 
   if (!account) {
-    return <Typography>Connect wallet to see claimable priceGuard</Typography>;
+    return <Typography>Connect wallet to see claimable Price Guard</Typography>;
   }
 
   return <WithAccount account={account} />;

@@ -17,10 +17,10 @@ const navLinks = [
     title: "Staking",
     link: "/staking",
   },
-  // {
-  //   title: "PriceGuard",
-  //   link: "/priceGuard",
-  // },
+  {
+    title: "Price Guard",
+    link: "/priceguard",
+  },
   {
     title: "Trade",
     link: "/trade",

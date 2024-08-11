@@ -13,6 +13,11 @@ import { MultiDialog } from "./components/MultiDialog/MultiDialog";
 import { Slip } from "./components/Slip";
 import { Toast } from "./components/Toast/Toast";
 import { Controller } from "./Controller";
+import TermsAndConditions from "./pages/termsAndConditions";
+import { store } from "./redux/store";
+import { isCookieSet } from "./utils/cookies";
+
+import TradePage from "./pages/trade";
 import APYInfoPage from "./pages/apyInfo";
 import TradeDashboardPage from "./pages/dashboard";
 import Governance from "./pages/governance";
@@ -21,15 +26,12 @@ import Portfolio from "./pages/portfolio";
 import Settings from "./pages/settings";
 import StakePage from "./pages/stake";
 import StakingExplainedPage from "./pages/stakeInfo";
-import TermsAndConditions from "./pages/termsAndConditions";
-import TradePage from "./pages/trade";
-import { store } from "./redux/store";
-import { isCookieSet } from "./utils/cookies";
-
-import "./style/base.css";
 import LeaderboardPage from "./pages/leaderboard";
 import StarknetRewards from "./pages/starknetRewards";
 import BattlechartsPage from "./pages/battlecharts";
+import PriceGuard from "./pages/priceGuard";
+
+import "./style/base.css";
 
 const App = () => {
   const [check, rerender] = useState(false);
@@ -71,6 +73,7 @@ const App = () => {
                 <Route path="/leaderboard" element={<LeaderboardPage />} />
                 <Route path="/rewards" element={<StarknetRewards />} />
                 <Route path="/battlecharts" element={<BattlechartsPage />} />
+                <Route path="/priceguard" element={<PriceGuard />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Router>

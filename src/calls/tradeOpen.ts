@@ -44,7 +44,7 @@ export const approveAndTradeOpen = async (
     return false;
   }
 
-  if (balance < toApproveNumber) {
+  if (balance < toApprove) {
     const [has, needs] = [
       shortInteger(balance.toString(10), option.digits),
       toApproveNumber,
@@ -70,13 +70,10 @@ export const approveAndTradeOpen = async (
   const tradeOpen = option.tradeOpenCalldata(size, premiaMath64);
 
   option.sendBeginCheckoutEvent(size, premiaNum, isPriceGuard);
-
-  const res = await account
-    .execute([approve, tradeOpen], [LpAbi, AmmAbi])
-    .catch((e) => {
-      debug("Trade open rejected or failed", e.message);
-      throw Error("Trade open rejected or failed");
-    });
+  const res = await account.execute([approve, tradeOpen]).catch((e) => {
+    debug("Trade open rejected or failed", e.message);
+    throw Error("Trade open rejected or failed");
+  });
 
   option.sendPurchaseEvent(size, premiaNum, isPriceGuard);
 

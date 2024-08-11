@@ -32,8 +32,8 @@ const PriceGuardDisplay = ({ option }: { option: OptionWithPosition }) => {
         }}
       >
         <Typography>
-          PriceGuard covers {option.size} {symbol} at price ${option.strike} and
-          expires {option.dateRich}
+          Price Guard covers {option.size} {symbol} at price ${option.strike}{" "}
+          and expires {option.dateRich}
         </Typography>
         <button
           className={styles.green}
@@ -72,7 +72,9 @@ const WithAccount = ({ account }: { account: AccountInterface }) => {
     // no options for the given currency
     return (
       <Box sx={{ display: "flex", flexFlow: "column", gap: 2 }}>
-        <Typography>You currently do not have any active priceGuard</Typography>
+        <Typography>
+          You currently do not have any active Price Guard
+        </Typography>
       </Box>
     );
   }
@@ -101,7 +103,7 @@ export const ActivePriceGuard = () => {
 
   if (!account) {
     return (
-      <Typography>Connect wallet to see your active priceGuard</Typography>
+      <Typography>Connect wallet to see your active Price Guard</Typography>
     );
   }
 

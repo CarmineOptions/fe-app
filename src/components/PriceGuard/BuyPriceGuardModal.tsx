@@ -174,12 +174,12 @@ export const BuyPriceGuardModal = () => {
 
   const { option, size } = data;
 
-  const title = `Buy PriceGuard for ${size} ${option.baseToken.symbol}`;
+  const title = `Buy Price Guard for ${size} ${option.baseToken.symbol}`;
 
   return (
     <Box sx={containerSx}>
       <CustomDialogTitle title={title} />
-      <Typography>PriceGuard will expire on {option.dateRich}</Typography>
+      <Typography>Price Guard will expire on {option.dateRich}</Typography>
       <WithOption
         option={option}
         size={size}

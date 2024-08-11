@@ -1,21 +1,8 @@
-import { useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useAccount } from "../../hooks/useAccount";
 import { useUserBalance } from "../../hooks/useUserBalance";
 import { useCurrency } from "../../hooks/useCurrency";
 import { LoadingAnimation } from "../Loading/Loading";
-import {
-  Box,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  TextField,
-  Typography,
-} from "@mui/material";
 import { shortInteger } from "../../utils/computations";
 import { useQuery } from "react-query";
 import { QueryKeys } from "../../queries/keys";
@@ -35,27 +22,18 @@ import { ToastType } from "../../redux/reducers/ui";
 import { Option } from "../../classes/Option";
 import { useTxPending } from "../../hooks/useRecentTxs";
 import { TransactionAction } from "../../redux/reducers/transactions";
-import tableStyles from "../../style/table.module.css";
 import buttonStyles from "../../style/button.module.css";
-import { selectNoBorder } from "../../style/sx";
 import { Token, TokenKey } from "../../classes/Token";
+
+import styles from "./priceguard.module.css";
+import { getPremia } from "../../calls/getPremia";
+import { math64toDecimal } from "../../utils/units";
+import { openWalletConnectDialog } from "../ConnectWallet/Button";
 
 type BuyButtonProps = {
   option: Option;
   size: number;
 };
-
-const PlusIcon = () => (
-  <span
-    style={{
-      position: "absolute",
-      color: "#00FF38",
-      fontSize: "20px",
-    }}
-  >
-    +
-  </span>
-);
 
 const BuyPriceGuardButton = ({ option, size }: BuyButtonProps) => {
   const txPending = useTxPending(option.optionId, TransactionAction.TradeOpen);
@@ -65,7 +43,7 @@ const BuyPriceGuardButton = ({ option, size }: BuyButtonProps) => {
       return;
     }
     if (!option) {
-      showToast("Select an priceGuard first", ToastType.Warn);
+      showToast("Select a priceGuard first", ToastType.Warn);
       return;
     }
     debug("Buying this option", option, "with size", size);
@@ -80,15 +58,15 @@ const BuyPriceGuardButton = ({ option, size }: BuyButtonProps) => {
       disabled={txPending}
       onClick={handleButtonClick}
     >
-      {txPending ? "Processing" : "Buy"}
+      {txPending ? "Processing" : `Protect my ${option.baseToken.symbol}`}
     </button>
   );
 };
 
 export const BuyPriceGuardBox = () => {
-  const [currency, setCurrency] = useState<TokenKey>(TokenKey.ETH);
-  const token = Token.byKey(currency);
   const account = useAccount();
+  const [currency, setCurrency] = useState<TokenKey>(TokenKey.STRK);
+  const token = Token.byKey(currency);
   const balance = useUserBalance(token.address);
   const displayBalance = balance
     ? shortInteger(balance.toString(10), token.decimals).toFixed(4)
@@ -100,25 +78,40 @@ export const BuyPriceGuardBox = () => {
   );
   const [currentStrike, setCurrentStrike] = useState<number>();
   const [size, setSize] = useState<number>(0);
-  const [textSize, setTextSize] = useState<string>("0");
-  const [interacted, setInteracted] = useState(false);
+  const [textSize, setTextSize] = useState<string>("");
   const [expiry, setExpiry] = useState<number>();
+  const [price, setPrice] = useState<number | undefined>();
+
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+    const options = data.filter(
+      // only Long Puts for the chosen currency
+      (o) =>
+        o.baseToken.id === currency &&
+        o.quoteToken.id === TokenKey.USDC &&
+        o.isPut &&
+        o.isLong &&
+        o.isFresh
+    );
+    const pickedOption = options.find(
+      (o) => o.maturity === expiry && o.strike === currentStrike
+    )!;
+    if (!pickedOption) {
+      return;
+    }
+    getPremia(pickedOption, size, false).then((res) => {
+      setPrice(math64toDecimal(res as bigint));
+    });
+  }, [currency, expiry, currentStrike, size, data]);
 
   if (valueInUsd === undefined || isLoading) {
     return <LoadingAnimation />;
   }
 
   if (isError || !data) {
-    return (
-      <Typography>Something went wrong, please try again later</Typography>
-    );
-  }
-
-  if (displayBalance && !interacted) {
-    // if no interaction with input, set size to user balance
-    setSize(parseFloat(displayBalance));
-    setTextSize(displayBalance);
-    setInteracted(true);
+    return <p>Something went wrong, please try again later</p>;
   }
 
   const options = data.filter(
@@ -131,23 +124,47 @@ export const BuyPriceGuardBox = () => {
       o.isFresh
   );
 
-  const handleCurrencyChange = (event: SelectChangeEvent) => {
-    setCurrency(event.target.value as TokenKey);
+  const handleCurrencyChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    const newCurrency = event.target.value as TokenKey;
+    const options = data.filter(
+      // only Long Puts for the chosen currency
+      (o) =>
+        o.baseToken.id === newCurrency &&
+        o.quoteToken.id === TokenKey.USDC &&
+        o.isPut &&
+        o.isLong &&
+        o.isFresh
+    );
+    setCurrency(newCurrency);
+    if (options.length) {
+      setCurrentStrike(options[0].strike);
+      setExpiry(options[0].maturity);
+    }
   };
-  const handleStrikeChange = (event: SelectChangeEvent) => {
+
+  const handleStrikeChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setCurrentStrike(parseFloat(event.target.value) as number);
   };
-  const handleExpiryChange = (event: SelectChangeEvent) => {
+
+  const handleExpiryChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setExpiry(parseInt(event.target.value) as number);
   };
+
   const handleSizeChange = handleNumericChangeFactory(
     setTextSize,
     setSize,
     (n) => {
-      setInteracted(true);
       return n;
     }
   );
+
+  const handleAll = () => {
+    if (displayBalance === undefined) {
+      return;
+    }
+    setSize(parseFloat(displayBalance));
+    setTextSize(displayBalance);
+  };
 
   // show all expiries
   const expiries = options
@@ -178,110 +195,65 @@ export const BuyPriceGuardBox = () => {
   )!;
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexFlow: "column",
-        alignItems: "flex-start",
-        gap: 2,
-      }}
-    >
-      <Table className={tableStyles.table} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Asset</TableCell>
-            <TableCell>Available</TableCell>
-            <TableCell>{token.symbol}&nbsp;price</TableCell>
-            <TableCell>Expiry</TableCell>
-            <TableCell>Price&nbsp;to&nbsp;Insure</TableCell>
-            <TableCell>Size</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          <TableRow>
-            <TableCell>
-              <Select
-                sx={selectNoBorder}
-                inputProps={{
-                  IconComponent: PlusIcon,
-                  sx: { paddingRight: 0 },
-                }}
-                value={currency}
-                onChange={handleCurrencyChange}
-              >
-                <MenuItem value={TokenKey.ETH}>ETH</MenuItem>
-                <MenuItem value={TokenKey.STRK}>STRK</MenuItem>
-                {/* <MenuItem value={TokenKey.BTC}>BTC</MenuItem> */}
-              </Select>
-            </TableCell>
-            <TableCell sx={{ whiteSpace: "nowrap" }}>
-              {!account
-                ? "--"
-                : !balance
-                ? "loading"
-                : `${displayBalance} ${token.symbol}`}
-            </TableCell>
-            <TableCell>{valueInUsd ? `$${valueInUsd}` : "loading"}</TableCell>
-            <TableCell>
-              <Select
-                sx={selectNoBorder}
-                value={expiry ? expiry + "" : undefined}
-                inputProps={{
-                  IconComponent: PlusIcon,
-                }}
-                onChange={handleExpiryChange}
-              >
-                {expiries.map((e, i) => (
-                  <MenuItem key={i} value={e}>
-                    {timestampToPriceGuardDate(e * 1000)}
-                  </MenuItem>
-                ))}
-              </Select>
-            </TableCell>
-            <TableCell>
-              <Select
-                sx={selectNoBorder}
-                inputProps={{ IconComponent: PlusIcon }}
-                value={"" + currentStrike}
-                onChange={handleStrikeChange}
-              >
-                {strikes.map((s) => (
-                  <MenuItem key={s} value={s}>
-                    ${s}
-                  </MenuItem>
-                ))}
-              </Select>
-            </TableCell>
-            <TableCell sx={{ display: "flex", alignItems: "center" }}>
-              <PlusIcon />
-              <TextField
-                value={textSize}
-                sx={selectNoBorder}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                inputProps={{
-                  inputMode: "decimal",
-                }}
-                onChange={handleSizeChange}
-              />
-            </TableCell>
-            <TableCell>
-              {options.length > 0 && account && (
-                <BuyPriceGuardButton option={pickedOption} size={size} />
-              )}
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
-
-      {options.length === 0 && (
-        <Typography>
-          We currently do not have any available priceGuard, please try again
-          later
-        </Typography>
-      )}
-      {!account && <Typography>Connect wallet to buy priceGuard</Typography>}
-    </Box>
+    <div className={styles.container}>
+      <div className={styles.item}>Asset to protect</div>
+      <div className={styles.item}>Amount to protect</div>
+      <div className={styles.item}>Price to secure</div>
+      <div className={styles.item}>Duration / Until</div>
+      <div className={styles.item}>Total coverage price</div>
+      <div className={styles.item}>
+        <select id="currency" value={currency} onChange={handleCurrencyChange}>
+          <option value={TokenKey.STRK}>STRK</option>
+          <option value={TokenKey.ETH}>ETH</option>
+          <option value={TokenKey.BTC}>wBTC</option>
+        </select>
+      </div>
+      <div className={styles.item}>
+        <div className={styles.column}>
+          <input placeholder="0" value={textSize} onChange={handleSizeChange} />
+          {displayBalance && (
+            <span>
+              Available: {displayBalance} {token.symbol}{" "}
+              <button onClick={handleAll}>All</button>
+            </span>
+          )}
+          {displayBalance === undefined && <span>Loading...</span>}
+        </div>
+      </div>
+      <div className={styles.item}>
+        <select id="strike" value={currentStrike} onChange={handleStrikeChange}>
+          {strikes.map((strike, i) => (
+            <option key={i} value={strike}>
+              $ {strike}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className={styles.item}>
+        <select id="maturity" value={expiry} onChange={handleExpiryChange}>
+          {expiries.map((exp, i) => (
+            <option key={i} value={exp}>
+              {timestampToPriceGuardDate(exp * 1000)}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className={styles.item}>
+        <div className={styles.buy}>
+          {price !== undefined && `$${price.toFixed(2)}`}
+          {price !== undefined && account === undefined && (
+            <button
+              className={buttonStyles.secondary}
+              onClick={openWalletConnectDialog}
+            >
+              Connect wallet
+            </button>
+          )}
+          {price !== undefined && account && (
+            <BuyPriceGuardButton option={pickedOption} size={size} />
+          )}
+        </div>
+      </div>
+    </div>
   );
 };

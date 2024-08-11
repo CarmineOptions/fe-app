@@ -10,22 +10,22 @@ const PriceGuard = () => {
   return (
     <Layout>
       <Helmet>
-        <title>PriceGuard | Carmine Options AMM</title>
+        <title>Price Guard | Carmine Options AMM</title>
         <meta
           name="description"
-          content="Insure the value of your crypto assets"
+          content="Guard the price of your crypto assets"
         />
       </Helmet>
       <CrmBanner />
-      <h3>PriceGuard</h3>
+      <h3>Price Guard</h3>
       <BuyPriceGuardBox />
       <div className={styles.container}>
         <div>
-          <h3>Active PriceGuard</h3>
+          <h3>Active Price Guard</h3>
           <ActivePriceGuard />
         </div>
         <div>
-          <h3>Claimable PriceGuard</h3>
+          <h3>Claimable Price Guard</h3>
           <ClaimPriceGuard />
         </div>
       </div>
