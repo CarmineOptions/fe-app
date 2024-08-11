@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useAccount } from "../../hooks/useAccount";
 import { useUserBalance } from "../../hooks/useUserBalance";
 import { useCurrency } from "../../hooks/useCurrency";
@@ -8,6 +8,7 @@ import { useQuery } from "react-query";
 import { QueryKeys } from "../../queries/keys";
 import { fetchOptions } from "../TradeTable/fetchOptions";
 import {
+  debounce,
   timestampToPriceGuardDate,
   uniquePrimitiveValues,
 } from "../../utils/utils";
@@ -81,29 +82,55 @@ export const BuyPriceGuardBox = () => {
   const [textSize, setTextSize] = useState<string>("");
   const [expiry, setExpiry] = useState<number>();
   const [price, setPrice] = useState<number | undefined>();
+  const [priceLoading, setPriceLoading] = useState(true);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const callWithDelay = useCallback(
+    debounce((size: number, controller: AbortController) => {
+      if (!data) {
+        return;
+      }
+      const options = data.filter(
+        // only Long Puts for the chosen currency
+        (o) =>
+          o.baseToken.id === currency &&
+          o.quoteToken.id === TokenKey.USDC &&
+          o.isPut &&
+          o.isLong &&
+          o.isFresh
+      );
+      const pickedOption = options.find(
+        (o) => o.maturity === expiry && o.strike === currentStrike
+      )!;
+      if (!pickedOption) {
+        return;
+      }
+      setPriceLoading(true);
+      getPremia(pickedOption, size, false)
+        .then((res) => {
+          if (controller.signal.aborted) {
+            return;
+          }
+          setPrice(math64toDecimal(res as bigint));
+          setPriceLoading(false);
+        })
+        .catch(() => {
+          if (controller.signal.aborted) {
+            return;
+          }
+          setPriceLoading(false);
+        });
+    }),
+    []
+  );
 
   useEffect(() => {
-    if (!data) {
-      return;
-    }
-    const options = data.filter(
-      // only Long Puts for the chosen currency
-      (o) =>
-        o.baseToken.id === currency &&
-        o.quoteToken.id === TokenKey.USDC &&
-        o.isPut &&
-        o.isLong &&
-        o.isFresh
-    );
-    const pickedOption = options.find(
-      (o) => o.maturity === expiry && o.strike === currentStrike
-    )!;
-    if (!pickedOption) {
-      return;
-    }
-    getPremia(pickedOption, size, false).then((res) => {
-      setPrice(math64toDecimal(res as bigint));
-    });
+    const controller = new AbortController();
+    callWithDelay(size, controller);
+    return () => {
+      controller.abort();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currency, expiry, currentStrike, size, data]);
 
   if (valueInUsd === undefined || isLoading) {
@@ -240,8 +267,10 @@ export const BuyPriceGuardBox = () => {
       </div>
       <div className={styles.item}>
         <div className={styles.buy}>
-          {price !== undefined && `$${price.toFixed(2)}`}
-          {price !== undefined && account === undefined && (
+          {priceLoading || price === undefined
+            ? "Loading..."
+            : `$${price.toFixed(2)}`}
+          {account === undefined && (
             <button
               className={buttonStyles.secondary}
               onClick={openWalletConnectDialog}
@@ -249,7 +278,7 @@ export const BuyPriceGuardBox = () => {
               Connect wallet
             </button>
           )}
-          {price !== undefined && account && (
+          {!priceLoading && account && (
             <BuyPriceGuardButton option={pickedOption} size={size} />
           )}
         </div>
