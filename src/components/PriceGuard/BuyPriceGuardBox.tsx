@@ -94,11 +94,12 @@ export const BuyPriceGuardBox = () => {
   const [textSize, setTextSize] = useState<string>("");
   const [expiry, setExpiry] = useState<number>();
   const [price, setPrice] = useState<number | undefined>();
-  const [priceLoading, setPriceLoading] = useState(true);
+  const [priceLoading, setPriceLoading] = useState(false);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const callWithDelay = useCallback(
     debounce((size: number, controller: AbortController) => {
+      console.log("DEBOUNCING", data);
       if (!data) {
         return;
       }
@@ -114,15 +115,20 @@ export const BuyPriceGuardBox = () => {
       const pickedOption = options.find(
         (o) => o.maturity === expiry && o.strike === currentStrike
       )!;
+
+      console.log("OPTION MAYBE", pickedOption);
       if (!pickedOption) {
         return;
       }
+      console.log("GETTING PRICE GUARD");
       setPriceLoading(true);
       getPremia(pickedOption, size, false)
         .then((res) => {
+          console.log("GOT PRICE GUARD", res);
           if (controller.signal.aborted) {
             return;
           }
+          console.log("PAST CONTROLLER PRICE GUARD", res);
           setPrice(math64toDecimal(res as bigint));
           setPriceLoading(false);
         })
@@ -133,7 +139,7 @@ export const BuyPriceGuardBox = () => {
           setPriceLoading(false);
         });
     }),
-    []
+    [data, expiry, currentStrike]
   );
 
   useEffect(() => {
