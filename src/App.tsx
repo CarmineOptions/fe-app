@@ -29,7 +29,7 @@ import StakingExplainedPage from "./pages/stakeInfo";
 import LeaderboardPage from "./pages/leaderboard";
 import StarknetRewards from "./pages/starknetRewards";
 import BattlechartsPage from "./pages/battlecharts";
-import PriceGuard from "./pages/priceGuard";
+import PriceGuardPage from "./pages/priceGuard";
 
 import "./style/base.css";
 
@@ -73,7 +73,7 @@ const App = () => {
                 <Route path="/leaderboard" element={<LeaderboardPage />} />
                 <Route path="/rewards" element={<StarknetRewards />} />
                 <Route path="/battlecharts" element={<BattlechartsPage />} />
-                <Route path="/priceprotect" element={<PriceGuard />} />
+                <Route path="/priceprotect" element={<PriceGuardPage />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Router>

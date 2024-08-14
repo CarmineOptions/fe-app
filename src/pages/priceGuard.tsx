@@ -1,12 +1,9 @@
 import { Helmet } from "react-helmet";
 import { Layout } from "../components/Layout";
-import { BuyPriceGuardBox } from "../components/PriceGuard/BuyPriceGuardBox";
-import { ActivePriceGuard } from "../components/PriceGuard/ActivePriceGuard";
-import { ClaimPriceGuard } from "../components/PriceGuard/ClaimPriceGuard";
-import styles from "./priceGuard.module.css";
 import { CrmBanner } from "../components/Banner";
+import { UserPriceGuard, PriceGuard } from "../components/PriceGuard";
 
-const PriceGuard = () => {
+const PriceGuardPage = () => {
   return (
     <Layout>
       <Helmet>
@@ -28,19 +25,10 @@ const PriceGuard = () => {
           Learn more
         </a>
       </p>
-      <BuyPriceGuardBox />
-      <div className={styles.container}>
-        <div>
-          <h3>Active Price Guard</h3>
-          <ActivePriceGuard />
-        </div>
-        <div>
-          <h3>Claimable Price Guard</h3>
-          <ClaimPriceGuard />
-        </div>
-      </div>
+      <PriceGuard />
+      <UserPriceGuard />
     </Layout>
   );
 };
 
-export default PriceGuard;
+export default PriceGuardPage;
