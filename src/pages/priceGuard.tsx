@@ -10,17 +10,23 @@ const PriceGuard = () => {
   return (
     <Layout>
       <Helmet>
-        <title>Price Guard | Carmine Options AMM</title>
+        <title>Price Protect | Carmine Options AMM</title>
         <meta
           name="description"
-          content="Guard the price of your crypto assets"
+          content="Protect the price of your crypto assets"
         />
       </Helmet>
       <CrmBanner />
-      <h3>Price Guard</h3>
+      <h3>Price Protect</h3>
       <p>
-        Choose how much of your STRK holdings you'd like to protect, set your
-        safety threshold, and select a duration for your coverage.
+        Safeguard your holdings from major price movement.{" "}
+        <a
+          rel="noopener nofollow noreferrer"
+          target="_blank"
+          href="https://docs.carmine.finance/carmine-options-amm/use-cases"
+        >
+          Learn more
+        </a>
       </p>
       <BuyPriceGuardBox />
       <div className={styles.container}>
@@ -33,13 +39,6 @@ const PriceGuard = () => {
           <ClaimPriceGuard />
         </div>
       </div>
-      <p>
-        Note: This feature is designed to help manage the risk of STRK price
-        volatility by allowing you to set a protective value. It offers a way to
-        safeguard your holdings from significant declines but does not eliminate
-        all risks or guarantee against losses. This is not an insurance product,
-        but a tool for managing potential downside exposure.
-      </p>
     </Layout>
   );
 };

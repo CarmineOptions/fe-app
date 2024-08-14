@@ -18,8 +18,8 @@ const navLinks = [
     link: "/staking",
   },
   {
-    title: "Price Guard",
-    link: "/priceguard",
+    title: "Price Protect",
+    link: "/priceprotect",
   },
   {
     title: "Trade",

@@ -57,7 +57,7 @@ const BuyPriceGuardButton = ({ option, size }: BuyButtonProps) => {
 
   return (
     <button
-      className={buttonStyles.secondary}
+      className={styles.buybutton}
       disabled={txPending}
       onClick={handleButtonClick}
     >
@@ -187,12 +187,12 @@ export const BuyPriceGuardBox = () => {
     }
   };
 
-  const handleStrikeChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    setCurrentStrike(parseFloat(event.target.value) as number);
+  const handleStrikeChange = (strike: number) => {
+    setCurrentStrike(strike);
   };
 
-  const handleExpiryChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    setExpiry(parseInt(event.target.value) as number);
+  const handleExpiryChange = (exp: number) => {
+    setExpiry(exp);
   };
 
   const handleSizeChange = handleNumericChangeFactory(
@@ -241,91 +241,195 @@ export const BuyPriceGuardBox = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.item}>
+      <div>
         <div className={styles.title}>
-          Asset to protect
+          Asset & Amount
           <InfoIcon msg="This is the asset you want to shield against price drops." />
         </div>
-      </div>
-      <div className={styles.item}>
-        <div className={styles.title}>
-          Amount to protect
-          <InfoIcon msg="Enter the number of STRK tokens you want to protect. This defines the portion of your holdings that will be covered by this plan, shielding them when the market starts dropping." />
+        <div className={styles.assetamount}>
+          <div>
+            <div>
+              <input
+                placeholder="Enter amount"
+                value={textSize}
+                onChange={handleSizeChange}
+              />
+              <select
+                id="currency"
+                value={currency}
+                onChange={handleCurrencyChange}
+              >
+                <option value={TokenKey.STRK}>STRK</option>
+                <option value={TokenKey.ETH}>ETH</option>
+                <option value={TokenKey.BTC}>wBTC</option>
+              </select>
+            </div>
+          </div>
+          <div className={styles.balance}>
+            <span>balance</span>
+            <span>
+              {displayBalance === undefined ? "---" : displayBalance}{" "}
+              {token.symbol}
+            </span>
+          </div>
         </div>
       </div>
-      <div className={styles.item}>
+      <div className={styles.row}>
         <div className={styles.title}>
-          Price to secure
-          <InfoIcon msg="Set the price point for your STRK holdings, ensuring protection if the asset falls below this point." />
-        </div>
-      </div>
-      <div className={styles.item}>
-        <div className={styles.title}>
-          Duration/Until
+          Duration
           <InfoIcon msg="Select how long you want the protection to last. This date marks the end of the plan." />
         </div>
+        <div>
+          {expiries.map((exp) => {
+            const [date, time] = timestampToPriceGuardDate(exp);
+            const className =
+              exp === expiry
+                ? `${styles.datetime} ${styles.active}`
+                : styles.datetime;
+            return (
+              <button className={className}>
+                <div onClick={() => handleExpiryChange(exp)}>
+                  <span>{date}</span>
+                  <span>{time}</span>
+                </div>
+              </button>
+            );
+          })}
+        </div>
       </div>
-      <div className={styles.item}>
+      <div className={styles.row}>
         <div className={styles.title}>
-          Total coverage price
-          <InfoIcon msg="This is the total STRK cost for your protection plan, calculated based on your selections." />
+          Protection price
+          <InfoIcon msg="Set the price point for your STRK holdings, ensuring protection if the asset falls below this point." />
+        </div>
+        <div>
+          {strikes.map((strike) => {
+            const className =
+              strike === currentStrike
+                ? `${styles.datetime} ${styles.active}`
+                : styles.datetime;
+            return (
+              <button
+                onClick={() => handleStrikeChange(strike)}
+                className={className}
+              >
+                ${strike}
+              </button>
+            );
+          })}
         </div>
       </div>
-      <div className={styles.item}>
-        <select id="currency" value={currency} onChange={handleCurrencyChange}>
-          <option value={TokenKey.STRK}>STRK</option>
-          <option value={TokenKey.ETH}>ETH</option>
-          <option value={TokenKey.BTC}>wBTC</option>
-        </select>
+      <div className={styles.divider}></div>
+      <div className={styles.coverage}>
+        <span className={styles.title}>Final coverage price</span>
+        <span className={styles.finalprice}>
+          {priceLoading || price === undefined ? "---" : "$" + price.toFixed(3)}
+        </span>
       </div>
-      <div className={styles.item}>
-        <div className={styles.column}>
-          <input placeholder="0" value={textSize} onChange={handleSizeChange} />
-          {displayBalance && (
-            <span>
-              Available: {displayBalance} {token.symbol}{" "}
-              <button onClick={handleAll}>All</button>
-            </span>
-          )}
-          {displayBalance === undefined && <span>Loading...</span>}
-        </div>
-      </div>
-      <div className={styles.item}>
-        <select id="strike" value={currentStrike} onChange={handleStrikeChange}>
-          {strikes.map((strike, i) => (
-            <option key={i} value={strike}>
-              $ {strike}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className={styles.item}>
-        <select id="maturity" value={expiry} onChange={handleExpiryChange}>
-          {expiries.map((exp, i) => (
-            <option key={i} value={exp}>
-              {timestampToPriceGuardDate(exp * 1000)}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className={styles.item}>
-        <div className={styles.buy}>
-          {priceLoading || price === undefined
-            ? "Loading..."
-            : `$${price.toFixed(2)}`}
-          {account === undefined && (
-            <button
-              className={buttonStyles.secondary}
-              onClick={openWalletConnectDialog}
-            >
-              Connect wallet
-            </button>
-          )}
-          {!priceLoading && account && (
-            <BuyPriceGuardButton option={pickedOption} size={size} />
-          )}
-        </div>
+      <div>
+        {account === undefined ? (
+          <button
+            className={styles.buybutton}
+            onClick={openWalletConnectDialog}
+          >
+            Connect wallet
+          </button>
+        ) : price === undefined ? (
+          <button className={styles.buybutton}>loading</button>
+        ) : (
+          <BuyPriceGuardButton option={pickedOption} size={size} />
+        )}
       </div>
     </div>
   );
+
+  // return (
+  //   <div className={styles.container}>
+  //     <div className={styles.item}>
+  //       <div className={styles.title}>
+  //         Asset to protect
+  //         <InfoIcon msg="This is the asset you want to shield against price drops." />
+  //       </div>
+  //     </div>
+  //     <div className={styles.item}>
+  //       <div className={styles.title}>
+  //         Amount to protect
+  //         <InfoIcon msg="Enter the number of STRK tokens you want to protect. This defines the portion of your holdings that will be covered by this plan, shielding them when the market starts dropping." />
+  //       </div>
+  //     </div>
+  //     <div className={styles.item}>
+  //       <div className={styles.title}>
+  //         Price to secure
+  //         <InfoIcon msg="Set the price point for your STRK holdings, ensuring protection if the asset falls below this point." />
+  //       </div>
+  //     </div>
+  //     <div className={styles.item}>
+  //       <div className={styles.title}>
+  //         Duration/Until
+  //         <InfoIcon msg="Select how long you want the protection to last. This date marks the end of the plan." />
+  //       </div>
+  //     </div>
+  //     <div className={styles.item}>
+  //       <div className={styles.title}>
+  //         Total coverage price
+  //         <InfoIcon msg="This is the total STRK cost for your protection plan, calculated based on your selections." />
+  //       </div>
+  //     </div>
+  //     <div className={styles.item}>
+  //       <select id="currency" value={currency} onChange={handleCurrencyChange}>
+  //         <option value={TokenKey.STRK}>STRK</option>
+  //         <option value={TokenKey.ETH}>ETH</option>
+  //         <option value={TokenKey.BTC}>wBTC</option>
+  //       </select>
+  //     </div>
+  //     <div className={styles.item}>
+  //       <div className={styles.column}>
+  //         <input placeholder="0" value={textSize} onChange={handleSizeChange} />
+  //         {displayBalance && (
+  //           <span>
+  //             Available: {displayBalance} {token.symbol}{" "}
+  //             <button onClick={handleAll}>All</button>
+  //           </span>
+  //         )}
+  //         {displayBalance === undefined && <span>Loading...</span>}
+  //       </div>
+  //     </div>
+  //     <div className={styles.item}>
+  //       <select id="strike" value={currentStrike} onChange={handleStrikeChange}>
+  //         {strikes.map((strike, i) => (
+  //           <option key={i} value={strike}>
+  //             $ {strike}
+  //           </option>
+  //         ))}
+  //       </select>
+  //     </div>
+  //     <div className={styles.item}>
+  //       <select id="maturity" value={expiry} onChange={handleExpiryChange}>
+  //         {expiries.map((exp, i) => (
+  //           <option key={i} value={exp}>
+  //             {timestampToPriceGuardDate(exp * 1000)}
+  //           </option>
+  //         ))}
+  //       </select>
+  //     </div>
+  //     <div className={styles.item}>
+  //       <div className={styles.buy}>
+  //         {priceLoading || price === undefined
+  //           ? "Loading..."
+  //           : `$${price.toFixed(2)}`}
+  //         {account === undefined && (
+  //           <button
+  //             className={buttonStyles.secondary}
+  //             onClick={openWalletConnectDialog}
+  //           >
+  //             Connect wallet
+  //           </button>
+  //         )}
+  //         {!priceLoading && account && (
+  //           <BuyPriceGuardButton option={pickedOption} size={size} />
+  //         )}
+  //       </div>
+  //     </div>
+  //   </div>
+  // );
 };

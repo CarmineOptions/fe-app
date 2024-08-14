@@ -73,7 +73,7 @@ const App = () => {
                 <Route path="/leaderboard" element={<LeaderboardPage />} />
                 <Route path="/rewards" element={<StarknetRewards />} />
                 <Route path="/battlecharts" element={<BattlechartsPage />} />
-                <Route path="/priceguard" element={<PriceGuard />} />
+                <Route path="/priceprotect" element={<PriceGuard />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Router>
