@@ -12,17 +12,7 @@ import {
   timestampToPriceGuardDate,
   uniquePrimitiveValues,
 } from "../../utils/utils";
-import { debug } from "../../utils/debugger";
 import { handleNumericChangeFactory } from "../../utils/inputHandling";
-import {
-  openBuyPriceGuardDialog,
-  setBuyPriceGuardModal,
-  showToast,
-} from "../../redux/actions";
-import { ToastType } from "../../redux/reducers/ui";
-import { Option } from "../../classes/Option";
-import { useTxPending } from "../../hooks/useRecentTxs";
-import { TransactionAction } from "../../redux/reducers/transactions";
 import { Token, TokenKey } from "../../classes/Token";
 import { getPremia } from "../../calls/getPremia";
 import { math64toDecimal } from "../../utils/units";
@@ -31,39 +21,7 @@ import { Info } from "@mui/icons-material";
 
 import styles from "./priceguard.module.css";
 import { Tooltip } from "@mui/material";
-
-type BuyButtonProps = {
-  option: Option;
-  size: number;
-};
-
-const BuyPriceGuardButton = ({ option, size }: BuyButtonProps) => {
-  const txPending = useTxPending(option.optionId, TransactionAction.TradeOpen);
-  const handleButtonClick = () => {
-    if (size === 0) {
-      showToast("Please select size greater than 0", ToastType.Warn);
-      return;
-    }
-    if (!option) {
-      showToast("Select a priceGuard first", ToastType.Warn);
-      return;
-    }
-    debug("Buying this option", option, "with size", size);
-    setBuyPriceGuardModal({ option: option, size });
-    option.sendViewEvent(true);
-    openBuyPriceGuardDialog();
-  };
-
-  return (
-    <button
-      className={styles.buybutton}
-      disabled={txPending}
-      onClick={handleButtonClick}
-    >
-      {txPending ? "Processing" : `Protect my ${option.baseToken.symbol}`}
-    </button>
-  );
-};
+import { approveAndTradeOpenNew } from "../../calls/tradeOpen";
 
 const InfoIcon = ({ msg }: { msg: string }) => {
   return (
@@ -80,9 +38,10 @@ export const PriceGuard = () => {
   const [currency, setCurrency] = useState<TokenKey>(TokenKey.STRK);
   const token = Token.byKey(currency);
   const balance = useUserBalance(token.address);
-  const displayBalance = balance
-    ? shortInteger(balance.toString(10), token.decimals).toFixed(4)
-    : undefined;
+  const displayBalance =
+    balance === undefined
+      ? undefined
+      : shortInteger(balance.toString(10), token.decimals).toFixed(4);
   const valueInUsd = useCurrency(currency);
   const { isLoading, isError, data } = useQuery(
     QueryKeys.options,
@@ -92,8 +51,11 @@ export const PriceGuard = () => {
   const [size, setSize] = useState<number>(0);
   const [textSize, setTextSize] = useState<string>("");
   const [expiry, setExpiry] = useState<number>();
-  const [price, setPrice] = useState<number | undefined>();
+  const [priceMath64, setPrice] = useState<bigint | undefined>();
   const [priceLoading, setPriceLoading] = useState(false);
+
+  const price =
+    priceMath64 === undefined ? undefined : math64toDecimal(priceMath64);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const callWithDelay = useCallback(
@@ -128,7 +90,7 @@ export const PriceGuard = () => {
             return;
           }
           console.log("PAST CONTROLLER PRICE GUARD", res);
-          setPrice(math64toDecimal(res as bigint));
+          setPrice(res as bigint);
           setPriceLoading(false);
         })
         .catch(() => {
@@ -238,6 +200,56 @@ export const PriceGuard = () => {
     (o) => o.maturity === expiry && o.strike === currentStrike
   )!;
 
+  const BuyPriceGuardButton = () => {
+    const [tradeState, updateTradeState] = useState<
+      "initial" | "processing" | "fail" | "success"
+    >("initial");
+    const handleButtonClick = () => {
+      if (
+        !account ||
+        priceMath64 === undefined ||
+        price === undefined ||
+        balance === undefined
+      ) {
+        return;
+      }
+      const premiaWithSlippage = (priceMath64 * 105n) / 100n; // TODO: slippage 5%, change it to use argument
+
+      approveAndTradeOpenNew(
+        account,
+        pickedOption,
+        size,
+        premiaWithSlippage,
+        balance,
+        updateTradeState,
+        true
+      );
+    };
+
+    const className = `${styles.buybutton} ${styles[tradeState]}`;
+    const disabled = tradeState === "processing";
+    const content =
+      tradeState === "initial" ? (
+        `Protect my ${pickedOption.baseToken.symbol}`
+      ) : tradeState === "processing" ? (
+        <LoadingAnimation size={13} />
+      ) : tradeState === "fail" ? (
+        "Failed"
+      ) : (
+        "Success!"
+      );
+
+    return (
+      <button
+        className={className}
+        disabled={disabled}
+        onClick={handleButtonClick}
+      >
+        {content}
+      </button>
+    );
+  };
+
   return (
     <div className={styles.container}>
       <div>
@@ -264,11 +276,16 @@ export const PriceGuard = () => {
               </select>
             </div>
           </div>
-          <div className={styles.balance}>
+          <div onClick={handleAll} className={styles.balance}>
             <span>balance</span>
             <span>
-              {displayBalance === undefined ? "---" : displayBalance}{" "}
-              {token.symbol}
+              {displayBalance === undefined ? (
+                <div className={styles.balanceloading}>
+                  <LoadingAnimation size={10} /> {token.symbol}
+                </div>
+              ) : (
+                `${displayBalance} ${token.symbol}`
+              )}
             </span>
           </div>
         </div>
@@ -322,7 +339,11 @@ export const PriceGuard = () => {
       <div className={styles.coverage}>
         <span className={styles.title}>Final coverage price</span>
         <span className={styles.finalprice}>
-          {priceLoading || price === undefined ? "---" : "$" + price.toFixed(3)}
+          {priceLoading || price === undefined ? (
+            <LoadingAnimation size={20} />
+          ) : (
+            "$" + price.toFixed(3)
+          )}
         </span>
       </div>
       <div>
@@ -333,10 +354,10 @@ export const PriceGuard = () => {
           >
             Connect wallet
           </button>
-        ) : price === undefined ? (
+        ) : price === undefined || priceMath64 === undefined ? (
           <button className={styles.buybutton}>loading</button>
         ) : (
-          <BuyPriceGuardButton option={pickedOption} size={size} />
+          <BuyPriceGuardButton />
         )}
       </div>
     </div>

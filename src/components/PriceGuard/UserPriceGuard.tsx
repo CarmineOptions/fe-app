@@ -5,7 +5,7 @@ import { useAccount } from "../../hooks/useAccount";
 import { AccountInterface } from "starknet";
 import { fetchPositions } from "../PositionTable/fetchPositions";
 import { OptionWithPosition } from "../../classes/Option";
-import { openCloseOptionDialog, setCloseOption } from "../../redux/actions";
+import { showToast } from "../../redux/actions";
 import { useTxPending } from "../../hooks/useRecentTxs";
 import { TransactionAction } from "../../redux/reducers/transactions";
 import styles from "./user_priceguard.module.css";
@@ -13,9 +13,22 @@ import { openWalletConnectDialog } from "../ConnectWallet/Button";
 import { ReactNode, useState } from "react";
 import { TokenKey } from "../../classes/Token";
 import { timestampToPriceGuardDate } from "../../utils/utils";
+import { afterTransaction } from "../../utils/blockchain";
+import { invalidatePositions } from "../../queries/client";
+import { ToastType } from "../../redux/reducers/ui";
 
-const PriceGuardDisplay = ({ option }: { option: OptionWithPosition }) => {
-  const txPending = useTxPending(option.optionId, TransactionAction.TradeClose);
+const PriceGuardDisplay = ({
+  option,
+  account,
+}: {
+  option: OptionWithPosition;
+  account: AccountInterface;
+}) => {
+  const txPending = useTxPending(
+    option.optionId,
+    TransactionAction.TradeSettle
+  );
+  const [_settling, setSettling] = useState(false);
   const symbol = option.baseToken.symbol;
   const [date, time] = timestampToPriceGuardDate(option.maturity);
   const status = option.isFresh
@@ -24,9 +37,25 @@ const PriceGuardDisplay = ({ option }: { option: OptionWithPosition }) => {
     ? "claimable"
     : "expired";
 
+  const settling = txPending || _settling;
+
   const handleButtonClick = () => {
-    setCloseOption(option);
-    openCloseOptionDialog();
+    setSettling(true);
+    account
+      .execute(option.tradeSettleCalldata)
+      .then((res) => {
+        if (res?.transaction_hash) {
+          afterTransaction(res.transaction_hash, () => {
+            invalidatePositions();
+            showToast("Successfully claimed Price Protect", ToastType.Success);
+            setSettling(false);
+          });
+        }
+      })
+      .catch(() => {
+        showToast("Failed claiming Price Protect", ToastType.Error);
+        setSettling(false);
+      });
   };
   return (
     <div className={styles.tableitem}>
@@ -44,7 +73,19 @@ const PriceGuardDisplay = ({ option }: { option: OptionWithPosition }) => {
       <div className={styles[status]}>{status}</div>
       <div>
         {status === "claimable" && (
-          <button onClick={handleButtonClick}>Claim</button>
+          <button
+            disabled={settling}
+            className={styles.active}
+            onClick={handleButtonClick}
+          >
+            {settling ? (
+              <div className={styles.loading}>
+                <LoadingAnimation size={13} />
+              </div>
+            ) : (
+              "Claim"
+            )}
+          </button>
         )}
       </div>
     </div>
@@ -128,7 +169,7 @@ const WithAccount = ({ account }: { account: AccountInterface }) => {
     <Header>
       <div className={styles.tablecontent}>
         {currentChoice.map((o, i) => (
-          <PriceGuardDisplay option={o} key={i} />
+          <PriceGuardDisplay option={o} account={account} key={i} />
         ))}
       </div>
     </Header>

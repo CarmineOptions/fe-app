@@ -4,6 +4,7 @@ import { constants } from "starknet";
 export enum TransactionAction {
   TradeOpen = "TradeOpen",
   TradeClose = "TradeClose",
+  TradeSettle = "TradeSettle",
   Stake = "Stake",
   Withdraw = "Withdraw",
   Settle = "Settle",

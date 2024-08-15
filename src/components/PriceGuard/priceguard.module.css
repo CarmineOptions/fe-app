@@ -12,10 +12,11 @@
 
 .container button {
   transition: 0s;
-  border-color: var(--LIGHT-GREY);
+  border: 0.75px solid #727272;
+  border-radius: 3px;
   color: var(--LIGHT-GREY);
-  height: 25px;
-  padding: 3px 18px;
+  height: 29px;
+  padding: 5px 18px;
   min-width: 0;
 }
 
@@ -77,6 +78,7 @@
   justify-content: flex-end;
   align-items: baseline;
   gap: 8px;
+  cursor: pointer;
 }
 
 .balance span {
@@ -89,6 +91,13 @@
   color: var(--LIGHT-GREY);
 }
 
+.balanceloading {
+  display: flex;
+  align-items: center;
+  flex-flow: row;
+  gap: 10px;
+}
+
 .datetime>div {
   display: flex;
   align-items: baseline;
@@ -97,6 +106,7 @@
 
 .datetime>div>span {
   font-size: 15px;
+  text-transform: uppercase;
 }
 
 .datetime>div>span:first-child {
@@ -105,7 +115,7 @@
 
 .divider {
   height: 1px;
-  border-top: 1px solid var(--LIGHT-GREY);
+  border-top: 1px solid #727272;
 }
 
 .coverage {
@@ -121,6 +131,10 @@ button.buybutton {
   background: var(--GOLD);
   border: none;
   color: black;
+  font-family: IBM Plex Sans Condensed;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 19.5px;
 }
 
 .column {
@@ -192,7 +206,7 @@ button.buybutton {
   background: none;
   border: 2px solid var(--GOLD);
   font-size: 19px;
-  padding: 5px;
+  padding: 5px 12px;
   min-width: 100px;
   width: auto;
 }
@@ -203,4 +217,12 @@ button.buybutton {
 
 .container input:focus {
   outline: 1px solid var(--GOLD);
+}
+
+button.success {
+  background-color: #37CB4F;
+}
+
+button.fail {
+  background-color: #CB3737;
 }
