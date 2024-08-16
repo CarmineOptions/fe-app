@@ -60,7 +60,6 @@ export const PriceGuard = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const callWithDelay = useCallback(
     debounce((size: number, controller: AbortController) => {
-      console.log("DEBOUNCING", data);
       if (!data) {
         return;
       }
@@ -77,19 +76,15 @@ export const PriceGuard = () => {
         (o) => o.maturity === expiry && o.strike === currentStrike
       )!;
 
-      console.log("OPTION MAYBE", pickedOption);
       if (!pickedOption) {
         return;
       }
-      console.log("GETTING PRICE GUARD");
       setPriceLoading(true);
       getPremia(pickedOption, size, false)
         .then((res) => {
-          console.log("GOT PRICE GUARD", res);
           if (controller.signal.aborted) {
             return;
           }
-          console.log("PAST CONTROLLER PRICE GUARD", res);
           setPrice(res as bigint);
           setPriceLoading(false);
         })

@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import { OptionWithPosition } from "../../classes/Option";
-import { BuyPriceGuardModalData } from "../../components/PriceGuard/BuyPriceGuardModal";
 import { TransferData } from "../../components/Transfer/transfer";
 
 export enum DialogContentElem {
@@ -10,7 +9,6 @@ export enum DialogContentElem {
   NetworkMismatch = "NetworkMismatch",
   Slippage = "Slippage",
   CloseOption = "CloseOption",
-  BuyPriceGuard = "BuyPriceGuard",
   MetamaskMissing = "MetamaskMissing",
   NotEnoughUnlocked = "NotEnoughUnlocked",
   TransferCapital = "TransferCapital",
@@ -52,7 +50,6 @@ export interface UiState {
   dialogContent: DialogContentElem;
   toastState: ToastState;
   activeCloseOption?: OptionWithPosition;
-  buyPriceGuardModalData?: BuyPriceGuardModalData;
   transferData?: TransferData;
   transferDialogShown: boolean;
   portfolioParam?: PortfolioParamType;
@@ -82,13 +79,6 @@ export const ui = createSlice({
     setCloseOptionState: (state, action: { payload: OptionWithPosition }) => {
       // @ts-ignore
       state.activeCloseOption = action.payload;
-      return state;
-    },
-    setBuyPriceGuardModalState: (
-      state,
-      action: { payload: BuyPriceGuardModalData }
-    ) => {
-      state.buyPriceGuardModalData = action.payload;
       return state;
     },
     setToastState: (state, action: { payload: Partial<ToastState> }) => {
@@ -125,7 +115,6 @@ export const ui = createSlice({
 
 export const {
   toggleDialog,
-  setBuyPriceGuardModalState,
   setCloseOptionState,
   setToastState,
   setTransferDataModalState,

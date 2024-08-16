@@ -41,6 +41,11 @@
   flex-flow: column;
 }
 
+.assetamount option {
+  color: white;
+  background-color: black;
+}
+
 .assetamount>div>div {
   display: flex;
   flex-flow: row;

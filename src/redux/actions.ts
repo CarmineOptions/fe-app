@@ -6,7 +6,6 @@ import {
   GovernanceSubpage,
   PortfolioParamType,
   ReferralSent,
-  setBuyPriceGuardModalState,
   setCloseOptionState,
   setGovernanceSubpageState,
   setParamState,
@@ -20,7 +19,6 @@ import { store } from "./store";
 import { Settings } from "../types/settings";
 import { NetworkState } from "../types/network";
 import { OptionWithPosition } from "../classes/Option";
-import { BuyPriceGuardModalData } from "../components/PriceGuard/BuyPriceGuardModal";
 import { TransferData } from "../components/Transfer/transfer";
 import {
   addTxReducer,
@@ -64,9 +62,6 @@ export const openSlippageDialog = () =>
 export const openCloseOptionDialog = () =>
   openDialogWithContent(DialogContentElem.CloseOption);
 
-export const openBuyPriceGuardDialog = () =>
-  openDialogWithContent(DialogContentElem.BuyPriceGuard);
-
 export const openAccountDialog = () =>
   openDialogWithContent(DialogContentElem.Account);
 
@@ -84,8 +79,6 @@ export const setSlippage = (n: number) => store.dispatch(setSlippageState(n));
 export const setCloseOption = (option: OptionWithPosition) =>
   store.dispatch(setCloseOptionState(option));
 
-export const setBuyPriceGuardModal = (data: BuyPriceGuardModalData) =>
-  store.dispatch(setBuyPriceGuardModalState(data));
 export const setPortfolioParam = (option: PortfolioParamType) =>
   store.dispatch(setParamState(option));
 
