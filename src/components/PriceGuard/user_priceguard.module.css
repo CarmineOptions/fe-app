@@ -6,7 +6,6 @@
   font-size: 18px;
   font-weight: 500;
   line-height: 23.4px;
-  max-width: 860px;
   margin: 50px auto;
 }
 
@@ -62,6 +61,9 @@
   color: var(--LIGHT-GREY);
   font-size: 12px;
   text-transform: uppercase;
+  display: flex;
+  gap: 3px;
+  cursor: pointer;
 }
 
 .tablecontent {
@@ -123,4 +125,24 @@
 
 .loading {
   width: 5ch;
+}
+
+.arrowcontainer {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  gap: 2px;
+  padding-bottom: 2.5px;
+}
+
+.arrowcontainer>svg:last-child {
+  transform: rotate(180deg);
+}
+
+.arrowcontainer.desc>svg:last-child>path {
+  fill: var(--GOLD);
+}
+
+.arrowcontainer.asc>svg:first-child>path {
+  fill: var(--GOLD);
 }

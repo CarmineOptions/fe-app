@@ -2,7 +2,6 @@
   display: flex;
   flex-flow: column;
   gap: 18px;
-  max-width: 860px;
   font-family: "IBM Plex Sans Condensed", sans;
   font-size: 18px;
   font-weight: 500;

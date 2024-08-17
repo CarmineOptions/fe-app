@@ -16,6 +16,7 @@ import { timestampToPriceGuardDate } from "../../utils/utils";
 import { afterTransaction } from "../../utils/blockchain";
 import { invalidatePositions } from "../../queries/client";
 import { ToastType } from "../../redux/reducers/ui";
+import { ReactComponent as ArrowIcon } from "./arrow.svg";
 
 const PriceGuardDisplay = ({
   option,
@@ -92,12 +93,78 @@ const PriceGuardDisplay = ({
   );
 };
 
+type Sorter = "asset" | "amount" | "price" | "duration" | "status";
+
 const WithAccount = ({ account }: { account: AccountInterface }) => {
   const { isLoading, isError, data } = useQuery(
     [QueryKeys.position, account.address],
     fetchPositions
   );
   const [asset, setAsset] = useState<TokenKey | "all">("all");
+  const [order, setOrder] = useState<"asc" | "desc">("asc");
+  const [sortBy, setSortBy] = useState<Sorter | undefined>();
+
+  const toggleOrder = () => setOrder(order === "asc" ? "desc" : "asc");
+  const handleSortClick = (sorter: Sorter) => {
+    if (sorter === sortBy) {
+      return toggleOrder();
+    }
+    setSortBy(sorter);
+    setOrder("asc");
+  };
+
+  const sort = (opts: OptionWithPosition[]): OptionWithPosition[] => {
+    if (sortBy === "asset") {
+      return opts.sort((a, b) => {
+        const res =
+          a.baseToken.symbol.toLowerCase() < b.baseToken.symbol.toLowerCase();
+        if (order === "asc") {
+          if (res) {
+            return -1;
+          } else {
+            return 1;
+          }
+        }
+        if (res) {
+          return 1;
+        } else {
+          return -1;
+        }
+      });
+    }
+    if (sortBy === "amount") {
+      return opts.sort((a, b) =>
+        order === "asc" ? a.size - b.size : b.size - a.size
+      );
+    }
+    if (sortBy === "price") {
+      return opts.sort((a, b) =>
+        order === "asc" ? a.strike - b.strike : b.strike - a.strike
+      );
+    }
+    if (sortBy === "duration") {
+      return opts.sort((a, b) =>
+        order === "asc" ? a.maturity - b.maturity : b.maturity - a.maturity
+      );
+    }
+    if (sortBy === "status") {
+      const optionToStatusValue = (o: OptionWithPosition) => {
+        if (o.isFresh) {
+          return 2;
+        }
+        if (o.isInTheMoney) {
+          return 1;
+        }
+        return 0;
+      };
+      return opts.sort((a, b) =>
+        order === "asc"
+          ? optionToStatusValue(a) - optionToStatusValue(b)
+          : optionToStatusValue(b) - optionToStatusValue(a)
+      );
+    }
+    return opts;
+  };
 
   const Header = ({ children }: { children: ReactNode }) => {
     return (
@@ -130,11 +197,71 @@ const WithAccount = ({ account }: { account: AccountInterface }) => {
           </button>
         </div>
         <div className={styles.tableheader}>
-          <div>asset</div>
-          <div>amount</div>
-          <div>price secured</div>
-          <div>duration</div>
-          <div>status</div>
+          <div onClick={() => handleSortClick("asset")}>
+            asset{" "}
+            <div
+              className={
+                sortBy === "asset"
+                  ? `${styles.arrowcontainer} ${styles[order]}`
+                  : styles.arrowcontainer
+              }
+            >
+              <ArrowIcon />
+              <ArrowIcon />
+            </div>
+          </div>
+          <div onClick={() => handleSortClick("amount")}>
+            amount{" "}
+            <div
+              className={
+                sortBy === "amount"
+                  ? `${styles.arrowcontainer} ${styles[order]}`
+                  : styles.arrowcontainer
+              }
+            >
+              <ArrowIcon />
+              <ArrowIcon />
+            </div>
+          </div>
+          <div onClick={() => handleSortClick("price")}>
+            price secured{" "}
+            <div
+              className={
+                sortBy === "price"
+                  ? `${styles.arrowcontainer} ${styles[order]}`
+                  : styles.arrowcontainer
+              }
+            >
+              <ArrowIcon />
+              <ArrowIcon />
+            </div>
+          </div>
+          <div onClick={() => handleSortClick("duration")}>
+            duration{" "}
+            <div
+              className={
+                sortBy === "duration"
+                  ? `${styles.arrowcontainer} ${styles[order]}`
+                  : styles.arrowcontainer
+              }
+            >
+              <ArrowIcon />
+              <ArrowIcon />
+            </div>
+          </div>
+          <div onClick={() => handleSortClick("status")}>
+            status{" "}
+            <div
+              className={
+                sortBy === "status"
+                  ? `${styles.arrowcontainer} ${styles[order]}`
+                  : styles.arrowcontainer
+              }
+            >
+              <ArrowIcon />
+              <ArrowIcon />
+            </div>
+          </div>
           <div></div>
         </div>
         {children}
@@ -165,10 +292,12 @@ const WithAccount = ({ account }: { account: AccountInterface }) => {
       ? priceGuard
       : priceGuard.filter((o) => o.baseToken.id === asset);
 
+  const sorted = sort(currentChoice);
+
   return (
     <Header>
       <div className={styles.tablecontent}>
-        {currentChoice.map((o, i) => (
+        {sorted.map((o, i) => (
           <PriceGuardDisplay option={o} account={account} key={i} />
         ))}
       </div>
