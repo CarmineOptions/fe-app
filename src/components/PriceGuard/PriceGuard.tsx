@@ -386,7 +386,13 @@ export const PriceGuard = () => {
           {priceLoading || price === undefined ? (
             <LoadingAnimation size={20} />
           ) : (
-            "$" + price.toFixed(3)
+            <div>
+              <span>${price.toFixed(3)}</span>
+              <span>
+                {slippage}% slippage $
+                {(price * (1 + slippage / 100)).toFixed(3)}
+              </span>
+            </div>
           )}
         </span>
       </div>

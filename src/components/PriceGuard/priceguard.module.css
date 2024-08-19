@@ -206,6 +206,17 @@ button.buybutton {
   font-size: 20px;
 }
 
+.finalprice>div {
+  display: flex;
+  flex-flow: column;
+  align-items: end;
+}
+
+.finalprice>div>span:last-child {
+  color: var(--LIGHT-GREY);
+  font-size: 14px;
+}
+
 .container select {
   background: none;
   border: 2px solid var(--GOLD);
