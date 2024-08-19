@@ -2,11 +2,17 @@
   display: flex;
   flex-flow: column;
   gap: 18px;
-  font-family: "IBM Plex Sans Condensed", sans;
+  font-family: IBM Plex Sans Condensed, sans;
   font-size: 18px;
   font-weight: 500;
   line-height: 23.4px;
   margin: 50px auto;
+}
+
+.container h4 {
+  font-size: 22px;
+  font-weight: 400;
+  color: #E8EAED;
 }
 
 .container button {
@@ -33,6 +39,16 @@
 .container button.active span {
   background: var(--GOLD);
   color: black;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cog {
+  cursor: pointer;
 }
 
 .assetamount {
@@ -119,7 +135,7 @@
 
 .divider {
   height: 1px;
-  border-top: 1px solid #727272;
+  border-top: 1px solid #414142;
 }
 
 .coverage {
@@ -229,4 +245,38 @@ button.success {
 
 button.fail {
   background-color: #CB3737;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.slippagemodal {
+  position: absolute;
+  right: 0;
+  top: 25px;
+  background: #4B4B48;
+  color: white;
+  padding: 24px;
+  border-radius: 4px;
+  display: flex;
+  flex-flow: column;
+  gap: 20px;
+  z-index: 1;
+}
+
+.slippagebuttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+button.selected {
+  background: #D2D2D2;
+  color: #101010;
 }

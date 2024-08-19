@@ -18,10 +18,10 @@ import { getPremia } from "../../calls/getPremia";
 import { math64toDecimal } from "../../utils/units";
 import { openWalletConnectDialog } from "../ConnectWallet/Button";
 import { Info } from "@mui/icons-material";
-
-import styles from "./priceguard.module.css";
 import { Tooltip } from "@mui/material";
 import { approveAndTradeOpenNew } from "../../calls/tradeOpen";
+import { ReactComponent as CogIcon } from "./cog.svg";
+import styles from "./priceguard.module.css";
 
 const InfoIcon = ({ msg }: { msg: string }) => {
   return (
@@ -53,6 +53,8 @@ export const PriceGuard = () => {
   const [expiry, setExpiry] = useState<number>();
   const [priceMath64, setPrice] = useState<bigint | undefined>();
   const [priceLoading, setPriceLoading] = useState(false);
+  const [slippageModalOpen, setSlippageModalOpen] = useState(false);
+  const [slippage, setSlippage] = useState<number>(5);
 
   const price =
     priceMath64 === undefined ? undefined : math64toDecimal(priceMath64);
@@ -167,6 +169,9 @@ export const PriceGuard = () => {
     setTextSize(displayBalance);
   };
 
+  const openSlippageModal = () => setSlippageModalOpen(true);
+  const closeSlippageModal = () => setSlippageModalOpen(false);
+
   // show all expiries
   const expiries = options
     .map((o) => o.maturity)
@@ -208,7 +213,8 @@ export const PriceGuard = () => {
       ) {
         return;
       }
-      const premiaWithSlippage = (priceMath64 * 105n) / 100n; // TODO: slippage 5%, change it to use argument
+      const premiaWithSlippage =
+        (priceMath64 * (100n + BigInt(slippage))) / 100n; // TODO: slippage 5%, change it to use argument
 
       approveAndTradeOpenNew(
         account,
@@ -248,6 +254,48 @@ export const PriceGuard = () => {
   return (
     <div className={styles.container}>
       <div>
+        <div>
+          <div className={styles.header}>
+            <h4>Protect asset</h4>
+            <div style={{ position: "relative" }} onClick={openSlippageModal}>
+              <div className={styles.cog}>
+                <CogIcon />
+              </div>
+              {slippageModalOpen && (
+                <div
+                  className={styles.slippagemodal}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <h4>Transaction Settings</h4>
+                  <div>
+                    <div className={styles.title}>
+                      Slippage
+                      <InfoIcon msg="Slippage is the difference between the expected price of a trade and the actual price at which it is executed" />
+                    </div>
+                    <div className={styles.slippagebuttons}>
+                      {[0, 1, 3, 5, 10].map((s, i) => (
+                        <button
+                          key={i}
+                          onClick={() => setSlippage(s)}
+                          className={slippage === s ? styles.selected : ""}
+                        >
+                          {s}%
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <button
+                    onClick={closeSlippageModal}
+                    className={styles.active}
+                  >
+                    Close
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+        <div style={{ margin: "25px 0" }} className={styles.divider}></div>
         <div className={styles.title}>
           Asset & Amount
           <InfoIcon msg="This is the asset you want to shield against price drops." />
@@ -291,14 +339,14 @@ export const PriceGuard = () => {
           <InfoIcon msg="Select how long you want the protection to last. This date marks the end of the plan." />
         </div>
         <div>
-          {expiries.map((exp) => {
+          {expiries.map((exp, i) => {
             const [date, time] = timestampToPriceGuardDate(exp);
             const className =
               exp === expiry
                 ? `${styles.datetime} ${styles.active}`
                 : styles.datetime;
             return (
-              <button className={className}>
+              <button key={i} className={className}>
                 <div onClick={() => handleExpiryChange(exp)}>
                   <span>{date}</span>
                   <span>{time}</span>
@@ -314,13 +362,14 @@ export const PriceGuard = () => {
           <InfoIcon msg="Set the price point for your STRK holdings, ensuring protection if the asset falls below this point." />
         </div>
         <div>
-          {strikes.map((strike) => {
+          {strikes.map((strike, i) => {
             const className =
               strike === currentStrike
                 ? `${styles.datetime} ${styles.active}`
                 : styles.datetime;
             return (
               <button
+                key={i}
                 onClick={() => handleStrikeChange(strike)}
                 className={className}
               >
@@ -355,6 +404,10 @@ export const PriceGuard = () => {
           <BuyPriceGuardButton />
         )}
       </div>
+
+      {slippageModalOpen && (
+        <div className={styles.overlay} onClick={closeSlippageModal}></div>
+      )}
     </div>
   );
 };
