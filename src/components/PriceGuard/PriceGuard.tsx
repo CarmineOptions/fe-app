@@ -55,6 +55,7 @@ export const PriceGuard = () => {
   const [priceLoading, setPriceLoading] = useState(false);
   const [slippageModalOpen, setSlippageModalOpen] = useState(false);
   const [slippage, setSlippage] = useState<number>(5);
+  const [slippageText, setSlippageText] = useState<string>("5");
 
   const price =
     priceMath64 === undefined ? undefined : math64toDecimal(priceMath64);
@@ -171,6 +172,11 @@ export const PriceGuard = () => {
 
   const openSlippageModal = () => setSlippageModalOpen(true);
   const closeSlippageModal = () => setSlippageModalOpen(false);
+  const handleChange = handleNumericChangeFactory(setSlippageText, setSlippage);
+  const handleSlippageButton = (s: number) => {
+    setSlippage(s);
+    setSlippageText(`${s}`);
+  };
 
   // show all expiries
   const expiries = options
@@ -273,15 +279,23 @@ export const PriceGuard = () => {
                       <InfoIcon msg="Slippage is the difference between the expected price of a trade and the actual price at which it is executed" />
                     </div>
                     <div className={styles.slippagebuttons}>
-                      {[0, 1, 3, 5, 10].map((s, i) => (
+                      {[0, 2, 5].map((s, i) => (
                         <button
                           key={i}
-                          onClick={() => setSlippage(s)}
+                          onClick={() => handleSlippageButton(s)}
                           className={slippage === s ? styles.selected : ""}
                         >
                           {s}%
                         </button>
                       ))}
+                      <div>
+                        <input
+                          type="text"
+                          value={slippageText}
+                          onChange={handleChange}
+                        />
+                        <span>%</span>
+                      </div>
                     </div>
                   </div>
                   <button
