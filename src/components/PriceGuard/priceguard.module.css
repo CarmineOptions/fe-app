@@ -209,7 +209,7 @@ button.buybutton {
 .finalprice>div {
   display: flex;
   flex-flow: column;
-  align-items: end;
+  align-items: flex-end;
 }
 
 .finalprice>div>span:last-child {

@@ -220,7 +220,8 @@ export const PriceGuard = () => {
         return;
       }
       const premiaWithSlippage =
-        (priceMath64 * (100n + BigInt(slippage))) / 100n; // TODO: slippage 5%, change it to use argument
+        (priceMath64 * (100000n + BigInt(Math.round(slippage * 1000)))) /
+        100000n;
 
       approveAndTradeOpenNew(
         account,
