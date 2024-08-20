@@ -1,11 +1,5 @@
 import { OptionSide, OptionType } from "../../types/options";
-import {
-  Box,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  TableContainer,
-} from "@mui/material";
+import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { useState } from "react";
 import OptionsTable from "./OptionsTable";
 import { isCall, isLong, uniquePrimitiveValues } from "../../utils/utils";
@@ -22,15 +16,21 @@ import { BtcToken, EthToken, StrkToken, UsdcToken } from "../../classes/Token";
 import styles from "./tradetable.module.css";
 import { InfoIcon } from "../InfoIcon";
 
-const getText = (type: OptionType, side: OptionSide) =>
-  `We currently do not have any ${isLong(side) ? "long" : "short"} ${
+const getText = (type: OptionType, side: OptionSide | "all") => {
+  if (side === "all") {
+    return `We currently do not have any ${
+      isCall(type) ? "call" : "put"
+    } options.`;
+  }
+  return `We currently do not have any ${isLong(side) ? "long" : "short"} ${
     isCall(type) ? "call" : "put"
   } options.`;
+};
 
 type ContentProps = {
   options: OptionWithPremia[];
   type: OptionType;
-  side: OptionSide;
+  side: OptionSide | "all";
   loading: boolean;
   error: boolean;
 };
@@ -38,9 +38,9 @@ type ContentProps = {
 const Content = ({ options, type, side, loading, error }: ContentProps) => {
   if (loading)
     return (
-      <Box sx={{ padding: "20px" }}>
+      <div>
         <LoadingAnimation size={40} />
-      </Box>
+      </div>
     );
 
   if (error) return <NoContent text="Option not available at the moment" />;
@@ -61,7 +61,9 @@ export const TradeTable = () => {
     QueryKeys.optionsWithType,
     fetchOptionsWithType
   );
-  const [side, setSide] = useState<"long" | "short" | "all">("all");
+  const [side, setSide] = useState<OptionSide.Long | OptionSide.Short | "all">(
+    "all"
+  );
   const [maturity, setMaturity] = useState<number | undefined>();
   const [type, setCallPut] = useState<OptionType>(
     data ? data[1] : OptionType.Call
@@ -94,10 +96,10 @@ export const TradeTable = () => {
 
   const filtered = data[0].filter(
     (option) =>
-      option.isFresh &&
-      option.isSide(OptionSide.Long) &&
+      (side === "all" ? true : option.isSide(side)) &&
       option.isType(type) &&
-      option.isPair(pair)
+      option.isPair(pair) &&
+      option.maturity === maturity
   );
 
   const formatTimestamp = (timestamp: number) => {
@@ -163,14 +165,14 @@ export const TradeTable = () => {
           all
         </button>
         <button
-          className={side === "long" ? "green active" : "green"}
-          onClick={() => setSide("long")}
+          className={side === OptionSide.Long ? "green active" : "green"}
+          onClick={() => setSide(OptionSide.Long)}
         >
           long
         </button>
         <button
-          className={side === "short" ? "red active" : "red"}
-          onClick={() => setSide("short")}
+          className={side === OptionSide.Short ? "red active" : "red"}
+          onClick={() => setSide(OptionSide.Short)}
         >
           short
         </button>
@@ -201,7 +203,7 @@ export const TradeTable = () => {
           }}
         />
       </div>
-      <TableContainer component={Box}>
+      <div>
         <Content
           options={filtered}
           side={OptionSide.Long}
@@ -209,7 +211,7 @@ export const TradeTable = () => {
           loading={isLoading}
           error={isError}
         />
-      </TableContainer>
+      </div>
     </div>
   );
 };

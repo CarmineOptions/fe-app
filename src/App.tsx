@@ -10,7 +10,6 @@ import {
 
 import { BraavosAnnounce } from "./components/Announce";
 import { MultiDialog } from "./components/MultiDialog/MultiDialog";
-import { Slip } from "./components/Slip";
 import { Toast } from "./components/Toast/Toast";
 import { Controller } from "./Controller";
 import TermsAndConditions from "./pages/termsAndConditions";
