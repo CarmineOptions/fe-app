@@ -1,3 +1,28 @@
+# [1.8.0](https://github.com/CarmineOptions/fe-app/compare/v1.7.0...v1.8.0) (2024-08-20)
+
+
+### Bug Fixes
+
+* add texts ([895edd2](https://github.com/CarmineOptions/fe-app/commit/895edd286751b571f355abb1dcfc285ffc6cc118))
+* better price guard ([8554248](https://github.com/CarmineOptions/fe-app/commit/8554248d204da0df216ba01401f25d41defeba64))
+* hide expired price guard ([5d479f2](https://github.com/CarmineOptions/fe-app/commit/5d479f21d9c4ad30c3c7d18a70863363f743c31d))
+* mobile friendly price protect ([2345845](https://github.com/CarmineOptions/fe-app/commit/2345845101078c4a5e34777543cc02c488b95f86))
+* price guard debounce size ([17dcd64](https://github.com/CarmineOptions/fe-app/commit/17dcd647e96069140414f614103756bf46f0540b))
+* price guard price fetching ([4846c10](https://github.com/CarmineOptions/fe-app/commit/4846c10f732120c80d00f762bf4992bd2f925d32))
+* remove unused dependencies ([318f0e4](https://github.com/CarmineOptions/fe-app/commit/318f0e4ed6ff28a56732249a4e442d5dbdcdc081))
+* round slippage ([cfe11d9](https://github.com/CarmineOptions/fe-app/commit/cfe11d925b5b68453a8293a382b0dac67a302ce0))
+* show price with slippage ([4e1dd0d](https://github.com/CarmineOptions/fe-app/commit/4e1dd0ddee5110f615b1a377a76c43ebaabd4588))
+
+
+### Features
+
+* add my price protect ([df09472](https://github.com/CarmineOptions/fe-app/commit/df0947276ccd4bf91e9d41cb8641baed674c8c77))
+* add price protect sorting ([60ebf05](https://github.com/CarmineOptions/fe-app/commit/60ebf0584ae97b5079cb9e0e8030cc9b69e23558))
+* add slippage ([ea9a0f3](https://github.com/CarmineOptions/fe-app/commit/ea9a0f390b795d25b840230b3623fbb42aea630e))
+* handle price protect tx state ([cd57b4b](https://github.com/CarmineOptions/fe-app/commit/cd57b4bf653619822af87d82eeeaab01301d5cb3))
+* redesign price protection ([0d628e1](https://github.com/CarmineOptions/fe-app/commit/0d628e18dc91c28e430bdd6beae696e659b0e5c7))
+* slippage text input ([34c1f1d](https://github.com/CarmineOptions/fe-app/commit/34c1f1d2e3d9a9b18b9d5c98a5bd6f2aab14a1c5))
+
 # [1.7.0](https://github.com/CarmineOptions/fe-app/compare/v1.6.5...v1.7.0) (2024-08-07)
 
 
