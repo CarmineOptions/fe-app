@@ -196,75 +196,79 @@ const WithAccount = ({ account }: { account: AccountInterface }) => {
             wBTC
           </button>
         </div>
-        <div className={styles.tableheader}>
-          <div onClick={() => handleSortClick("asset")}>
-            asset{" "}
-            <div
-              className={
-                sortBy === "asset"
-                  ? `${styles.arrowcontainer} ${styles[order]}`
-                  : styles.arrowcontainer
-              }
-            >
-              <ArrowIcon />
-              <ArrowIcon />
+        <div className={styles.outer}>
+          <div className={styles.inner}>
+            <div className={styles.tableheader}>
+              <div onClick={() => handleSortClick("asset")}>
+                asset{" "}
+                <div
+                  className={
+                    sortBy === "asset"
+                      ? `${styles.arrowcontainer} ${styles[order]}`
+                      : styles.arrowcontainer
+                  }
+                >
+                  <ArrowIcon />
+                  <ArrowIcon />
+                </div>
+              </div>
+              <div onClick={() => handleSortClick("amount")}>
+                amount{" "}
+                <div
+                  className={
+                    sortBy === "amount"
+                      ? `${styles.arrowcontainer} ${styles[order]}`
+                      : styles.arrowcontainer
+                  }
+                >
+                  <ArrowIcon />
+                  <ArrowIcon />
+                </div>
+              </div>
+              <div onClick={() => handleSortClick("price")}>
+                price secured{" "}
+                <div
+                  className={
+                    sortBy === "price"
+                      ? `${styles.arrowcontainer} ${styles[order]}`
+                      : styles.arrowcontainer
+                  }
+                >
+                  <ArrowIcon />
+                  <ArrowIcon />
+                </div>
+              </div>
+              <div onClick={() => handleSortClick("duration")}>
+                duration{" "}
+                <div
+                  className={
+                    sortBy === "duration"
+                      ? `${styles.arrowcontainer} ${styles[order]}`
+                      : styles.arrowcontainer
+                  }
+                >
+                  <ArrowIcon />
+                  <ArrowIcon />
+                </div>
+              </div>
+              <div onClick={() => handleSortClick("status")}>
+                status{" "}
+                <div
+                  className={
+                    sortBy === "status"
+                      ? `${styles.arrowcontainer} ${styles[order]}`
+                      : styles.arrowcontainer
+                  }
+                >
+                  <ArrowIcon />
+                  <ArrowIcon />
+                </div>
+              </div>
+              <div></div>
             </div>
+            {children}
           </div>
-          <div onClick={() => handleSortClick("amount")}>
-            amount{" "}
-            <div
-              className={
-                sortBy === "amount"
-                  ? `${styles.arrowcontainer} ${styles[order]}`
-                  : styles.arrowcontainer
-              }
-            >
-              <ArrowIcon />
-              <ArrowIcon />
-            </div>
-          </div>
-          <div onClick={() => handleSortClick("price")}>
-            price secured{" "}
-            <div
-              className={
-                sortBy === "price"
-                  ? `${styles.arrowcontainer} ${styles[order]}`
-                  : styles.arrowcontainer
-              }
-            >
-              <ArrowIcon />
-              <ArrowIcon />
-            </div>
-          </div>
-          <div onClick={() => handleSortClick("duration")}>
-            duration{" "}
-            <div
-              className={
-                sortBy === "duration"
-                  ? `${styles.arrowcontainer} ${styles[order]}`
-                  : styles.arrowcontainer
-              }
-            >
-              <ArrowIcon />
-              <ArrowIcon />
-            </div>
-          </div>
-          <div onClick={() => handleSortClick("status")}>
-            status{" "}
-            <div
-              className={
-                sortBy === "status"
-                  ? `${styles.arrowcontainer} ${styles[order]}`
-                  : styles.arrowcontainer
-              }
-            >
-              <ArrowIcon />
-              <ArrowIcon />
-            </div>
-          </div>
-          <div></div>
         </div>
-        {children}
       </div>
     );
   };

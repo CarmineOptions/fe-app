@@ -318,3 +318,13 @@ button.selected {
   background: #D2D2D2;
   color: #101010;
 }
+
+@media (max-width: 978px) {
+  .row {
+    flex-flow: column;
+  }
+
+  .row>div:nth-child(2) {
+    flex-flow: column;
+  }
+}

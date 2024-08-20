@@ -146,3 +146,12 @@
 .arrowcontainer.asc>svg:first-child>path {
   fill: var(--GOLD);
 }
+
+.outer {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.inner {
+  min-width: 900px;
+}
