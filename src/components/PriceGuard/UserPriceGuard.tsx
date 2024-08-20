@@ -289,7 +289,9 @@ const WithAccount = ({ account }: { account: AccountInterface }) => {
     );
   }
 
-  const priceGuard = data.filter((o) => o.isPut && o.isLong);
+  const priceGuard = data.filter(
+    (o) => o.isPut && o.isLong && (o.isFresh || o.isInTheMoney)
+  );
 
   const currentChoice =
     asset === "all"

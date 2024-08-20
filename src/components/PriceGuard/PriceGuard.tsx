@@ -417,7 +417,7 @@ export const PriceGuard = () => {
             className={styles.buybutton}
             onClick={openWalletConnectDialog}
           >
-            Connect wallet
+            Connect Wallet
           </button>
         ) : price === undefined || priceMath64 === undefined ? (
           <button className={styles.buybutton}>loading</button>
