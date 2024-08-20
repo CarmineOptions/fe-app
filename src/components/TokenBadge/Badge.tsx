@@ -21,6 +21,19 @@ export const TokenNamedBadge = ({ token }: { token: Token }) => {
   );
 };
 
+export const TokenNamedBadgeSmall = ({ token }: { token: Token }) => {
+  const { icon } = token;
+
+  return (
+    <div className={styles.namedsmall}>
+      <div className={styles.containersmall}>
+        <img src={icon} alt={`${token.id} token icon`} />
+      </div>
+      <span>{token.symbol}</span>
+    </div>
+  );
+};
+
 export const PairBadge = ({
   tokenA,
   tokenB,

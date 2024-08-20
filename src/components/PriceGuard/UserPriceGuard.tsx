@@ -17,6 +17,7 @@ import { afterTransaction } from "../../utils/blockchain";
 import { invalidatePositions } from "../../queries/client";
 import { ToastType } from "../../redux/reducers/ui";
 import { ReactComponent as ArrowIcon } from "./arrow.svg";
+import { TokenNamedBadgeSmall } from "../TokenBadge/Badge";
 
 const PriceGuardDisplay = ({
   option,
@@ -30,7 +31,7 @@ const PriceGuardDisplay = ({
     TransactionAction.TradeSettle
   );
   const [_settling, setSettling] = useState(false);
-  const symbol = option.baseToken.symbol;
+  const token = option.baseToken;
   const [date, time] = timestampToPriceGuardDate(option.maturity);
   const status = option.isFresh
     ? "active"
@@ -59,10 +60,12 @@ const PriceGuardDisplay = ({
       });
   };
   return (
-    <div className={styles.tableitem}>
-      <div>{symbol}</div>
+    <div className="tableitem">
       <div>
-        {option.size} {symbol}
+        <TokenNamedBadgeSmall token={token} />
+      </div>
+      <div>
+        {option.size} {token.symbol}
       </div>
       <div>${option.strike}</div>
       <div className={styles.datetime}>
@@ -198,8 +201,11 @@ const WithAccount = ({ account }: { account: AccountInterface }) => {
         </div>
         <div className={styles.outer}>
           <div className={styles.inner}>
-            <div className={styles.tableheader}>
-              <div onClick={() => handleSortClick("asset")}>
+            <div className="tableheader">
+              <div
+                onClick={() => handleSortClick("asset")}
+                style={{ cursor: "pointer" }}
+              >
                 asset{" "}
                 <div
                   className={
@@ -212,7 +218,10 @@ const WithAccount = ({ account }: { account: AccountInterface }) => {
                   <ArrowIcon />
                 </div>
               </div>
-              <div onClick={() => handleSortClick("amount")}>
+              <div
+                onClick={() => handleSortClick("amount")}
+                style={{ cursor: "pointer" }}
+              >
                 amount{" "}
                 <div
                   className={
@@ -225,7 +234,10 @@ const WithAccount = ({ account }: { account: AccountInterface }) => {
                   <ArrowIcon />
                 </div>
               </div>
-              <div onClick={() => handleSortClick("price")}>
+              <div
+                onClick={() => handleSortClick("price")}
+                style={{ cursor: "pointer" }}
+              >
                 price secured{" "}
                 <div
                   className={
@@ -238,7 +250,10 @@ const WithAccount = ({ account }: { account: AccountInterface }) => {
                   <ArrowIcon />
                 </div>
               </div>
-              <div onClick={() => handleSortClick("duration")}>
+              <div
+                onClick={() => handleSortClick("duration")}
+                style={{ cursor: "pointer" }}
+              >
                 duration{" "}
                 <div
                   className={
@@ -251,7 +266,10 @@ const WithAccount = ({ account }: { account: AccountInterface }) => {
                   <ArrowIcon />
                 </div>
               </div>
-              <div onClick={() => handleSortClick("status")}>
+              <div
+                onClick={() => handleSortClick("status")}
+                style={{ cursor: "pointer" }}
+              >
                 status{" "}
                 <div
                   className={
@@ -302,7 +320,7 @@ const WithAccount = ({ account }: { account: AccountInterface }) => {
 
   return (
     <Header>
-      <div className={styles.tablecontent}>
+      <div className="tablecontent">
         {sorted.map((o, i) => (
           <PriceGuardDisplay option={o} account={account} key={i} />
         ))}

@@ -22,6 +22,12 @@ ul {
   list-style: none;
 }
 
+h1 {
+  font-family: Formula Condensed;
+  font-size: 32px;
+  font-weight: 300;
+}
+
 h3 {
   margin: 30px 0;
   font-size: 32px;
@@ -73,6 +79,18 @@ button {
   --text-color: var(--WHITE);
 }
 
+.greentext {
+  color: var(--GREEN);
+}
+
+.redtext {
+  color: var(--RED);
+}
+
+.darkgreytext {
+  color: var(--DARK-GREY);
+}
+
 .divider {
   height: 1px;
   border-top: 1px solid var(--DARK-GREY);
@@ -85,7 +103,48 @@ button.active {
 
 main {
   width: 100%;
-  padding: 80px 200px;
+  padding: 80px 7.2vw;
+}
+
+.tableheader {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0;
+  padding: 6px 0;
+  border-top: 1px solid var(--DARK-GREY);
+  border-bottom: 1px solid var(--DARK-GREY);
+  text-align: left;
+}
+
+.tableheader>div {
+  flex: 1;
+  box-sizing: border-box;
+  color: var(--DARK-GREY);
+  font-size: 12px;
+  text-transform: uppercase;
+  display: flex;
+  gap: 3px;
+}
+
+.tablecontent {
+  display: flex;
+  flex-flow: column;
+  gap: 8px;
+}
+
+.tableitem {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0;
+  padding: 4px 0;
+  font-size: 15px;
+  font-weight: 500;
+  text-align: left;
+}
+
+.tableitem>div {
+  flex: 1;
+  text-transform: uppercase;
 }
 
 input[type='number']::-webkit-inner-spin-button,

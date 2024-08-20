@@ -5,11 +5,10 @@ import OptionsTable from "./OptionsTable";
 import { isCall, isLong, uniquePrimitiveValues } from "../../utils/utils";
 import { LoadingAnimation } from "../Loading/Loading";
 import { NoContent } from "../TableNoContent";
-import { fetchOptionsWithType } from "./fetchOptions";
+import { fetchOptions } from "./fetchOptions";
 import { useQuery } from "react-query";
 import { QueryKeys } from "../../queries/keys";
-import { OptionWithPremia } from "../../classes/Option";
-import { PairKey } from "../../classes/Pair";
+import { Pair, PairKey } from "../../classes/Pair";
 import { PairNamedBadge } from "../TokenBadge";
 import { BtcToken, EthToken, StrkToken, UsdcToken } from "../../classes/Token";
 
@@ -27,49 +26,18 @@ const getText = (type: OptionType, side: OptionSide | "all") => {
   } options.`;
 };
 
-type ContentProps = {
-  options: OptionWithPremia[];
-  type: OptionType;
-  side: OptionSide | "all";
-  loading: boolean;
-  error: boolean;
-};
-
-const Content = ({ options, type, side, loading, error }: ContentProps) => {
-  if (loading)
-    return (
-      <div>
-        <LoadingAnimation size={40} />
-      </div>
-    );
-
-  if (error) return <NoContent text="Option not available at the moment" />;
-
-  return (
-    <>
-      {options.length === 0 ? (
-        <NoContent text={getText(type, side)} />
-      ) : (
-        <OptionsTable options={options} />
-      )}
-    </>
-  );
-};
-
 export const TradeTable = () => {
   const { isLoading, isError, data } = useQuery(
-    QueryKeys.optionsWithType,
-    fetchOptionsWithType
+    QueryKeys.options,
+    fetchOptions
   );
   const [side, setSide] = useState<OptionSide.Long | OptionSide.Short | "all">(
     "all"
   );
   const [maturity, setMaturity] = useState<number | undefined>();
-  const [type, setCallPut] = useState<OptionType>(
-    data ? data[1] : OptionType.Call
-  );
-  const [typeSet, setTypeSet] = useState(false);
+  const [type, setCallPut] = useState<OptionType>(OptionType.Call);
   const [pair, setPair] = useState<PairKey>(PairKey.STRK_USDC);
+  const tokenPair = Pair.pairByKey(pair);
 
   if (isLoading) {
     return <LoadingAnimation />;
@@ -79,14 +47,7 @@ export const TradeTable = () => {
     return <div>Something went wrong</div>;
   }
 
-  if (!typeSet && data && data[1]) {
-    setCallPut(data[1]);
-    setTypeSet(true);
-  }
-
-  const maturities = data[0]
-    .map((o) => o.maturity)
-    .filter(uniquePrimitiveValues);
+  const maturities = data.map((o) => o.maturity).filter(uniquePrimitiveValues);
 
   if (maturity === undefined) {
     if (maturities.length) {
@@ -94,13 +55,15 @@ export const TradeTable = () => {
     }
   }
 
-  const filtered = data[0].filter(
-    (option) =>
-      (side === "all" ? true : option.isSide(side)) &&
-      option.isType(type) &&
-      option.isPair(pair) &&
-      option.maturity === maturity
-  );
+  const filtered = data
+    .filter(
+      (option) =>
+        (side === "all" ? true : option.isSide(side)) &&
+        option.isType(type) &&
+        option.isPair(pair) &&
+        option.maturity === maturity
+    )
+    .sort((a, b) => a.strike - b.strike);
 
   const formatTimestamp = (timestamp: number) => {
     const date = new Date(timestamp * 1000);
@@ -204,13 +167,17 @@ export const TradeTable = () => {
         />
       </div>
       <div>
-        <Content
-          options={filtered}
-          side={OptionSide.Long}
-          type={type}
-          loading={isLoading}
-          error={isError}
-        />
+        {isLoading && (
+          <div>
+            <LoadingAnimation size={40} />
+          </div>
+        )}
+        {isError && <NoContent text="Option not available at the moment" />}
+        {!isLoading && !isError && filtered.length === 0 ? (
+          <NoContent text={getText(type, side)} />
+        ) : (
+          <OptionsTable options={filtered} tokenPair={tokenPair} side={side} />
+        )}
       </div>
     </div>
   );

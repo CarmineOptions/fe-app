@@ -1,0 +1,74 @@
+.header {
+  display: flex;
+  gap: 10px;
+}
+
+.price {
+  display: flex;
+  margin: -16px 0;
+}
+
+.price>div:nth-child(1) {
+  border-bottom: 1px solid #D8D8D8;
+  width: 100px;
+  margin-bottom: 10px;
+}
+
+.price>div:nth-child(2) {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 14.4px;
+  letter-spacing: 0.04em;
+  height: 20px;
+  padding: 3px 8px 3px 8px;
+  gap: 12px;
+  border-radius: 3px;
+  background: #D8D8D8;
+  color: #0D0E0F;
+}
+
+.price>div:nth-child(3) {
+  border-bottom: 1px solid #D8D8D8;
+  flex-grow: 1;
+  margin-bottom: 10px;
+}
+
+.premiacontainer {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.long {
+  color: var(--GREEN);
+}
+
+.short {
+  color: var(--RED);
+}
+
+.square {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin-bottom: 1px;
+  border-radius: 1px;
+}
+
+.long .square {
+  background-color: var(--GREEN);
+}
+
+.short .square {
+  background-color: var(--RED);
+}
+
+.long path {
+  fill: #072B0D;
+}
+
+.short path {
+  fill: #2B0A07;
+}

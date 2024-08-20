@@ -5,6 +5,13 @@
   border-radius: 100%;
 }
 
+.containersmall {
+  display: inline-block;
+  width: 21px;
+  height: 21px;
+  border-radius: 100%;
+}
+
 .named {
   font-size: 32px;
   font-weight: 300;
@@ -15,7 +22,21 @@
   gap: 10px;
 }
 
+.namedsmall {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 18px;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
 .container img {
+  width: 100%;
+}
+
+.containersmall img {
   width: 100%;
 }
 
