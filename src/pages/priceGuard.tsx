@@ -1,36 +1,34 @@
 import { Helmet } from "react-helmet";
 import { Layout } from "../components/Layout";
-import { BuyPriceGuardBox } from "../components/PriceGuard/BuyPriceGuardBox";
-import { ActivePriceGuard } from "../components/PriceGuard/ActivePriceGuard";
-import { ClaimPriceGuard } from "../components/PriceGuard/ClaimPriceGuard";
-import styles from "./priceGuard.module.css";
 import { CrmBanner } from "../components/Banner";
+import { UserPriceGuard, PriceGuard } from "../components/PriceGuard";
 
-const PriceGuard = () => {
+const PriceGuardPage = () => {
   return (
     <Layout>
       <Helmet>
-        <title>PriceGuard | Carmine Options AMM</title>
+        <title>Price Protect | Carmine Options AMM</title>
         <meta
           name="description"
-          content="Insure the value of your crypto assets"
+          content="Protect the price of your crypto assets"
         />
       </Helmet>
       <CrmBanner />
-      <h3>PriceGuard</h3>
-      <BuyPriceGuardBox />
-      <div className={styles.container}>
-        <div>
-          <h3>Active PriceGuard</h3>
-          <ActivePriceGuard />
-        </div>
-        <div>
-          <h3>Claimable PriceGuard</h3>
-          <ClaimPriceGuard />
-        </div>
-      </div>
+      <h3>Price Protect</h3>
+      <p>
+        Safeguard your holdings from major price movement.{" "}
+        <a
+          rel="noopener nofollow noreferrer"
+          target="_blank"
+          href="https://docs.carmine.finance/carmine-options-amm/use-cases"
+        >
+          Learn more
+        </a>
+      </p>
+      <PriceGuard />
+      <UserPriceGuard />
     </Layout>
   );
 };
 
-export default PriceGuard;
+export default PriceGuardPage;

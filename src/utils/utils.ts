@@ -54,16 +54,24 @@ export const timestampToShortTimeDate = (ts: number): string =>
     day: "numeric",
   }).format(ts);
 
-export const timestampToPriceGuardDate = (ts: number): string =>
-  new Intl.DateTimeFormat("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
+export const timestampToPriceGuardDate = (ts: number): [string, string] => {
+  const date = new Date(ts * 1000);
+
+  const day = date.getDate();
+  const month = date.toLocaleString("en-US", { month: "short" });
+  const year = date.getFullYear();
+
+  const formattedDate = `${day} ${month}, ${year}`;
+
+  // Format the time as "2:30 PM"
+  const formattedTime = date.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "numeric",
     hour12: true,
-  }).format(ts);
+  });
+
+  return [formattedDate, formattedTime];
+};
 
 export const timestampToDateAndTime = (ts: number): [string, string] => {
   const date = new Intl.DateTimeFormat("default", {
