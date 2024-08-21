@@ -85,7 +85,7 @@ export const approveAndTradeOpen = async (
       }),
     };
 
-    fetch(apiUrl("priceGuard-event"), options)
+    fetch(apiUrl("insurance-event"), options)
       .then((response) => {
         debug("PriceGuard event sent", response);
       })
@@ -186,7 +186,7 @@ export const approveAndTradeOpenNew = async (
       }),
     };
 
-    fetch(apiUrl("priceGuard-event"), options)
+    fetch(apiUrl("insurance-event"), options)
       .then((response) => {
         debug("PriceGuard event sent", response);
       })
