@@ -11,6 +11,7 @@ import { useUserBalance } from "../../hooks/useUserBalance";
 import { shortInteger } from "../../utils/computations";
 import { math64toDecimal } from "../../utils/units";
 import { useAccount } from "../../hooks/useAccount";
+import { openWalletConnectDialog } from "../ConnectWallet/Button";
 
 type Props = {
   pool: Pool;
@@ -81,10 +82,6 @@ export const PoolSidebar = ({ pool }: Props) => {
       ? 0
       : poolData.value;
 
-  if (userPoolData) {
-    console.log(account?.address, userPoolData, poolData);
-  }
-
   return (
     <div className={styles.sidebar}>
       <div className={styles.desc}>
@@ -138,9 +135,18 @@ export const PoolSidebar = ({ pool }: Props) => {
         </div>
         <div>
           <div>
-            <button className={`primary active ${styles.mainbutton}`}>
-              {action}
-            </button>
+            {account ? (
+              <button className={`primary active ${styles.mainbutton}`}>
+                {action}
+              </button>
+            ) : (
+              <button
+                onClick={openWalletConnectDialog}
+                className={`primary active ${styles.mainbutton}`}
+              >
+                Connect Wallet
+              </button>
+            )}
           </div>
         </div>
       </div>

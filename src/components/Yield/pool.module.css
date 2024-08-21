@@ -4,7 +4,6 @@
   width: 270px;
   background: #121314;
   border-radius: 2px;
-  padding: 20px;
 }
 
 .desc {
@@ -46,6 +45,7 @@
   align-items: center;
   justify-content: center;
   padding: 20px;
+  padding-top: 0;
 }
 
 .button>button {

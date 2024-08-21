@@ -54,7 +54,7 @@ export const PoolCard = ({ pool }: Props) => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.desc}>
+      <div className={styles.desc} style={{ padding: "20px" }}>
         <PairNamedBadge
           tokenA={pool.baseToken}
           tokenB={pool.quoteToken}
@@ -69,7 +69,7 @@ export const PoolCard = ({ pool }: Props) => {
           <span>{pool.underlying.symbol}</span>
         </div>
       </div>
-      <div className={styles.content}>
+      <div className={styles.content} style={{ padding: "20px" }}>
         <div className={`${styles.big} ${styles.apart}`}>
           <span className="greytext">APY</span>{" "}
           <span className={apy.launch_annualized > 0 ? "greentext" : "redtext"}>

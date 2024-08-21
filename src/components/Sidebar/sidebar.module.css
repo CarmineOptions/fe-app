@@ -30,8 +30,17 @@
   position: absolute;
   top: 0;
   height: 100%;
-  right: 360px;
+  right: 0px;
+  opacity: 0;
   width: 50px;
   z-index: 3;
+  border-right: 1px solid #4B3707;
   background: linear-gradient(to left, rgba(75, 55, 7, 0.5), rgba(75, 55, 7, 0.3) 30%, rgba(75, 55, 7, 0) 75%);
+  transition: right 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+.show {
+  right: 360px;
+  opacity: 1;
+  transition: right 0.5s ease-in-out, opacity 0.5s ease-in-out;
 }

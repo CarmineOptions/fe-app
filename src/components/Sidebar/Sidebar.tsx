@@ -1,4 +1,4 @@
-import { MouseEvent, useEffect } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 
 import styles from "./sidebar.module.css";
 import { useSelector } from "react-redux";
@@ -7,10 +7,17 @@ import { closeSidebar } from "../../redux/actions";
 
 export const Sidebar = () => {
   const { sidebarOpen, sidebarContent } = useSelector((s: RootState) => s.ui);
+  const [show, setShow] = useState(false);
 
-  let effect = "";
+  const effect = show ? `${styles.effect} ${styles.show}` : styles.effect;
 
-  useEffect(() => {});
+  useEffect(() => {
+    if (sidebarOpen) {
+      setShow(true);
+    } else {
+      setShow(false);
+    }
+  }, [sidebarOpen]);
 
   const handleSidebarClick = (event: MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
@@ -28,9 +35,7 @@ export const Sidebar = () => {
       {sidebarOpen && (
         <div className={styles.overlay} onClick={closeSidebar}></div>
       )}
-      {sidebarOpen && (
-        <div className={styles.effect} onClick={closeSidebar}></div>
-      )}
+      {sidebarOpen && <div className={effect} onClick={closeSidebar}></div>}
     </>
   );
 };
