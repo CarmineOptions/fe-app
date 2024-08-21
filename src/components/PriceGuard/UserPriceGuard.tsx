@@ -17,7 +17,7 @@ import { afterTransaction } from "../../utils/blockchain";
 import { invalidatePositions } from "../../queries/client";
 import { ToastType } from "../../redux/reducers/ui";
 import { ReactComponent as ArrowIcon } from "./arrow.svg";
-import { TokenNamedBadgeSmall } from "../TokenBadge/Badge";
+import { TokenNamedBadge } from "../TokenBadge/Badge";
 
 const PriceGuardDisplay = ({
   option,
@@ -62,7 +62,7 @@ const PriceGuardDisplay = ({
   return (
     <div className="tableitem">
       <div>
-        <TokenNamedBadgeSmall token={token} />
+        <TokenNamedBadge token={token} size={21} />
       </div>
       <div>
         {option.size} {token.symbol}

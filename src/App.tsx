@@ -31,6 +31,7 @@ import BattlechartsPage from "./pages/battlecharts";
 import PriceGuardPage from "./pages/priceGuard";
 
 import "./style/base.css";
+import YieldPage from "./pages/yield";
 
 const App = () => {
   const [check, rerender] = useState(false);
@@ -72,6 +73,7 @@ const App = () => {
                 <Route path="/rewards" element={<StarknetRewards />} />
                 <Route path="/battlecharts" element={<BattlechartsPage />} />
                 <Route path="/priceprotect" element={<PriceGuardPage />} />
+                <Route path="/yield" element={<YieldPage />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Router>

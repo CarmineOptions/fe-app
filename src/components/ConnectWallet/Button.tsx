@@ -178,8 +178,6 @@ export const WalletButton = () => {
     return <AccountInfo />;
   }
 
-  console.log("WWWWTTTTTFFFFFF", styles);
-
   return (
     <button
       className={`primary active ${styles.custom}`}

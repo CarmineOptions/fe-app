@@ -1,18 +1,27 @@
+import { useQuery } from "react-query";
 import { TokenKey } from "../classes/Token";
-import { getTokenValueInUsd } from "../tokens/tokenPrices";
-import { useState, useEffect } from "react";
+import { apiUrl } from "../api";
+import { ApiResponse, TokenPriceData } from "../types/api";
+import { QueryKeys } from "../queries/keys";
+
+const tokenPriceQuery = async () => {
+  const url = apiUrl("token-prices");
+  const res = await fetch(url);
+  const body = (await res.json()) as ApiResponse<TokenPriceData>;
+  if (body.status === "success") {
+    return body.data;
+  }
+};
 
 export const useCurrency = (id: TokenKey): number | undefined => {
-  const delay = 1000;
-  const [current, setCurrent] = useState<number | undefined>(undefined);
-  const cb = () => getTokenValueInUsd(id).then((res) => setCurrent(res));
+  const { isLoading, isError, data } = useQuery(
+    [QueryKeys.tokenPrices],
+    tokenPriceQuery
+  );
 
-  useEffect(() => {
-    cb();
-    const id = setInterval(cb, delay);
+  if (isLoading || isError || !data) {
+    return undefined;
+  }
 
-    return () => clearInterval(id);
-  });
-
-  return current;
+  return data[id];
 };

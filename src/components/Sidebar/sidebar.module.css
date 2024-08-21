@@ -1,0 +1,26 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 2;
+  height: 100%;
+}
+
+.sidebar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 360px;
+  z-index: 3;
+  border: 1px solid var(--LIGHT-GREY);
+  background: black;
+  transition: right 0.5s ease-in-out;
+}
+
+.sidebar.closed {
+  right: -360px;
+}

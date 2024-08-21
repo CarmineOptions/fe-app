@@ -9,6 +9,8 @@ import {
   setCloseOptionState,
   setGovernanceSubpageState,
   setParamState,
+  setSidebarContentState,
+  setSidebarOpenState,
   setToastState,
   setTransferDataModalState,
   setTransferDialogShown,
@@ -27,6 +29,7 @@ import {
   TransactionAction,
   TransactionStatus,
 } from "./reducers/transactions";
+import { ReactNode } from "react";
 
 export const updateSettings = (v: Partial<Settings>) =>
   store.dispatch(updateSettingsState(v));
@@ -123,3 +126,10 @@ export const addReferredPair = (pair: ReferralSent) =>
 
 export const setGovernanceSubpage = (subpage: GovernanceSubpage) =>
   store.dispatch(setGovernanceSubpageState(subpage));
+
+export const openSidebar = () => store.dispatch(setSidebarOpenState(true));
+
+export const closeSidebar = () => store.dispatch(setSidebarOpenState(false));
+
+export const setSidebarContent = (node: ReactNode | null) =>
+  store.dispatch(setSidebarContentState(node));

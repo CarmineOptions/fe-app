@@ -1,0 +1,158 @@
+.container {
+  display: flex;
+  flex-flow: column;
+  width: 270px;
+  background: #121314;
+  border-radius: 2px;
+}
+
+.desc {
+  display: flex;
+  flex-flow: column;
+  gap: 8px;
+  background: #240807;
+  padding: 20px;
+}
+
+.desc .poolid {
+  display: inline-flex;
+  width: max-content;
+  align-items: center;
+  gap: 4px;
+  border-radius: 2px;
+  padding: 2px 4px;
+  color: #161616;
+  background: #D9D9D9;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 15.6px;
+}
+
+.desc .asset {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.desc .asset span:first-child {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 15.6px;
+  color: #727272;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.button>button {
+  width: 100%;
+  height: 36px;
+}
+
+.content {
+  display: flex;
+  flex-flow: column;
+  padding: 20px;
+  gap: 12px;
+}
+
+.apart {
+  display: flex;
+  justify-content: space-between;
+}
+
+.under {
+  display: flex;
+  flex-flow: column;
+}
+
+.under>span {
+  align-self: flex-end;
+}
+
+.tiny {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 15.6px;
+  color: var(--DARK-GREY);
+}
+
+.small {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 15.6px;
+}
+
+.big {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 19.5px;
+}
+
+.poollist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.sidebar {
+  background: #151515;
+  padding: 80px 20px;
+  display: flex;
+  gap: 24px;
+  flex-flow: column;
+  height: 100%;
+}
+
+.sidebar .desc {
+  background: #151515;
+}
+
+.action {
+  display: flex;
+  flex-flow: column;
+  background: #1A1A1A;
+  padding: 12px;
+  gap: 24px;
+  border-radius: 4px;
+}
+
+.actionbuttons {
+  display: flex;
+  gap: 2px;
+}
+
+button.active {
+  background: #F3F3F3;
+  color: #101010;
+}
+
+.tokeninput {
+  display: flex;
+  border: 0.5px solid var(--GREY);
+  align-items: center;
+}
+
+.tokeninput>div:first-child {
+  flex-grow: 1;
+  padding: 8px 12px;
+}
+
+.tokeninput>div:last-child {
+  padding: 18px;
+  background: #2B2A2A;
+  display: flex;
+}
+
+.tokeninput input {
+  border: none;
+  width: 100%;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 23.4px;
+  color: white;
+}

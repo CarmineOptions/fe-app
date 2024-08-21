@@ -8,6 +8,7 @@
   --GREEN: #37CB4F;
   --RED: #CB3737;
   --LIGHT-GREY: #888;
+  --GREY: #727272;
   --DARK-GREY: #414142;
 }
 
@@ -59,6 +60,25 @@ button {
   background: none;
 }
 
+input {
+  margin: 0;
+  padding: 0;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 19.5px;
+  min-width: 72px;
+  min-height: 24px;
+  padding: 2px 4px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  --bg-color: var(--LIGHT-GREY);
+  --text-color: var(--BLACK);
+  border: 1px solid var(--bg-color);
+  color: var(--bg-color);
+  background: none;
+}
+
 .primary {
   --bg-color: var(--GOLD);
   --text-color: var(--BLACK);
@@ -87,6 +107,10 @@ button {
   color: var(--RED);
 }
 
+.greytext {
+  color: var(--GREY);
+}
+
 .darkgreytext {
   color: var(--DARK-GREY);
 }
@@ -102,6 +126,7 @@ button.active {
 }
 
 main {
+  position: relative;
   width: 100%;
   padding: 80px 7.2vw;
 }

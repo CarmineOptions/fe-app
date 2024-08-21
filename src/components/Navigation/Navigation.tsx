@@ -21,7 +21,7 @@ export const Navigation = () => {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/staking">
+                <NavLink to="/yield">
                   <MenuIcon /> Yield
                 </NavLink>
               </li>

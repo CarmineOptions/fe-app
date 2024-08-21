@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import { OptionWithPosition } from "../../classes/Option";
 import { TransferData } from "../../components/Transfer/transfer";
+import { ReactNode } from "react";
 
 export enum DialogContentElem {
   Wallet = "Wallet",
@@ -55,6 +56,8 @@ export interface UiState {
   portfolioParam?: PortfolioParamType;
   governanceSubpage: GovernanceSubpage;
   referralsSent: ReferralSent[];
+  sidebarOpen: boolean;
+  sidebarContent: ReactNode | null;
 }
 
 export const ui = createSlice({
@@ -67,6 +70,8 @@ export const ui = createSlice({
     portfolioParam: PortfolioParamType.Position,
     governanceSubpage: GovernanceSubpage.Voting,
     referralsSent: [],
+    sidebarOpen: false,
+    sidebarContent: null,
   } as UiState,
   reducers: {
     toggleDialog: (state, action: { payload: Partial<UiState> }) => {
@@ -110,6 +115,14 @@ export const ui = createSlice({
       state.referralsSent = [...state.referralsSent, action.payload];
       return state;
     },
+    setSidebarOpenState: (state, action: { payload: boolean }) => {
+      state.sidebarOpen = action.payload;
+      return state;
+    },
+    setSidebarContentState: (state, action: { payload: ReactNode | null }) => {
+      state.sidebarContent = action.payload;
+      return state;
+    },
   },
 });
 
@@ -122,4 +135,6 @@ export const {
   setParamState,
   setGovernanceSubpageState,
   addReferredPairState,
+  setSidebarOpenState,
+  setSidebarContentState,
 } = ui.actions;
