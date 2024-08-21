@@ -36,10 +36,6 @@ const OptionsTable = ({ options, tokenPair, side }: Props) => {
   const index =
     priceReady && filtered.findIndex((o) => o.strike > basePrice / quotePrice);
 
-  if (priceReady) {
-    console.log("INDEX", index);
-  }
-
   return (
     <>
       <div className="tableheader">

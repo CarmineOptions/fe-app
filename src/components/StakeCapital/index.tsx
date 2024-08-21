@@ -1,6 +1,4 @@
 import { TableWrapper } from "../TableWrapper/TableWrapper";
-import { PoolCard } from "./PoolCard";
-import { PoolList } from "./PoolList";
 import { StakeCapitalParent } from "./StakeCapitalParent";
 
 const StakeCapital = () => (
@@ -10,5 +8,3 @@ const StakeCapital = () => (
 );
 
 export default StakeCapital;
-
-export { PoolCard, PoolList };

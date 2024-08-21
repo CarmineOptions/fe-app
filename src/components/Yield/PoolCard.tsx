@@ -78,7 +78,10 @@ export const PoolCard = ({ pool }: Props) => {
         </div>
         <div className={styles.under}>
           <div className={`${styles.big} ${styles.apart}`}>
-            <span className="greytext">TVL</span> <span>{tvl.toFixed(2)}</span>
+            <span className="greytext">TVL</span>{" "}
+            <span>
+              {tvl.toFixed(2)} {pool.underlying.symbol}
+            </span>
           </div>
           <span className={styles.tiny}>
             {price === undefined ? "---" : `$${(price * tvl).toFixed(2)}`}

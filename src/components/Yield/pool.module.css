@@ -4,6 +4,7 @@
   width: 270px;
   background: #121314;
   border-radius: 2px;
+  padding: 20px;
 }
 
 .desc {
@@ -11,7 +12,6 @@
   flex-flow: column;
   gap: 8px;
   background: #240807;
-  padding: 20px;
 }
 
 .desc .poolid {
@@ -56,7 +56,7 @@
 .content {
   display: flex;
   flex-flow: column;
-  padding: 20px;
+  padding: 20px 0;
   gap: 12px;
 }
 
@@ -155,4 +155,65 @@ button.active {
   font-weight: 500;
   line-height: 23.4px;
   color: white;
+}
+
+.balance {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.balance>span {
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 15.48px;
+  letter-spacing: -0.02em;
+}
+
+.balance>button {
+  width: 26px;
+  min-width: 0;
+  min-height: 0;
+  height: 15px;
+  padding: 0 4px;
+  border-radius: 2px;
+  background: #FFFBF2;
+  color: var(--GOLD);
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 11.61px;
+  letter-spacing: -0.02em;
+}
+
+.mainbutton {
+  width: 100%;
+  text-transform: capitalize;
+  height: 36px;
+}
+
+.userpos {
+  display: flex;
+  flex-flow: column;
+}
+
+.userpos>div:nth-child(2) {
+  display: flex;
+  gap: 8px;
+}
+
+.userpos>div:first-child>span {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 19.5px;
+}
+
+.userpos>div:nth-child(2)>span {
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 31.2px;
+}
+
+.userpos>div:nth-child(3) {
+  line-height: 0;
 }

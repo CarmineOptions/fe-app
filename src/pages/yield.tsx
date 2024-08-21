@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet";
 import { Layout } from "../components/Layout";
-import { PoolList } from "../components/StakeCapital";
+import { PoolList } from "../components/Yield";
 
 const YieldPage = () => {
   return (

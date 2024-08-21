@@ -15,12 +15,23 @@
   right: 0;
   height: 100%;
   width: 360px;
-  z-index: 3;
+  z-index: 4;
   border: 1px solid var(--LIGHT-GREY);
+  border-left: 1px solid #4B3707;
   background: black;
   transition: right 0.5s ease-in-out;
 }
 
 .sidebar.closed {
   right: -360px;
+}
+
+.effect {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  right: 360px;
+  width: 50px;
+  z-index: 3;
+  background: linear-gradient(to left, rgba(75, 55, 7, 0.5), rgba(75, 55, 7, 0.3) 30%, rgba(75, 55, 7, 0) 75%);
 }
