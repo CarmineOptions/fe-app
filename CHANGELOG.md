@@ -1,3 +1,10 @@
+## [1.8.1](https://github.com/CarmineOptions/fe-app/compare/v1.8.0...v1.8.1) (2024-08-21)
+
+
+### Bug Fixes
+
+* Update config-testnet.json ([1200a92](https://github.com/CarmineOptions/fe-app/commit/1200a92f8727dfb7f521f65b0068df28611fc897))
+
 # [1.8.0](https://github.com/CarmineOptions/fe-app/compare/v1.7.0...v1.8.0) (2024-08-20)
 
 
