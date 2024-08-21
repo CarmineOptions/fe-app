@@ -1,3 +1,10 @@
+## [1.8.2](https://github.com/CarmineOptions/fe-app/compare/v1.8.1...v1.8.2) (2024-08-21)
+
+
+### Bug Fixes
+
+* insurance event ([2777a28](https://github.com/CarmineOptions/fe-app/commit/2777a284de62cd10a47b89acc88faff01f987ad7))
+
 ## [1.8.1](https://github.com/CarmineOptions/fe-app/compare/v1.8.0...v1.8.1) (2024-08-21)
 
 
