@@ -142,7 +142,6 @@ export const PriceGuard = () => {
     setCurrency(newCurrency);
     if (options.length) {
       setCurrentStrike(options[0].strike);
-      setExpiry(options[0].maturity);
     }
   };
 
@@ -184,7 +183,7 @@ export const PriceGuard = () => {
     .filter(uniquePrimitiveValues)
     .sort();
 
-  if (options.length > 0 && !expiry) {
+  if (options.length > 0 && (!expiry || !expiries.includes(expiry))) {
     setExpiry(expiries[0]);
   }
 
@@ -399,7 +398,9 @@ export const PriceGuard = () => {
         <span className={styles.title}>Final coverage price</span>
         <span className={styles.finalprice}>
           {priceLoading || price === undefined ? (
-            <LoadingAnimation size={20} />
+            <div style={{ height: "46.78px" }}>
+              <LoadingAnimation size={20} />
+            </div>
           ) : (
             <div>
               <span>${price.toFixed(3)}</span>

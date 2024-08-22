@@ -318,7 +318,7 @@ export const UserPriceGuard = () => {
     return (
       <div className={styles.wrapper}>
         <h3>My Price Protect</h3>
-        <p>Connect your wallet to voew active & claimable Price Protections</p>
+        <p>Connect your wallet to view active & claimable Price Protections</p>
         <button onClick={openWalletConnectDialog}>Connect Wallet</button>
       </div>
     );
