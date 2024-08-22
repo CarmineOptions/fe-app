@@ -1,3 +1,10 @@
+## [1.8.4](https://github.com/CarmineOptions/fe-app/compare/v1.8.3...v1.8.4) (2024-08-22)
+
+
+### Bug Fixes
+
+* correct link for developers ([821f806](https://github.com/CarmineOptions/fe-app/commit/821f8062d56bdd6d8e913976548004484eace3bd))
+
 ## [1.8.3](https://github.com/CarmineOptions/fe-app/compare/v1.8.2...v1.8.3) (2024-08-22)
 
 
