@@ -59,7 +59,7 @@ export const MenuContent = ({ handleClose }: Props) => {
       </div>
       <div className={styles.stack}>
         <a
-          href="https://carmine.finance/developers"
+          href="https://www.carmine.finance/for-builders"
           target="_blank"
           rel="noreferrer"
         >
