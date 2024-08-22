@@ -1,3 +1,10 @@
+## [1.8.3](https://github.com/CarmineOptions/fe-app/compare/v1.8.2...v1.8.3) (2024-08-22)
+
+
+### Bug Fixes
+
+* minor price protect issues ([9fcddac](https://github.com/CarmineOptions/fe-app/commit/9fcddac0eaf4d09a85ec5251d204356f0ce9096a))
+
 ## [1.8.2](https://github.com/CarmineOptions/fe-app/compare/v1.8.1...v1.8.2) (2024-08-21)
 
 
