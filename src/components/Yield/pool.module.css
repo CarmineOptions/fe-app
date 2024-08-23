@@ -108,8 +108,22 @@
   height: 100%;
 }
 
+.sidebar.success {
+  color: black;
+  background: var(--GOLD);
+}
+
+.sidebar.success span {
+  color: black;
+  background: var(--GOLD);
+}
+
 .sidebar .desc {
   background: #151515;
+}
+
+.sidebar .desc.success {
+  background: var(--GOLD);
 }
 
 .action {
@@ -186,12 +200,6 @@ button.active {
   letter-spacing: -0.02em;
 }
 
-.mainbutton {
-  width: 100%;
-  text-transform: capitalize;
-  height: 36px;
-}
-
 .userpos {
   display: flex;
   flex-flow: column;
@@ -216,4 +224,21 @@ button.active {
 
 .userpos>div:nth-child(3) {
   line-height: 0;
+}
+
+.successmessage>span {
+  font-family: Formula Condensed;
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 76.8px;
+}
+
+.txlink {
+  text-transform: uppercase;
+  text-decoration: none;
+  color: black;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 15.6px;
+  text-align: center;
 }

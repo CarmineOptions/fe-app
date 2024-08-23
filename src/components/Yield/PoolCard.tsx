@@ -9,6 +9,7 @@ import { useCurrency } from "../../hooks/useCurrency";
 import { math64toDecimal } from "../../utils/units";
 import { openSidebar, setSidebarContent } from "../../redux/actions";
 import { PoolSidebar } from "./PoolSidebar";
+import { LoadingAnimation } from "../Loading/Loading";
 
 type Props = {
   pool: Pool;
@@ -21,22 +22,77 @@ export const PoolCard = ({ pool }: Props) => {
   );
   const price = useCurrency(pool.underlying.id);
 
+  const handleClick = () => {
+    setSidebarContent(<PoolSidebar pool={pool} />);
+    openSidebar();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   if (isLoading) {
     return (
-      <div className={styles.container}>
-        <div>
-          <PairNamedBadge tokenA={pool.baseToken} tokenB={pool.quoteToken} />
+      <div className={styles.container} style={{ height: "410px" }}>
+        <div className={styles.desc} style={{ padding: "20px" }}>
+          <PairNamedBadge
+            tokenA={pool.baseToken}
+            tokenB={pool.quoteToken}
+            size={32}
+          />
+          <div className={styles.poolid}>
+            <TokenBadge token={pool.underlying} size={15} />{" "}
+            {pool.typeAsText.toUpperCase()} POOL
+          </div>
+          <div className={styles.asset}>
+            <span>ASSET</span>
+            <span>{pool.underlying.symbol}</span>
+          </div>
         </div>
-        <div>Loading...</div>
-        <div>
-          <button className="active">View Details</button>
+        <div
+          className={styles.content}
+          style={{ padding: "20px", height: "100%" }}
+        >
+          <LoadingAnimation size={85} />
+        </div>
+        <div className={styles.button}>
+          <button onClick={handleClick} className="primary active">
+            View Details
+          </button>
         </div>
       </div>
     );
   }
 
   if (isError || !data) {
-    return <div>Oh no :O</div>;
+    return (
+      <div className={styles.container} style={{ height: "410px" }}>
+        <div className={styles.desc} style={{ padding: "20px" }}>
+          <PairNamedBadge
+            tokenA={pool.baseToken}
+            tokenB={pool.quoteToken}
+            size={32}
+          />
+          <div className={styles.poolid}>
+            <TokenBadge token={pool.underlying} size={15} />{" "}
+            {pool.typeAsText.toUpperCase()} POOL
+          </div>
+          <div className={styles.asset}>
+            <span>ASSET</span>
+            <span>{pool.underlying.symbol}</span>
+          </div>
+        </div>
+        <div
+          className={styles.content}
+          style={{ padding: "20px", height: "100%" }}
+        >
+          <h4>Something went wrong</h4>
+          <span>Loading pool state failed. Please try again later.</span>
+        </div>
+        <div className={styles.button}>
+          <button onClick={handleClick} className="primary active">
+            View Details
+          </button>
+        </div>
+      </div>
+    );
   }
 
   const { state, apy } = data;
@@ -45,12 +101,6 @@ export const PoolCard = ({ pool }: Props) => {
   const locked = shortInteger(state.locked_cap, pool.underlying.decimals);
   const poolPosition = math64toDecimal(state.pool_position);
   const tvl = unlocked + poolPosition;
-
-  const handleClick = () => {
-    setSidebarContent(<PoolSidebar pool={pool} />);
-    openSidebar();
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
 
   return (
     <div className={styles.container}>

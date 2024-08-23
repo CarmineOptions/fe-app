@@ -148,15 +148,17 @@ export const TradeTable = () => {
           }}
         />
         <span className={styles.maturity}>MATURITY</span>
-        {maturities.map((m, i) => (
-          <button
-            onClick={() => setMaturity(m)}
-            className={m === maturity ? "active secondary" : ""}
-            key={i}
-          >
-            {formatTimestamp(m)}
-          </button>
-        ))}
+        {maturities
+          .sort((a, b) => a - b)
+          .map((m, i) => (
+            <button
+              onClick={() => setMaturity(m)}
+              className={m === maturity ? "active secondary" : ""}
+              key={i}
+            >
+              {formatTimestamp(m)}
+            </button>
+          ))}
         <InfoIcon text="TODO: explain maturity" size="18px" />
         <div
           className="divider"

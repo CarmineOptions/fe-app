@@ -12,6 +12,11 @@ import { shortInteger } from "../../utils/computations";
 import { math64toDecimal } from "../../utils/units";
 import { useAccount } from "../../hooks/useAccount";
 import { openWalletConnectDialog } from "../ConnectWallet/Button";
+import { QueryKeys } from "../../queries/keys";
+import { handleDeposit } from "./handleAction";
+import { setSidebarContent } from "../../redux/actions";
+import { PoolSidebarSuccess } from "./PoolSidebarSuccess";
+import { TransactionState } from "../../types/network";
 
 type Props = {
   pool: Pool;
@@ -24,15 +29,17 @@ export const PoolSidebar = ({ pool }: Props) => {
     queryPoolCapital
   );
   const { data: userPoolData } = useQuery(
-    [`user-pool-info-${account?.address}`, account?.address],
+    [QueryKeys.stake, account?.address],
     queryUserPoolInfo
   );
   const price = useCurrency(pool.underlying.id);
   const balanceRaw = useUserBalance(pool.underlying.address);
-
   const [action, setAction] = useState<"deposit" | "withdraw">("deposit");
   const [amount, setAmount] = useState<number>(0);
   const [amountText, setAmountText] = useState<string>("");
+  const [txState, setTxState] = useState<TransactionState>(
+    TransactionState.Initial
+  );
 
   const handleChange = handleNumericChangeFactory(
     setAmountText,
@@ -47,6 +54,17 @@ export const PoolSidebar = ({ pool }: Props) => {
     }
     setAmount(balance);
     setAmountText(balance.toString(10));
+  };
+
+  const handleActionClick = () => {
+    if (action === "deposit" && account) {
+      const done = (tx: string) => {
+        setSidebarContent(
+          <PoolSidebarSuccess pool={pool} amount={amount} tx={tx} />
+        );
+      };
+      handleDeposit(account, amount, pool, setTxState, done);
+    }
   };
 
   const state = data?.state;
@@ -135,16 +153,37 @@ export const PoolSidebar = ({ pool }: Props) => {
         </div>
         <div>
           <div>
-            {account ? (
-              <button className={`primary active ${styles.mainbutton}`}>
+            {txState === TransactionState.Initial && account !== undefined ? (
+              <button
+                onClick={handleActionClick}
+                className={"primary active mainbutton"}
+              >
                 {action}
               </button>
             ) : (
               <button
                 onClick={openWalletConnectDialog}
-                className={`primary active ${styles.mainbutton}`}
+                className={"primary active mainbutton"}
               >
                 Connect Wallet
+              </button>
+            )}
+            {txState === TransactionState.Processing && (
+              <button
+                onClick={handleActionClick}
+                className={"primary active mainbutton"}
+                disabled
+              >
+                Processing...
+              </button>
+            )}
+            {txState === TransactionState.Processing && (
+              <button
+                onClick={handleActionClick}
+                className={"red active mainbutton"}
+                disabled
+              >
+                Failed
               </button>
             )}
           </div>

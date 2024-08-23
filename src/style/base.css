@@ -79,6 +79,12 @@ input {
   background: none;
 }
 
+.mainbutton {
+  width: 100%;
+  text-transform: capitalize;
+  height: 36px;
+}
+
 .primary {
   --bg-color: var(--GOLD);
   --text-color: var(--BLACK);
@@ -99,20 +105,25 @@ input {
   --text-color: var(--WHITE);
 }
 
+.blackandwhite {
+  --bg-color: black;
+  --text-color: var(--WHITE);
+}
+
 .greentext {
-  color: var(--GREEN);
+  color: var(--GREEN) !important;
 }
 
 .redtext {
-  color: var(--RED);
+  color: var(--RED) !important;
 }
 
 .greytext {
-  color: var(--GREY);
+  color: var(--GREY) !important;
 }
 
 .darkgreytext {
-  color: var(--DARK-GREY);
+  color: var(--DARK-GREY) !important;
 }
 
 .divider {
@@ -123,6 +134,12 @@ input {
 button.active {
   color: var(--text-color);
   background-color: var(--bg-color);
+}
+
+div.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 main {

@@ -1,6 +1,7 @@
 .container {
   display: inline-block;
   border-radius: 100%;
+  background: none;
 }
 
 .named {
