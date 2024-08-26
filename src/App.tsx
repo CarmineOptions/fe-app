@@ -32,6 +32,7 @@ import PriceGuardPage from "./pages/priceGuard";
 
 import "./style/base.css";
 import YieldPage from "./pages/yield";
+import SwapPage from "./pages/swap";
 
 const App = () => {
   const [check, rerender] = useState(false);
@@ -61,6 +62,7 @@ const App = () => {
                 {/* <Route path="/priceGuard" element={<PriceGuard />} /> */}
                 <Route path="/portfolio/:target?" element={<Portfolio />} />
                 <Route path="/staking" element={<StakePage />} />
+                <Route path="/swap" element={<SwapPage />} />
                 <Route
                   path="/staking-explained"
                   element={<StakingExplainedPage />}

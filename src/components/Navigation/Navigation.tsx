@@ -31,7 +31,7 @@ export const Navigation = () => {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/trade">
+                <NavLink to="/swap">
                   <MenuIcon /> Swap
                 </NavLink>
               </li>

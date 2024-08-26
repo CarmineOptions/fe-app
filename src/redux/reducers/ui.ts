@@ -25,7 +25,7 @@ export enum ToastType {
 export enum PortfolioParamType {
   AirDrop = "airdrop",
   History = "history",
-  Position = "position",
+  MyPortfolio = "my-portfolio",
   Referral = "referral",
 }
 
@@ -67,7 +67,7 @@ export const ui = createSlice({
     dialogContent: DialogContentElem.Wallet,
     toastState: { message: "", type: ToastType.Info, open: false },
     transferDialogShown: false,
-    portfolioParam: PortfolioParamType.Position,
+    portfolioParam: PortfolioParamType.MyPortfolio,
     governanceSubpage: GovernanceSubpage.Voting,
     referralsSent: [],
     sidebarOpen: false,

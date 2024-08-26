@@ -1,0 +1,12 @@
+.header {
+  display: flex;
+  gap: 16px;
+}
+
+.header>h1 {
+  cursor: pointer;
+}
+
+.header .inactive {
+  color: var(--GREY);
+}

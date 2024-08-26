@@ -12,7 +12,7 @@ const PriceGuardPage = () => {
           content="Protect the price of your crypto assets"
         />
       </Helmet>
-      <h3>Price Protect</h3>
+      <h1>Price Protect</h1>
       <p>
         Safeguard your holdings from major price movement.{" "}
         <a

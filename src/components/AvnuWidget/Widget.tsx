@@ -23,7 +23,6 @@ import { SlippageChange } from "./Slippage";
 
 import styles from "./widget.module.css";
 import inputStyles from "../../style/input.module.css";
-import buttonStyles from "../../style/button.module.css";
 import { balanceFromTokenAddress } from "../../calls/balanceOf";
 import { shortInteger } from "../../utils/computations";
 
@@ -328,7 +327,7 @@ export const Widget = () => {
         />
       )}
       <div className={styles.modalheader}>
-        <h3 style={{ marginTop: 0 }}>Swap</h3>
+        <h1>Swap</h1>
         <div onClick={() => setslippageOpen(true)}>
           <Settings />
         </div>
@@ -461,12 +460,12 @@ export const Widget = () => {
         <Skeleton
           variant="rectangular"
           className={styles.quotebox}
-          height={85}
+          height={120}
         />
       )}
       {loading ? (
-        <button disabled className={buttonStyles.disabled}>
-          <LoadingAnimation />
+        <button disabled className="mainbutton primary active">
+          <LoadingAnimation size={25} />
         </button>
       ) : (
         quotes &&
@@ -474,7 +473,7 @@ export const Widget = () => {
           <button
             disabled={notEnough}
             className={
-              notEnough ? buttonStyles.disabled : buttonStyles.secondary
+              notEnough ? "mainbutton disabled" : "mainbutton primary active"
             }
             onClick={handleSwap}
           >

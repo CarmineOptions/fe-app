@@ -5,15 +5,15 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { Airdrop } from "../components/Airdrop/Airdrop";
 import { Layout } from "../components/Layout";
-import { Positions } from "../components/PositionTable";
 import { TradeHistory } from "../components/History/History";
 import { usePortfolioParam } from "../hooks/usePortfolio";
 import { setPortfolioParam } from "../redux/actions";
 import { PortfolioParamType } from "../redux/reducers/ui";
-import buttonStyles from "../style/button.module.css";
 import { Referral } from "../components/Referral";
 import { isMainnet } from "../constants/amm";
-import { CrmBanner } from "../components/Banner";
+import { MyPortfolio } from "../components/Portfolio";
+
+import styles from "./portfolio.module.css";
 
 const Portfolio = () => {
   const portfolioParam = usePortfolioParam();
@@ -29,8 +29,8 @@ const Portfolio = () => {
       case "airdrop":
         setPortfolioParam(PortfolioParamType.AirDrop);
         break;
-      case "position":
-        setPortfolioParam(PortfolioParamType.Position);
+      case "my-portfolio":
+        setPortfolioParam(PortfolioParamType.MyPortfolio);
         break;
       case "referral":
         setPortfolioParam(PortfolioParamType.Referral);
@@ -43,14 +43,14 @@ const Portfolio = () => {
           case PortfolioParamType.AirDrop:
             setPortfolioParam(PortfolioParamType.AirDrop);
             break;
-          case PortfolioParamType.Position:
-            setPortfolioParam(PortfolioParamType.Position);
+          case PortfolioParamType.MyPortfolio:
+            setPortfolioParam(PortfolioParamType.MyPortfolio);
             break;
           case PortfolioParamType.Referral:
             setPortfolioParam(PortfolioParamType.Referral);
             break;
           default:
-            setPortfolioParam(PortfolioParamType.Position);
+            setPortfolioParam(PortfolioParamType.MyPortfolio);
             break;
         }
         break;
@@ -66,62 +66,35 @@ const Portfolio = () => {
           content="Your current positions and history of your activity"
         />
       </Helmet>
-      <CrmBanner />
-
-      <button
-        className={`${
-          portfolioParam === PortfolioParamType.AirDrop &&
-          buttonStyles.secondary
-        } ${buttonStyles.offset}`}
-        onClick={() => {
-          navigate(`/portfolio/airdrop`);
-        }}
-      >
-        Airdrop
-      </button>
-      <button
-        className={`${
-          portfolioParam === PortfolioParamType.Position &&
-          buttonStyles.secondary
-        } ${buttonStyles.offset}`}
-        onClick={() => {
-          navigate(`/portfolio/position`);
-        }}
-      >
-        Position
-      </button>
-      <button
-        className={`${
-          portfolioParam === PortfolioParamType.History &&
-          buttonStyles.secondary
-        } ${buttonStyles.offset}`}
-        onClick={() => {
-          navigate(`/portfolio/history`);
-        }}
-      >
-        History
-      </button>
-      {isMainnet && (
-        <button
-          className={`${
-            portfolioParam === PortfolioParamType.Referral &&
-            buttonStyles.secondary
-          }`}
-          onClick={() => {
-            navigate(`/portfolio/referral`);
-          }}
-        >
-          Referral
-        </button>
-      )}
+      <div className={styles.header}>
+        {[
+          PortfolioParamType.MyPortfolio,
+          PortfolioParamType.AirDrop,
+          PortfolioParamType.History,
+          PortfolioParamType.Referral,
+        ].map((subpage, i) => (
+          <h1
+            key={i}
+            className={portfolioParam === subpage ? "" : styles.inactive}
+            onClick={() => {
+              navigate(`/portfolio/${subpage}`);
+            }}
+          >
+            {subpage === PortfolioParamType.MyPortfolio && "My Portfolio"}
+            {subpage === PortfolioParamType.AirDrop && "Airdrops"}
+            {subpage === PortfolioParamType.History && "History"}
+            {subpage === PortfolioParamType.Referral && "Referral"}
+          </h1>
+        ))}
+      </div>
       {portfolioParam === PortfolioParamType.AirDrop && (
         <div>
           <Airdrop />
         </div>
       )}
-      {portfolioParam === PortfolioParamType.Position && (
+      {portfolioParam === PortfolioParamType.MyPortfolio && (
         <div>
-          <Positions />
+          <MyPortfolio />
         </div>
       )}
       {portfolioParam === PortfolioParamType.History && (
