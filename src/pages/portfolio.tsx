@@ -87,25 +87,11 @@ const Portfolio = () => {
           </h1>
         ))}
       </div>
-      {portfolioParam === PortfolioParamType.AirDrop && (
-        <div>
-          <Airdrop />
-        </div>
-      )}
-      {portfolioParam === PortfolioParamType.MyPortfolio && (
-        <div>
-          <MyPortfolio />
-        </div>
-      )}
-      {portfolioParam === PortfolioParamType.History && (
-        <div>
-          <TradeHistory />
-        </div>
-      )}
+      {portfolioParam === PortfolioParamType.AirDrop && <Airdrop />}
+      {portfolioParam === PortfolioParamType.MyPortfolio && <MyPortfolio />}
+      {portfolioParam === PortfolioParamType.History && <TradeHistory />}
       {isMainnet && portfolioParam === PortfolioParamType.Referral && (
-        <div>
-          <Referral />
-        </div>
+        <Referral />
       )}
     </Layout>
   );

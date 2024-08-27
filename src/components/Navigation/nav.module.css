@@ -1,6 +1,7 @@
 .container {
   border: 1px solid var(--LIGHT-GREY);
   border-top: none;
+  background: var(--DARK-BG);
 }
 
 .sidebar {

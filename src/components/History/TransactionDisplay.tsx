@@ -72,7 +72,7 @@ export const TradesTable = ({ trades }: TradesTableProps) => {
   const [expanded, setExpanded] = useState(false);
 
   if (trades.length === 0) {
-    return <p>There are no trade events associated with this wallet.</p>
+    return <p>There are no trade events associated with this wallet.</p>;
   }
 
   const COLLAPSED_LENGTH = 5;
@@ -145,7 +145,7 @@ export const StakesTable = ({ stakes }: StakesTableProps) => {
   const [expanded, setExpanded] = useState(false);
 
   if (stakes.length === 0) {
-    return <p>There are no liquidity events associated with this wallet.</p>
+    return <p>There are no liquidity events associated with this wallet.</p>;
   }
 
   const COLLAPSED_LENGTH = 5;
@@ -213,7 +213,7 @@ export const VotesTable = ({ votes }: VotesTableProps) => {
   const [expanded, setExpanded] = useState(false);
 
   if (votes.length === 0) {
-    return <p>There are no vote events associated with this wallet.</p>
+    return <p>There are no vote events associated with this wallet.</p>;
   }
 
   const COLLAPSED_LENGTH = 5;
@@ -261,7 +261,6 @@ export const TransactionsTable = ({
 }: TransactionsTableProps) => {
   return (
     <div>
-      <h3>Trade History</h3>
       <TradesTable trades={trades} />
       <h3 style={{ marginTop: "40px" }}>Liquidity History</h3>
       <StakesTable stakes={stakes} />

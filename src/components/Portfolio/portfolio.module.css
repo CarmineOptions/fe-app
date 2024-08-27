@@ -35,6 +35,11 @@
 
 .options {
   display: flex;
+  flex-flow: column;
+}
+
+.options>div:first-child {
+  display: flex;
   align-items: center;
   gap: 28px;
 }
@@ -42,4 +47,73 @@
 .buttons {
   display: flex;
   gap: 4px;
+}
+
+.list {
+  display: flex;
+  flex-flow: column;
+}
+
+.item {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.item>div {
+  width: 70px;
+}
+
+.item>div:nth-child(1) {
+  width: 160px;
+}
+
+.item>div:nth-child(5) {
+  width: 140px;
+}
+
+.item>div:nth-child(6) {
+  width: 80px;
+}
+
+.header {
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 23.4px;
+  border-bottom: solid 1px var(--DARK-GREY);
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+}
+
+.stakeitem {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.stakeitem>div {
+  width: 70px;
+}
+
+.stakeitem>div:nth-child(1) {
+  width: 160px;
+}
+
+.stakeitem>div:nth-child(3) {
+  width: 140px;
+}
+
+.stakeitem>div:nth-child(4) {
+  width: 140px;
+}
+
+
+.stakeitem>div:nth-child(5) {
+  width: 180px;
+}
+
+.tokenvalue {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
