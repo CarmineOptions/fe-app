@@ -2,12 +2,10 @@ import { Pool } from "../../classes/Pool";
 import { PairNamedBadge, TokenBadge } from "../TokenBadge";
 
 import styles from "./pool.module.css";
-import { useQuery } from "react-query";
-import { queryUserPoolInfo } from "./fetchStakeCapital";
 import { useCurrency } from "../../hooks/useCurrency";
-import { useAccount } from "../../hooks/useAccount";
 import { useNavigate } from "react-router-dom";
 import { closeSidebar } from "../../redux/actions";
+import { useStakes } from "../../hooks/useStakes";
 
 type Props = {
   pool: Pool;
@@ -16,11 +14,7 @@ type Props = {
 };
 
 export const PoolSidebarSuccess = ({ pool, amount, tx }: Props) => {
-  const account = useAccount();
-  const { data: userPoolData } = useQuery(
-    [`user-pool-info-${account?.address}`, account?.address],
-    queryUserPoolInfo
-  );
+  const { data: stakes } = useStakes();
   const price = useCurrency(pool.underlying.id);
   const navigate = useNavigate();
 
@@ -30,12 +24,12 @@ export const PoolSidebarSuccess = ({ pool, amount, tx }: Props) => {
   };
 
   const poolData =
-    userPoolData === undefined
+    stakes === undefined
       ? undefined
-      : userPoolData.find((p) => p.lpAddress === pool.lpAddress);
+      : stakes.find((p) => p.lpAddress === pool.lpAddress);
 
   const userPosition =
-    userPoolData === undefined
+    stakes === undefined
       ? undefined
       : poolData === undefined // got data and found nothing about this pool
       ? 0

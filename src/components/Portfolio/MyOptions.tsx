@@ -1,9 +1,6 @@
 import { AccountInterface } from "starknet";
-import { QueryKeys } from "../../queries/keys";
-import { fetchPositions } from "../PositionTable/fetchPositions";
 import { openWalletConnectDialog } from "../ConnectWallet/Button";
 import { useAccount } from "../../hooks/useAccount";
-import { useQuery } from "react-query";
 import { LoadingAnimation } from "../Loading/Loading";
 import { OptionWithPosition } from "../../classes/Option";
 
@@ -19,6 +16,7 @@ import { tradeSettle } from "../../calls/tradeSettle";
 import { afterTransaction } from "../../utils/blockchain";
 import { invalidatePositions } from "../../queries/client";
 import { ToastType } from "../../redux/reducers/ui";
+import { usePositions } from "../../hooks/usePositions";
 
 const Header = ({ state }: { state: "live" | "itm" | "otm" }) => {
   return (
@@ -185,10 +183,7 @@ export const MyOptionsWithAccount = ({
   account: AccountInterface;
   state: "live" | "itm" | "otm";
 }) => {
-  const { isLoading, isError, data } = useQuery(
-    [QueryKeys.position, account.address],
-    fetchPositions
-  );
+  const { isLoading, isError, data } = usePositions();
 
   if (isLoading) {
     return (

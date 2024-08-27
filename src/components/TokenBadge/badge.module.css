@@ -5,11 +5,14 @@
 }
 
 .named {
-  font-weight: 300;
-  text-align: left;
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+.named>span {
+  font-weight: 300;
+  text-align: left;
 }
 
 .container img {

@@ -1,16 +1,14 @@
 import { AccountInterface } from "starknet";
-import { QueryKeys } from "../../queries/keys";
 import { openWalletConnectDialog } from "../ConnectWallet/Button";
 import { useAccount } from "../../hooks/useAccount";
-import { useQuery } from "react-query";
 import { LoadingAnimation } from "../Loading/Loading";
 
 import styles from "./portfolio.module.css";
 import { PairNamedBadge, TokenBadge } from "../TokenBadge";
 import { maxDecimals } from "../../utils/utils";
-import { fetchCapital } from "../WithdrawCapital/fetchCapital";
 import { UserPoolInfo } from "../../classes/Pool";
 import { useCurrency } from "../../hooks/useCurrency";
+import { useStakes } from "../../hooks/useStakes";
 
 const Item = ({
   account,
@@ -54,10 +52,7 @@ export const MyStakeWithAccount = ({
 }: {
   account: AccountInterface;
 }) => {
-  const { isLoading, isError, data } = useQuery(
-    [QueryKeys.stake, account.address],
-    fetchCapital
-  );
+  const { isLoading, isError, data } = useStakes();
 
   if (isLoading) {
     return (

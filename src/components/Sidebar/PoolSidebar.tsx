@@ -2,21 +2,21 @@ import { useState } from "react";
 import { Pool } from "../../classes/Pool";
 import { PairNamedBadge, TokenBadge, TokenNamedBadge } from "../TokenBadge";
 
-import styles from "./pool.module.css";
 import { handleNumericChangeFactory } from "../../utils/inputHandling";
-import { useQuery } from "react-query";
-import { queryPoolCapital, queryUserPoolInfo } from "./fetchStakeCapital";
 import { useCurrency } from "../../hooks/useCurrency";
 import { useUserBalance } from "../../hooks/useUserBalance";
 import { shortInteger } from "../../utils/computations";
 import { math64toDecimal } from "../../utils/units";
 import { useAccount } from "../../hooks/useAccount";
 import { openWalletConnectDialog } from "../ConnectWallet/Button";
-import { QueryKeys } from "../../queries/keys";
-import { handleDeposit } from "./handleAction";
 import { setSidebarContent } from "../../redux/actions";
 import { PoolSidebarSuccess } from "./PoolSidebarSuccess";
 import { TransactionState } from "../../types/network";
+import { useStakes } from "../../hooks/useStakes";
+import { handleDeposit } from "../Yield/handleAction";
+import { usePoolInfo } from "../../hooks/usePoolInfo";
+
+import styles from "./pool.module.css";
 
 type Props = {
   pool: Pool;
@@ -24,14 +24,8 @@ type Props = {
 
 export const PoolSidebar = ({ pool }: Props) => {
   const account = useAccount();
-  const { data } = useQuery(
-    [`pool-data-${pool.apiPoolId}`, pool.apiPoolId],
-    queryPoolCapital
-  );
-  const { data: userPoolData } = useQuery(
-    [QueryKeys.stake, account?.address],
-    queryUserPoolInfo
-  );
+  const { data: poolInfo } = usePoolInfo(pool.apiPoolId);
+  const { data: stakes } = useStakes();
   const price = useCurrency(pool.underlying.id);
   const balanceRaw = useUserBalance(pool.underlying.address);
   const [action, setAction] = useState<"deposit" | "withdraw">("deposit");
@@ -67,8 +61,8 @@ export const PoolSidebar = ({ pool }: Props) => {
     }
   };
 
-  const state = data?.state;
-  const apy = data?.apy;
+  const state = poolInfo?.state;
+  const apy = poolInfo?.apy;
   const unlocked =
     state === undefined
       ? undefined
@@ -89,12 +83,12 @@ export const PoolSidebar = ({ pool }: Props) => {
       : shortInteger(balanceRaw, pool.underlying.decimals);
 
   const poolData =
-    userPoolData === undefined
+    stakes === undefined
       ? undefined
-      : userPoolData.find((p) => p.lpAddress === pool.lpAddress);
+      : stakes.find((p) => p.lpAddress === pool.lpAddress);
 
   const userPosition =
-    userPoolData === undefined
+    stakes === undefined
       ? undefined
       : poolData === undefined // got data and found nothing about this pool
       ? 0

@@ -8,7 +8,7 @@ import { shortInteger } from "../../utils/computations";
 import { useCurrency } from "../../hooks/useCurrency";
 import { math64toDecimal } from "../../utils/units";
 import { openSidebar, setSidebarContent } from "../../redux/actions";
-import { PoolSidebar } from "./PoolSidebar";
+import { PoolSidebar } from "../Sidebar";
 import { LoadingAnimation } from "../Loading/Loading";
 
 type Props = {

@@ -34,12 +34,17 @@ export const TokenNamedBadge = ({ token, size }: Badge) => {
   const lineHeight = 0.95 * validSize;
 
   return (
-    <div
-      className={styles.named}
-      style={{ fontSize: `${fontSize}px`, lineHeight: `${lineHeight}px` }}
-    >
+    <div className={styles.named}>
       <TokenBadge token={token} size={size} />
-      <span>{token.symbol}</span>
+      <span
+        style={{
+          fontSize: `${fontSize}px`,
+          lineHeight: `${lineHeight}px`,
+          color: "white",
+        }}
+      >
+        {token.symbol}
+      </span>
     </div>
   );
 };
@@ -67,15 +72,15 @@ export const PairNamedBadge = ({ tokenA, tokenB, size }: PairBadgeType) => {
   const lineHeight = 0.95 * validSize;
 
   return (
-    <div
-      className={styles.named}
-      style={{
-        fontSize: `${fontSize}px`,
-        lineHeight: `${lineHeight}px`,
-      }}
-    >
+    <div className={styles.named}>
       <PairBadge tokenA={tokenA} tokenB={tokenB} size={size} />
-      <span>
+      <span
+        style={{
+          fontSize: `${fontSize}px`,
+          lineHeight: `${lineHeight}px`,
+          color: "white",
+        }}
+      >
         {tokenA.symbol}/{tokenB.symbol}
       </span>
     </div>

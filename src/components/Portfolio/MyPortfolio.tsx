@@ -3,15 +3,12 @@ import styles from "./portfolio.module.css";
 import { MyOptions } from "./MyOptions";
 import { Tooltip } from "@mui/material";
 import { MyStake } from "./MyStake";
-import { useQuery } from "react-query";
-import { QueryKeys } from "../../queries/keys";
-import { useAccount } from "../../hooks/useAccount";
-import { fetchPositions } from "../PositionTable/fetchPositions";
-import { fetchCapital } from "../WithdrawCapital/fetchCapital";
 import { OptionWithPosition } from "../../classes/Option";
 import { useCurrencies } from "../../hooks/useCurrencies";
 import { TokenPriceData } from "../../types/api";
 import { UserPoolInfo } from "../../classes/Pool";
+import { usePositions } from "../../hooks/usePositions";
+import { useStakes } from "../../hooks/useStakes";
 
 const calcPositionsValue = (
   positions: OptionWithPosition[],
@@ -77,16 +74,9 @@ const calcPortfolioValue = (
 };
 
 export const MyPortfolio = () => {
-  const account = useAccount();
   const prices = useCurrencies();
-  const { data: positions } = useQuery(
-    [QueryKeys.position, account?.address || "0x0"],
-    fetchPositions
-  );
-  const { data: stakes } = useQuery(
-    [QueryKeys.stake, account?.address],
-    fetchCapital
-  );
+  const { data: positions } = usePositions();
+  const { data: stakes } = useStakes();
   const [options, setOptions] = useState<"live" | "itm" | "otm">("live");
 
   const { positionsValueUsd, stakesValueUsd, totalValueUsd } =

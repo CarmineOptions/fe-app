@@ -1,6 +1,4 @@
-import { useState } from "react";
 import { OptionWithPremia } from "../../classes/Option";
-import { OptionModal } from "./OptionModal";
 import { Pair } from "../../classes/Pair";
 import { useCurrency } from "../../hooks/useCurrency";
 import { OptionSide } from "../../types/options";
@@ -8,6 +6,8 @@ import { OptionSide } from "../../types/options";
 import { ReactComponent as PlusIcon } from "./plus.svg";
 
 import styles from "./table.module.css";
+import { openSidebar, setSidebarContent } from "../../redux/actions";
+import { OptionSidebar } from "../Sidebar";
 
 type Props = {
   options: OptionWithPremia[];
@@ -16,16 +16,14 @@ type Props = {
 };
 
 const OptionsTable = ({ options, tokenPair, side }: Props) => {
-  const [modalOption, setModalOption] = useState<OptionWithPremia>(options[0]);
-  const [open, setOpen] = useState<boolean>(false);
   const basePrice = useCurrency(tokenPair.baseToken.id);
   const quotePrice = useCurrency(tokenPair.quoteToken.id);
 
   const priceReady = basePrice !== undefined && quotePrice !== undefined;
 
   const handleOptionClick = (o: OptionWithPremia) => {
-    setModalOption(o);
-    setOpen(true);
+    setSidebarContent(<OptionSidebar option={o} />);
+    openSidebar();
     o.sendViewEvent();
   };
 
@@ -132,7 +130,6 @@ const OptionsTable = ({ options, tokenPair, side }: Props) => {
           );
         })}
       </div>
-      <OptionModal open={open} setOpen={setOpen} option={modalOption} />
     </>
   );
 };
