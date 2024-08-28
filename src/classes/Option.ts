@@ -305,7 +305,7 @@ export class Option extends Pool {
     if (this.quoteToken.id === TokenKey.USDC) {
       return "$" + this.strike;
     }
-    return this.strike + " " + this.quoteToken.symbol;
+    return this.quoteToken.symbol + " " + this.strike;
   }
 }
 

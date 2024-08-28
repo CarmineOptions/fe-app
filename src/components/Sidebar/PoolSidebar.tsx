@@ -20,35 +20,23 @@ import styles from "./pool.module.css";
 
 type Props = {
   pool: Pool;
+  initialAction?: "deposit" | "withdraw";
 };
 
-export const PoolSidebar = ({ pool }: Props) => {
+export const PoolSidebar = ({ pool, initialAction }: Props) => {
   const account = useAccount();
   const { data: poolInfo } = usePoolInfo(pool.apiPoolId);
   const { data: stakes } = useStakes();
   const price = useCurrency(pool.underlying.id);
   const balanceRaw = useUserBalance(pool.underlying.address);
-  const [action, setAction] = useState<"deposit" | "withdraw">("deposit");
+  const [action, setAction] = useState<"deposit" | "withdraw">(
+    initialAction === undefined ? "deposit" : initialAction
+  );
   const [amount, setAmount] = useState<number>(0);
   const [amountText, setAmountText] = useState<string>("");
   const [txState, setTxState] = useState<TransactionState>(
     TransactionState.Initial
   );
-
-  const handleChange = handleNumericChangeFactory(
-    setAmountText,
-    setAmount,
-    (n) => {
-      return n;
-    }
-  );
-  const handleMax = () => {
-    if (balance === undefined) {
-      return;
-    }
-    setAmount(balance);
-    setAmountText(balance.toString(10));
-  };
 
   const state = poolInfo?.state;
   const apy = poolInfo?.apy;
@@ -82,6 +70,30 @@ export const PoolSidebar = ({ pool }: Props) => {
       : poolData === undefined // got data and found nothing about this pool
       ? 0
       : poolData.value;
+
+  const handleChange = handleNumericChangeFactory(
+    setAmountText,
+    setAmount,
+    (n) => {
+      return n;
+    }
+  );
+  const handleMax = () => {
+    if (action === "deposit") {
+      if (balance === undefined) {
+        return;
+      }
+      setAmount(balance);
+      setAmountText(balance.toString(10));
+    }
+    if (action === "withdraw") {
+      if (userPosition === undefined) {
+        return;
+      }
+      setAmount(userPosition);
+      setAmountText(userPosition.toString(10));
+    }
+  };
 
   const handleActionClick = () => {
     if (action === "deposit" && account) {

@@ -64,7 +64,7 @@ const LiveItem = ({
       </div>
       <div>{option.sideAsText}</div>
       <div>{option.typeAsText}</div>
-      <div>${option.strike}</div>
+      <div>{option.strikeWithCurrency}</div>
       <div className={styles.maturity}>
         <span>{date}</span>
         <span>{time}</span>
@@ -121,7 +121,7 @@ const OtmItem = ({
       </div>
       <div>{option.sideAsText}</div>
       <div>{option.typeAsText}</div>
-      <div>${option.strike}</div>
+      <div>{option.strikeWithCurrency}</div>
       <div className={styles.maturity}>
         <span>{date}</span>
         <span>{time}</span>
@@ -180,7 +180,7 @@ const ItmItem = ({
       </div>
       <div>{option.sideAsText}</div>
       <div>{option.typeAsText}</div>
-      <div>${option.strike}</div>
+      <div>{option.strikeWithCurrency}</div>
       <div className={styles.maturity}>
         <span>{date}</span>
         <span>{time}</span>

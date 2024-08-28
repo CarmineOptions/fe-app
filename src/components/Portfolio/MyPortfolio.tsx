@@ -101,7 +101,7 @@ export const MyPortfolio = () => {
           </span>
         </div>
         <div>
-          <span>yield</span>
+          <span>staking</span>
           <span>
             ${stakesValueUsd === undefined ? "--" : stakesValueUsd.toFixed(2)}
           </span>

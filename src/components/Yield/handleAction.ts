@@ -1,5 +1,5 @@
 import { AccountInterface } from "starknet";
-import { Pool, PoolInfo, UserPoolInfo } from "../../classes/Pool";
+import { Pool, UserPoolInfo } from "../../classes/Pool";
 import { invalidateStake } from "../../queries/client";
 import {
   addTx,

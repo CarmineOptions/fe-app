@@ -21,7 +21,7 @@ const Item = ({
 }) => {
   const price = useCurrency(stake.underlying.id);
   const handleClick = () => {
-    setSidebarContent(<PoolSidebar pool={stake} />);
+    setSidebarContent(<PoolSidebar pool={stake} initialAction="withdraw" />);
     openSidebar();
   };
 
@@ -37,7 +37,6 @@ const Item = ({
         />
       </div>
       <div>{stake.typeAsText}</div>
-      <div>{maxDecimals(stake.size, 4)}</div>
       <div className={styles.tokenvalue}>
         <TokenBadge size={25} token={stake.underlying} />{" "}
         {maxDecimals(stake.value, 3)}
@@ -80,7 +79,6 @@ export const MyStakeWithAccount = ({
       <div className={`${styles.header} ${styles.stakeitem}`}>
         <div>Pair</div>
         <div>Type</div>
-        <div>Size</div>
         <div>Value</div>
         <div>Value $</div>
         <div></div>
