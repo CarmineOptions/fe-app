@@ -8,7 +8,9 @@ import {
   ReferralSent,
   setCloseOptionState,
   setGovernanceSubpageState,
+  setIsMobileState,
   setParamState,
+  setShowNavigationState,
   setSidebarContentState,
   setSidebarOpenState,
   setToastState,
@@ -133,3 +135,9 @@ export const closeSidebar = () => store.dispatch(setSidebarOpenState(false));
 
 export const setSidebarContent = (node: ReactNode | null) =>
   store.dispatch(setSidebarContentState(node));
+
+export const setIsMobile = (isMobile: boolean) =>
+  store.dispatch(setIsMobileState(isMobile));
+
+export const setShowNavigation = (show: boolean) =>
+  store.dispatch(setShowNavigationState(show));

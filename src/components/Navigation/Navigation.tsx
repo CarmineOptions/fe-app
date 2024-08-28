@@ -2,10 +2,21 @@ import { NavLink } from "react-router-dom";
 import { ReactComponent as MenuIcon } from "./menu-item.svg";
 
 import styles from "./nav.module.css";
+import { useIsMobile } from "../../hooks/useIsMobile";
+import { useShowNavigation } from "../../hooks/useShowNavigation";
 
 export const Navigation = () => {
+  const isMobile = useIsMobile();
+  const showNavigation = useShowNavigation();
+
+  const containerClass = !isMobile
+    ? styles.container
+    : showNavigation
+    ? `${styles.container} ${styles.mobile}`
+    : `${styles.container} ${styles.mobile} ${styles.hidden}`;
+
   return (
-    <div className={styles.container}>
+    <div className={containerClass}>
       <aside className={styles.sidebar}>
         <div>
           <nav className={styles.primary}>

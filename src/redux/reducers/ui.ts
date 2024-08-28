@@ -58,6 +58,8 @@ export interface UiState {
   referralsSent: ReferralSent[];
   sidebarOpen: boolean;
   sidebarContent: ReactNode | null;
+  isMobile: boolean;
+  showNavigation: boolean;
 }
 
 export const ui = createSlice({
@@ -72,6 +74,8 @@ export const ui = createSlice({
     referralsSent: [],
     sidebarOpen: false,
     sidebarContent: null,
+    isMobile: window.innerWidth < 700,
+    showNavigation: false,
   } as UiState,
   reducers: {
     toggleDialog: (state, action: { payload: Partial<UiState> }) => {
@@ -123,6 +127,14 @@ export const ui = createSlice({
       state.sidebarContent = action.payload;
       return state;
     },
+    setIsMobileState: (state, action: { payload: boolean }) => {
+      state.isMobile = action.payload;
+      return state;
+    },
+    setShowNavigationState: (state, action: { payload: boolean }) => {
+      state.showNavigation = action.payload;
+      return state;
+    },
   },
 });
 
@@ -137,4 +149,6 @@ export const {
   addReferredPairState,
   setSidebarOpenState,
   setSidebarContentState,
+  setIsMobileState,
+  setShowNavigationState,
 } = ui.actions;
