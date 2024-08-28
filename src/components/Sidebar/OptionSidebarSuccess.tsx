@@ -1,21 +1,17 @@
-import { Pool } from "../../classes/Pool";
-import { PairNamedBadge, TokenBadge } from "../TokenBadge";
-
-import styles from "./pool.module.css";
-import { useCurrency } from "../../hooks/useCurrency";
+import { PairNamedBadge } from "../TokenBadge";
 import { useNavigate } from "react-router-dom";
 import { closeSidebar } from "../../redux/actions";
-import { useStakes } from "../../hooks/useStakes";
+import { OptionWithPremia } from "../../classes/Option";
+import poolStyles from "./pool.module.css";
+import styles from "./option.module.css";
 
 type Props = {
-  pool: Pool;
+  option: OptionWithPremia;
   amount: number;
   tx: string;
 };
 
-export const OptionSidebarSuccess = ({ pool, amount, tx }: Props) => {
-  const { data: stakes } = useStakes();
-  const price = useCurrency(pool.underlying.id);
+export const OptionSidebarSuccess = ({ option, amount, tx }: Props) => {
   const navigate = useNavigate();
 
   const handlePortfolioClick = () => {
@@ -23,66 +19,36 @@ export const OptionSidebarSuccess = ({ pool, amount, tx }: Props) => {
     closeSidebar();
   };
 
-  const poolData =
-    stakes === undefined
-      ? undefined
-      : stakes.find((p) => p.lpAddress === pool.lpAddress);
-
-  const userPosition =
-    stakes === undefined
-      ? undefined
-      : poolData === undefined // got data and found nothing about this pool
-      ? 0
-      : poolData.value;
-
   const grey = "#444444";
 
   return (
-    <div className={`${styles.sidebar} ${styles.success}`}>
-      <div className={styles.successmessage}>
+    <div className={`${poolStyles.sidebar} ${poolStyles.success}`}>
+      <div className={poolStyles.successmessage}>
         <span>SUCCESSFUL!</span>
       </div>
-      <div className={`${styles.desc} ${styles.success}`}>
-        <PairNamedBadge
-          tokenA={pool.baseToken}
-          tokenB={pool.quoteToken}
-          size={32}
-        />
-        <div className={styles.poolid}>
-          <TokenBadge token={pool.underlying} size={15} />{" "}
-          {pool.typeAsText.toUpperCase()} POOL
+      <div className={`${poolStyles.desc} ${poolStyles.success}`}>
+        <div className={styles.desc}>
+          <PairNamedBadge
+            tokenA={option.baseToken}
+            tokenB={option.quoteToken}
+            size={32}
+          />
+          <div
+            className={
+              styles.side + " " + styles[option.sideAsText.toLowerCase()]
+            }
+          >
+            {option.sideAsText}
+          </div>
         </div>
       </div>
-      <div className={styles.userpos}>
+      <div className={styles.databox}>
         <div>
-          <span style={{ color: grey }}>DEPOSITED</span>
+          <span>OPTION SIZE</span>
         </div>
         <div>
-          <span>{amount.toFixed(4)}</span>
-          <span>{pool.underlying.symbol}</span>
-        </div>
-        <div>
-          <span className={styles.tiny} style={{ color: grey }}>
-            {price === undefined ? "--" : `$${(amount * price).toFixed(2)}`}
-          </span>
-        </div>
-      </div>
-      <div className={styles.userpos}>
-        <div>
-          <span style={{ color: grey }}>MY POSITION</span>
-        </div>
-        <div>
-          <span>
-            {userPosition === undefined ? "--" : userPosition.toFixed(4)}
-          </span>
-          <span>{pool.underlying.symbol}</span>
-        </div>
-        <div>
-          <span className={styles.tiny} style={{ color: grey }}>
-            {userPosition === undefined || price === undefined
-              ? "--"
-              : `$${(userPosition * price).toFixed(2)}`}
-          </span>
+          <span style={{ color: grey }}>{amount}</span>
+          <span></span>
         </div>
       </div>
       <div>
@@ -98,7 +64,7 @@ export const OptionSidebarSuccess = ({ pool, amount, tx }: Props) => {
           href={`https://starkscan.co/tx/${tx}`}
           target="_blank"
           rel="noreferrer"
-          className={styles.txlink}
+          className={poolStyles.txlink}
         >
           View Transaction ↗
         </a>

@@ -9,13 +9,18 @@ import { useAccount } from "../../hooks/useAccount";
 import { openWalletConnectDialog } from "../ConnectWallet/Button";
 import { TransactionState } from "../../types/network";
 import { OptionWithPremia } from "../../classes/Option";
+import { debounce, timestampToPriceGuardDate } from "../../utils/utils";
+import { fetchModalData } from "../TradeTable/fetchModalData";
+import { debug, LogTypes } from "../../utils/debugger";
+import { LoadingAnimation } from "../Loading/Loading";
+import { TokenKey } from "../../classes/Token";
+import { setSidebarContent, showToast } from "../../redux/actions";
+import { ToastType } from "../../redux/reducers/ui";
+import { approveAndTradeOpenNew } from "../../calls/tradeOpen";
+import { OptionSidebarSuccess } from "./OptionSidebarSuccess";
 
 import poolStyles from "./pool.module.css";
 import styles from "./option.module.css";
-import { debounce, timestampToPriceGuardDate } from "../../utils/utils";
-import { fetchModalData } from "../TradeTable/fetchModalData";
-import { debug } from "../../utils/debugger";
-import { LoadingAnimation } from "../Loading/Loading";
 
 type Props = {
   option: OptionWithPremia;
@@ -28,7 +33,6 @@ export const OptionSidebar = ({ option }: Props) => {
   const [amount, setAmount] = useState<number>(0);
   const [amountText, setAmountText] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
-  const [sizeOnePremiaUsd, setSizeOnePremiaUsd] = useState<number>();
   const [sizeOnePremia, setSizeOnePremia] = useState<number>();
   const [premiaUsd, setPremiaUsd] = useState<number>();
   const [premia, setPremia] = useState<number>();
@@ -45,6 +49,40 @@ export const OptionSidebar = ({ option }: Props) => {
     }
   );
 
+  const handleBuy = () => {
+    if (!account) {
+      debug(LogTypes.WARN, "No account", account);
+      return;
+    }
+
+    if (balanceRaw === undefined || premiaMath64 === undefined) {
+      debug(LogTypes.WARN, "No user balance");
+      return;
+    }
+
+    if (!amount) {
+      showToast("Cannot trade size 0", ToastType.Warn);
+      return;
+    }
+
+    const callback = (tx: string) => {
+      setSidebarContent(
+        <OptionSidebarSuccess option={option} tx={tx} amount={amount} />
+      );
+    };
+
+    approveAndTradeOpenNew(
+      account,
+      option,
+      amount,
+      premiaMath64,
+      balanceRaw,
+      setTxState,
+      false, // not priceguard
+      callback // open success sidebar when done
+    ).catch(() => setTxState(TransactionState.Fail));
+  };
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const callWithDelay = useCallback(
     debounce((size: number, controller: AbortController) => {
@@ -55,7 +93,6 @@ export const OptionSidebar = ({ option }: Props) => {
             setPremia(prices.premia);
             setPremiaUsd(prices.premiaUsd);
             setSizeOnePremia(prices.sizeOnePremia);
-            setSizeOnePremiaUsd(prices.sizeOnePremiaUsd);
             setPremiaMath64(v.premiaMath64);
             setLoading(false);
           }
@@ -69,9 +106,6 @@ export const OptionSidebar = ({ option }: Props) => {
   );
 
   useEffect(() => {
-    if (amount === 0 || amountText === "") {
-      return;
-    }
     const controller = new AbortController();
     setLoading(true);
     callWithDelay(amount, controller);
@@ -94,6 +128,25 @@ export const OptionSidebar = ({ option }: Props) => {
       : shortInteger(balanceRaw, option.underlying.decimals);
 
   const [date, time] = timestampToPriceGuardDate(option.maturity);
+
+  const limited =
+    premia === undefined
+      ? "--"
+      : premia.toFixed(4) + " " + option.underlying.symbol;
+  const limitedUsd =
+    premiaUsd === undefined ? "--" : "$" + premiaUsd.toFixed(4);
+  const unlimited = "Unlimited";
+  const breakEven =
+    sizeOnePremia === undefined
+      ? "--"
+      : `${option.quoteToken.id === TokenKey.USDC ? "$" : ""}` +
+        (option.isCall
+          ? option.strike + sizeOnePremia
+          : option.strike - sizeOnePremia
+        ).toFixed(2) +
+        `${
+          option.quoteToken.id === TokenKey.USDC ? "" : option.quoteToken.symbol
+        }`;
 
   return (
     <div className={poolStyles.sidebar + " " + styles.option}>
@@ -159,13 +212,19 @@ export const OptionSidebar = ({ option }: Props) => {
           </div>
           <div>
             <span>
-              {amount === 0 ? "--" : `${amount} ${option.underlying.symbol}`}
+              {amount === 0
+                ? "--"
+                : `${amount * (option.isPut ? option.strike : 1)} ${
+                    option.underlying.symbol
+                  }`}
             </span>
             <span>
               $
               {price === undefined || amount === 0
                 ? "--"
-                : (price * amount).toFixed(2)}
+                : (price * amount * (option.isPut ? option.strike : 1)).toFixed(
+                    2
+                  )}
             </span>
           </div>
         </div>
@@ -195,8 +254,22 @@ export const OptionSidebar = ({ option }: Props) => {
         >
           Connect Wallet
         </button>
+      ) : txState === TransactionState.Initial ? (
+        <button onClick={handleBuy} className="mainbutton primary active">
+          Buy
+        </button>
+      ) : txState === TransactionState.Processing ? (
+        <button disabled className="mainbutton primary active">
+          <LoadingAnimation size={20} />
+        </button>
+      ) : txState === TransactionState.Success ? (
+        <button onClick={handleBuy} className="mainbutton green active">
+          Success
+        </button>
       ) : (
-        <button className="mainbutton primary active">Buy</button>
+        <button onClick={handleBuy} className="mainbutton red active">
+          Fail
+        </button>
       )}
       <div className={styles.dividertext}>
         <span>option info</span>
@@ -207,9 +280,9 @@ export const OptionSidebar = ({ option }: Props) => {
           <span>strike</span>
         </div>
         <div>
-          <span>${option.strike}</span>
+          <span>{option.strikeWithCurrency}</span>
           <span>
-            1 {option.underlying.symbol} = ${option.strike}
+            1 {option.baseToken.symbol} = {option.strikeWithCurrency}
           </span>
         </div>
       </div>
@@ -232,8 +305,8 @@ export const OptionSidebar = ({ option }: Props) => {
           <span>max profit</span>
         </div>
         <div>
-          <span>123 {option.underlying.symbol}</span>
-          <span>$456</span>
+          <span>{option.isLong ? unlimited : limited}</span>
+          <span>{option.isLong ? "" : limitedUsd}</span>
         </div>
       </div>
       <div className={styles.databox}>
@@ -241,8 +314,8 @@ export const OptionSidebar = ({ option }: Props) => {
           <span>max loss</span>
         </div>
         <div>
-          <span>0.321 {option.underlying.symbol}</span>
-          <span>$6.54</span>
+          <span>{option.isLong ? limited : unlimited}</span>
+          <span>{option.isLong ? limitedUsd : ""}</span>
         </div>
       </div>
       <div className={styles.databox}>
@@ -250,8 +323,10 @@ export const OptionSidebar = ({ option }: Props) => {
           <span>breakeven</span>
         </div>
         <div>
-          <span>$12</span>
-          <span>1 {option.underlying.symbol} = $12</span>
+          <span>{breakEven}</span>
+          <span>
+            1 {option.baseToken.symbol} = {breakEven}
+          </span>
         </div>
       </div>
     </div>

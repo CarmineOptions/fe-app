@@ -300,6 +300,13 @@ export class Option extends Pool {
     }
     return this.quoteToken.symbol;
   }
+
+  get strikeWithCurrency(): string {
+    if (this.quoteToken.id === TokenKey.USDC) {
+      return "$" + this.strike;
+    }
+    return this.strike + " " + this.quoteToken.symbol;
+  }
 }
 
 export class OptionWithPosition extends Option {

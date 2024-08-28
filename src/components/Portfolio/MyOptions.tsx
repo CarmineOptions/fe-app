@@ -3,8 +3,6 @@ import { openWalletConnectDialog } from "../ConnectWallet/Button";
 import { useAccount } from "../../hooks/useAccount";
 import { LoadingAnimation } from "../Loading/Loading";
 import { OptionWithPosition } from "../../classes/Option";
-
-import styles from "./portfolio.module.css";
 import { PairNamedBadge } from "../TokenBadge";
 import { maxDecimals, timestampToPriceGuardDate } from "../../utils/utils";
 import {
@@ -17,6 +15,7 @@ import { afterTransaction } from "../../utils/blockchain";
 import { invalidatePositions } from "../../queries/client";
 import { ToastType } from "../../redux/reducers/ui";
 import { usePositions } from "../../hooks/usePositions";
+import styles from "./portfolio.module.css";
 
 const Header = ({ state }: { state: "live" | "itm" | "otm" }) => {
   return (

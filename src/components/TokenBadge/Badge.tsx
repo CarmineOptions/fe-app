@@ -40,7 +40,6 @@ export const TokenNamedBadge = ({ token, size }: Badge) => {
         style={{
           fontSize: `${fontSize}px`,
           lineHeight: `${lineHeight}px`,
-          color: "white",
         }}
       >
         {token.symbol}
@@ -78,7 +77,6 @@ export const PairNamedBadge = ({ tokenA, tokenB, size }: PairBadgeType) => {
         style={{
           fontSize: `${fontSize}px`,
           lineHeight: `${lineHeight}px`,
-          color: "white",
         }}
       >
         {tokenA.symbol}/{tokenB.symbol}

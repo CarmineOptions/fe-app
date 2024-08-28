@@ -15,6 +15,7 @@ import { ToastType } from "../redux/reducers/ui";
 import { math64toDecimal, math64ToInt } from "../utils/units";
 import { apiUrl } from "../api";
 import { isMainnet } from "../constants/amm";
+import { TransactionState, TxTracking } from "../types/network";
 
 export const approveAndTradeOpen = async (
   account: AccountInterface,
@@ -131,16 +132,15 @@ export const approveAndTradeOpenNew = async (
   size: number,
   premiaMath64: bigint,
   balance: bigint,
-  updateTradeState: (
-    state: "initial" | "processing" | "fail" | "success"
-  ) => void,
-  isPriceGuard = false
+  updateTradeState: TxTracking,
+  isPriceGuard = false,
+  callback?: (tx: string) => void
 ) => {
   if (size === 0) {
     showToast("Cannot open position with size 0", ToastType.Warn);
     return;
   }
-  updateTradeState("processing");
+  updateTradeState(TransactionState.Processing);
   const premiaNum = math64toDecimal(premiaMath64);
   const premiaTokenCount = math64ToInt(premiaMath64, option.digits);
   const toApprove = getToApprove(option, size, BigInt(premiaTokenCount));
@@ -157,7 +157,7 @@ export const approveAndTradeOpenNew = async (
       ).toFixed(4)}, but you only have ${option.symbol}\u00A0${has.toFixed(4)}`,
       ToastType.Warn
     );
-    updateTradeState("fail");
+    updateTradeState(TransactionState.Fail);
     return;
   }
 
@@ -170,7 +170,7 @@ export const approveAndTradeOpenNew = async (
   });
 
   if (res === undefined) {
-    updateTradeState("fail");
+    updateTradeState(TransactionState.Fail);
     return;
   }
 
@@ -203,12 +203,15 @@ export const approveAndTradeOpenNew = async (
     () => {
       markTxAsDone(hash);
       invalidatePositions();
-      updateTradeState("success");
+      updateTradeState(TransactionState.Success);
       showToast("Successfully opened position", ToastType.Success);
+      if (callback) {
+        callback(hash);
+      }
     },
     () => {
       markTxAsFailed(hash);
-      updateTradeState("fail");
+      updateTradeState(TransactionState.Fail);
       showToast("Failed to open position", ToastType.Error);
     }
   );

@@ -23,6 +23,7 @@ import { approveAndTradeOpenNew } from "../../calls/tradeOpen";
 import { ReactComponent as CogIcon } from "./cog.svg";
 import styles from "./priceguard.module.css";
 import { TokenNamedBadge } from "../TokenBadge";
+import { TransactionState } from "../../types/network";
 
 const InfoIcon = ({ msg }: { msg: string }) => {
   return (
@@ -208,9 +209,7 @@ export const PriceGuard = () => {
   )!;
 
   const BuyPriceGuardButton = () => {
-    const [tradeState, updateTradeState] = useState<
-      "initial" | "processing" | "fail" | "success"
-    >("initial");
+    const [tradeState, updateTradeState] = useState(TransactionState.Initial);
     const handleButtonClick = () => {
       if (
         !account ||
@@ -236,13 +235,13 @@ export const PriceGuard = () => {
     };
 
     const className = `${styles.buybutton} ${styles[tradeState]}`;
-    const disabled = tradeState === "processing";
+    const disabled = tradeState === TransactionState.Processing;
     const content =
-      tradeState === "initial" ? (
+      tradeState === TransactionState.Initial ? (
         `Protect my ${pickedOption.baseToken.symbol}`
-      ) : tradeState === "processing" ? (
+      ) : tradeState === TransactionState.Processing ? (
         <LoadingAnimation size={13} />
-      ) : tradeState === "fail" ? (
+      ) : tradeState === TransactionState.Fail ? (
         "Failed"
       ) : (
         "Success!"
