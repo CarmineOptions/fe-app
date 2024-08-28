@@ -21,6 +21,8 @@ import { OptionSidebarSuccess } from "./OptionSidebarSuccess";
 
 import poolStyles from "./pool.module.css";
 import styles from "./option.module.css";
+import { getProfitGraphData } from "../CryptoGraph/profitGraphData";
+import { ProfitGraph } from "../CryptoGraph/ProfitGraph";
 
 type Props = {
   option: OptionWithPremia;
@@ -128,6 +130,11 @@ export const OptionSidebar = ({ option }: Props) => {
       : shortInteger(balanceRaw, option.underlying.decimals);
 
   const [date, time] = timestampToPriceGuardDate(option.maturity);
+
+  const graphData =
+    premiaUsd === undefined || amount === 0
+      ? undefined
+      : getProfitGraphData(option, premiaUsd, amount);
 
   const limited =
     premia === undefined
@@ -299,7 +306,9 @@ export const OptionSidebar = ({ option }: Props) => {
         <span>payoff</span>
         <div className="divider"></div>
       </div>
-      <div className={styles.graphbox}>TODO: GRAPH</div>
+      <div className={styles.graphbox}>
+        {graphData && <ProfitGraph data={graphData} />}
+      </div>
       <div className={styles.databox}>
         <div>
           <span>max profit</span>
