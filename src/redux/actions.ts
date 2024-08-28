@@ -129,7 +129,10 @@ export const addReferredPair = (pair: ReferralSent) =>
 export const setGovernanceSubpage = (subpage: GovernanceSubpage) =>
   store.dispatch(setGovernanceSubpageState(subpage));
 
-export const openSidebar = () => store.dispatch(setSidebarOpenState(true));
+export const openSidebar = () => {
+  store.dispatch(setSidebarOpenState(true));
+  window.scrollTo({ top: 0, behavior: "smooth" });
+};
 
 export const closeSidebar = () => store.dispatch(setSidebarOpenState(false));
 

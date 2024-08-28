@@ -25,7 +25,6 @@ export const PoolCard = ({ pool }: Props) => {
   const handleClick = () => {
     setSidebarContent(<PoolSidebar pool={pool} />);
     openSidebar();
-    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   if (isLoading) {

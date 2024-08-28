@@ -9,6 +9,8 @@ import { maxDecimals } from "../../utils/utils";
 import { UserPoolInfo } from "../../classes/Pool";
 import { useCurrency } from "../../hooks/useCurrency";
 import { useStakes } from "../../hooks/useStakes";
+import { openSidebar, setSidebarContent } from "../../redux/actions";
+import { PoolSidebar } from "../Sidebar";
 
 const Item = ({
   account,
@@ -18,7 +20,10 @@ const Item = ({
   stake: UserPoolInfo;
 }) => {
   const price = useCurrency(stake.underlying.id);
-  const handleClick = () => {};
+  const handleClick = () => {
+    setSidebarContent(<PoolSidebar pool={stake} />);
+    openSidebar();
+  };
 
   const valueUsd = price === undefined ? undefined : stake.value * price;
 
@@ -39,7 +44,7 @@ const Item = ({
       </div>
       <div>${valueUsd === undefined ? "--" : maxDecimals(valueUsd, 2)}</div>
       <div>
-        <button onClick={handleClick} disabled className="disabled">
+        <button onClick={handleClick} className="primary active">
           Withdraw
         </button>
       </div>

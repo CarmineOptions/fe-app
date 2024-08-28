@@ -87,7 +87,7 @@ const OptionsTable = ({ options, tokenPair, side }: Props) => {
                     className={`${styles.premiacontainer} ${styles.long}`}
                     onClick={() => handleOptionClick(o)}
                   >
-                    {o.premia.toFixed(3)} {tokenPair.baseToken.symbol}{" "}
+                    {o.premia.toFixed(3)} {o.symbol}{" "}
                     <div className={styles.square}>
                       <PlusIcon />
                     </div>

@@ -3,7 +3,7 @@ import { openWalletConnectDialog } from "../ConnectWallet/Button";
 import { useAccount } from "../../hooks/useAccount";
 import { LoadingAnimation } from "../Loading/Loading";
 import { OptionWithPosition } from "../../classes/Option";
-import { PairNamedBadge } from "../TokenBadge";
+import { PairNamedBadge, TokenBadge } from "../TokenBadge";
 import { maxDecimals, timestampToPriceGuardDate } from "../../utils/utils";
 import {
   openCloseOptionDialog,
@@ -15,6 +15,7 @@ import { afterTransaction } from "../../utils/blockchain";
 import { invalidatePositions } from "../../queries/client";
 import { ToastType } from "../../redux/reducers/ui";
 import { usePositions } from "../../hooks/usePositions";
+import { useCurrency } from "../../hooks/useCurrency";
 import styles from "./portfolio.module.css";
 
 const Header = ({ state }: { state: "live" | "itm" | "otm" }) => {
@@ -24,10 +25,10 @@ const Header = ({ state }: { state: "live" | "itm" | "otm" }) => {
       <div>Side</div>
       <div>Type</div>
       <div>Strike</div>
-      <div>Date</div>
-      <div>Time</div>
+      <div>Maturity</div>
       <div>Size</div>
       {(state === "live" || state === "itm") && <div>Value</div>}
+      {(state === "live" || state === "itm") && <div>Value $</div>}
       <div></div>
     </div>
   );
@@ -40,6 +41,7 @@ const LiveItem = ({
   account: AccountInterface;
   option: OptionWithPosition;
 }) => {
+  const price = useCurrency(option.underlying.id);
   const [date, time] = timestampToPriceGuardDate(option.maturity);
   const className = `${styles.item} ${styles.optionitem}`;
 
@@ -47,6 +49,9 @@ const LiveItem = ({
     setCloseOption(option);
     openCloseOptionDialog();
   };
+
+  const valueUsd =
+    price === undefined ? "--" : (option.value * price).toFixed(2);
 
   return (
     <div className={className}>
@@ -60,10 +65,18 @@ const LiveItem = ({
       <div>{option.sideAsText}</div>
       <div>{option.typeAsText}</div>
       <div>${option.strike}</div>
-      <div>{date}</div>
-      <div>{time}</div>
+      <div className={styles.maturity}>
+        <span>{date}</span>
+        <span>{time}</span>
+      </div>
       <div>{maxDecimals(option.size, 4)}</div>
-      <div>{maxDecimals(option.value, 3)}</div>
+      <div>
+        <div className={styles.tokenvalue}>
+          <TokenBadge size={25} token={option.underlying} />{" "}
+          {maxDecimals(option.value, 3)}
+        </div>
+      </div>
+      <div>${valueUsd}</div>
       <div>
         <button onClick={handleClick} className="primary active">
           Close
@@ -109,8 +122,10 @@ const OtmItem = ({
       <div>{option.sideAsText}</div>
       <div>{option.typeAsText}</div>
       <div>${option.strike}</div>
-      <div>{date}</div>
-      <div>{time}</div>
+      <div className={styles.maturity}>
+        <span>{date}</span>
+        <span>{time}</span>
+      </div>
       <div>{maxDecimals(option.size, 4)}</div>
       <div>
         <button onClick={handleSettle} className="primary active">
@@ -128,6 +143,7 @@ const ItmItem = ({
   account: AccountInterface;
   option: OptionWithPosition;
 }) => {
+  const price = useCurrency(option.underlying.id);
   const [date, time] = timestampToPriceGuardDate(option.maturity);
   const className = `${styles.item} ${styles.optionitem}`;
 
@@ -150,6 +166,9 @@ const ItmItem = ({
       });
   };
 
+  const valueUsd =
+    price === undefined ? "--" : (option.value * price).toFixed(2);
+
   return (
     <div className={className}>
       <div>
@@ -162,10 +181,18 @@ const ItmItem = ({
       <div>{option.sideAsText}</div>
       <div>{option.typeAsText}</div>
       <div>${option.strike}</div>
-      <div>{date}</div>
-      <div>{time}</div>
+      <div className={styles.maturity}>
+        <span>{date}</span>
+        <span>{time}</span>
+      </div>
       <div>{maxDecimals(option.size, 4)}</div>
-      <div>{maxDecimals(option.value, 3)}</div>
+      <div>
+        <div className={styles.tokenvalue}>
+          <TokenBadge size={25} token={option.underlying} />{" "}
+          {maxDecimals(option.value, 3)}
+        </div>
+      </div>
+      <div>${valueUsd}</div>
       <div>
         <button onClick={handleSettle} className="primary active">
           Settle

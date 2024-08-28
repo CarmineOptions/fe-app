@@ -62,18 +62,27 @@
 }
 
 .item>div {
-  width: 70px;
+  text-align: center;
+  width: 50px;
 }
 
 .item>div:nth-child(1) {
   width: 160px;
 }
 
-.item>div:nth-child(5) {
-  width: 140px;
+.item>div:nth-child(4) {
+  width: 70px;
 }
 
-.item>div:nth-child(6) {
+.item>div:nth-child(5) {
+  width: 180px;
+}
+
+.item>div:nth-child(7) {
+  width: 80px;
+}
+
+.item>div:nth-child(8) {
   width: 80px;
 }
 
@@ -93,6 +102,7 @@
 }
 
 .stakeitem>div {
+  text-align: center;
   width: 70px;
 }
 
@@ -108,7 +118,6 @@
   width: 140px;
 }
 
-
 .stakeitem>div:nth-child(5) {
   width: 180px;
 }
@@ -116,5 +125,16 @@
 .tokenvalue {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 10px;
+}
+
+.maturity {
+  display: flex;
+  gap: 5px;
+  align-items: baseline;
+}
+
+.maturity>span:last-child {
+  font-size: 15px;
 }
