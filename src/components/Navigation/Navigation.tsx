@@ -68,7 +68,9 @@ export const Navigation = () => {
           <nav className={`${styles.secondary} ${styles.topborder}`}>
             <ul>
               <li>
-                <NavLink to="/audits">Audits</NavLink>
+                <a href="https://docs.carmine.finance/carmine-options-amm/audit">
+                  Audits
+                </a>
               </li>
               <li>
                 <a href="https://legacy.app.carmine.finance">Legacy App</a>
@@ -78,13 +80,10 @@ export const Navigation = () => {
           <nav className={`${styles.secondary} ${styles.topborder}`}>
             <ul>
               <li>
-                <a href="https://www.carmine.finance">Blog</a>
+                <a href="https://twitter.com/CarmineOptions">Twitter</a>
               </li>
               <li>
-                <a href="https://www.carmine.finance">Twitter</a>
-              </li>
-              <li>
-                <a href="https://www.carmine.finance">Discord</a>
+                <a href="https://discord.gg/uRs7j8w3bX">Discord</a>
               </li>
             </ul>
           </nav>

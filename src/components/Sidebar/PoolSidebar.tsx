@@ -9,7 +9,7 @@ import { shortInteger } from "../../utils/computations";
 import { math64toDecimal } from "../../utils/units";
 import { useAccount } from "../../hooks/useAccount";
 import { openWalletConnectDialog } from "../ConnectWallet/Button";
-import { setSidebarContent } from "../../redux/actions";
+import { setSidebarContent, showToast } from "../../redux/actions";
 import { PoolSidebarSuccess } from "./PoolSidebarSuccess";
 import { TransactionState } from "../../types/network";
 import { useStakes } from "../../hooks/useStakes";
@@ -17,6 +17,7 @@ import { handleDeposit, handleWithdraw } from "../Yield/handleAction";
 import { usePoolInfo } from "../../hooks/usePoolInfo";
 
 import styles from "./pool.module.css";
+import { formatNumber } from "../../utils/utils";
 
 type Props = {
   pool: Pool;
@@ -75,6 +76,12 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
     setAmountText,
     setAmount,
     (n) => {
+      if (
+        txState === TransactionState.Fail ||
+        txState === TransactionState.Success
+      ) {
+        setTxState(TransactionState.Initial);
+      }
       return n;
     }
   );
@@ -104,7 +111,16 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
       };
       handleDeposit(account, amount, pool, setTxState, done);
     }
-    if (action === "withdraw" && account && poolData) {
+    if (action === "withdraw" && account && poolData && userPosition) {
+      if (userPosition < amount) {
+        showToast(
+          `Cannot withdraw ${formatNumber(amount)}, you have ${formatNumber(
+            userPosition
+          )}`
+        );
+        setTxState(TransactionState.Fail);
+        return;
+      }
       handleWithdraw(account, amount, poolData, setTxState);
     }
   };
