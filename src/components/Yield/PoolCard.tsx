@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 import { PairNamedBadge, TokenBadge } from "../TokenBadge";
-import { queryPoolCapital } from "./fetchStakeCapital";
+import { queryDefiSpringApy, queryPoolCapital } from "./fetchStakeCapital";
 import { Pool } from "../../classes/Pool";
 
 import styles from "./pool.module.css";
@@ -10,6 +10,9 @@ import { math64toDecimal } from "../../utils/units";
 import { openSidebar, setSidebarContent } from "../../redux/actions";
 import { PoolSidebar } from "../Sidebar";
 import { LoadingAnimation } from "../Loading/Loading";
+import { QueryKeys } from "../../queries/keys";
+import { TokenKey } from "../../classes/Token";
+import { DefiSpringStakingMessage, DefiSpringTooltip } from "../DefiSpring";
 
 type Props = {
   pool: Pool;
@@ -19,6 +22,10 @@ export const PoolCard = ({ pool }: Props) => {
   const { isLoading, isError, data } = useQuery(
     [`pool-data-${pool.apiPoolId}`, pool.apiPoolId],
     queryPoolCapital
+  );
+  const { data: defispringApy } = useQuery(
+    [QueryKeys.defispringApy],
+    queryDefiSpringApy
   );
   const price = useCurrency(pool.underlying.id);
 
@@ -101,6 +108,14 @@ export const PoolCard = ({ pool }: Props) => {
   const poolPosition = math64toDecimal(state.pool_position);
   const tvl = unlocked + poolPosition;
 
+  const isDefispringPool =
+    pool.baseToken.id !== TokenKey.BTC && pool.quoteToken.id !== TokenKey.BTC;
+  const finalApy = !isDefispringPool
+    ? apy.launch_annualized
+    : defispringApy === undefined
+    ? undefined
+    : defispringApy + apy.launch_annualized;
+
   return (
     <div className={styles.container}>
       <div className={styles.desc} style={{ padding: "20px" }}>
@@ -121,9 +136,26 @@ export const PoolCard = ({ pool }: Props) => {
       <div className={styles.content} style={{ padding: "20px" }}>
         <div className={`${styles.big} ${styles.apart}`}>
           <span className="greytext">APY</span>{" "}
-          <span className={apy.launch_annualized > 0 ? "greentext" : "redtext"}>
-            {apy.launch_annualized.toFixed(2)}%
-          </span>
+          {finalApy === undefined ? (
+            <span>--</span>
+          ) : isDefispringPool ? (
+            <DefiSpringTooltip
+              title={
+                <DefiSpringStakingMessage
+                  apy={apy.launch_annualized}
+                  defispringApy={defispringApy!}
+                />
+              }
+            >
+              <span className={finalApy > 0 ? "greentext" : "redtext"}>
+                {finalApy.toFixed(2)}%
+              </span>
+            </DefiSpringTooltip>
+          ) : (
+            <span className={finalApy > 0 ? "greentext" : "redtext"}>
+              {finalApy.toFixed(2)}%
+            </span>
+          )}
         </div>
         <div className={styles.under}>
           <div className={`${styles.big} ${styles.apart}`}>

@@ -21,6 +21,7 @@ export const PoolList = () => {
     new Pool(BTC_ADDRESS, USDC_ADDRESS, OptionType.Call),
     new Pool(BTC_ADDRESS, USDC_ADDRESS, OptionType.Put),
   ];
+
   return (
     <div className={styles.poollist}>
       {pools.map((p, i) => (

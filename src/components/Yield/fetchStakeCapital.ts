@@ -50,3 +50,15 @@ export const queryUserPoolInfo = async ({
   const withValue = userPools.filter((pool) => pool.size > 0 && pool.value > 0);
   return withValue;
 };
+
+export const queryDefiSpringApy = async (): Promise<number> => {
+  const res = await fetch(
+    apiUrl("defispring", { version: 1, network: "mainnet" })
+  ).then((response) => response.json());
+
+  if (res && res.status === "success" && res?.data?.apy) {
+    return res.data.apy * 100;
+  }
+
+  throw Error("Failed getting defispring APY");
+};
