@@ -19,3 +19,11 @@
   text-align: left;
   color: var(--DARK-GREY);
 }
+
+
+@media (max-width: 700px) {
+  .buttons {
+    flex-flow: column;
+    align-items: normal;
+  }
+}

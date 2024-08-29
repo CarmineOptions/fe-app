@@ -75,17 +75,19 @@ export const MyStakeWithAccount = ({
   }
 
   return (
-    <div className={styles.list}>
-      <div className={`${styles.header} ${styles.stakeitem}`}>
-        <div>Pair</div>
-        <div>Type</div>
-        <div>Value</div>
-        <div>Value $</div>
-        <div></div>
+    <div className={styles.scrollablex}>
+      <div className={styles.list}>
+        <div className={`${styles.header} ${styles.stakeitem}`}>
+          <div>Pair</div>
+          <div>Type</div>
+          <div>Value</div>
+          <div>Value $</div>
+          <div></div>
+        </div>
+        {data.map((stake, i) => (
+          <Item key={i} stake={stake} account={account} />
+        ))}
       </div>
-      {data.map((stake, i) => (
-        <Item key={i} stake={stake} account={account} />
-      ))}
     </div>
   );
 };

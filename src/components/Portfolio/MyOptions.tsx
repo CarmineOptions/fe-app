@@ -237,11 +237,13 @@ export const MyOptionsWithAccount = ({
     state === "live" ? LiveItem : state === "itm" ? ItmItem : OtmItem;
 
   return (
-    <div className={styles.list}>
-      <Header state={state} />
-      {selected.map((o, i) => (
-        <Item key={i} option={o} account={account} />
-      ))}
+    <div className={styles.scrollablex}>
+      <div className={styles.list}>
+        <Header state={state} />
+        {selected.map((o, i) => (
+          <Item key={i} option={o} account={account} />
+        ))}
+      </div>
     </div>
   );
 };

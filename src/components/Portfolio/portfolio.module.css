@@ -53,6 +53,7 @@
   display: flex;
   flex-flow: column;
   gap: 10px;
+  min-width: 900px;
 }
 
 .item {
@@ -142,4 +143,19 @@
 .loadingcontainer {
   height: 31.2px;
   width: 60px;
+}
+
+.scrollablex {
+  overflow-x: scroll;
+}
+
+@media (max-width: 700px) {
+  .options>div:first-child {
+    flex-flow: column;
+    gap: 0;
+  }
+
+  .info {
+    flex-flow: column;
+  }
 }
