@@ -138,3 +138,8 @@
 .maturity>span:last-child {
   font-size: 15px;
 }
+
+.loadingcontainer {
+  height: 31.2px;
+  width: 60px;
+}

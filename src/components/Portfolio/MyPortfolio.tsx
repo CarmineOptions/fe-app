@@ -9,6 +9,8 @@ import { TokenPriceData } from "../../types/api";
 import { UserPoolInfo } from "../../classes/Pool";
 import { usePositions } from "../../hooks/usePositions";
 import { useStakes } from "../../hooks/useStakes";
+import { LoadingAnimation } from "../Loading/Loading";
+import { formatNumber } from "../../utils/utils";
 
 const calcPositionsValue = (
   positions: OptionWithPosition[],
@@ -87,24 +89,33 @@ export const MyPortfolio = () => {
       <div className={styles.info}>
         <div>
           <span>portfolio value</span>
-          <span>
-            ${totalValueUsd === undefined ? "--" : totalValueUsd.toFixed(2)}
-          </span>
+          {totalValueUsd === undefined ? (
+            <div className={styles.loadingcontainer}>
+              <LoadingAnimation size={20} />
+            </div>
+          ) : (
+            <span>${formatNumber(totalValueUsd)}</span>
+          )}
         </div>
         <div>
           <span>options</span>
-          <span>
-            $
-            {positionsValueUsd === undefined
-              ? "--"
-              : positionsValueUsd.toFixed(2)}
-          </span>
+          {positionsValueUsd === undefined ? (
+            <div className={styles.loadingcontainer}>
+              <LoadingAnimation size={20} />
+            </div>
+          ) : (
+            <span>${formatNumber(positionsValueUsd)}</span>
+          )}
         </div>
         <div>
           <span>staking</span>
-          <span>
-            ${stakesValueUsd === undefined ? "--" : stakesValueUsd.toFixed(2)}
-          </span>
+          {stakesValueUsd === undefined ? (
+            <div className={styles.loadingcontainer}>
+              <LoadingAnimation size={20} />
+            </div>
+          ) : (
+            <span>${formatNumber(stakesValueUsd)}</span>
+          )}
         </div>
       </div>
       <div className="divider"></div>

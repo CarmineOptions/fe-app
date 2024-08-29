@@ -4,7 +4,7 @@ import { useAccount } from "../../hooks/useAccount";
 import { LoadingAnimation } from "../Loading/Loading";
 import { OptionWithPosition } from "../../classes/Option";
 import { PairNamedBadge, TokenBadge } from "../TokenBadge";
-import { maxDecimals, timestampToPriceGuardDate } from "../../utils/utils";
+import { timestampToPriceGuardDate, formatNumber } from "../../utils/utils";
 import {
   openCloseOptionDialog,
   setCloseOption,
@@ -69,11 +69,11 @@ const LiveItem = ({
         <span>{date}</span>
         <span>{time}</span>
       </div>
-      <div>{maxDecimals(option.size, 4)}</div>
+      <div>{formatNumber(option.size, 4)}</div>
       <div>
         <div className={styles.tokenvalue}>
           <TokenBadge size={25} token={option.underlying} />{" "}
-          {maxDecimals(option.value, 3)}
+          {formatNumber(option.value, 3)}
         </div>
       </div>
       <div>${valueUsd}</div>
@@ -126,7 +126,7 @@ const OtmItem = ({
         <span>{date}</span>
         <span>{time}</span>
       </div>
-      <div>{maxDecimals(option.size, 4)}</div>
+      <div>{formatNumber(option.size, 4)}</div>
       <div>
         <button onClick={handleSettle} className="primary active">
           Settle
@@ -185,11 +185,11 @@ const ItmItem = ({
         <span>{date}</span>
         <span>{time}</span>
       </div>
-      <div>{maxDecimals(option.size, 4)}</div>
+      <div>{formatNumber(option.size, 4)}</div>
       <div>
         <div className={styles.tokenvalue}>
           <TokenBadge size={25} token={option.underlying} />{" "}
-          {maxDecimals(option.value, 3)}
+          {formatNumber(option.value, 3)}
         </div>
       </div>
       <div>${valueUsd}</div>

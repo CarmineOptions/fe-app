@@ -207,3 +207,13 @@ export const maxDecimals = (num: number, maxDecimalPlaces: number): string => {
 
   return num.toString();
 };
+
+export const formatNumber = (num: number, maxDecimals = 2): string => {
+  return new Intl.NumberFormat("cs-CZ", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: maxDecimals,
+    useGrouping: true,
+  })
+    .format(num)
+    .replace(",", ".");
+};

@@ -9,7 +9,11 @@ import { useAccount } from "../../hooks/useAccount";
 import { openWalletConnectDialog } from "../ConnectWallet/Button";
 import { TransactionState } from "../../types/network";
 import { OptionWithPremia } from "../../classes/Option";
-import { debounce, timestampToPriceGuardDate } from "../../utils/utils";
+import {
+  debounce,
+  formatNumber,
+  timestampToPriceGuardDate,
+} from "../../utils/utils";
 import { fetchModalData } from "../TradeTable/fetchModalData";
 import { debug, LogTypes } from "../../utils/debugger";
 import { LoadingAnimation } from "../Loading/Loading";
@@ -139,18 +143,20 @@ export const OptionSidebar = ({ option }: Props) => {
   const limited =
     premia === undefined
       ? "--"
-      : premia.toFixed(4) + " " + option.underlying.symbol;
+      : formatNumber(premia, 4) + " " + option.underlying.symbol;
   const limitedUsd =
-    premiaUsd === undefined ? "--" : "$" + premiaUsd.toFixed(4);
+    premiaUsd === undefined ? "--" : "$" + formatNumber(premiaUsd, 4);
   const unlimited = "Unlimited";
   const breakEven =
     sizeOnePremia === undefined
       ? "--"
       : `${option.quoteToken.id === TokenKey.USDC ? "$" : ""}` +
-        (option.isCall
-          ? option.strike + sizeOnePremia
-          : option.strike - sizeOnePremia
-        ).toFixed(2) +
+        formatNumber(
+          option.isCall
+            ? option.strike + sizeOnePremia
+            : option.strike - sizeOnePremia,
+          2
+        ) +
         `${
           option.quoteToken.id === TokenKey.USDC ? "" : option.quoteToken.symbol
         }`;
@@ -199,7 +205,7 @@ export const OptionSidebar = ({ option }: Props) => {
             <span>
               {premia === undefined
                 ? "--"
-                : `${premia.toFixed(4)} ${option.underlying.symbol}`}
+                : `${formatNumber(premia, 4)} ${option.underlying.symbol}`}
             </span>
           )}
           {!loading && (
@@ -207,7 +213,7 @@ export const OptionSidebar = ({ option }: Props) => {
               $
               {price === undefined || premia === undefined
                 ? "--"
-                : (price * premia).toFixed(2)}
+                : formatNumber(price * premia, 2)}
             </span>
           )}
         </div>
@@ -229,8 +235,8 @@ export const OptionSidebar = ({ option }: Props) => {
               $
               {price === undefined || amount === 0
                 ? "--"
-                : (price * amount * (option.isPut ? option.strike : 1)).toFixed(
-                    2
+                : formatNumber(
+                    price * amount * (option.isPut ? option.strike : 1)
                   )}
             </span>
           </div>
@@ -244,13 +250,13 @@ export const OptionSidebar = ({ option }: Props) => {
           <span>
             {balance === undefined
               ? "--"
-              : `${balance.toFixed(4)} ${option.underlying.symbol}`}
+              : `${formatNumber(balance, 4)} ${option.underlying.symbol}`}
           </span>
           <span>
             $
             {price === undefined || balance === undefined
               ? "--"
-              : (price * balance).toFixed(2)}
+              : formatNumber(price * balance)}
           </span>
         </div>
       </div>

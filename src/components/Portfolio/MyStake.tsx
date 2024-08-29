@@ -5,12 +5,12 @@ import { LoadingAnimation } from "../Loading/Loading";
 
 import styles from "./portfolio.module.css";
 import { PairNamedBadge, TokenBadge } from "../TokenBadge";
-import { maxDecimals } from "../../utils/utils";
 import { UserPoolInfo } from "../../classes/Pool";
 import { useCurrency } from "../../hooks/useCurrency";
 import { useStakes } from "../../hooks/useStakes";
 import { openSidebar, setSidebarContent } from "../../redux/actions";
 import { PoolSidebar } from "../Sidebar";
+import { formatNumber } from "../../utils/utils";
 
 const Item = ({
   account,
@@ -39,9 +39,9 @@ const Item = ({
       <div>{stake.typeAsText}</div>
       <div className={styles.tokenvalue}>
         <TokenBadge size={25} token={stake.underlying} />{" "}
-        {maxDecimals(stake.value, 3)}
+        {formatNumber(stake.value, 3)}
       </div>
-      <div>${valueUsd === undefined ? "--" : maxDecimals(valueUsd, 2)}</div>
+      <div>${valueUsd === undefined ? "--" : formatNumber(valueUsd, 2)}</div>
       <div>
         <button onClick={handleClick} className="primary active">
           Withdraw
