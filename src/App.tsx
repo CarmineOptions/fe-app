@@ -10,7 +10,6 @@ import {
 
 import { BraavosAnnounce } from "./components/Announce";
 import { MultiDialog } from "./components/MultiDialog/MultiDialog";
-import { Slip } from "./components/Slip";
 import { Toast } from "./components/Toast/Toast";
 import { Controller } from "./Controller";
 import TermsAndConditions from "./pages/termsAndConditions";
@@ -32,6 +31,8 @@ import BattlechartsPage from "./pages/battlecharts";
 import PriceGuardPage from "./pages/priceGuard";
 
 import "./style/base.css";
+import YieldPage from "./pages/yield";
+import SwapPage from "./pages/swap";
 
 const App = () => {
   const [check, rerender] = useState(false);
@@ -48,7 +49,6 @@ const App = () => {
         {acceptedTermsAndConditions ? (
           <>
             <Router>
-              <Slip />
               <Routes>
                 {oldPathRedirects.map(([oldPath, newPath], i) => (
                   <Route
@@ -62,6 +62,7 @@ const App = () => {
                 {/* <Route path="/priceGuard" element={<PriceGuard />} /> */}
                 <Route path="/portfolio/:target?" element={<Portfolio />} />
                 <Route path="/staking" element={<StakePage />} />
+                <Route path="/swap" element={<SwapPage />} />
                 <Route
                   path="/staking-explained"
                   element={<StakingExplainedPage />}
@@ -74,6 +75,7 @@ const App = () => {
                 <Route path="/rewards" element={<StarknetRewards />} />
                 <Route path="/battlecharts" element={<BattlechartsPage />} />
                 <Route path="/priceprotect" element={<PriceGuardPage />} />
+                <Route path="/yield" element={<YieldPage />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Router>

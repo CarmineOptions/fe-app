@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import { OptionWithPosition } from "../../classes/Option";
 import { TransferData } from "../../components/Transfer/transfer";
+import { ReactNode } from "react";
 
 export enum DialogContentElem {
   Wallet = "Wallet",
@@ -24,7 +25,7 @@ export enum ToastType {
 export enum PortfolioParamType {
   AirDrop = "airdrop",
   History = "history",
-  Position = "position",
+  MyPortfolio = "my-portfolio",
   Referral = "referral",
 }
 
@@ -55,6 +56,10 @@ export interface UiState {
   portfolioParam?: PortfolioParamType;
   governanceSubpage: GovernanceSubpage;
   referralsSent: ReferralSent[];
+  sidebarOpen: boolean;
+  sidebarContent: ReactNode | null;
+  isMobile: boolean;
+  showNavigation: boolean;
 }
 
 export const ui = createSlice({
@@ -64,9 +69,13 @@ export const ui = createSlice({
     dialogContent: DialogContentElem.Wallet,
     toastState: { message: "", type: ToastType.Info, open: false },
     transferDialogShown: false,
-    portfolioParam: PortfolioParamType.Position,
+    portfolioParam: PortfolioParamType.MyPortfolio,
     governanceSubpage: GovernanceSubpage.Voting,
     referralsSent: [],
+    sidebarOpen: false,
+    sidebarContent: null,
+    isMobile: window.innerWidth < 700,
+    showNavigation: false,
   } as UiState,
   reducers: {
     toggleDialog: (state, action: { payload: Partial<UiState> }) => {
@@ -110,6 +119,22 @@ export const ui = createSlice({
       state.referralsSent = [...state.referralsSent, action.payload];
       return state;
     },
+    setSidebarOpenState: (state, action: { payload: boolean }) => {
+      state.sidebarOpen = action.payload;
+      return state;
+    },
+    setSidebarContentState: (state, action: { payload: ReactNode | null }) => {
+      state.sidebarContent = action.payload;
+      return state;
+    },
+    setIsMobileState: (state, action: { payload: boolean }) => {
+      state.isMobile = action.payload;
+      return state;
+    },
+    setShowNavigationState: (state, action: { payload: boolean }) => {
+      state.showNavigation = action.payload;
+      return state;
+    },
   },
 });
 
@@ -122,4 +147,8 @@ export const {
   setParamState,
   setGovernanceSubpageState,
   addReferredPairState,
+  setSidebarOpenState,
+  setSidebarContentState,
+  setIsMobileState,
+  setShowNavigationState,
 } = ui.actions;

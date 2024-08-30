@@ -24,7 +24,6 @@ import { unstakeAirdrop } from "../../calls/carmineStake";
 
 import styles from "./modal.module.css";
 import buttonStyles from "../../style/button.module.css";
-import inputStyles from "../../style/input.module.css";
 
 import GovernanceABI from "../../abi/governance_abi.json";
 import TokenABI from "../../abi/lptoken_abi.json";
@@ -203,7 +202,6 @@ export const StakingModal = ({ account, amount, open, setOpen }: Props) => {
         <div>
           <div className={styles.inputall}>
             <input
-              className={inputStyles.input}
               placeholder="0"
               type="text"
               value={inputValue}

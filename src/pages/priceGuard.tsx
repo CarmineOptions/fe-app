@@ -1,6 +1,5 @@
 import { Helmet } from "react-helmet";
 import { Layout } from "../components/Layout";
-import { CrmBanner } from "../components/Banner";
 import { UserPriceGuard, PriceGuard } from "../components/PriceGuard";
 
 const PriceGuardPage = () => {
@@ -13,8 +12,7 @@ const PriceGuardPage = () => {
           content="Protect the price of your crypto assets"
         />
       </Helmet>
-      <CrmBanner />
-      <h3>Price Protect</h3>
+      <h1>Price Protect</h1>
       <p>
         Safeguard your holdings from major price movement.{" "}
         <a

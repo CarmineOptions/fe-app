@@ -3,7 +3,6 @@ import { connect } from "starknetkit";
 import { useAccount } from "../../hooks/useAccount";
 import { connect as accountConnect } from "../../network/account";
 import { AccountInfo } from "./AccountInfo";
-import styles from "../../style/button.module.css";
 import { isMainnet } from "../../constants/amm";
 import { SupportedWalletIds } from "../../types/wallet";
 import { onConnect } from "../../network/hooks";
@@ -11,6 +10,8 @@ import ReactDOM from "react-dom";
 import { BraavosBanner } from "./BraavosBanner";
 import { StarknetWindowObject } from "get-starknet-core";
 import { debug } from "../../utils/debugger";
+
+import styles from "./button.module.css";
 
 type CustomWallet = {
   id: SupportedWalletIds;
@@ -178,8 +179,11 @@ export const WalletButton = () => {
   }
 
   return (
-    <button className={styles.secondary} onClick={openWalletConnectDialog}>
-      Connect
+    <button
+      className={`primary active ${styles.custom}`}
+      onClick={openWalletConnectDialog}
+    >
+      Connect Wallet
     </button>
   );
 };

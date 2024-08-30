@@ -24,7 +24,6 @@ const ClaimAndStake = ({
 
   return (
     <div>
-      <h3>Airdrop</h3>
       <div className={airdropStyles.claim}>
         <span>
           You are eligible to claim {amountHumanReadable} <b>veCRM</b>!
@@ -47,10 +46,7 @@ const ClaimAndStake = ({
 };
 
 const AirdropTemplate = ({ message }: { message: string }) => (
-  <div>
-    <h3>Airdrop</h3>
-    <div className={airdropStyles.textcontainer}>{message}</div>
-  </div>
+  <div className={airdropStyles.textcontainer}>{message}</div>
 );
 
 export const AirdropWithAccount = ({

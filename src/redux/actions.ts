@@ -8,7 +8,11 @@ import {
   ReferralSent,
   setCloseOptionState,
   setGovernanceSubpageState,
+  setIsMobileState,
   setParamState,
+  setShowNavigationState,
+  setSidebarContentState,
+  setSidebarOpenState,
   setToastState,
   setTransferDataModalState,
   setTransferDialogShown,
@@ -27,6 +31,7 @@ import {
   TransactionAction,
   TransactionStatus,
 } from "./reducers/transactions";
+import { ReactNode } from "react";
 
 export const updateSettings = (v: Partial<Settings>) =>
   store.dispatch(updateSettingsState(v));
@@ -123,3 +128,19 @@ export const addReferredPair = (pair: ReferralSent) =>
 
 export const setGovernanceSubpage = (subpage: GovernanceSubpage) =>
   store.dispatch(setGovernanceSubpageState(subpage));
+
+export const openSidebar = () => {
+  store.dispatch(setSidebarOpenState(true));
+  window.scrollTo({ top: 0, behavior: "smooth" });
+};
+
+export const closeSidebar = () => store.dispatch(setSidebarOpenState(false));
+
+export const setSidebarContent = (node: ReactNode | null) =>
+  store.dispatch(setSidebarContentState(node));
+
+export const setIsMobile = (isMobile: boolean) =>
+  store.dispatch(setIsMobileState(isMobile));
+
+export const setShowNavigation = (show: boolean) =>
+  store.dispatch(setShowNavigationState(show));

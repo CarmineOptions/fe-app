@@ -73,6 +73,7 @@ const Governance = () => {
           content="Vote on proposals and take part in governing Carmine Options AMM"
         />
       </Helmet>
+      <h1>Governance</h1>
       <button
         className={`${
           subpage === GovernanceSubpage.AirDrop && buttonStyles.secondary

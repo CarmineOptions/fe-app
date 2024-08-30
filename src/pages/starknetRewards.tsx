@@ -3,7 +3,6 @@ import { Helmet } from "react-helmet";
 import { Layout } from "../components/Layout";
 import { Rewards } from "../components/DefiSpringRewards";
 import { StarknetIcon } from "../components/Icons";
-import { CrmBanner } from "../components/Banner";
 
 const StarknetRewards = () => (
   <Layout>
@@ -11,9 +10,7 @@ const StarknetRewards = () => (
       <title>Starknet Rewards | Carmine Options AMM</title>
       <meta name="description" content="Claim STRK rewards" />
     </Helmet>
-    <CrmBanner />
-
-    <h3>Starknet DeFi Spring</h3>
+    <h1>Starknet DeFi Spring</h1>
     <h3 style={{ display: "flex", alignItems: "center", gap: "10px" }}>
       40M
       <StarknetIcon style={{ width: "32px", height: "32px" }} />

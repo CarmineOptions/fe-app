@@ -1,0 +1,161 @@
+.container {
+  display: flex;
+  flex-flow: column;
+  gap: 20px;
+}
+
+.info {
+  display: flex;
+}
+
+.info>div {
+  display: flex;
+  flex-flow: column;
+  gap: 8px;
+  width: 160px;
+}
+
+.info>div>span {
+  font-family: IBM Plex Sans Condensed;
+  text-transform: uppercase;
+}
+
+.info>div>span:first-child {
+  color: var(--GREY);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 19.5px;
+}
+
+.info>div>span:last-child {
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 31.2px;
+}
+
+.options {
+  display: flex;
+  flex-flow: column;
+}
+
+.options>div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.buttons {
+  display: flex;
+  gap: 4px;
+}
+
+.list {
+  display: flex;
+  flex-flow: column;
+  gap: 10px;
+  min-width: 900px;
+}
+
+.item {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.item>div {
+  text-align: center;
+  width: 50px;
+}
+
+.item>div:nth-child(1) {
+  width: 160px;
+}
+
+.item>div:nth-child(4) {
+  width: 100px;
+}
+
+.item>div:nth-child(5) {
+  width: 180px;
+}
+
+.item>div:nth-child(7) {
+  width: 100px;
+}
+
+.item>div:nth-child(8) {
+  width: 80px;
+}
+
+.header {
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 23.4px;
+  border-bottom: solid 1px var(--DARK-GREY);
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+}
+
+.stakeitem {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.stakeitem>div {
+  text-align: center;
+  width: 80px;
+}
+
+.stakeitem>div:nth-child(1) {
+  width: 160px;
+}
+
+.stakeitem>div:nth-child(3) {
+  width: 130px;
+}
+
+.stakeitem>div:nth-child(4) {
+  width: 140px;
+}
+
+.stakeitem>div:nth-child(5) {
+  width: 180px;
+}
+
+.tokenvalue {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.maturity {
+  display: flex;
+  gap: 5px;
+  align-items: baseline;
+}
+
+.maturity>span:last-child {
+  font-size: 15px;
+}
+
+.loadingcontainer {
+  height: 31.2px;
+  width: 60px;
+}
+
+.scrollablex {
+  overflow-x: scroll;
+}
+
+@media (max-width: 700px) {
+  .options>div:first-child {
+    flex-flow: column;
+    gap: 0;
+  }
+
+  .info {
+    flex-flow: column;
+  }
+}

@@ -14,4 +14,6 @@ export enum QueryKeys {
   airdropData = "AIRDROP_DATA",
   liveProposals = "LIVE_PROPOSALS",
   defispring = "DEFISPRING",
+  tokenPrices = "TOKEN_PRICES",
+  defispringApy = "DEFISPRING_APY",
 }
