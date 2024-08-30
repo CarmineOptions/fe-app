@@ -21,7 +21,7 @@ export type DefiSpringData = {
 };
 
 const defiSpringUrl =
-  "https://defi-spring-distribution-h5cslfrcca-ew.a.run.app";
+  "https://app.carmine.finance/defispring";
 
 export const fetchUserAllocation = async (address: string): Promise<bigint> => {
   const res = await fetch(
