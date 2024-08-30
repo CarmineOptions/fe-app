@@ -8,10 +8,11 @@
 .mobile {
   position: absolute;
   left: 0;
+  transition: left 0.5s ease-in-out;
 }
 
 .hidden {
-  left: -200px;
+  left: -205px;
 }
 
 .sidebar {
