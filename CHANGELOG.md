@@ -1,3 +1,15 @@
+# [2.0.0](https://github.com/CarmineOptions/fe-app/compare/v1.8.4...v2.0.0) (2024-08-30)
+
+
+### Features
+
+* new app design ([8ce674e](https://github.com/CarmineOptions/fe-app/commit/8ce674e41e39778bde8820b564a2d45d84088ec9))
+
+
+### BREAKING CHANGES
+
+* new design is vastly different from the previous one
+
 ## [1.8.4](https://github.com/CarmineOptions/fe-app/compare/v1.8.3...v1.8.4) (2024-08-22)
 
 
