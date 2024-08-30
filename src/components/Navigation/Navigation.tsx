@@ -5,6 +5,12 @@ import styles from "./nav.module.css";
 import { useIsMobile } from "../../hooks/useIsMobile";
 import { useShowNavigation } from "../../hooks/useShowNavigation";
 
+const NewTitle = ({ title }: { title: string }) => (
+  <div className={styles.rewardsheader}>
+    <div className={styles.badge}>NEW</div> {title}
+  </div>
+);
+
 export const Navigation = () => {
   const isMobile = useIsMobile();
   const showNavigation = useShowNavigation();
@@ -38,7 +44,12 @@ export const Navigation = () => {
               </li>
               <li>
                 <NavLink to="/priceprotect">
-                  <MenuIcon /> Price Protect
+                  <NewTitle title="Price Protect" />
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/battlecharts">
+                  <NewTitle title="Battlecharts" />
                 </NavLink>
               </li>
               <li>

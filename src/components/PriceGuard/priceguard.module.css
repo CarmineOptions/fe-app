@@ -90,6 +90,11 @@
 .row>div:nth-child(2) {
   display: flex;
   gap: 15px;
+  flex-wrap: wrap;
+}
+
+.row>div:nth-child(2)>button {
+  white-space: nowrap;
 }
 
 .balance {
@@ -319,12 +324,16 @@ button.selected {
   color: #101010;
 }
 
-@media (max-width: 978px) {
+@media (max-width: 700px) {
   .row {
     flex-flow: column;
   }
 
   .row>div:nth-child(2) {
     flex-flow: column;
+  }
+
+  .datetime>div {
+    justify-content: center;
   }
 }

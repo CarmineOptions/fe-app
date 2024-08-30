@@ -18,6 +18,10 @@ import { usePoolInfo } from "../../hooks/usePoolInfo";
 
 import styles from "./pool.module.css";
 import { formatNumber } from "../../utils/utils";
+import { useQuery } from "react-query";
+import { QueryKeys } from "../../queries/keys";
+import { queryDefiSpringApy } from "../Yield/fetchStakeCapital";
+import { TokenKey } from "../../classes/Token";
 
 type Props = {
   pool: Pool;
@@ -37,6 +41,10 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
   const [amountText, setAmountText] = useState<string>("");
   const [txState, setTxState] = useState<TransactionState>(
     TransactionState.Initial
+  );
+  const { data: defispringApy } = useQuery(
+    [QueryKeys.defispringApy],
+    queryDefiSpringApy
   );
 
   const state = poolInfo?.state;
@@ -71,6 +79,17 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
       : poolData === undefined // got data and found nothing about this pool
       ? 0
       : poolData.value;
+
+  const isDefispringPool =
+    pool.baseToken.id !== TokenKey.BTC && pool.quoteToken.id !== TokenKey.BTC;
+  const finalApy =
+    apy === undefined
+      ? undefined
+      : !isDefispringPool
+      ? apy.launch_annualized
+      : defispringApy === undefined
+      ? undefined
+      : defispringApy + apy.launch_annualized;
 
   const handleChange = handleNumericChangeFactory(
     setAmountText,
@@ -240,14 +259,14 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
           <span className="greytext">APY</span>{" "}
           <span
             className={
-              apy === undefined
+              finalApy === undefined
                 ? ""
-                : apy.launch_annualized > 0
+                : finalApy > 0
                 ? "greentext"
                 : "redtext"
             }
           >
-            {apy === undefined ? "--" : apy.launch_annualized.toFixed(2)}%
+            {finalApy === undefined ? "--" : finalApy.toFixed(2)}%
           </span>
         </div>
         <div className={styles.under}>

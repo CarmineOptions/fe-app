@@ -380,7 +380,9 @@ export const PriceGuard = () => {
       <div className={styles.row}>
         <div className={styles.title}>
           Protection price
-          <InfoIcon msg="Set the price point for your STRK holdings, ensuring protection if the asset falls below this point." />
+          <InfoIcon
+            msg={`Set the price point for your ${token.symbol} holdings, ensuring protection if the asset falls below this point.`}
+          />
         </div>
         <div>
           {strikes.map((strike, i) => {

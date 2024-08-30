@@ -113,7 +113,12 @@ export const TradeTable = () => {
         >
           puts
         </button>
-        <InfoIcon text="TODO: explain Call Put" size="18px" />
+        <InfoIcon
+          text="Call: An option to buy at a set price. Its value rises if the underlying asset's price goes up.
+
+Put: An option to sell at a set price. Its value rises if the underlying asset's price goes down."
+          size="18px"
+        />
         <div
           className="divider"
           style={{
@@ -139,7 +144,12 @@ export const TradeTable = () => {
         >
           short
         </button>
-        <InfoIcon text="TODO: explain Long Short" size="18px" />
+        <InfoIcon
+          text="Long: Buying, expecting the price to rise.
+
+Short: Selling something you don’t own, planning to buy it back at a lower price."
+          size="18px"
+        />
         <div
           className="divider"
           style={{
@@ -159,7 +169,7 @@ export const TradeTable = () => {
               {formatTimestamp(m)}
             </button>
           ))}
-        <InfoIcon text="TODO: explain maturity" size="18px" />
+        <InfoIcon text="The expiration date of the option." size="18px" />
         <div
           className="divider"
           style={{
