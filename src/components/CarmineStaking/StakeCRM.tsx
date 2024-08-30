@@ -23,7 +23,6 @@ import { invalidateKey } from "../../queries/client";
 import { QueryKeys } from "../../queries/keys";
 
 import styles from "./vest.module.css";
-import inputStyles from "../../style/input.module.css";
 
 import GovernanceABI from "../../abi/governance_abi.json";
 import TokenABI from "../../abi/lptoken_abi.json";
@@ -152,7 +151,6 @@ export const StakeCrm = ({ account, carmBalance }: Props) => {
       <div className={styles.container}>
         <div className={styles.inputall}>
           <input
-            className={inputStyles.input}
             placeholder="0"
             type="text"
             value={inputValue}

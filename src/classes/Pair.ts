@@ -39,6 +39,35 @@ export class Pair {
     throw new Error(`Pair with addresses "${base}" "${quote}" does not exist`);
   }
 
+  public static pairByKey(key: PairKey): Pair {
+    if (key === PairKey.ETH_USDC) {
+      return new Pair(
+        Token.byKey(TokenKey.ETH).address,
+        Token.byKey(TokenKey.USDC).address
+      );
+    }
+    if (key === PairKey.STRK_USDC) {
+      return new Pair(
+        Token.byKey(TokenKey.STRK).address,
+        Token.byKey(TokenKey.USDC).address
+      );
+    }
+    if (key === PairKey.BTC_USDC) {
+      return new Pair(
+        Token.byKey(TokenKey.BTC).address,
+        Token.byKey(TokenKey.USDC).address
+      );
+    }
+    if (key === PairKey.ETH_STRK) {
+      return new Pair(
+        Token.byKey(TokenKey.ETH).address,
+        Token.byKey(TokenKey.STRK).address
+      );
+    }
+    // unreachable
+    throw new Error(`Pair with key "${key}" does not exist`);
+  }
+
   // GETTERS
   get pairId(): PairKey {
     return this._pairId;

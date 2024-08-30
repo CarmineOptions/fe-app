@@ -30,6 +30,8 @@ export const CapitalItemContent = ({ pool }: Props) => {
     return <p>Failed fetching data.</p>;
   }
 
+  console.log("HEREEE", data);
+
   const precission = 4;
   const biDigits = BigInt(pool.digits - precission);
 

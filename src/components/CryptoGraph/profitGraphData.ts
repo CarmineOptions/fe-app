@@ -12,9 +12,9 @@ export type GraphData = {
 
 const getStep = (option: Option): number => {
   if (option.baseToken.id === TokenKey.STRK) {
-    return 0.01;
+    return 0.001;
   }
-  return 0.2;
+  return 0.1;
 };
 
 const round = (n: number): number => Number(n.toFixed(4));

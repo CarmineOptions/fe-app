@@ -15,7 +15,6 @@ import { useTxPending } from "../../hooks/useRecentTxs";
 import { TransactionAction } from "../../redux/reducers/transactions";
 import buttonStyles from "../../style/button.module.css";
 import { UserPoolInfo } from "../../classes/Pool";
-import inputStyle from "../../style/input.module.css";
 
 type Props = {
   userPoolInfo: UserPoolInfo;
@@ -56,12 +55,7 @@ export const WithdrawItem = ({ account, userPoolInfo }: Props) => {
         </Tooltip>
       </TableCell>
       <TableCell sx={{ minWidth: "100px" }}>
-        <input
-          className={inputStyle.input}
-          type="text"
-          value={text}
-          onChange={handleChange}
-        />
+        <input type="text" value={text} onChange={handleChange} />
       </TableCell>
       <TableCell align="right">
         <ButtonGroup

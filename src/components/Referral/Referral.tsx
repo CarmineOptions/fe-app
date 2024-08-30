@@ -115,9 +115,4 @@ const GetReferralLink = () => {
   return <button onClick={handleClick}>Generate referral link</button>;
 };
 
-export const Referral = () => (
-  <div>
-    <h3>Referral</h3>
-    <GetReferralLink />
-  </div>
-);
+export const Referral = () => <GetReferralLink />;

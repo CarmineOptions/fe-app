@@ -1,110 +1,135 @@
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-} from "@mui/material";
-import { useEffect, useState } from "react";
-
 import { OptionWithPremia } from "../../classes/Option";
-import tableStyles from "../../style/table.module.css";
-import { SlippageButton } from "../Slippage/SlippageButton";
-import { OptionModal } from "./OptionModal";
-import OptionsTableItem from "./OptionTableItem";
-import { apiUrl } from "../../api";
-import { debug } from "../../utils/debugger";
+import { Pair } from "../../classes/Pair";
+import { useCurrency } from "../../hooks/useCurrency";
+import { OptionSide } from "../../types/options";
+
+import { ReactComponent as PlusIcon } from "./plus.svg";
+
+import styles from "./table.module.css";
+import { openSidebar, setSidebarContent } from "../../redux/actions";
+import { OptionSidebar } from "../Sidebar";
 
 type Props = {
   options: OptionWithPremia[];
+  tokenPair: Pair;
+  side: OptionSide | "all";
 };
 
-const getDefispringApy = async (setDefispringApy: (n: number) => void) => {
-  fetch(apiUrl("defispring", { version: 1, network: "mainnet" }))
-    .then((response) => response.json())
-    .then((result) => {
-      if (result && result.status === "success" && result?.data?.apy) {
-        setDefispringApy(result.data.apy * 100);
-      }
-    })
-    .catch((e) => debug(e));
-};
+const OptionsTable = ({ options, tokenPair, side }: Props) => {
+  const basePrice = useCurrency(tokenPair.baseToken.id);
+  const quotePrice = useCurrency(tokenPair.quoteToken.id);
 
-const OptionsTable = ({ options }: Props) => {
-  const [modalOption, setModalOption] = useState<OptionWithPremia>(options[0]);
-  const [open, setOpen] = useState<boolean>(false);
-  const [priceSort, setPriceSort] = useState(false);
-  const [maturitySort, setMaturitySort] = useState(false);
-  const [filterOption, setFilterOption] = useState(1);
-  const [defispringApy, setDefispringApy] = useState<number | undefined>();
-
-  useEffect(() => {
-    getDefispringApy(setDefispringApy);
-  }, []);
+  const priceReady = basePrice !== undefined && quotePrice !== undefined;
 
   const handleOptionClick = (o: OptionWithPremia) => {
-    setModalOption(o);
-    setOpen(true);
+    setSidebarContent(<OptionSidebar option={o} />);
+    openSidebar();
     o.sendViewEvent();
   };
 
+  const filtered = options.filter(
+    (o) => side !== "all" || o.side === OptionSide.Long
+  );
+
+  const index =
+    priceReady && filtered.findIndex((o) => o.strike > basePrice / quotePrice);
+
   return (
     <>
-      <Table className={tableStyles.table} aria-label="simple table">
-        <TableHead>
-          <TableRow sx={{ border: "1px solid white ", cursor: "pointer" }}>
-            <TableCell
-              onClick={() => {
-                setFilterOption(1);
-                setPriceSort(!priceSort);
-              }}
-            >
-              Strike Price
-            </TableCell>
-            <TableCell
-              onClick={() => {
-                setFilterOption(2);
-                setMaturitySort(!maturitySort);
-              }}
-            >
-              Maturity
-            </TableCell>
-            <TableCell>Premia</TableCell>
-            <TableCell className={tableStyles.slippageCell}>
-              <SlippageButton />
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {filterOption === 1 &&
-            options
-              .sort((a, b) =>
-                priceSort ? b.strike - a.strike : a.strike - b.strike
-              )
-              .map((o, i: number) => (
-                <OptionsTableItem
-                  option={o}
-                  handleClick={() => handleOptionClick(o)}
-                  defispringApy={defispringApy}
-                  key={i}
-                />
-              ))}
-          {filterOption === 2 &&
-            options
-              .sort((a, b) =>
-                maturitySort ? b.maturity - a.maturity : a.maturity - b.maturity
-              )
-              .map((o, i: number) => (
-                <OptionsTableItem
-                  option={o}
-                  handleClick={() => handleOptionClick(o)}
-                  defispringApy={defispringApy}
-                  key={i}
-                />
-              ))}
-        </TableBody>
-      </Table>
-      <OptionModal open={open} setOpen={setOpen} option={modalOption} />
+      <div className="tableheader">
+        <div>strike</div>
+        {(side === OptionSide.Long || side === "all") && (
+          <div>
+            <div className={styles.header}>
+              <span className="darkgreytext">ask price</span>
+              <span className="greentext">/ long</span>
+            </div>
+          </div>
+        )}
+        {(side === OptionSide.Short || side === "all") && (
+          <div>
+            <div className={styles.header}>
+              <span className="darkgreytext">ask price</span>
+              <span className="redtext">/ short</span>
+            </div>
+          </div>
+        )}
+      </div>
+      <div className="tablecontent">
+        {filtered.map((o, i) => {
+          const short = options.find(
+            (other) =>
+              other.side === OptionSide.Short &&
+              other.strike === o.strike &&
+              other.maturity === o.maturity
+          );
+
+          if (side === "all" && short === undefined) {
+            return null;
+          }
+
+          return (
+            <>
+              {priceReady && index !== false && index === i && (
+                <div className={styles.price}>
+                  <div></div>
+                  <div>
+                    {tokenPair.baseToken.symbol} / {tokenPair.quoteToken.symbol}{" "}
+                    {(basePrice / quotePrice).toFixed(3)}
+                  </div>
+                  <div></div>
+                </div>
+              )}
+              <div key={i} className="tableitem">
+                <div>${o.strike}</div>
+                {(side === OptionSide.Long || side === "all") && (
+                  <div
+                    className={`${styles.premiacontainer} ${styles.long}`}
+                    onClick={() => handleOptionClick(o)}
+                  >
+                    {o.premia.toFixed(3)} {o.symbol}{" "}
+                    <div className={styles.square}>
+                      <PlusIcon />
+                    </div>
+                  </div>
+                )}
+                {side === OptionSide.Short && (
+                  <div
+                    className={`${styles.premiacontainer} ${styles.short}`}
+                    onClick={() => handleOptionClick(o)}
+                  >
+                    {o.premia.toFixed(3)} {o.symbol}{" "}
+                    <div className={styles.square}>
+                      <PlusIcon />
+                    </div>
+                  </div>
+                )}
+                {side === "all" && (
+                  <div
+                    className={`${styles.premiacontainer} ${styles.short}`}
+                    onClick={() => handleOptionClick(short!)}
+                  >
+                    {short!.premia.toFixed(3)} {o.symbol}{" "}
+                    <div className={styles.square}>
+                      <PlusIcon />
+                    </div>
+                  </div>
+                )}
+              </div>
+              {priceReady && index === -1 && i === filtered.length - 1 && (
+                <div className={styles.price}>
+                  <div></div>
+                  <div>
+                    {tokenPair.baseToken.symbol} / {tokenPair.quoteToken.symbol}{" "}
+                    {(basePrice / quotePrice).toFixed(3)}
+                  </div>
+                  <div></div>
+                </div>
+              )}
+            </>
+          );
+        })}
+      </div>
     </>
   );
 };

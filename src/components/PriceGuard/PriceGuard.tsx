@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useAccount } from "../../hooks/useAccount";
 import { useUserBalance } from "../../hooks/useUserBalance";
 import { useCurrency } from "../../hooks/useCurrency";
@@ -18,10 +18,12 @@ import { getPremia } from "../../calls/getPremia";
 import { math64toDecimal } from "../../utils/units";
 import { openWalletConnectDialog } from "../ConnectWallet/Button";
 import { Info } from "@mui/icons-material";
-import { Tooltip } from "@mui/material";
+import { MenuItem, Select, SelectChangeEvent, Tooltip } from "@mui/material";
 import { approveAndTradeOpenNew } from "../../calls/tradeOpen";
 import { ReactComponent as CogIcon } from "./cog.svg";
 import styles from "./priceguard.module.css";
+import { TokenNamedBadge } from "../TokenBadge";
+import { TransactionState } from "../../types/network";
 
 const InfoIcon = ({ msg }: { msg: string }) => {
   return (
@@ -128,7 +130,7 @@ export const PriceGuard = () => {
       o.isFresh
   );
 
-  const handleCurrencyChange = (event: ChangeEvent<HTMLSelectElement>) => {
+  const handleCurrencyChange = (event: SelectChangeEvent) => {
     const newCurrency = event.target.value as TokenKey;
     const options = data.filter(
       // only Long Puts for the chosen currency
@@ -206,9 +208,7 @@ export const PriceGuard = () => {
   )!;
 
   const BuyPriceGuardButton = () => {
-    const [tradeState, updateTradeState] = useState<
-      "initial" | "processing" | "fail" | "success"
-    >("initial");
+    const [tradeState, updateTradeState] = useState(TransactionState.Initial);
     const handleButtonClick = () => {
       if (
         !account ||
@@ -234,13 +234,13 @@ export const PriceGuard = () => {
     };
 
     const className = `${styles.buybutton} ${styles[tradeState]}`;
-    const disabled = tradeState === "processing";
+    const disabled = tradeState === TransactionState.Processing;
     const content =
-      tradeState === "initial" ? (
+      tradeState === TransactionState.Initial ? (
         `Protect my ${pickedOption.baseToken.symbol}`
-      ) : tradeState === "processing" ? (
+      ) : tradeState === TransactionState.Processing ? (
         <LoadingAnimation size={13} />
-      ) : tradeState === "fail" ? (
+      ) : tradeState === TransactionState.Fail ? (
         "Failed"
       ) : (
         "Success!"
@@ -322,15 +322,22 @@ export const PriceGuard = () => {
                 value={textSize}
                 onChange={handleSizeChange}
               />
-              <select
-                id="currency"
+              <Select
                 value={currency}
                 onChange={handleCurrencyChange}
+                sx={{
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    border: "none",
+                  },
+                  width: "215px",
+                }}
               >
-                <option value={TokenKey.STRK}>STRK</option>
-                <option value={TokenKey.ETH}>ETH</option>
-                <option value={TokenKey.BTC}>wBTC</option>
-              </select>
+                {[TokenKey.STRK, TokenKey.ETH, TokenKey.BTC].map((t, i) => (
+                  <MenuItem key={i} value={t}>
+                    <TokenNamedBadge token={Token.byKey(t)} />
+                  </MenuItem>
+                ))}
+              </Select>
             </div>
           </div>
           <div onClick={handleAll} className={styles.balance}>

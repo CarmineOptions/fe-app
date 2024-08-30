@@ -58,13 +58,15 @@ export const SlippageContent = () => {
       <div className={styles.container}>
         <div>
           <input
-            className={`${inputStyles.input} ${inputStyles.gold}`}
+            className={inputStyles.gold}
             type="text"
             value={inputText}
             onChange={handleChange}
             id="manual-slippage"
           />
-          <label style={{ marginLeft: "20px" }} htmlFor="manual-slippage">Choose your own slippage</label>
+          <label style={{ marginLeft: "20px" }} htmlFor="manual-slippage">
+            Choose your own slippage
+          </label>
           <ButtonGroup
             variant="contained"
             aria-label="outlined primary button group"

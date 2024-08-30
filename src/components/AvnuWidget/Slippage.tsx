@@ -1,8 +1,7 @@
+import { useState } from "react";
 import { Close } from "@mui/icons-material";
 
 import styles from "./widget.module.css";
-import inputStyles from "../../style/input.module.css";
-import { useState } from "react";
 
 type Props = {
   setSlippage: (n: number) => void;
@@ -54,7 +53,6 @@ export const SlippageChange = ({
             max="1"
             value={slippageText}
             onChange={(e) => handleInputChange(e.target.value)}
-            className={inputStyles.input}
             style={{ border: "none" }}
           />
           <span>%</span>

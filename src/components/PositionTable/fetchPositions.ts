@@ -8,12 +8,10 @@ import { parseOptionWithPosition } from "../../utils/optionParsers/parseOptionWi
 export const fetchPositions = async ({
   queryKey,
 }: QueryFunctionContext<[string, string | undefined]>): Promise<
-  OptionWithPosition[]
+  OptionWithPosition[] | undefined
 > => {
   const address = queryKey[1];
-  if (!address) {
-    throw Error("No address");
-  }
+  if (!address) return;
 
   try {
     const options = await getOptionsWithPositionOfUser(address);

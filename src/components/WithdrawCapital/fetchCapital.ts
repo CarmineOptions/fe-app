@@ -5,10 +5,12 @@ import { UserPoolInfo } from "../../classes/Pool";
 
 export const fetchCapital = async ({
   queryKey,
-}: QueryFunctionContext<[string, string]>): Promise<
+}: QueryFunctionContext<[string, string | undefined]>): Promise<
   UserPoolInfo[] | undefined
 > => {
   const address = queryKey[1];
+
+  if (address === undefined) return;
 
   const userPools = await getUserPoolInfo(address);
 

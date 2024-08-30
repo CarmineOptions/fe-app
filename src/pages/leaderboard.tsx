@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { Layout } from "../components/Layout";
 import { Leaderboard } from "../components/Points";
-import { CrmBanner } from "../components/Banner";
+import { Helmet } from "react-helmet";
 
 const LeaderboardPage = () => {
   useEffect(() => {
@@ -11,12 +11,14 @@ const LeaderboardPage = () => {
 
   return (
     <Layout>
-      <CrmBanner />
-
-      <h3>Carmine Points Program</h3>
+      <Helmet>
+        <title>Leaderboard | Carmine Options AMM</title>
+        <meta name="description" content="Earn points to move up the ladder!" />
+      </Helmet>
+      <h1>Carmine Points Program</h1>
       <p>Elevate Your Status, Enhance Your Rewards</p>
       <p>Season 2 is now live!</p>
-      <h3>Leaderboard</h3>
+      <h1>Leaderboard</h1>
       <Leaderboard />
     </Layout>
   );

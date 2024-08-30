@@ -1,0 +1,38 @@
+.container {
+  display: inline-block;
+  border-radius: 100%;
+  background: none;
+}
+
+.named {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.named>span {
+  font-weight: 300;
+  text-align: left;
+}
+
+.container img {
+  width: 100%;
+}
+
+.pair {
+  display: inline-block;
+  position: relative;
+}
+
+.pair div:first-child {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.pair div:last-child {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+}

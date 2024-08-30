@@ -4,12 +4,23 @@ import { queryClient } from "./queries/client";
 import { ReactNode, useEffect } from "react";
 import { theme } from "./style/themes";
 import { connectToLatest } from "./network/account";
+import { setIsMobile } from "./redux/actions";
 
 type Props = { children: ReactNode };
 
 export const Controller = ({ children }: Props) => {
   useEffect(() => {
     connectToLatest();
+
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 700);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
