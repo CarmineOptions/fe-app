@@ -11,7 +11,6 @@ import { Pool } from "../../classes/Pool";
 import { useTxPending } from "../../hooks/useRecentTxs";
 import { TransactionAction } from "../../redux/reducers/transactions";
 import buttonStyles from "../../style/button.module.css";
-import inputStyle from "../../style/input.module.css";
 import { handleNumericChangeFactory } from "../../utils/inputHandling";
 import { handleStake } from "./handleStake";
 import { CapitalItem } from "./CapitalItem";
@@ -156,12 +155,7 @@ export const StakeCapitalItem = ({ account, pool, defispringApy }: Props) => {
           />
         </TableCell>
         <TableCell sx={{ minWidth: "100px" }} align="center">
-          <input
-            className={inputStyle.input}
-            type="text"
-            value={text}
-            onChange={handleChange}
-          />
+          <input type="text" value={text} onChange={handleChange} />
         </TableCell>
         <TableCell sx={{ display: "flex", alignItems: "center" }} align="right">
           {account ? (

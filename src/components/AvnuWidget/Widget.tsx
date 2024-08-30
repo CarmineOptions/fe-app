@@ -22,7 +22,6 @@ import { maxDecimals } from "../../utils/utils";
 import { SlippageChange } from "./Slippage";
 
 import styles from "./widget.module.css";
-import inputStyles from "../../style/input.module.css";
 import { balanceFromTokenAddress } from "../../calls/balanceOf";
 import { shortInteger } from "../../utils/computations";
 
@@ -371,7 +370,6 @@ export const Widget = () => {
         >
           <div className={styles.moneywrapper}>
             <input
-              className={inputStyles.input}
               placeholder="0"
               type="text"
               value={inputValue}
@@ -420,7 +418,6 @@ export const Widget = () => {
         <div className={styles.tokeninput}>
           <div className={styles.moneywrapper}>
             <input
-              className={inputStyles.input}
               placeholder="0"
               readOnly
               type="text"

@@ -203,5 +203,6 @@ input[type='number']::-webkit-outer-spin-button {
 
   main {
     padding: 20px;
+    overflow: hidden;
   }
 }

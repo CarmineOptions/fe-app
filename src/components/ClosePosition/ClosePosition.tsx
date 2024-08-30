@@ -14,7 +14,6 @@ import { store } from "../../redux/store";
 import { useCurrency } from "../../hooks/useCurrency";
 import { OptionWithPosition } from "../../classes/Option";
 import buttonStyles from "../../style/button.module.css";
-import inputStyles from "../../style/input.module.css";
 
 const premiaToDisplayValue = (
   premia: number,
@@ -68,7 +67,6 @@ const Template = ({
         }}
       >
         <input
-          className={inputStyles.input}
           style={{
             marginRight: "8px",
             minWidth: "200px",
