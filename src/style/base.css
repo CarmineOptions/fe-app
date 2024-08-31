@@ -18,6 +18,11 @@
   font-family: IBM Plex Sans Condensed;
 }
 
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
 ul {
   margin: 0;
   padding: 0;

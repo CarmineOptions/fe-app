@@ -8,6 +8,13 @@
 .buttons {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.buttons>div {
+  display: flex;
+  align-items: center;
   gap: 5px;
 }
 
