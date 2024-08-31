@@ -24,3 +24,9 @@
   background-color: white;
   border-radius: 2px;
 }
+
+.logocontainer {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}

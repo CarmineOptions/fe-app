@@ -1,13 +1,15 @@
+import { useNavigate } from "react-router-dom";
 import { useIsMobile } from "../../hooks/useIsMobile";
 import { useShowNavigation } from "../../hooks/useShowNavigation";
 import { setShowNavigation } from "../../redux/actions";
 import { WalletButton } from "../ConnectWallet/Button";
-
+import { ReactComponent as Carmine } from "./Carmine.svg";
 import styles from "./header.module.css";
 
 export const Header = () => {
   const isMobile = useIsMobile();
   const showNavigation = useShowNavigation();
+  const navigate = useNavigate();
 
   const handleBurgerClick = () => {
     setShowNavigation(!showNavigation);
@@ -22,7 +24,9 @@ export const Header = () => {
           <div></div>
         </div>
       )}
-      <span>Carmine</span>
+      <div className={styles.logocontainer} onClick={() => navigate("/")}>
+        <Carmine />
+      </div>
       <WalletButton />
     </header>
   );

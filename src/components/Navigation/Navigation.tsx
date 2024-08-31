@@ -7,7 +7,7 @@ import { useShowNavigation } from "../../hooks/useShowNavigation";
 
 const NewTitle = ({ title }: { title: string }) => (
   <div className={styles.rewardsheader}>
-    <div className={styles.badge}>NEW</div> {title}
+    <MenuIcon /> {title} <div className={styles.badge}>NEW</div>
   </div>
 );
 
