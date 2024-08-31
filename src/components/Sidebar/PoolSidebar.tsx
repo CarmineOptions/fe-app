@@ -22,6 +22,7 @@ import { useQuery } from "react-query";
 import { QueryKeys } from "../../queries/keys";
 import { queryDefiSpringApy } from "../Yield/fetchStakeCapital";
 import { TokenKey } from "../../classes/Token";
+import { LoadingAnimation } from "../Loading/Loading";
 
 type Props = {
   pool: Pool;
@@ -181,7 +182,7 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
                 value={amountText}
               />
               <span className={styles.tiny} style={{ alignSelf: "flex-start" }}>
-                ${price === undefined ? "--" : (price * amount).toFixed(2)}
+                ${price === undefined ? "--" : formatNumber(price * amount)}
               </span>
             </div>
             <div>
@@ -190,7 +191,13 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
           </div>
           <div className={styles.balance}>
             <span className="greytext">balance</span>
-            <span>{balance}</span>
+            <span>
+              {balance === undefined ? (
+                <LoadingAnimation size={12} />
+              ) : (
+                formatNumber(balance)
+              )}
+            </span>
             <button onClick={handleMax}>max</button>
           </div>
         </div>
@@ -242,7 +249,7 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
         </div>
         <div>
           <span>
-            {userPosition === undefined ? "--" : userPosition.toFixed(4)}
+            {userPosition === undefined ? "--" : formatNumber(userPosition, 4)}
           </span>
           <span>{pool.underlying.symbol}</span>
         </div>
@@ -250,7 +257,7 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
           <span className={styles.tiny}>
             {userPosition === undefined || price === undefined
               ? "--"
-              : `$${(userPosition * price).toFixed(2)}`}
+              : `$${formatNumber(userPosition * price, 2)}`}
           </span>
         </div>
       </div>
@@ -273,14 +280,14 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
           <div className={`${styles.big} ${styles.apart}`}>
             <span className="greytext">TVL</span>{" "}
             <span>
-              {tvl === undefined ? "--" : tvl.toFixed(2)}{" "}
+              {tvl === undefined ? "--" : formatNumber(tvl, 2)}{" "}
               {pool.underlying.symbol}
             </span>
           </div>
           <span className={styles.tiny}>
             {price === undefined || tvl === undefined
               ? "---"
-              : `$${(price * tvl).toFixed(2)}`}
+              : `$${formatNumber(price * tvl, 2)}`}
           </span>
         </div>
         <div className="divider" style={{ margin: "5px 0" }}></div>
@@ -288,28 +295,28 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
           <div className={`${styles.small} ${styles.apart}`}>
             <span className="greytext">UNLOCKED</span>{" "}
             <span>
-              {unlocked === undefined ? "--" : unlocked.toFixed(2)}{" "}
+              {unlocked === undefined ? "--" : formatNumber(unlocked, 2)}{" "}
               {pool.underlying.symbol}
             </span>
           </div>
           <span className={styles.tiny}>
             {price === undefined || unlocked === undefined
               ? "---"
-              : `$${(price * unlocked).toFixed(2)}`}
+              : `$${formatNumber(price * unlocked, 2)}`}
           </span>
         </div>
         <div className={styles.under}>
           <div className={`${styles.small} ${styles.apart}`}>
             <span className="greytext">LOCKED</span>{" "}
             <span>
-              {locked === undefined ? "--" : locked.toFixed(2)}{" "}
+              {locked === undefined ? "--" : formatNumber(locked, 2)}{" "}
               {pool.underlying.symbol}
             </span>
           </div>
           <span className={styles.tiny}>
             {price === undefined || locked === undefined
               ? "---"
-              : `$${(price * locked).toFixed(2)}`}
+              : `$${formatNumber(price * locked, 2)}`}
           </span>
         </div>
       </div>

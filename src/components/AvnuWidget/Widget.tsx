@@ -22,8 +22,8 @@ import { maxDecimals } from "../../utils/utils";
 import { SlippageChange } from "./Slippage";
 
 import styles from "./widget.module.css";
-import { balanceFromTokenAddress } from "../../calls/balanceOf";
 import { shortInteger } from "../../utils/computations";
+import { useUserBalance } from "../../hooks/useUserBalance";
 
 const AVNU_BASE_URL = "https://starknet.api.avnu.fi";
 const CARMINE_BENEFICIARY_ADDRESS =
@@ -157,12 +157,8 @@ export const Widget = () => {
   const [slippage, setSlippage] = useState<number>(0.005); // default slippage .5%
   const [slippageOpen, setslippageOpen] = useState<boolean>(false);
   const [refreshCounter, setRefresh] = useState(0);
-  const [sellTokenBalance, setSellTokenBalance] = useState<bigint | undefined>(
-    undefined
-  );
-  const [buyTokenBalance, setBuyTokenBalance] = useState<bigint | undefined>(
-    undefined
-  );
+  const buyTokenBalance = useUserBalance(buyToken.address);
+  const sellTokenBalance = useUserBalance(sellToken.address);
   const [notEnough, setNotEnough] = useState(false);
 
   const refresh = () => setRefresh(refreshCounter + 1);
@@ -200,24 +196,6 @@ export const Widget = () => {
       clearTimeout(handler);
     };
   }, [inputValue, sellToken, sellTokenBalance]);
-
-  useEffect(() => {
-    setBuyTokenBalance(undefined);
-    if (account) {
-      balanceFromTokenAddress(account, buyToken.address).then(
-        setBuyTokenBalance
-      );
-    }
-  }, [buyToken, account]);
-
-  useEffect(() => {
-    setSellTokenBalance(undefined);
-    if (account) {
-      balanceFromTokenAddress(account, sellToken.address).then(
-        setSellTokenBalance
-      );
-    }
-  }, [sellToken, account]);
 
   useEffect(() => {
     if (abortControllerRef.current) {
@@ -306,7 +284,22 @@ export const Widget = () => {
   };
 
   if (!account) {
-    return <button onClick={openWalletConnectDialog}>Connect Wallet</button>;
+    return (
+      <div className={styles.container}>
+        <div className={styles.modalheader}>
+          <h1>Swap</h1>
+          <div onClick={() => setslippageOpen(true)}>
+            <Settings />
+          </div>
+        </div>
+        <button
+          className="primary active mainbutton"
+          onClick={openWalletConnectDialog}
+        >
+          Connect Wallet
+        </button>
+      </div>
+    );
   }
 
   return (

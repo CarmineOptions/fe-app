@@ -2,6 +2,7 @@ import { useQuery } from "react-query";
 import { tradeLeaderboardDataQuery } from "./getTrades";
 import { Leaderboard } from "../Leaderboard";
 import { useAccount } from "../../hooks/useAccount";
+import { LoadingAnimation } from "../Loading/Loading";
 
 export const NotionalVolumeLeaderboard = () => {
   const account = useAccount();
@@ -11,7 +12,7 @@ export const NotionalVolumeLeaderboard = () => {
   );
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <LoadingAnimation />;
   }
 
   if (isError || !data) {

@@ -5,9 +5,13 @@ import styles from "./nav.module.css";
 import { useIsMobile } from "../../hooks/useIsMobile";
 import { useShowNavigation } from "../../hooks/useShowNavigation";
 
-const NewTitle = ({ title }: { title: string }) => (
-  <div className={styles.rewardsheader}>
-    <MenuIcon /> {title} <div className={styles.badge}>NEW</div>
+const Title = ({ title, newBadge }: { title: string; newBadge?: boolean }) => (
+  <div className={styles.navlinktitle}>
+    <div>
+      <MenuIcon />
+      <span>{title}</span>
+    </div>
+    {newBadge && <div className={styles.badge}>NEW</div>}
   </div>
 );
 
@@ -29,47 +33,47 @@ export const Navigation = () => {
             <ul>
               <li>
                 <NavLink to="/portfolio">
-                  <MenuIcon /> Portfolio
+                  <Title title="Portfolio" />
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/trade">
-                  <MenuIcon /> Options
+                  <Title title="Options" />
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/yield">
-                  <MenuIcon /> Yield
+                  <Title title="Yield" />
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/priceprotect">
-                  <NewTitle title="Price Protect" />
+                  <Title title="Price Protect" newBadge={true} />
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/battlecharts">
-                  <NewTitle title="Battlecharts" />
+                  <Title title="Battlecharts" newBadge={true} />
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/swap">
-                  <MenuIcon /> Swap
+                  <Title title="Swap" />
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/rewards">
-                  <MenuIcon /> Rewards
+                  <Title title="Rewards" />
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/leaderboard">
-                  <MenuIcon /> Leaderboard
+                  <Title title="Leaderboard" />
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/governance">
-                  <MenuIcon /> Governance
+                  <Title title="Governance" />
                 </NavLink>
               </li>
             </ul>

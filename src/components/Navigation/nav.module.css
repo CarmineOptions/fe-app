@@ -43,10 +43,17 @@
   margin-bottom: 8px;
 }
 
-.rewardsheader {
+.navlinktitle {
   display: flex;
-  align-items: center;
   gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navlinktitle>div:first-child {
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
 
 .badge {

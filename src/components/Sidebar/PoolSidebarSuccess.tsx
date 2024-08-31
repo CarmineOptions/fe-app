@@ -6,6 +6,7 @@ import { useCurrency } from "../../hooks/useCurrency";
 import { useNavigate } from "react-router-dom";
 import { closeSidebar } from "../../redux/actions";
 import { useStakes } from "../../hooks/useStakes";
+import { formatNumber } from "../../utils/utils";
 
 type Props = {
   pool: Pool;
@@ -58,12 +59,12 @@ export const PoolSidebarSuccess = ({ pool, amount, tx }: Props) => {
           <span style={{ color: grey }}>DEPOSITED</span>
         </div>
         <div>
-          <span>{amount.toFixed(4)}</span>
+          <span>{formatNumber(amount, 4)}</span>
           <span>{pool.underlying.symbol}</span>
         </div>
         <div>
           <span className={styles.tiny} style={{ color: grey }}>
-            {price === undefined ? "--" : `$${(amount * price).toFixed(2)}`}
+            {price === undefined ? "--" : `$${formatNumber(amount * price)}`}
           </span>
         </div>
       </div>
@@ -73,7 +74,7 @@ export const PoolSidebarSuccess = ({ pool, amount, tx }: Props) => {
         </div>
         <div>
           <span>
-            {userPosition === undefined ? "--" : userPosition.toFixed(4)}
+            {userPosition === undefined ? "--" : formatNumber(userPosition, 4)}
           </span>
           <span>{pool.underlying.symbol}</span>
         </div>
@@ -81,7 +82,7 @@ export const PoolSidebarSuccess = ({ pool, amount, tx }: Props) => {
           <span className={styles.tiny} style={{ color: grey }}>
             {userPosition === undefined || price === undefined
               ? "--"
-              : `$${(userPosition * price).toFixed(2)}`}
+              : `$${formatNumber(userPosition * price)}`}
           </span>
         </div>
       </div>

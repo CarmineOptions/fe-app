@@ -12,6 +12,7 @@ import { Cubit } from "../types/units";
 import { longInteger, shortInteger } from "../utils/computations";
 import { bnToOptionSide } from "../utils/conversions";
 import {
+  formatNumber,
   timestampToReadableDate,
   timestampToShortTimeDate,
   toHex,
@@ -387,6 +388,6 @@ export class OptionWithPremia extends Option {
   }
 
   get displayPremia(): string {
-    return this.premia.toFixed(4);
+    return formatNumber(this.premia, 4);
   }
 }
