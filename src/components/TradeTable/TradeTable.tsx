@@ -119,13 +119,7 @@ export const TradeTable = () => {
 Put: An option to sell at a set price. Its value rises if the underlying asset's price goes down."
           size="18px"
         />
-        <div
-          className="divider"
-          style={{
-            width: "50px",
-            margin: "0 10px 0 0",
-          }}
-        />
+        <div className={"divider " + styles.divider} />
         <button
           className={side === "all" ? "secondary active" : "secondary"}
           onClick={() => setSide("all")}
@@ -150,13 +144,7 @@ Put: An option to sell at a set price. Its value rises if the underlying asset's
 Short: Selling something you don’t own, planning to buy it back at a lower price."
           size="18px"
         />
-        <div
-          className="divider"
-          style={{
-            width: "50px",
-            margin: "0 10px 0 0",
-          }}
-        />
+        <div className={"divider " + styles.divider} />
         <span className={styles.maturity}>MATURITY</span>
         {maturities
           .sort((a, b) => a - b)
@@ -170,13 +158,6 @@ Short: Selling something you don’t own, planning to buy it back at a lower pri
             </button>
           ))}
         <InfoIcon text="The expiration date of the option." size="18px" />
-        <div
-          className="divider"
-          style={{
-            width: "50px",
-            margin: "0 10px 0 0",
-          }}
-        />
       </div>
       <div>
         {isLoading && (
