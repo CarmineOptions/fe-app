@@ -11,9 +11,9 @@ import { QueryKeys } from "../../queries/keys";
 import { Pair, PairKey } from "../../classes/Pair";
 import { PairNamedBadge } from "../TokenBadge";
 import { BtcToken, EthToken, StrkToken, UsdcToken } from "../../classes/Token";
+import { InfoIcon } from "../InfoIcon";
 
 import styles from "./tradetable.module.css";
-import { InfoIcon } from "../InfoIcon";
 
 const getText = (type: OptionType, side: OptionSide | "all") => {
   if (side === "all") {
@@ -119,9 +119,8 @@ export const TradeTable = () => {
           </button>
         </div>
         <InfoIcon
-          text="Call: An option to buy at a set price. Its value rises if the underlying asset's price goes up.
-
-Put: An option to sell at a set price. Its value rises if the underlying asset's price goes down."
+          text="CALL: Right to buy at a strike price. Its value rises if the underlying asset's price goes up.
+PUT: Right to sell at a strike price. Its value rises if the underlying asset's price goes down."
           size="18px"
         />
         <div className={"divider " + styles.divider} />
@@ -146,9 +145,8 @@ Put: An option to sell at a set price. Its value rises if the underlying asset's
           </button>
         </div>
         <InfoIcon
-          text="Long: Buying, expecting the price to rise.
-
-Short: Selling something you don’t own, planning to buy it back at a lower price."
+          text="LONG: Buy a right to buy/sell (for Call/Put) underlying asset at strike price. Buying an option means that you have the right to decide whether to buy (call) or sell (put) the asset. When buying you pay premium.
+SHORT: Sell a right to buy/sell (for Call/Put) underlying asset at strike price. Shorting an option means that you are obliged to buy (put) or sell (call) the asset. When selling you receive premium."
           size="18px"
         />
         <div className={"divider " + styles.divider} />
