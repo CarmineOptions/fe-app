@@ -28,11 +28,6 @@ const themeConfig: ThemeOptions = {
     },
     divider: "#a9aaac",
   },
-  typography: {
-    fontFamily: '"IBM Plex Sans Condensed", sans-serif',
-    fontSize: 18,
-    fontWeightRegular: 500,
-  },
 };
 
 export const theme = createTheme(themeConfig);

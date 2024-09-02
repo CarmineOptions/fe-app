@@ -35,7 +35,7 @@ function TradingViewWidget() {
       "hideSymbolLogo": false,
       "scalePosition": "right",
       "scaleMode": "Normal",
-      "fontFamily": "IBM Plex Sans Condensed, sans-serif, -apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+      "fontFamily": "IBM Plex Sans Condensed, sans-serif, -apple-system, sans-serif",
       "fontSize": "10",
       "noTimeScale": false,
       "valuesTracking": "1",
