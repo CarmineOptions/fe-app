@@ -12,12 +12,6 @@ export const AccountInfo = () => {
     return null;
   }
 
-  const iconStyle = {
-    width: 20,
-    marginRight: 1,
-    background: "black",
-  };
-
   const handleClick = () => {
     openAccountDialog();
   };
@@ -28,7 +22,7 @@ export const AccountInfo = () => {
   return (
     <button className={`primary active ${styles.custom}`} onClick={handleClick}>
       <div className={styles.walletinfo}>
-        <WalletIcon sx={iconStyle} wallet={wallet} />
+        <WalletIcon wallet={wallet} />
         <span>{addressElision(address)}</span>
       </div>
     </button>

@@ -23,7 +23,6 @@ import { LoadingAnimation } from "../Loading/Loading";
 import { unstakeAirdrop } from "../../calls/carmineStake";
 
 import styles from "./modal.module.css";
-import buttonStyles from "../../style/button.module.css";
 
 import GovernanceABI from "../../abi/governance_abi.json";
 import TokenABI from "../../abi/lptoken_abi.json";
@@ -91,15 +90,15 @@ type Props = {
 
 export const stateToClassName = (state: TransactionState) => {
   if (state === TransactionState.Success) {
-    return buttonStyles.green;
+    return "active green";
   }
   if (state === TransactionState.Fail) {
-    return buttonStyles.fail;
+    return "active red";
   }
   if (state === TransactionState.Processing) {
-    return buttonStyles.disabled;
+    return "disabled";
   }
-  return buttonStyles.secondary;
+  return "active primary";
 };
 
 export const StakingModal = ({ account, amount, open, setOpen }: Props) => {

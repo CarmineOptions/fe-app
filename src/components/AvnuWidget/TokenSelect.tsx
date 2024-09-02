@@ -33,7 +33,7 @@ export const TokenSelect = ({ close, setSelection, other }: Props) => {
   return (
     <div className={styles.modalcontainer}>
       <div className={styles.modalheader}>
-        <h1>Select a token</h1>
+        <h2>Select a token</h2>
         <div onClick={close}>
           <Close />
         </div>

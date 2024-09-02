@@ -2,6 +2,8 @@ import { SxProps } from "@mui/system";
 import { Box } from "@mui/material";
 import { ConnectedStarknetWindowObject } from "get-starknet-core";
 
+import styles from "./ConnectWallet/button.module.css";
+
 interface IconProps {
   sx?: SxProps;
 }
@@ -21,7 +23,7 @@ export const BraavosIcon = ({ sx }: IconProps) => (
 export const WalletIcon = ({ sx, wallet }: WalletIconProps) => (
   <Box
     component="img"
-    sx={sx}
+    className={styles.walleticon}
     alt={`${wallet.id} wallet icon`}
     src={wallet.icon}
   />

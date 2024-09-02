@@ -14,7 +14,7 @@ import { useEffect } from "react";
 const VotingSubpage = () => {
   return (
     <div>
-      <h1>Proposals</h1>
+      <h2>Proposals</h2>
       <p>Vote on AMM defining proposals.</p>
       <p>
         To find out more about the proposals and discuss, go to{" "}
@@ -35,8 +35,17 @@ const VotingSubpage = () => {
 const StakingSubpage = () => {
   return (
     <div>
-      <h1>CRM Staking</h1>
+      <h2>CRM Staking</h2>
       <CarmineStaking />
+    </div>
+  );
+};
+
+const AirdropSubpage = () => {
+  return (
+    <div>
+      <h2>Airdrop</h2>
+      <Airdrop />
     </div>
   );
 };
@@ -107,7 +116,7 @@ const Governance = () => {
 
       {subpage === GovernanceSubpage.Voting && <VotingSubpage />}
       {subpage === GovernanceSubpage.Staking && <StakingSubpage />}
-      {subpage === GovernanceSubpage.AirDrop && <Airdrop />}
+      {subpage === GovernanceSubpage.AirDrop && <AirdropSubpage />}
     </Layout>
   );
 };
