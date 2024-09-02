@@ -16,6 +16,8 @@
 * {
   color: white;
   font-family: IBM Plex Sans Condensed;
+  margin: 0;
+  padding: 0;
 }
 
 body {
@@ -147,6 +149,14 @@ input {
 .divider {
   height: 1px;
   border-top: 1px solid var(--DARK-GREY);
+}
+
+.topmargin {
+  margin-top: 28px;
+}
+
+.botmargin {
+  margin-bottom: 28px;
 }
 
 button.active {

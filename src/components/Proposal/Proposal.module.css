@@ -1,5 +1,5 @@
 .listcontainer {
   display: flex;
   flex-flow: column;
-  gap: 4rem;
+  gap: 28px;
 }
