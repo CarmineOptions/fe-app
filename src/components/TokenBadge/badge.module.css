@@ -2,18 +2,36 @@
   display: inline-block;
   border-radius: 100%;
   background: none;
+  width: 28px;
+  height: 28px;
+}
+
+.container.small {
+  width: 21px;
+  height: 21px;
 }
 
 .named {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 4px;
 }
 
-.named>span {
+.small .text {
+  font-family: IBM Plex Sans Condensed;
+  font-weight: 500;
+  line-height: 18px;
+  letter-spacing: 0.04em;
+  font-size: 15px;
+  margin-bottom: 0;
+}
+
+.text {
   font-family: Formula Condensed;
   font-weight: 300;
   text-align: left;
+  font-size: 32px;
+  margin-bottom: -7px;
 }
 
 .container img {
@@ -23,6 +41,13 @@
 .pair {
   display: inline-block;
   position: relative;
+  height: 28px;
+  width: 47px;
+}
+
+.pair.small {
+  height: 21px;
+  width: 35px;
 }
 
 .pair div:first-child {

@@ -62,7 +62,7 @@ const PriceGuardDisplay = ({
   return (
     <div className="tableitem">
       <div>
-        <TokenNamedBadge token={token} size={21} />
+        <TokenNamedBadge token={token} size="small" />
       </div>
       <div>
         {option.size} {token.symbol}

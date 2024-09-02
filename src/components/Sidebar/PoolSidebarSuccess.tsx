@@ -44,13 +44,9 @@ export const PoolSidebarSuccess = ({ pool, amount, tx }: Props) => {
         <span>SUCCESSFUL!</span>
       </div>
       <div className={`${styles.desc} ${styles.success}`}>
-        <PairNamedBadge
-          tokenA={pool.baseToken}
-          tokenB={pool.quoteToken}
-          size={32}
-        />
+        <PairNamedBadge tokenA={pool.baseToken} tokenB={pool.quoteToken} />
         <div className={styles.poolid}>
-          <TokenBadge token={pool.underlying} size={15} />{" "}
+          <TokenBadge token={pool.underlying} size="small" />{" "}
           {pool.typeAsText.toUpperCase()} POOL
         </div>
       </div>

@@ -324,6 +324,12 @@ button.selected {
   color: #101010;
 }
 
+.tokenwrapper {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 10px;
+}
+
 @media (max-width: 700px) {
   .row {
     flex-flow: column;

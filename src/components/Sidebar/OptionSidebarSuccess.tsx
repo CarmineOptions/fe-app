@@ -31,7 +31,6 @@ export const OptionSidebarSuccess = ({ option, amount, tx }: Props) => {
           <PairNamedBadge
             tokenA={option.baseToken}
             tokenB={option.quoteToken}
-            size={32}
           />
           <div
             className={
