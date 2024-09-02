@@ -82,8 +82,11 @@ export const TradeTable = () => {
         sx={{
           "& .MuiOutlinedInput-notchedOutline": {
             border: "none",
+            paddingLeft: 0,
           },
-          width: "285px",
+          ".css-1ly9a1d-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input":
+            { paddingLeft: 0 },
+          width: "225px",
         }}
       >
         <MenuItem value={PairKey.STRK_USDC}>

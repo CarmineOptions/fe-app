@@ -64,19 +64,13 @@ export const PairBadge = ({ tokenA, tokenB, size }: PairBadgeType) => {
   );
 };
 
-export const PairNamedBadge = ({ tokenA, tokenB, size }: PairBadgeType) => {
-  const validSize = size === undefined ? 40 : size;
-
-  const fontSize = 0.8 * validSize;
-  const lineHeight = 0.95 * validSize;
-
+export const PairNamedBadge = ({ tokenA, tokenB }: PairBadgeType) => {
   return (
     <div className={styles.named}>
-      <PairBadge tokenA={tokenA} tokenB={tokenB} size={size} />
+      <PairBadge tokenA={tokenA} tokenB={tokenB} size={28} />
       <span
         style={{
-          fontSize: `${fontSize}px`,
-          lineHeight: `${lineHeight}px`,
+          fontSize: `32px`,
         }}
       >
         {tokenA.symbol}/{tokenB.symbol}
