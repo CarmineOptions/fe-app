@@ -183,7 +183,7 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
               </span>
             </div>
             <div>
-              <TokenNamedBadge token={pool.underlying} />
+              <TokenNamedBadge token={pool.underlying} size="small" />
             </div>
           </div>
           <div className={styles.balance}>

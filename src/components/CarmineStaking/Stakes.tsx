@@ -117,7 +117,8 @@ export const Stakes = ({ stakes, veBalance, account }: Props) => {
 
   return (
     <div>
-      <h2>Expired stakes</h2>
+      <div className="divider topmargin botmargin" />
+      <h2 className="botmargin">Expired stakes</h2>
       {expired.length > 0 || initialVeCarm > 0n ? (
         <TableContainer>
           <Table className={tableStyles.table}>
@@ -144,8 +145,8 @@ export const Stakes = ({ stakes, veBalance, account }: Props) => {
       ) : (
         <p>No expired stakes</p>
       )}
-
-      <h2>Active stakes</h2>
+      <div className="divider topmargin botmargin" />
+      <h2 className="botmargin">Active stakes</h2>
       {active.length > 0 ? (
         <TableContainer>
           <Table className={tableStyles.table}>

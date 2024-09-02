@@ -76,33 +76,33 @@ export const TradeTable = () => {
 
   return (
     <div className={styles.container}>
-      <Select
-        value={pair}
-        onChange={handleChange}
-        sx={{
-          "& .MuiOutlinedInput-notchedOutline": {
-            border: "none",
-            paddingLeft: 0,
-          },
-          ".css-1ly9a1d-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input":
-            { paddingLeft: 0 },
-          width: "208px",
-        }}
-      >
-        <MenuItem value={PairKey.STRK_USDC}>
-          <PairNamedBadge tokenA={StrkToken} tokenB={UsdcToken} />
-        </MenuItem>
-        <MenuItem value={PairKey.ETH_USDC}>
-          <PairNamedBadge tokenA={EthToken} tokenB={UsdcToken} />
-        </MenuItem>
-        <MenuItem value={PairKey.ETH_STRK}>
-          <PairNamedBadge tokenA={EthToken} tokenB={StrkToken} />
-        </MenuItem>
-        <MenuItem value={PairKey.BTC_USDC}>
-          <PairNamedBadge tokenA={BtcToken} tokenB={UsdcToken} />
-        </MenuItem>
-      </Select>
-
+      <div>
+        <Select
+          value={pair}
+          onChange={handleChange}
+          sx={{
+            "& .MuiOutlinedInput-notchedOutline": {
+              border: "none",
+            },
+            ".css-1ly9a1d-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input":
+              { padding: 0 },
+            width: "208px",
+          }}
+        >
+          <MenuItem value={PairKey.STRK_USDC}>
+            <PairNamedBadge tokenA={StrkToken} tokenB={UsdcToken} />
+          </MenuItem>
+          <MenuItem value={PairKey.ETH_USDC}>
+            <PairNamedBadge tokenA={EthToken} tokenB={UsdcToken} />
+          </MenuItem>
+          <MenuItem value={PairKey.ETH_STRK}>
+            <PairNamedBadge tokenA={EthToken} tokenB={StrkToken} />
+          </MenuItem>
+          <MenuItem value={PairKey.BTC_USDC}>
+            <PairNamedBadge tokenA={BtcToken} tokenB={UsdcToken} />
+          </MenuItem>
+        </Select>
+      </div>
       <div className={styles.buttons}>
         <div>
           <button

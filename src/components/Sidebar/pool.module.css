@@ -137,6 +137,7 @@ button.active {
   font-weight: 500;
   line-height: 23.4px;
   color: white;
+  padding: 0;
 }
 
 .balance {

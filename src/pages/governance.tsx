@@ -11,12 +11,15 @@ import { setGovernanceSubpage } from "../redux/actions";
 import { Airdrop } from "../components/Airdrop/Airdrop";
 import { useEffect } from "react";
 
+import styles from "./governance.module.css";
+
 const VotingSubpage = () => {
   return (
     <div>
       <h2>Proposals</h2>
+      <div className="divider botmargin topmargin" />
       <p>Vote on AMM defining proposals.</p>
-      <p>
+      <p className="botmargin">
         To find out more about the proposals and discuss, go to{" "}
         <a
           href="https://discord.com/channels/969228248552706078/1124013480123584622"
@@ -36,6 +39,7 @@ const StakingSubpage = () => {
   return (
     <div>
       <h2>CRM Staking</h2>
+      <div className="divider botmargin topmargin" />
       <CarmineStaking />
     </div>
   );
@@ -45,6 +49,7 @@ const AirdropSubpage = () => {
   return (
     <div>
       <h2>Airdrop</h2>
+      <div className="divider botmargin topmargin" />
       <Airdrop />
     </div>
   );
@@ -82,38 +87,42 @@ const Governance = () => {
           content="Vote on proposals and take part in governing Carmine Options AMM"
         />
       </Helmet>
-      <h1>Governance</h1>
-      <button
-        className={`${
-          subpage === GovernanceSubpage.AirDrop && buttonStyles.secondary
-        } ${buttonStyles.offset}`}
-        onClick={() => {
-          handleNavigateClick(GovernanceSubpage.AirDrop);
-        }}
-      >
-        Airdrop
-      </button>
-      <button
-        className={`${
-          subpage === GovernanceSubpage.Voting && buttonStyles.secondary
-        } ${buttonStyles.offset}`}
-        onClick={() => {
-          handleNavigateClick(GovernanceSubpage.Voting);
-        }}
-      >
-        Voting
-      </button>
-      <button
-        className={`${
-          subpage === GovernanceSubpage.Staking && buttonStyles.secondary
-        } ${buttonStyles.offset}`}
-        onClick={() => {
-          handleNavigateClick(GovernanceSubpage.Staking);
-        }}
-      >
-        Staking
-      </button>
-
+      <h1 className="botmargin">Governance</h1>
+      <div className={styles.buttoncontainer + " botmargin"}>
+        <div>
+          <button
+            className={`${
+              subpage === GovernanceSubpage.AirDrop && "primary active"
+            } ${buttonStyles.offset}`}
+            onClick={() => {
+              handleNavigateClick(GovernanceSubpage.AirDrop);
+            }}
+          >
+            Airdrop
+          </button>
+          <button
+            className={`${
+              subpage === GovernanceSubpage.Voting && "primary active"
+            } ${buttonStyles.offset}`}
+            onClick={() => {
+              handleNavigateClick(GovernanceSubpage.Voting);
+            }}
+          >
+            Voting
+          </button>
+          <button
+            className={`${
+              subpage === GovernanceSubpage.Staking && "primary active"
+            } ${buttonStyles.offset}`}
+            onClick={() => {
+              handleNavigateClick(GovernanceSubpage.Staking);
+            }}
+          >
+            Staking
+          </button>
+        </div>
+        <div className="divider" />
+      </div>
       {subpage === GovernanceSubpage.Voting && <VotingSubpage />}
       {subpage === GovernanceSubpage.Staking && <StakingSubpage />}
       {subpage === GovernanceSubpage.AirDrop && <AirdropSubpage />}

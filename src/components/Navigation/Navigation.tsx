@@ -30,7 +30,7 @@ export const Navigation = () => {
       <aside className={styles.sidebar}>
         <div>
           <nav className={styles.primary}>
-            <ul>
+            <ul className={styles.top}>
               <li>
                 <NavLink to="/portfolio">
                   <Title title="Portfolio" />

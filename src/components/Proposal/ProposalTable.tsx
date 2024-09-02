@@ -1,6 +1,5 @@
 import { ProposalItem } from "./ProposalItem";
 import styles from "./Proposal.module.css";
-import { LoadingAnimation } from "../Loading/Loading";
 import { ProposalWithOpinion } from "../../calls/liveProposals";
 import { AccountInterface } from "starknet";
 

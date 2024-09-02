@@ -5,6 +5,12 @@
   z-index: 3;
 }
 
+.container ul {
+  display: flex;
+  flex-flow: column;
+  gap: 10px;
+}
+
 .mobile {
   position: absolute;
   left: 0;
@@ -18,7 +24,6 @@
 .sidebar {
   display: flex;
   flex-flow: column;
-  justify-content: space-around;
   width: 200px;
   height: 825px;
   padding: 20px;
@@ -29,13 +34,21 @@
   text-align: left;
 }
 
+.sidebar>div:first-child {
+  padding: 60px 0;
+}
+
+ul.top {
+  gap: 4px;
+}
+
 .sidebar a {
   text-decoration: none;
 }
 
 .topborder {
   border-top: 1px solid var(--LIGHT-GREY);
-  padding-top: 10px;
+  padding: 10px 0;
 }
 
 .sidebar ul li {

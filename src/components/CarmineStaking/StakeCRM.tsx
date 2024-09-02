@@ -148,7 +148,7 @@ export const StakeCrm = ({ account, carmBalance }: Props) => {
       <p>
         Stake your <b>CRM</b> for a period
       </p>
-      <div className={styles.container}>
+      <div className={styles.container + " topmargin botmargin"}>
         <div className={styles.inputall}>
           <input
             placeholder="0"

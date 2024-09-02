@@ -118,10 +118,10 @@ export const MyPortfolio = () => {
           )}
         </div>
       </div>
-      <div className="divider"></div>
+      <div className="divider topmargin botmargin" />
       <div>
         <div className={styles.options}>
-          <div>
+          <div className="botmargin">
             <h2>Options</h2>
             <div className={styles.buttons}>
               <button
@@ -151,9 +151,9 @@ export const MyPortfolio = () => {
           <MyOptions state={options} />
         </div>
       </div>
-      <div className="divider"></div>
+      <div className="divider topmargin botmargin" />
       <div>
-        <h2>Staking</h2>
+        <h2 className="botmargin">Staking</h2>
         <MyStake />
       </div>
     </div>
