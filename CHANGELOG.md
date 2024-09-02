@@ -1,3 +1,10 @@
+## [2.0.4](https://github.com/CarmineOptions/fe-app/compare/v2.0.3...v2.0.4) (2024-09-02)
+
+
+### Bug Fixes
+
+* maturity wrap on mobile ([d093e38](https://github.com/CarmineOptions/fe-app/commit/d093e381698904321d2d65888c7e56665fcb1292))
+
 ## [2.0.3](https://github.com/CarmineOptions/fe-app/compare/v2.0.2...v2.0.3) (2024-09-02)
 
 
