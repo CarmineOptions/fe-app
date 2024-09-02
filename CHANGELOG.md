@@ -1,3 +1,14 @@
+## [2.0.2](https://github.com/CarmineOptions/fe-app/compare/v2.0.1...v2.0.2) (2024-09-02)
+
+
+### Bug Fixes
+
+* heading inconsistencies ([f333cff](https://github.com/CarmineOptions/fe-app/commit/f333cff7c63802af07b58bd55cffb5bf538a03e1))
+* minor improvements ([73737b0](https://github.com/CarmineOptions/fe-app/commit/73737b0f143093b77124b9486130e106f2bd9095))
+* minor improvements ([e668958](https://github.com/CarmineOptions/fe-app/commit/e668958bcdeeebfacca58ada88f4b05bfd77b85b))
+* options header divider ([5bc6860](https://github.com/CarmineOptions/fe-app/commit/5bc68607a531534f03607327d0dc18cd774a0e69))
+* options page horizontal scrolling ([9bd9a0a](https://github.com/CarmineOptions/fe-app/commit/9bd9a0a3731d950210ac5c9b289bde97ac3ccedf))
+
 ## [2.0.1](https://github.com/CarmineOptions/fe-app/compare/v2.0.0...v2.0.1) (2024-08-30)
 
 
