@@ -166,7 +166,7 @@ export const StakeCrm = ({ account, carmBalance }: Props) => {
               className={stateToClassName(monthState)}
             >
               {monthState === TransactionState.Processing && (
-                <LoadingAnimation />
+                <LoadingAnimation size={20} />
               )}
               {monthState === TransactionState.Initial && "1 month"}
               {monthState === TransactionState.Success && "Done!"}
@@ -180,7 +180,7 @@ export const StakeCrm = ({ account, carmBalance }: Props) => {
               className={stateToClassName(sixMonthsState)}
             >
               {sixMonthsState === TransactionState.Processing && (
-                <LoadingAnimation />
+                <LoadingAnimation size={20} />
               )}
               {sixMonthsState === TransactionState.Initial && "6 months"}
               {sixMonthsState === TransactionState.Success && "Done!"}
@@ -194,7 +194,7 @@ export const StakeCrm = ({ account, carmBalance }: Props) => {
               className={stateToClassName(yearState)}
             >
               {yearState === TransactionState.Processing && (
-                <LoadingAnimation />
+                <LoadingAnimation size={20} />
               )}
               {yearState === TransactionState.Initial && "1 year"}
               {yearState === TransactionState.Success && "Done!"}

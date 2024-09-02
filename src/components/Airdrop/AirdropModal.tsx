@@ -280,7 +280,9 @@ export const AirdropModal = ({ account, data, open, setOpen }: Props) => {
             onClick={handleClaim}
             className={stateToClassName(claimState)}
           >
-            {claimState === TransactionState.Processing && <LoadingAnimation />}
+            {claimState === TransactionState.Processing && (
+              <LoadingAnimation size={20} />
+            )}
             {claimState === TransactionState.Initial && "Claim"}
             {claimState === TransactionState.Success && "Done!"}
             {claimState === TransactionState.Fail && "Failed"}

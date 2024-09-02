@@ -172,7 +172,7 @@ export const UnstakeModal = ({ account, stake, open, setOpen }: Props) => {
                 className={stateToClassName(monthState)}
               >
                 {monthState === TransactionState.Processing && (
-                  <LoadingAnimation />
+                  <LoadingAnimation size={20} />
                 )}
                 {monthState === TransactionState.Initial && "1 month"}
                 {monthState === TransactionState.Success && "Done!"}
@@ -186,7 +186,7 @@ export const UnstakeModal = ({ account, stake, open, setOpen }: Props) => {
                 className={stateToClassName(sixMonthsState)}
               >
                 {sixMonthsState === TransactionState.Processing && (
-                  <LoadingAnimation />
+                  <LoadingAnimation size={20} />
                 )}
                 {sixMonthsState === TransactionState.Initial && "6 months"}
                 {sixMonthsState === TransactionState.Success && "Done!"}
@@ -200,7 +200,7 @@ export const UnstakeModal = ({ account, stake, open, setOpen }: Props) => {
                 className={stateToClassName(yearState)}
               >
                 {yearState === TransactionState.Processing && (
-                  <LoadingAnimation />
+                  <LoadingAnimation size={20} />
                 )}
                 {yearState === TransactionState.Initial && "1 year"}
                 {yearState === TransactionState.Success && "Done!"}
@@ -219,7 +219,7 @@ export const UnstakeModal = ({ account, stake, open, setOpen }: Props) => {
             className={stateToClassName(unstakeState)}
           >
             {unstakeState === TransactionState.Processing && (
-              <LoadingAnimation />
+              <LoadingAnimation size={20} />
             )}
             {unstakeState === TransactionState.Initial && "Unstake"}
             {unstakeState === TransactionState.Success && "Done!"}

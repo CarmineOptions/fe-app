@@ -38,8 +38,8 @@ const Item = ({
       </div>
       <div>{stake.typeAsText}</div>
       <div className={styles.tokenvalue}>
-        <TokenBadge size="small" token={stake.underlying} />{" "}
         {formatNumber(stake.value, 3)}
+        <TokenBadge size="small" token={stake.underlying} />
       </div>
       <div>${valueUsd === undefined ? "--" : formatNumber(valueUsd, 2)}</div>
       <div>

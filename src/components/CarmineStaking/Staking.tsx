@@ -9,6 +9,7 @@ import { QueryKeys } from "../../queries/keys";
 import { fetchStakingData } from "./calls";
 import { StakeCrm } from "./StakeCRM";
 import { LoadingAnimation } from "../Loading/Loading";
+import { formatNumber } from "../../utils/utils";
 
 export const StakeWithAccount = ({
   account,
@@ -28,8 +29,14 @@ export const StakeWithAccount = ({
   }
 
   const { veCarmBalance, carmBalance, stakes } = data;
-  const humanReadableVeCarmBalance = shortInteger(veCarmBalance, 18);
-  const humanReadableCarmBalance = shortInteger(carmBalance, 18);
+  const humanReadableVeCarmBalance = formatNumber(
+    shortInteger(veCarmBalance, 18),
+    4
+  );
+  const humanReadableCarmBalance = formatNumber(
+    shortInteger(carmBalance, 18),
+    4
+  );
 
   return (
     <div>

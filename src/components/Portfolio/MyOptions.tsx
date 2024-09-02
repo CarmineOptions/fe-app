@@ -72,8 +72,8 @@ const LiveItem = ({
       <div>{formatNumber(option.size, 4)}</div>
       <div>
         <div className={styles.tokenvalue}>
-          <TokenBadge size="small" token={option.underlying} />{" "}
           {formatNumber(option.value, 3)}
+          <TokenBadge size="small" token={option.underlying} />
         </div>
       </div>
       <div>${valueUsd}</div>
