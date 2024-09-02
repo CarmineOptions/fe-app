@@ -57,7 +57,10 @@ const TermsAndConditions = ({ check, rerender }: Props) => {
         . It's important to read and understand these terms before using our
         service.
       </Typography>
-      <button onClick={() => storeTermsAndConditions(check, rerender)}>
+      <button
+        className="primary active"
+        onClick={() => storeTermsAndConditions(check, rerender)}
+      >
         Accept Terms and Conditions
       </button>
     </Box>

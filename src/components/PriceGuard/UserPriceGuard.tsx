@@ -172,7 +172,7 @@ const WithAccount = ({ account }: { account: AccountInterface }) => {
   const Header = ({ children }: { children: ReactNode }) => {
     return (
       <div className={styles.wrapper}>
-        <h3>My Price Protect</h3>
+        <h1>My Price Protect</h1>
         <div className={styles.buttons}>
           <button
             className={asset === "all" ? styles.active : ""}
@@ -335,7 +335,7 @@ export const UserPriceGuard = () => {
   if (!account) {
     return (
       <div className={styles.wrapper}>
-        <h3>My Price Protect</h3>
+        <h1>My Price Protect</h1>
         <p>Connect your wallet to view active & claimable Price Protections</p>
         <button onClick={openWalletConnectDialog}>Connect Wallet</button>
       </div>

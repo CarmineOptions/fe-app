@@ -14,7 +14,7 @@ import { useEffect } from "react";
 const VotingSubpage = () => {
   return (
     <div>
-      <h3>Proposals</h3>
+      <h1>Proposals</h1>
       <p>Vote on AMM defining proposals.</p>
       <p>
         To find out more about the proposals and discuss, go to{" "}
@@ -35,7 +35,7 @@ const VotingSubpage = () => {
 const StakingSubpage = () => {
   return (
     <div>
-      <h3>CRM Staking</h3>
+      <h1>CRM Staking</h1>
       <CarmineStaking />
     </div>
   );

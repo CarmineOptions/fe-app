@@ -112,7 +112,11 @@ const GetReferralLink = () => {
     return <ReferralLink code={state.referralCode} />;
   }
 
-  return <button onClick={handleClick}>Generate referral link</button>;
+  return (
+    <button className="primary active" onClick={handleClick}>
+      Generate referral link
+    </button>
+  );
 };
 
 export const Referral = () => <GetReferralLink />;

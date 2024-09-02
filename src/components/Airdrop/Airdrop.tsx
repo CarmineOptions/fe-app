@@ -94,15 +94,26 @@ export const Airdrop = () => {
 
   if (!account) {
     return (
-      <AirdropTemplate message="Connect your wallet to see if you are eligible for an airdrop" />
+      <div>
+        <h1>Airdrop</h1>
+        <AirdropTemplate message="Connect your wallet to see if you are eligible for an airdrop" />
+      </div>
     );
   }
 
   if (!isMainnet) {
     return (
-      <AirdropTemplate message="Please switch to Mainnet to access airdrop" />
+      <div>
+        <h1>Airdrop</h1>
+        <AirdropTemplate message="Please switch to Mainnet to access airdrop" />
+      </div>
     );
   }
 
-  return <AirdropWithAccount account={account} />;
+  return (
+    <div>
+      <h1>Airdrop</h1>
+      <AirdropWithAccount account={account} />
+    </div>
+  );
 };

@@ -13,6 +13,8 @@ import { LoadingAnimation } from "../Loading/Loading";
 import { QueryKeys } from "../../queries/keys";
 import { TokenKey } from "../../classes/Token";
 import { DefiSpringStakingMessage, DefiSpringTooltip } from "../DefiSpring";
+import { BoxTwoValues } from "../Sidebar/Utils";
+import { formatNumber } from "../../utils/utils";
 
 type Props = {
   pool: Pool;
@@ -157,40 +159,30 @@ export const PoolCard = ({ pool }: Props) => {
             </span>
           )}
         </div>
-        <div className={styles.under}>
-          <div className={`${styles.big} ${styles.apart}`}>
-            <span className="greytext">TVL</span>{" "}
-            <span>
-              {tvl.toFixed(2)} {pool.underlying.symbol}
-            </span>
-          </div>
-          <span className={styles.tiny}>
-            {price === undefined ? "---" : `$${(price * tvl).toFixed(2)}`}
-          </span>
-        </div>
+        <BoxTwoValues
+          title="TVL"
+          topValue={tvl.toFixed(2) + " " + pool.underlying.symbol}
+          bottomValue={
+            price === undefined ? "--" : `$${(price * tvl).toFixed(2)}`
+          }
+        />
         <div className="divider" style={{ margin: "5px 0" }}></div>
-        <div className={styles.under}>
-          <div className={`${styles.small} ${styles.apart}`}>
-            <span className="greytext">UNLOCKED</span>{" "}
-            <span>
-              {unlocked.toFixed(2)} {pool.underlying.symbol}
-            </span>
-          </div>
-          <span className={styles.tiny}>
-            {price === undefined ? "---" : `$${(price * unlocked).toFixed(2)}`}
-          </span>
-        </div>
-        <div className={styles.under}>
-          <div className={`${styles.small} ${styles.apart}`}>
-            <span className="greytext">LOCKED</span>{" "}
-            <span>
-              {locked.toFixed(2)} {pool.underlying.symbol}
-            </span>
-          </div>
-          <span className={styles.tiny}>
-            {price === undefined ? "---" : `$${(price * locked).toFixed(2)}`}
-          </span>
-        </div>
+        <BoxTwoValues
+          title="UNLOCKED"
+          topValue={formatNumber(unlocked) + " " + pool.underlying.symbol}
+          bottomValue={
+            price === undefined ? "--" : `$${formatNumber(price * unlocked, 2)}`
+          }
+          conf={{ size: "small" }}
+        />
+        <BoxTwoValues
+          title="LOCKED"
+          topValue={formatNumber(locked) + " " + pool.underlying.symbol}
+          bottomValue={
+            price === undefined ? "--" : `$${formatNumber(price * locked, 2)}`
+          }
+          conf={{ size: "small" }}
+        />
       </div>
       <div className={styles.button}>
         <button onClick={handleClick} className="primary active">

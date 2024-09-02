@@ -23,6 +23,7 @@ import { QueryKeys } from "../../queries/keys";
 import { queryDefiSpringApy } from "../Yield/fetchStakeCapital";
 import { TokenKey } from "../../classes/Token";
 import { LoadingAnimation } from "../Loading/Loading";
+import { BoxTwoValues } from "./Utils";
 
 type Props = {
   pool: Pool;
@@ -276,49 +277,48 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
             {finalApy === undefined ? "--" : finalApy.toFixed(2)}%
           </span>
         </div>
-        <div className={styles.under}>
-          <div className={`${styles.big} ${styles.apart}`}>
-            <span className="greytext">TVL</span>{" "}
-            <span>
-              {tvl === undefined ? "--" : formatNumber(tvl, 2)}{" "}
-              {pool.underlying.symbol}
-            </span>
-          </div>
-          <span className={styles.tiny}>
-            {price === undefined || tvl === undefined
+        <BoxTwoValues
+          title="TVL"
+          topValue={
+            tvl === undefined
+              ? "--"
+              : formatNumber(tvl, 2) + " " + pool.underlying.symbol
+          }
+          bottomValue={
+            price === undefined || tvl === undefined
               ? "---"
-              : `$${formatNumber(price * tvl, 2)}`}
-          </span>
-        </div>
+              : `$${formatNumber(price * tvl, 2)}`
+          }
+        />
         <div className="divider" style={{ margin: "5px 0" }}></div>
-        <div className={styles.under}>
-          <div className={`${styles.small} ${styles.apart}`}>
-            <span className="greytext">UNLOCKED</span>{" "}
-            <span>
-              {unlocked === undefined ? "--" : formatNumber(unlocked, 2)}{" "}
-              {pool.underlying.symbol}
-            </span>
-          </div>
-          <span className={styles.tiny}>
-            {price === undefined || unlocked === undefined
+        <BoxTwoValues
+          title="UNLOCKED"
+          topValue={
+            unlocked === undefined
+              ? "--"
+              : formatNumber(unlocked, 2) + " " + pool.underlying.symbol
+          }
+          bottomValue={
+            price === undefined || unlocked === undefined
               ? "---"
-              : `$${formatNumber(price * unlocked, 2)}`}
-          </span>
-        </div>
-        <div className={styles.under}>
-          <div className={`${styles.small} ${styles.apart}`}>
-            <span className="greytext">LOCKED</span>{" "}
-            <span>
-              {locked === undefined ? "--" : formatNumber(locked, 2)}{" "}
-              {pool.underlying.symbol}
-            </span>
-          </div>
-          <span className={styles.tiny}>
-            {price === undefined || locked === undefined
+              : `$${formatNumber(price * unlocked, 2)}`
+          }
+          conf={{ size: "small" }}
+        />
+        <BoxTwoValues
+          title="LOCKED"
+          topValue={
+            locked === undefined
+              ? "--"
+              : formatNumber(locked, 2) + " " + pool.underlying.symbol
+          }
+          bottomValue={
+            price === undefined || locked === undefined
               ? "---"
-              : `$${formatNumber(price * locked, 2)}`}
-          </span>
-        </div>
+              : `$${formatNumber(price * locked, 2)}`
+          }
+          conf={{ size: "small" }}
+        />
       </div>
     </div>
   );

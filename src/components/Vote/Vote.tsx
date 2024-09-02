@@ -97,6 +97,7 @@ export const VoteButtons = ({
     return (
       <div className={styles.votebuttoncontainer}>
         <button
+          className="primary active"
           onClick={() =>
             vote(account, proposal.propId, Opinion.YAY, setProcessing)
           }
@@ -104,6 +105,7 @@ export const VoteButtons = ({
           Vote Yes
         </button>
         <button
+          className="primary active"
           onClick={() =>
             vote(account, proposal.propId, Opinion.NAY, setProcessing)
           }
