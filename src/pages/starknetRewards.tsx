@@ -11,11 +11,11 @@ const StarknetRewards = () => (
       <meta name="description" content="Claim STRK rewards" />
     </Helmet>
     <h1>Starknet DeFi Spring</h1>
-    <h3 style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+    <h2 style={{ display: "flex", alignItems: "center", gap: "10px" }}>
       40M
       <StarknetIcon style={{ width: "32px", height: "32px" }} />
       STRK
-    </h3>
+    </h2>
     <p>
       <b>Carmine Options AMM</b> is part of the Starknet's{" "}
       <a

@@ -158,8 +158,7 @@ export const StakeCrm = ({ account, carmBalance }: Props) => {
           />
           <button onClick={handleAll}>All</button>
         </div>
-
-        <div style={{ display: "flex" }}>
+        <div className={styles.buttons}>
           <Tooltip title="Staking for 1 month gives multiplier 1.0x">
             <button
               disabled={monthState !== TransactionState.Initial}

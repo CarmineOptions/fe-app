@@ -8,9 +8,8 @@ import { shortInteger } from "../../utils/computations";
 import { isMainnet } from "../../constants/amm";
 import { QueryKeys } from "../../queries/keys";
 import { AirdropModal } from "./AirdropModal";
-
-import buttonStyles from "../../style/button.module.css";
 import airdropStyles from "./airdrop.module.css";
+import { formatNumber } from "../../utils/utils";
 
 const ClaimAndStake = ({
   account,
@@ -28,10 +27,7 @@ const ClaimAndStake = ({
         <span>
           You are eligible to claim {amountHumanReadable} <b>veCRM</b>!
         </span>
-        <button
-          className={buttonStyles.secondary}
-          onClick={() => setOpen(true)}
-        >
+        <button className="primary active" onClick={() => setOpen(true)}>
           Claim
         </button>
       </div>
@@ -73,10 +69,10 @@ export const AirdropWithAccount = ({
 
   if (data.eligible) {
     if (data.claimable === 0n) {
-      const amount = shortInteger(data.claimed, 18);
+      const amount = formatNumber(shortInteger(data.claimed, 18), 5);
       return (
         <AirdropTemplate
-          message={`You cannot claim any tokens, you have already claimed ${amount}`}
+          message={`You cannot claim any tokens, you have already claimed ${amount} CRM`}
         />
       );
     }
@@ -94,26 +90,15 @@ export const Airdrop = () => {
 
   if (!account) {
     return (
-      <div>
-        <h1>Airdrop</h1>
-        <AirdropTemplate message="Connect your wallet to see if you are eligible for an airdrop" />
-      </div>
+      <AirdropTemplate message="Connect your wallet to see if you are eligible for an airdrop" />
     );
   }
 
   if (!isMainnet) {
     return (
-      <div>
-        <h1>Airdrop</h1>
-        <AirdropTemplate message="Please switch to Mainnet to access airdrop" />
-      </div>
+      <AirdropTemplate message="Please switch to Mainnet to access airdrop" />
     );
   }
 
-  return (
-    <div>
-      <h1>Airdrop</h1>
-      <AirdropWithAccount account={account} />
-    </div>
-  );
+  return <AirdropWithAccount account={account} />;
 };

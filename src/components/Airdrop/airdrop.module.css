@@ -1,24 +1,17 @@
 .container {
   display: flex;
   flex-flow: row;
-  border: 1px solid white;
-  padding: 25px 50px;
 }
 
 .textcontainer {
   flex-flow: row;
-  border: 1px solid white;
-  padding: 25px 50px;
-  display: inline-block;
 }
 
 .claim {
-  border: 1px solid white;
   display: inline-flex;
   align-items: center;
   justify-content: flex-start;
   gap: 50px;
-  padding: 20px 50px;
 }
 
 .active {
@@ -46,6 +39,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 5px;
 }
 
 .singlebutton {
@@ -60,7 +54,6 @@
     align-items: center;
     justify-content: center;
     gap: 50px;
-    padding: 20px 50px;
   }
 
   .buttongroup {

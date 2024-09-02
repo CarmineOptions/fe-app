@@ -21,14 +21,12 @@ import { ToastType } from "../../redux/reducers/ui";
 import { useState } from "react";
 import { TransactionState, TxTracking } from "../../types/network";
 import { LoadingAnimation } from "../Loading/Loading";
-
-import styles from "./airdrop.module.css";
-import buttonStyles from "../../style/button.module.css";
-
 import GovernanceABI from "../../abi/governance_abi.json";
 import TokenABI from "../../abi/lptoken_abi.json";
 import { invalidateKey } from "../../queries/client";
 import { QueryKeys } from "../../queries/keys";
+
+import styles from "./airdrop.module.css";
 
 export const claim = async (
   account: AccountInterface,
@@ -144,15 +142,15 @@ type Props = {
 
 const stateToClassName = (state: TransactionState) => {
   if (state === TransactionState.Success) {
-    return buttonStyles.green;
+    return "mainbutton active green";
   }
   if (state === TransactionState.Fail) {
-    return buttonStyles.fail;
+    return "mainbutton active red";
   }
   if (state === TransactionState.Processing) {
-    return buttonStyles.disabled;
+    return "mainbutton active disabled";
   }
-  return buttonStyles.secondary;
+  return "mainbutton active primary";
 };
 
 export const AirdropModal = ({ account, data, open, setOpen }: Props) => {
@@ -239,7 +237,7 @@ export const AirdropModal = ({ account, data, open, setOpen }: Props) => {
               className={stateToClassName(monthState)}
             >
               {monthState === TransactionState.Processing && (
-                <LoadingAnimation />
+                <LoadingAnimation size={20} />
               )}
               {monthState === TransactionState.Initial && "1 month"}
               {monthState === TransactionState.Success && "Done!"}
@@ -253,7 +251,7 @@ export const AirdropModal = ({ account, data, open, setOpen }: Props) => {
               className={stateToClassName(sixMonthsState)}
             >
               {sixMonthsState === TransactionState.Processing && (
-                <LoadingAnimation />
+                <LoadingAnimation size={20} />
               )}
               {sixMonthsState === TransactionState.Initial && "6 months"}
               {sixMonthsState === TransactionState.Success && "Done!"}
@@ -267,7 +265,7 @@ export const AirdropModal = ({ account, data, open, setOpen }: Props) => {
               className={stateToClassName(yearState)}
             >
               {yearState === TransactionState.Processing && (
-                <LoadingAnimation />
+                <LoadingAnimation size={20} />
               )}
               {yearState === TransactionState.Initial && "1 year"}
               {yearState === TransactionState.Success && "Done!"}

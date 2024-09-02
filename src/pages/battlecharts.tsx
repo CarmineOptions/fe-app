@@ -9,7 +9,7 @@ const BattlechartsPage = () => {
         <title>Battlecharts | Carmine Options AMM</title>
         <meta name="description" content="Trading leaderboard" />
       </Helmet>
-      <h3>Trading Leaderboard</h3>
+      <h1>Trading Leaderboard</h1>
       <NotionalVolumeLeaderboard />
     </Layout>
   );

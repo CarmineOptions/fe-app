@@ -18,7 +18,7 @@ const LeaderboardPage = () => {
       <h1>Carmine Points Program</h1>
       <p>Elevate Your Status, Enhance Your Rewards</p>
       <p>Season 2 is now live!</p>
-      <h1>Leaderboard</h1>
+      <h2>Leaderboard</h2>
       <Leaderboard />
     </Layout>
   );

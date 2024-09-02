@@ -122,7 +122,7 @@ export const MyPortfolio = () => {
       <div>
         <div className={styles.options}>
           <div>
-            <h1>Options</h1>
+            <h2>Options</h2>
             <div className={styles.buttons}>
               <button
                 onClick={() => setOptions("live")}
@@ -153,7 +153,7 @@ export const MyPortfolio = () => {
       </div>
       <div className="divider"></div>
       <div>
-        <h1>Staking</h1>
+        <h2>Staking</h2>
         <MyStake />
       </div>
     </div>
