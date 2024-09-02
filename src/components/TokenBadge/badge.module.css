@@ -6,11 +6,12 @@
 
 .named {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  align-items: baseline;
+  gap: 4px;
 }
 
 .named>span {
+  font-family: Formula Condensed;
   font-weight: 300;
   text-align: left;
 }
