@@ -152,7 +152,7 @@ Short: Selling something you don’t own, planning to buy it back at a lower pri
           size="18px"
         />
         <div className={"divider " + styles.divider} />
-        <div>
+        <div className="wrap">
           <span className={styles.maturity}>MATURITY</span>
           {maturities
             .sort((a, b) => a - b)
