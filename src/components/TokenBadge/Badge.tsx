@@ -4,77 +4,70 @@ import styles from "./badge.module.css";
 
 type Badge = {
   token: Token;
-  size?: number;
+  size?: "small";
 };
 
 type PairBadgeType = {
   tokenA: Token;
   tokenB: Token;
-  size?: number;
+  size?: "small";
 };
 
 export const TokenBadge = ({ token, size }: Badge) => {
   const { icon } = token;
 
-  const validSize = size === undefined ? 40 : size;
-
-  const style = { width: `${validSize}px`, height: `${validSize}px` };
+  const className =
+    size === undefined
+      ? styles.container
+      : styles.container + " " + styles[size];
 
   return (
-    <div className={styles.container} style={style}>
-      <img src={icon} alt={`${token.id} token icon`} />
-    </div>
+    <div
+      className={className}
+      style={{
+        backgroundImage: `url(${icon})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    />
   );
 };
 
 export const TokenNamedBadge = ({ token, size }: Badge) => {
-  const validSize = size === undefined ? 40 : size;
-
-  const fontSize = 0.8 * validSize;
-  const lineHeight = 0.95 * validSize;
+  const className =
+    size === undefined ? styles.named : styles.named + " " + styles[size];
 
   return (
-    <div className={styles.named}>
+    <div className={className}>
       <TokenBadge token={token} size={size} />
-      <span
-        style={{
-          fontSize: `${fontSize}px`,
-          lineHeight: `${lineHeight}px`,
-        }}
-      >
-        {token.symbol}
-      </span>
+      <div className={styles.text}>{token.symbol}</div>
     </div>
   );
 };
 
 export const PairBadge = ({ tokenA, tokenB, size }: PairBadgeType) => {
-  const validSize = size === undefined ? 40 : size;
-
-  const width = 1.6 * validSize;
+  const className =
+    size === undefined ? styles.pair : styles.pair + " " + styles[size];
 
   return (
-    <div
-      className={styles.pair}
-      style={{ width: `${width}px`, height: `${validSize}px` }}
-    >
+    <div className={className}>
       <TokenBadge token={tokenA} size={size} />
       <TokenBadge token={tokenB} size={size} />
     </div>
   );
 };
 
-export const PairNamedBadge = ({ tokenA, tokenB }: PairBadgeType) => {
+export const PairNamedBadge = ({ tokenA, tokenB, size }: PairBadgeType) => {
+  const className =
+    size === undefined ? styles.named : styles.named + " " + styles[size];
+
   return (
-    <div className={styles.named}>
-      <PairBadge tokenA={tokenA} tokenB={tokenB} size={28} />
-      <span
-        style={{
-          fontSize: `32px`,
-        }}
-      >
+    <div className={className}>
+      <PairBadge tokenA={tokenA} tokenB={tokenB} size={size} />
+      <div className={styles.text}>
         {tokenA.symbol}/{tokenB.symbol}
-      </span>
+      </div>
     </div>
   );
 };

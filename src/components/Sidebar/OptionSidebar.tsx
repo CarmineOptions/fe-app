@@ -164,11 +164,7 @@ export const OptionSidebar = ({ option }: Props) => {
   return (
     <div className={poolStyles.sidebar + " " + styles.option}>
       <div className={styles.desc}>
-        <PairNamedBadge
-          tokenA={option.baseToken}
-          tokenB={option.quoteToken}
-          size={32}
-        />
+        <PairNamedBadge tokenA={option.baseToken} tokenB={option.quoteToken} />
         <div
           className={
             styles.side + " " + styles[option.sideAsText.toLowerCase()]

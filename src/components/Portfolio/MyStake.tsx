@@ -33,12 +33,12 @@ const Item = ({
         <PairNamedBadge
           tokenA={stake.baseToken}
           tokenB={stake.quoteToken}
-          size={25}
+          size="small"
         />
       </div>
       <div>{stake.typeAsText}</div>
       <div className={styles.tokenvalue}>
-        <TokenBadge size={25} token={stake.underlying} />{" "}
+        <TokenBadge size="small" token={stake.underlying} />{" "}
         {formatNumber(stake.value, 3)}
       </div>
       <div>${valueUsd === undefined ? "--" : formatNumber(valueUsd, 2)}</div>

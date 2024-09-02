@@ -329,12 +329,14 @@ export const PriceGuard = () => {
                   "& .MuiOutlinedInput-notchedOutline": {
                     border: "none",
                   },
-                  width: "215px",
+                  width: "170px",
                 }}
               >
                 {[TokenKey.STRK, TokenKey.ETH, TokenKey.BTC].map((t, i) => (
                   <MenuItem key={i} value={t}>
-                    <TokenNamedBadge token={Token.byKey(t)} />
+                    <div className={styles.tokenwrapper}>
+                      <TokenNamedBadge token={Token.byKey(t)} />
+                    </div>
                   </MenuItem>
                 ))}
               </Select>

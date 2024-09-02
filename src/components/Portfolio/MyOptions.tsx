@@ -59,7 +59,7 @@ const LiveItem = ({
         <PairNamedBadge
           tokenA={option.baseToken}
           tokenB={option.quoteToken}
-          size={25}
+          size="small"
         />
       </div>
       <div>{option.sideAsText}</div>
@@ -72,7 +72,7 @@ const LiveItem = ({
       <div>{formatNumber(option.size, 4)}</div>
       <div>
         <div className={styles.tokenvalue}>
-          <TokenBadge size={25} token={option.underlying} />{" "}
+          <TokenBadge size="small" token={option.underlying} />{" "}
           {formatNumber(option.value, 3)}
         </div>
       </div>
@@ -116,7 +116,7 @@ const OtmItem = ({
         <PairNamedBadge
           tokenA={option.baseToken}
           tokenB={option.quoteToken}
-          size={25}
+          size="small"
         />
       </div>
       <div>{option.sideAsText}</div>
@@ -175,7 +175,7 @@ const ItmItem = ({
         <PairNamedBadge
           tokenA={option.baseToken}
           tokenB={option.quoteToken}
-          size={25}
+          size="small"
         />
       </div>
       <div>{option.sideAsText}</div>
@@ -188,7 +188,7 @@ const ItmItem = ({
       <div>{formatNumber(option.size, 4)}</div>
       <div>
         <div className={styles.tokenvalue}>
-          <TokenBadge size={25} token={option.underlying} />{" "}
+          <TokenBadge size="small" token={option.underlying} />{" "}
           {formatNumber(option.value, 3)}
         </div>
       </div>

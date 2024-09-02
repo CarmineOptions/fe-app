@@ -40,13 +40,9 @@ export const PoolCard = ({ pool }: Props) => {
     return (
       <div className={styles.container} style={{ height: "410px" }}>
         <div className={styles.desc} style={{ padding: "20px" }}>
-          <PairNamedBadge
-            tokenA={pool.baseToken}
-            tokenB={pool.quoteToken}
-            size={32}
-          />
+          <PairNamedBadge tokenA={pool.baseToken} tokenB={pool.quoteToken} />
           <div className={styles.poolid}>
-            <TokenBadge token={pool.underlying} size={15} />{" "}
+            <TokenBadge token={pool.underlying} size="small" />{" "}
             {pool.typeAsText.toUpperCase()} POOL
           </div>
           <div className={styles.asset}>
@@ -73,13 +69,9 @@ export const PoolCard = ({ pool }: Props) => {
     return (
       <div className={styles.container} style={{ height: "410px" }}>
         <div className={styles.desc} style={{ padding: "20px" }}>
-          <PairNamedBadge
-            tokenA={pool.baseToken}
-            tokenB={pool.quoteToken}
-            size={32}
-          />
+          <PairNamedBadge tokenA={pool.baseToken} tokenB={pool.quoteToken} />
           <div className={styles.poolid}>
-            <TokenBadge token={pool.underlying} size={15} />{" "}
+            <TokenBadge token={pool.underlying} size="small" />{" "}
             {pool.typeAsText.toUpperCase()} POOL
           </div>
           <div className={styles.asset}>
@@ -121,13 +113,9 @@ export const PoolCard = ({ pool }: Props) => {
   return (
     <div className={styles.container}>
       <div className={styles.desc} style={{ padding: "20px" }}>
-        <PairNamedBadge
-          tokenA={pool.baseToken}
-          tokenB={pool.quoteToken}
-          size={32}
-        />
+        <PairNamedBadge tokenA={pool.baseToken} tokenB={pool.quoteToken} />
         <div className={styles.poolid}>
-          <TokenBadge token={pool.underlying} size={15} />{" "}
+          <TokenBadge token={pool.underlying} size="small" />{" "}
           {pool.typeAsText.toUpperCase()} POOL
         </div>
         <div className={styles.asset}>
@@ -161,9 +149,9 @@ export const PoolCard = ({ pool }: Props) => {
         </div>
         <BoxTwoValues
           title="TVL"
-          topValue={tvl.toFixed(2) + " " + pool.underlying.symbol}
+          topValue={formatNumber(tvl) + " " + pool.underlying.symbol}
           bottomValue={
-            price === undefined ? "--" : `$${(price * tvl).toFixed(2)}`
+            price === undefined ? "--" : `$${formatNumber(price * tvl)}`
           }
         />
         <div className="divider" style={{ margin: "5px 0" }}></div>

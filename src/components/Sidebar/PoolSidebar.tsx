@@ -148,13 +148,9 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
   return (
     <div className={styles.sidebar}>
       <div className={styles.desc}>
-        <PairNamedBadge
-          tokenA={pool.baseToken}
-          tokenB={pool.quoteToken}
-          size={32}
-        />
+        <PairNamedBadge tokenA={pool.baseToken} tokenB={pool.quoteToken} />
         <div className={styles.poolid}>
-          <TokenBadge token={pool.underlying} size={15} />{" "}
+          <TokenBadge token={pool.underlying} size="small" />{" "}
           {pool.typeAsText.toUpperCase()} POOL
         </div>
       </div>
@@ -187,7 +183,7 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
               </span>
             </div>
             <div>
-              <TokenNamedBadge token={pool.underlying} size={23} />
+              <TokenNamedBadge token={pool.underlying} />
             </div>
           </div>
           <div className={styles.balance}>
