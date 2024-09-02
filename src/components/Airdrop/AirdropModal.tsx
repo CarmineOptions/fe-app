@@ -225,7 +225,7 @@ export const AirdropModal = ({ account, data, open, setOpen }: Props) => {
       PaperProps={{ sx: { borderRadius: 0, background: "none" } }}
     >
       <div className={styles.modal}>
-        <h3>Claim Airdrop</h3>
+        <h1>Claim Airdrop</h1>
         <p>
           Congratulations! You are eligible to claim{" "}
           {shortInteger(data.claimable, 18)} <b>veCRM</b>!

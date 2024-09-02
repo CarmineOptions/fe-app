@@ -13,13 +13,9 @@ export const Layout = ({ children }: Props) => {
     <>
       <Header />
       <div className={styles.container}>
+        <Sidebar />
         <Navigation />
-        <main>
-          <>
-            <Sidebar />
-            {children}
-          </>
-        </main>
+        <main>{children}</main>
       </div>
     </>
   );

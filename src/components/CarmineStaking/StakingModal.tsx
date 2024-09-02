@@ -194,7 +194,7 @@ export const StakingModal = ({ account, amount, open, setOpen }: Props) => {
       PaperProps={{ sx: { borderRadius: 0, background: "none" } }}
     >
       <div className={styles.modal}>
-        <h3>Restake & Unstake</h3>
+        <h1>Restake & Unstake</h1>
         <p>
           Your stake of {shortInteger(amount, 18)} <b>CRM</b> has expired.
         </p>

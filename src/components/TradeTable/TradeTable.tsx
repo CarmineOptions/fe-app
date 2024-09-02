@@ -101,82 +101,70 @@ export const TradeTable = () => {
       </Select>
 
       <div className={styles.buttons}>
-        <button
-          className={type === OptionType.Call ? "primary active" : ""}
-          onClick={() => setCallPut(OptionType.Call)}
-        >
-          calls
-        </button>
-        <button
-          className={type === OptionType.Put ? "primary active" : ""}
-          onClick={() => setCallPut(OptionType.Put)}
-        >
-          puts
-        </button>
+        <div>
+          <button
+            className={type === OptionType.Call ? "primary active" : ""}
+            onClick={() => setCallPut(OptionType.Call)}
+          >
+            calls
+          </button>
+          <button
+            className={type === OptionType.Put ? "primary active" : ""}
+            onClick={() => setCallPut(OptionType.Put)}
+          >
+            puts
+          </button>
+        </div>
         <InfoIcon
           text="Call: An option to buy at a set price. Its value rises if the underlying asset's price goes up.
 
 Put: An option to sell at a set price. Its value rises if the underlying asset's price goes down."
           size="18px"
         />
-        <div
-          className="divider"
-          style={{
-            width: "50px",
-            margin: "0 10px 0 0",
-          }}
-        />
-        <button
-          className={side === "all" ? "secondary active" : "secondary"}
-          onClick={() => setSide("all")}
-        >
-          all
-        </button>
-        <button
-          className={side === OptionSide.Long ? "green active" : "green"}
-          onClick={() => setSide(OptionSide.Long)}
-        >
-          long
-        </button>
-        <button
-          className={side === OptionSide.Short ? "red active" : "red"}
-          onClick={() => setSide(OptionSide.Short)}
-        >
-          short
-        </button>
+        <div className={"divider " + styles.divider} />
+        <div>
+          <button
+            className={side === "all" ? "secondary active" : "secondary"}
+            onClick={() => setSide("all")}
+          >
+            all
+          </button>
+          <button
+            className={side === OptionSide.Long ? "green active" : "green"}
+            onClick={() => setSide(OptionSide.Long)}
+          >
+            long
+          </button>
+          <button
+            className={side === OptionSide.Short ? "red active" : "red"}
+            onClick={() => setSide(OptionSide.Short)}
+          >
+            short
+          </button>
+        </div>
         <InfoIcon
           text="Long: Buying, expecting the price to rise.
 
 Short: Selling something you don’t own, planning to buy it back at a lower price."
           size="18px"
         />
-        <div
-          className="divider"
-          style={{
-            width: "50px",
-            margin: "0 10px 0 0",
-          }}
-        />
-        <span className={styles.maturity}>MATURITY</span>
-        {maturities
-          .sort((a, b) => a - b)
-          .map((m, i) => (
-            <button
-              onClick={() => setMaturity(m)}
-              className={m === maturity ? "active secondary" : ""}
-              key={i}
-            >
-              {formatTimestamp(m)}
-            </button>
-          ))}
+        <div className={"divider " + styles.divider} />
+        <div>
+          <span className={styles.maturity}>MATURITY</span>
+          {maturities
+            .sort((a, b) => a - b)
+            .map((m, i) => (
+              <button
+                onClick={() => setMaturity(m)}
+                className={m === maturity ? "active secondary" : ""}
+                key={i}
+              >
+                {formatTimestamp(m)}
+              </button>
+            ))}
+        </div>
         <InfoIcon text="The expiration date of the option." size="18px" />
-        <div
-          className="divider"
-          style={{
-            width: "50px",
-            margin: "0 10px 0 0",
-          }}
-        />
+        <div className={"divider " + styles.divider} />
       </div>
       <div>
         {isLoading && (

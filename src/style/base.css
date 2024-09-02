@@ -18,6 +18,11 @@
   font-family: IBM Plex Sans Condensed;
 }
 
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
 ul {
   margin: 0;
   padding: 0;
@@ -31,9 +36,10 @@ h1 {
 }
 
 h3 {
+  font-family: Formula Condensed;
   margin: 30px 0;
-  font-size: 32px;
-  font-weight: 200;
+  font-size: 30px;
+  font-weight: 300;
 }
 
 h4 {

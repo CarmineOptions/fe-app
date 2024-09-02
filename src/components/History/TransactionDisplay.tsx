@@ -262,9 +262,9 @@ export const TransactionsTable = ({
   return (
     <div>
       <TradesTable trades={trades} />
-      <h3 style={{ marginTop: "40px" }}>Liquidity History</h3>
+      <h1 style={{ marginTop: "40px" }}>Liquidity History</h1>
       <StakesTable stakes={stakes} />
-      <h3 style={{ marginTop: "40px" }}>Vote History</h3>
+      <h1 style={{ marginTop: "40px" }}>Vote History</h1>
       <VotesTable votes={votes} />
     </div>
   );
