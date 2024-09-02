@@ -1,3 +1,10 @@
+## [2.0.3](https://github.com/CarmineOptions/fe-app/compare/v2.0.2...v2.0.3) (2024-09-02)
+
+
+### Bug Fixes
+
+* token pair named badge ([3a51699](https://github.com/CarmineOptions/fe-app/commit/3a516990253622ffbb8311423a0a2b1617ebb809))
+
 ## [2.0.2](https://github.com/CarmineOptions/fe-app/compare/v2.0.1...v2.0.2) (2024-09-02)
 
 
