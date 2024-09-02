@@ -23,7 +23,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
 }
 
 .modalheader>h3 {
@@ -157,7 +156,8 @@
 
 .slippageinput {
   border: 1px solid white;
-  display: inline-block;
+  display: flex;
+  align-items: center;
 }
 
 .slippageinput>span {
