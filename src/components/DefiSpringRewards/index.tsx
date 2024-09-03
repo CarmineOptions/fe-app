@@ -163,10 +163,7 @@ export const Rewards = () => {
     return (
       <div>
         <p>Connect wallet to access Starknet Rewards</p>
-        <button
-          className={buttonStyles.secondary}
-          onClick={openWalletConnectDialog}
-        >
+        <button className="primary active" onClick={openWalletConnectDialog}>
           Connect Wallet
         </button>
       </div>

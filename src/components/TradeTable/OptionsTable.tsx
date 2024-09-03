@@ -37,11 +37,13 @@ const OptionsTable = ({ options, tokenPair, side }: Props) => {
   return (
     <>
       <div className="tableheader">
-        <div>strike</div>
+        <div>
+          <span className="greytext">strike</span>
+        </div>
         {(side === OptionSide.Long || side === "all") && (
           <div>
             <div className={styles.header}>
-              <span className="darkgreytext">ask price</span>
+              <span className="greytext">ask price</span>
               <span className="greentext">/ long</span>
             </div>
           </div>
@@ -49,7 +51,7 @@ const OptionsTable = ({ options, tokenPair, side }: Props) => {
         {(side === OptionSide.Short || side === "all") && (
           <div>
             <div className={styles.header}>
-              <span className="darkgreytext">ask price</span>
+              <span className="greytext">ask price</span>
               <span className="redtext">/ short</span>
             </div>
           </div>

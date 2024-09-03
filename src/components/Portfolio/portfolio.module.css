@@ -90,12 +90,15 @@
 }
 
 .header {
+  border-bottom: solid 1px var(--GREY);
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+}
+
+.header>div {
   font-size: 22px;
   font-weight: 500;
   line-height: 23.4px;
-  border-bottom: solid 1px var(--DARK-GREY);
-  padding-bottom: 5px;
-  margin-bottom: 10px;
 }
 
 .stakeitem {

@@ -17,7 +17,7 @@ const TradePage = () => {
       </Helmet>
       <TradeTable />
       <div className="divider" style={{ margin: "50px 0" }}></div>
-      <h2>Chart</h2>
+      <h2 className="botmargin">Chart</h2>
       <div className={style.graphwidgetwrapper}>
         <div className={style.graphcontainer}>
           <AlternativeTradingView />
