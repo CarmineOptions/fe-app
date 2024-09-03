@@ -51,7 +51,7 @@ const OptionsTable = ({ options, tokenPair, side }: Props) => {
         {(side === OptionSide.Short || side === "all") && (
           <div>
             <div className={styles.header}>
-              <span className="greytext">ask price</span>
+              <span className="greytext">bid price</span>
               <span className="redtext">/ short</span>
             </div>
           </div>
