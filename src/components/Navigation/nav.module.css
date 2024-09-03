@@ -56,6 +56,10 @@ ul.top {
   margin-bottom: 8px;
 }
 
+.sidebar ul li span {
+  font-weight: 400;
+}
+
 .navlinktitle {
   display: flex;
   gap: 10px;

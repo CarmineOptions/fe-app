@@ -29,4 +29,6 @@
   display: flex;
   align-items: center;
   cursor: pointer;
+  /* Better center logo svg */
+  margin-top: 5px;
 }
