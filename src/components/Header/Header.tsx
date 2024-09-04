@@ -3,7 +3,9 @@ import { useIsMobile } from "../../hooks/useIsMobile";
 import { useShowNavigation } from "../../hooks/useShowNavigation";
 import { setShowNavigation } from "../../redux/actions";
 import { WalletButton } from "../ConnectWallet/Button";
-import { ReactComponent as Carmine } from "./Carmine.svg";
+
+import { LogoLong } from "../Icons";
+
 import styles from "./header.module.css";
 
 export const Header = () => {
@@ -25,7 +27,7 @@ export const Header = () => {
         </div>
       )}
       <div className={styles.logocontainer} onClick={() => navigate("/")}>
-        <Carmine />
+        <LogoLong />
       </div>
       <WalletButton />
     </header>

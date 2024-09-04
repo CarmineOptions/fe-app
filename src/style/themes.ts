@@ -30,8 +30,8 @@ const themeConfig: ThemeOptions = {
   },
   typography: {
     fontSize: 15,
-    fontWeightRegular: 500,
-    fontFamily: ['"IBM Plex Sans Condensed"', "sans-serif"].join(","),
+    fontWeightRegular: 400,
+    fontFamily: ['"IBM Plex Sans"', "sans-serif"].join(","),
   },
 };
 

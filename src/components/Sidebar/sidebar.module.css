@@ -16,7 +16,7 @@
   height: 100%;
   width: 360px;
   z-index: 4;
-  border: 1px solid var(--LIGHT-GREY);
+  border: 1px solid var(--GREY);
   border-left: 1px solid #4B3707;
   background: black;
   transition: right 0.5s ease-in-out;
