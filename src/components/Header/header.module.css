@@ -4,7 +4,7 @@
   height: 62px;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid var(--LIGHT-GREY);
+  border: 1px solid var(--GREY);
   background: var(--DARK-BG);
 }
 

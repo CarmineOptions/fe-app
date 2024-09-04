@@ -25,11 +25,11 @@
 }
 
 .short {
-  background: var(--RED);
+  background: var(--ERROR-BG);
 }
 
 .long {
-  background: var(--GREEN);
+  background: var(--SUCCESS-BG);
 }
 
 .inputcontainer {
@@ -109,7 +109,7 @@
   font-weight: 500;
   line-height: 15.6px;
   white-space: nowrap;
-  color: var(--DARK-GREY);
+  color: var(--GREY);
 }
 
 .graphbox {

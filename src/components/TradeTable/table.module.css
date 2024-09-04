@@ -41,11 +41,11 @@
 }
 
 .long {
-  color: var(--GREEN);
+  color: var(--SUCCESS-BG);
 }
 
 .short {
-  color: var(--RED);
+  color: var(--ERROR-BG);
 }
 
 .square {
@@ -59,11 +59,11 @@
 }
 
 .long .square {
-  background-color: var(--GREEN);
+  background-color: var(--SUCCESS-BG);
 }
 
 .short .square {
-  background-color: var(--RED);
+  background-color: var(--ERROR-BG);
 }
 
 .long path {

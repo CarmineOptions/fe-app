@@ -52,7 +52,7 @@
   font-size: 12px;
   font-weight: 500;
   line-height: 15.6px;
-  color: var(--DARK-GREY);
+  color: var(--GREY);
 }
 
 .small {
@@ -78,12 +78,12 @@
 
 .sidebar.success {
   color: black;
-  background: var(--GOLD);
+  background: var(--PRIMARY);
 }
 
 .sidebar.success span {
   color: black;
-  background: var(--GOLD);
+  background: var(--PRIMARY);
 }
 
 .sidebar .desc {
@@ -91,7 +91,7 @@
 }
 
 .sidebar .desc.success {
-  background: var(--GOLD);
+  background: var(--PRIMARY);
 }
 
 .action {
@@ -162,7 +162,7 @@ button.active {
   padding: 0 4px;
   border-radius: 2px;
   background: #FFFBF2;
-  color: var(--GOLD);
+  color: var(--PRIMARY);
   font-size: 9px;
   font-weight: 600;
   line-height: 11.61px;

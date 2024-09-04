@@ -19,25 +19,25 @@
   transition: 0s;
   border: 0.75px solid #727272;
   border-radius: 3px;
-  color: var(--LIGHT-GREY);
+  color: var(--GREY);
   height: 29px;
   padding: 5px 18px;
   min-width: 0;
 }
 
 .container button.active {
-  background: var(--GOLD);
+  background: var(--PRIMARY);
   color: black;
-  border-color: var(--GOLD);
+  border-color: var(--PRIMARY);
 }
 
 .container button span {
-  border-color: var(--LIGHT-GREY);
-  color: var(--LIGHT-GREY);
+  border-color: var(--GREY);
+  color: var(--GREY);
 }
 
 .container button.active span {
-  background: var(--GOLD);
+  background: var(--PRIMARY);
   color: black;
 }
 
@@ -113,7 +113,7 @@
 .balance span:first-child {
   text-transform: uppercase;
   font-size: 12px;
-  color: var(--LIGHT-GREY);
+  color: var(--GREY);
 }
 
 .balanceloading {
@@ -153,7 +153,7 @@ button.buybutton {
   width: 100%;
   height: 36px;
   text-align: center;
-  background: var(--GOLD);
+  background: var(--PRIMARY);
   border: none;
   color: black;
   font-family: IBM Plex Sans Condensed;
@@ -169,13 +169,13 @@ button.buybutton {
 
 .column span {
   font-size: 14px;
-  color: var(--LIGHT-GREY);
+  color: var(--GREY);
   align-self: flex-end;
 }
 
 .column span button {
   font-size: 14px;
-  color: var(--LIGHT-GREY);
+  color: var(--GREY);
   align-self: flex-end;
   padding: 0 5px;
   margin: 0;
@@ -218,29 +218,29 @@ button.buybutton {
 }
 
 .finalprice>div>span:last-child {
-  color: var(--LIGHT-GREY);
+  color: var(--GREY);
   font-size: 14px;
 }
 
 .container select {
   background: none;
-  border: 2px solid var(--GOLD);
+  border: 2px solid var(--PRIMARY);
   font-size: 19px;
   padding: 5px;
 }
 
 .container select:active {
-  outline: 1px solid var(--GOLD);
+  outline: 1px solid var(--PRIMARY);
 }
 
 .container select:focus {
-  outline: 1px solid var(--GOLD);
+  outline: 1px solid var(--PRIMARY);
 }
 
 
 .container input {
   background: none;
-  border: 2px solid var(--GOLD);
+  border: 2px solid var(--PRIMARY);
   font-size: 19px;
   padding: 5px 12px;
   min-width: 100px;
@@ -248,11 +248,11 @@ button.buybutton {
 }
 
 .container input:active {
-  outline: 1px solid var(--GOLD);
+  outline: 1px solid var(--PRIMARY);
 }
 
 .container input:focus {
-  outline: 1px solid var(--GOLD);
+  outline: 1px solid var(--PRIMARY);
 }
 
 button.success {

@@ -11,26 +11,26 @@
 
 .wrapper button {
   transition: 0s;
-  border-color: var(--LIGHT-GREY);
-  color: var(--LIGHT-GREY);
+  border-color: var(--GREY);
+  color: var(--GREY);
   height: 25px;
   padding: 3px 18px;
   min-width: 0;
 }
 
 .wrapper button.active {
-  background: var(--GOLD);
+  background: var(--PRIMARY);
   color: black;
-  border-color: var(--GOLD);
+  border-color: var(--PRIMARY);
 }
 
 .wrapper button span {
-  border-color: var(--LIGHT-GREY);
-  color: var(--LIGHT-GREY);
+  border-color: var(--GREY);
+  color: var(--GREY);
 }
 
 .wrapper button.active span {
-  background: var(--GOLD);
+  background: var(--PRIMARY);
   color: black;
 }
 
@@ -50,15 +50,15 @@
   justify-content: space-between;
   margin: 8px 0;
   padding: 4px 0;
-  border-top: 1px solid var(--LIGHT-GREY);
-  border-bottom: 1px solid var(--LIGHT-GREY);
+  border-top: 1px solid var(--GREY);
+  border-bottom: 1px solid var(--GREY);
   text-align: left;
 }
 
 .tableheader>div {
   flex: 1;
   box-sizing: border-box;
-  color: var(--LIGHT-GREY);
+  color: var(--GREY);
   font-size: 12px;
   text-transform: uppercase;
   display: flex;
@@ -140,11 +140,11 @@
 }
 
 .arrowcontainer.desc>svg:last-child>path {
-  fill: var(--GOLD);
+  fill: var(--PRIMARY);
 }
 
 .arrowcontainer.asc>svg:first-child>path {
-  fill: var(--GOLD);
+  fill: var(--PRIMARY);
 }
 
 .outer {
