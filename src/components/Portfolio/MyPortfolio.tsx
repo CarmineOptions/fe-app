@@ -88,33 +88,33 @@ export const MyPortfolio = () => {
     <div className={styles.container}>
       <div className={styles.info}>
         <div>
-          <span>portfolio value</span>
+          <p className="secondary-col">PORTFOLIO VALUE</p>
           {totalValueUsd === undefined ? (
             <div className={styles.loadingcontainer}>
               <LoadingAnimation size={20} />
             </div>
           ) : (
-            <span>${formatNumber(totalValueUsd)}</span>
+            <h3>${formatNumber(totalValueUsd)}</h3>
           )}
         </div>
         <div>
-          <span>options</span>
+          <p className="secondary-col">OPTIONS</p>
           {positionsValueUsd === undefined ? (
             <div className={styles.loadingcontainer}>
               <LoadingAnimation size={20} />
             </div>
           ) : (
-            <span>${formatNumber(positionsValueUsd)}</span>
+            <h3>${formatNumber(positionsValueUsd)}</h3>
           )}
         </div>
         <div>
-          <span>staking</span>
+          <p className="secondary-col">STAKING</p>
           {stakesValueUsd === undefined ? (
             <div className={styles.loadingcontainer}>
               <LoadingAnimation size={20} />
             </div>
           ) : (
-            <span>${formatNumber(stakesValueUsd)}</span>
+            <h3>${formatNumber(stakesValueUsd)}</h3>
           )}
         </div>
       </div>
