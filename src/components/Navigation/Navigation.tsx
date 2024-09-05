@@ -1,17 +1,58 @@
-import { NavLink } from "react-router-dom";
-import { ReactComponent as MenuIcon } from "./menu-item.svg";
+import { FunctionComponent, ReactNode, SVGProps } from "react";
 
-import styles from "./nav.module.css";
+import { NavLink } from "react-router-dom";
 import { useIsMobile } from "../../hooks/useIsMobile";
 import { useShowNavigation } from "../../hooks/useShowNavigation";
+import {
+  Medal,
+  Scroll,
+  ShieldPlus,
+  ShuffleAngular,
+  Strategy,
+  Subtract,
+  Sword,
+  Wallet,
+} from "../Icons";
 
-const Title = ({ title, newBadge }: { title: string; newBadge?: boolean }) => (
-  <div className={styles.navlinktitle}>
-    <div>
-      <MenuIcon />
-      <span>{title}</span>
-    </div>
-    {newBadge && <div className={styles.badge}>NEW</div>}
+import styles from "./nav.module.css";
+
+const Nav = ({
+  title,
+  path,
+  icon: Icon,
+  badge,
+  isActive = false,
+}: {
+  title: string;
+  path: string;
+  icon: FunctionComponent<SVGProps<SVGSVGElement>>;
+  isActive: boolean;
+  badge?: ReactNode;
+}) => {
+  return (
+    <li className={isActive ? styles.active : ""}>
+      <NavLink to={`/${path}`}>
+        <div className={styles.navlinktitle}>
+          <div>
+            <Icon
+              style={{ stroke: isActive ? "var(--WHITE)" : "var(--SECONDARY)" }}
+            />
+            <p
+              className={`regular secondary-col${isActive ? " white-col" : ""}`}
+            >
+              {title}
+            </p>
+          </div>
+          {badge !== undefined && badge}
+        </div>
+      </NavLink>
+    </li>
+  );
+};
+
+const NewBadge = () => (
+  <div className={styles.badge}>
+    <span className="l2 bold black-col">NEW</span>
   </div>
 );
 
@@ -25,57 +66,64 @@ export const Navigation = () => {
     ? `${styles.container} ${styles.mobile}`
     : `${styles.container} ${styles.mobile} ${styles.hidden}`;
 
+  const current = window.location.pathname.split("/")[1];
+
   return (
     <div className={containerClass}>
       <aside className={styles.sidebar}>
         <div>
           <nav className={styles.primary}>
             <ul className={styles.top}>
-              <li>
-                <NavLink to="/portfolio">
-                  <Title title="Portfolio" />
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/trade">
-                  <Title title="Options" />
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/yield">
-                  <Title title="Yield" />
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/priceprotect">
-                  <Title title="Price Protect" newBadge={true} />
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/battlecharts">
-                  <Title title="Battlecharts" newBadge={true} />
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/swap">
-                  <Title title="Swap" />
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/rewards">
-                  <Title title="Rewards" />
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/leaderboard">
-                  <Title title="Leaderboard" />
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/governance">
-                  <Title title="Governance" />
-                </NavLink>
-              </li>
+              <Nav
+                title="Portfolio"
+                path="portfolio"
+                icon={Wallet}
+                isActive={current === "portfolio"}
+              />
+              <Nav
+                title="Options"
+                path="trade"
+                icon={Strategy}
+                isActive={current === "trade" || current === ""}
+              />
+              <Nav
+                title="Yield"
+                path="yield"
+                icon={Subtract}
+                isActive={current === "yield"}
+              />
+              <Nav
+                title="Swap"
+                path="swap"
+                icon={ShuffleAngular}
+                isActive={current === "swap"}
+              />
+              <Nav
+                title="Points"
+                path="leaderboard"
+                icon={Medal}
+                isActive={current === "leaderboard"}
+              />
+              <Nav
+                title="Governance"
+                path="governance"
+                icon={Scroll}
+                isActive={current === "governance"}
+              />
+              <Nav
+                title="Battlecharts"
+                path="battlecharts"
+                icon={Sword}
+                badge={<NewBadge />}
+                isActive={current === "battlecharts"}
+              />
+              <Nav
+                title="Price Protect"
+                path="priceprotect"
+                icon={ShieldPlus}
+                badge={<NewBadge />}
+                isActive={current === "priceprotect"}
+              />
             </ul>
           </nav>
         </div>

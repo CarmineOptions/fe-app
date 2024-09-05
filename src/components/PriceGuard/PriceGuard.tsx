@@ -233,7 +233,16 @@ export const PriceGuard = () => {
       );
     };
 
-    const className = `${styles.buybutton} ${styles[tradeState]}`;
+    const buttonColor =
+      tradeState === TransactionState.Initial
+        ? "primary-bg black-col"
+        : tradeState === TransactionState.Processing
+        ? "secondary-bg black-col"
+        : tradeState === TransactionState.Fail
+        ? "error-bg white-col"
+        : "success-bg white-col";
+
+    const className = `mainbutton ${buttonColor}`;
     const disabled = tradeState === TransactionState.Processing;
     const content =
       tradeState === TransactionState.Initial ? (
@@ -283,7 +292,9 @@ export const PriceGuard = () => {
                         <button
                           key={i}
                           onClick={() => handleSlippageButton(s)}
-                          className={slippage === s ? styles.selected : ""}
+                          className={
+                            slippage === s ? "secondary active" : "secondary"
+                          }
                         >
                           {s}%
                         </button>
@@ -300,7 +311,7 @@ export const PriceGuard = () => {
                   </div>
                   <button
                     onClick={closeSlippageModal}
-                    className={styles.active}
+                    className="secondary active"
                   >
                     Close
                   </button>
@@ -364,15 +375,20 @@ export const PriceGuard = () => {
         <div>
           {expiries.map((exp, i) => {
             const [date, time] = timestampToPriceGuardDate(exp);
-            const className =
-              exp === expiry
-                ? `${styles.datetime} ${styles.active}`
-                : styles.datetime;
+            const isActive = exp === expiry;
+            const className = isActive ? "secondary active" : "secondary";
             return (
               <button key={i} className={className}>
-                <div onClick={() => handleExpiryChange(exp)}>
-                  <span>{date}</span>
-                  <span>{time}</span>
+                <div
+                  className={styles.maturitybutton}
+                  onClick={() => handleExpiryChange(exp)}
+                >
+                  <span className={isActive ? "black-col" : "white-col"}>
+                    {date}
+                  </span>
+                  <span className={isActive ? "black-col" : "white-col"}>
+                    {time}
+                  </span>
                 </div>
               </button>
             );
@@ -389,9 +405,7 @@ export const PriceGuard = () => {
         <div>
           {strikes.map((strike, i) => {
             const className =
-              strike === currentStrike
-                ? `${styles.datetime} ${styles.active}`
-                : styles.datetime;
+              strike === currentStrike ? "secondary active" : "secondary";
             return (
               <button
                 key={i}

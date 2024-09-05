@@ -1,26 +1,25 @@
 /* global CSS variables */
 :root {
-  --CONTENT-WIDTH: 1440px;
-  --CONTENT-PADDING: 3em;
-  --WHITE: #fff;
-  --BLACK: #000;
-  --GOLD: #fab000;
-  --GREEN: #37CB4F;
-  --RED: #CB3737;
-  --LIGHT-GREY: #888;
+  --WHITE: #FFFFFF;
+  --BLACK: #0D0E0F;
   --GREY: #727272;
-  --DARK-GREY: #414142;
-  --DARK-BG: #111213;
+  --PRIMARY: #FAB000;
+  --SECONDARY: #727272;
+  --SUCCESS-BG: #37CB4F;
+  --SUCCESS-ACCENT: #D9FFE0;
+  --ERROR-BG: #BF1D1D;
+  --ERROR-ACCENT: #FCBABA;
+  --CARMINE-LIGHT: #FDD679;
+  --CARMINE-DARK: #B78504;
 }
 
 /* Global styles */
 * {
-  color: white;
-  font-size: 15px;
-  font-weight: 500;
-  font-family: "IBM Plex Sans Condensed", sans-serif;
+  color: var(--WHITE);
   margin: 0;
   padding: 0;
+  line-height: 1.2;
+  font-family: IBM Plex Sans;
 }
 
 html {
@@ -35,34 +34,141 @@ body {
   width: 100%;
 }
 
+/* Typography */
+
+/* Heading */
+
+/* I am using design Heading/H4 Semibold as H1, since that was the top Heading I could find */
+h1 {
+  font-family: IBM Plex Sans;
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 38.4px;
+}
+
+/* Heading/H5 Semibold */
+h2 {
+  font-family: IBM Plex Sans;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 28.8px;
+}
+
+/* Heading/H6 Semibold */
+h3 {
+  font-family: IBM Plex Sans;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+/* Paragraphs */
+
+/* Paragraph/P3 Semibold */
+p {
+  font-family: IBM Plex Sans;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 18px;
+}
+
+
+/* Paragraph/P4 */
+p.p4 {
+  font-family: IBM Plex Sans;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 14.4px;
+}
+
+/* Labels */
+
+/* Label/L1 Regular */
+span {
+  font-family: IBM Plex Sans;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14.4px;
+  letter-spacing: 0.5px;
+}
+
+/* Label/L2 Regular */
+span .l2 {
+  font-family: IBM Plex Sans;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 12px;
+  letter-spacing: 0.5px;
+}
+
+.extrabold {
+  font-weight: 800;
+}
+
+.bold {
+  font-weight: 700;
+}
+
+.regular {
+  font-weight: 400;
+}
+
+.light {
+  font-weight: 300;
+}
+
+.primary-col {
+  color: var(--PRIMARY);
+}
+
+.primary-bg {
+  background: var(--PRIMARY);
+}
+
+.secondary-col {
+  color: var(--SECONDARY);
+}
+
+.secondary-bg {
+  background: var(--SECONDARY);
+}
+
+.white-col {
+  color: var(--WHITE);
+}
+
+.white-bg {
+  background: var(--WHITE);
+}
+
+.black-col {
+  color: var(--BLACK);
+}
+
+.black-bg {
+  background: var(--BLACK);
+}
+
+.error-col {
+  color: var(--ERROR-BG);
+}
+
+.error-bg {
+  background: var(--ERROR-BG);
+}
+
+.success-col {
+  color: var(--SUCCESS-BG);
+}
+
+.success-bg {
+  background: var(--SUCCESS-BG);
+}
+
 ul {
   margin: 0;
   padding: 0;
   list-style: none;
-}
-
-h1 {
-  font-family: Formula Condensed;
-  font-size: 32px;
-  font-weight: 300;
-}
-
-h2 {
-  font-family: Formula Condensed;
-  font-size: 30px;
-  font-weight: 300;
-}
-
-h3 {
-  font-family: Formula Condensed;
-  font-size: 28px;
-  font-weight: 300;
-}
-
-h4 {
-  font-family: Formula Condensed;
-  font-size: 24px;
-  font-weight: 300;
 }
 
 button {
@@ -76,7 +182,7 @@ button {
   border-radius: 2px;
   text-transform: uppercase;
   cursor: pointer;
-  --bg-color: var(--LIGHT-GREY);
+  --bg-color: var(--GREY);
   --text-color: var(--BLACK);
   border: 1px solid var(--bg-color);
   color: var(--bg-color);
@@ -94,7 +200,7 @@ input {
   border-radius: 2px;
   text-transform: uppercase;
   cursor: pointer;
-  --bg-color: var(--LIGHT-GREY);
+  --bg-color: var(--GREY);
   --text-color: var(--BLACK);
   border: 1px solid var(--bg-color);
   color: var(--bg-color);
@@ -109,7 +215,7 @@ input {
 }
 
 .primary {
-  --bg-color: var(--GOLD);
+  --bg-color: var(--PRIMARY);
   --text-color: var(--BLACK);
 }
 
@@ -119,12 +225,12 @@ input {
 }
 
 .green {
-  --bg-color: var(--GREEN);
+  --bg-color: var(--SUCCESS-BG);
   --text-color: var(--WHITE);
 }
 
 .red {
-  --bg-color: var(--RED);
+  --bg-color: var(--ERROR-BG);
   --text-color: var(--WHITE);
 }
 
@@ -134,19 +240,15 @@ input {
 }
 
 .greentext {
-  color: var(--GREEN) !important;
+  color: var(--SUCCESS-BG) !important;
 }
 
 .redtext {
-  color: var(--RED) !important;
+  color: var(--ERROR-BG) !important;
 }
 
 .greytext {
   color: var(--GREY) !important;
-}
-
-.darkgreytext {
-  color: var(--DARK-GREY) !important;
 }
 
 .divider {

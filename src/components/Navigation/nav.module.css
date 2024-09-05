@@ -1,5 +1,5 @@
 .container {
-  border: 1px solid var(--LIGHT-GREY);
+  border: 1px solid var(--GREY);
   border-top: none;
   background: var(--DARK-BG);
   z-index: 3;
@@ -39,7 +39,7 @@
 }
 
 ul.top {
-  gap: 4px;
+  gap: 8px;
 }
 
 .sidebar a {
@@ -47,17 +47,12 @@ ul.top {
 }
 
 .topborder {
-  border-top: 1px solid var(--LIGHT-GREY);
+  border-top: 1px solid var(--GREY);
   padding: 10px 0;
 }
 
 .sidebar ul li {
-  padding: 4px;
-  margin-bottom: 8px;
-}
-
-.sidebar ul li span {
-  font-weight: 400;
+  padding: 9px 4px;
 }
 
 .navlinktitle {
@@ -69,14 +64,16 @@ ul.top {
 
 .navlinktitle>div:first-child {
   display: flex;
-  gap: 10px;
+  gap: 4px;
   align-items: center;
 }
 
 .badge {
-  background: #FAB000;
-  color: black;
-  font-size: 12px;
-  padding: 0 5px;
-  border-radius: 3px;
+  background: var(--PRIMARY);
+  padding: 4px;
+  border-radius: 2px;
+}
+
+.active {
+  background: var(--CARMINE-DARK);
 }

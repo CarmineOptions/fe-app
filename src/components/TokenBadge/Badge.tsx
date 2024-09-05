@@ -41,7 +41,10 @@ export const TokenNamedBadge = ({ token, size }: Badge) => {
   return (
     <div className={className}>
       <TokenBadge token={token} size={size} />
-      <div className={styles.text}>{token.symbol}</div>
+      <div className={styles.text}>
+        {size === "small" && <p>{token.symbol}</p>}
+        {size === undefined && <h1>{token.symbol}</h1>}
+      </div>
     </div>
   );
 };
@@ -61,12 +64,14 @@ export const PairBadge = ({ tokenA, tokenB, size }: PairBadgeType) => {
 export const PairNamedBadge = ({ tokenA, tokenB, size }: PairBadgeType) => {
   const className =
     size === undefined ? styles.named : styles.named + " " + styles[size];
+  const inside = tokenA.symbol + "/" + tokenB.symbol;
 
   return (
     <div className={className}>
       <PairBadge tokenA={tokenA} tokenB={tokenB} size={size} />
       <div className={styles.text}>
-        {tokenA.symbol}/{tokenB.symbol}
+        {size === "small" && <p>{inside}</p>}
+        {size === undefined && <h1>{inside}</h1>}
       </div>
     </div>
   );

@@ -175,25 +175,31 @@ const WithAccount = ({ account }: { account: AccountInterface }) => {
         <h1>My Price Protect</h1>
         <div className={styles.buttons}>
           <button
-            className={asset === "all" ? styles.active : ""}
+            className={asset === "all" ? "secondary active" : "secondary"}
             onClick={() => setAsset("all")}
           >
             All
           </button>
           <button
-            className={asset === TokenKey.STRK ? styles.active : ""}
+            className={
+              asset === TokenKey.STRK ? "secondary active" : "secondary"
+            }
             onClick={() => setAsset(TokenKey.STRK)}
           >
             STRK
           </button>
           <button
-            className={asset === TokenKey.ETH ? styles.active : ""}
+            className={
+              asset === TokenKey.ETH ? "secondary active" : "secondary"
+            }
             onClick={() => setAsset(TokenKey.ETH)}
           >
             ETH
           </button>
           <button
-            className={asset === TokenKey.BTC ? styles.active : ""}
+            className={
+              asset === TokenKey.BTC ? "secondary active" : "secondary"
+            }
             onClick={() => setAsset(TokenKey.BTC)}
           >
             wBTC
