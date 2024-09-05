@@ -1,7 +1,9 @@
 .custom {
-  height: 38px;
-  padding: 8px 16px 8px 16px;
-  gap: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
+  padding: 0 12px;
 }
 
 .walletinfo {
