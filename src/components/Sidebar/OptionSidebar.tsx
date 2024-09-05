@@ -36,8 +36,8 @@ export const OptionSidebar = ({ option }: Props) => {
   const account = useAccount();
   const price = useCurrency(option.underlying.id);
   const balanceRaw = useUserBalance(option.underlying.address);
-  const [amount, setAmount] = useState<number>(0);
-  const [amountText, setAmountText] = useState<string>("");
+  const [amount, setAmount] = useState<number>(1);
+  const [amountText, setAmountText] = useState<string>("1");
   const [loading, setLoading] = useState<boolean>(false);
   const [sizeOnePremia, setSizeOnePremia] = useState<number>();
   const [premiaUsd, setPremiaUsd] = useState<number>();
