@@ -1,3 +1,10 @@
+## [2.1.1](https://github.com/CarmineOptions/fe-app/compare/v2.1.0...v2.1.1) (2024-09-05)
+
+
+### Bug Fixes
+
+* add defispring rewards to navigation ([a06c406](https://github.com/CarmineOptions/fe-app/commit/a06c406b135f6101b4e0b858f3b139ff85650aa7))
+
 # [2.1.0](https://github.com/CarmineOptions/fe-app/compare/v2.0.4...v2.1.0) (2024-09-05)
 
 
