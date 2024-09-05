@@ -22,7 +22,6 @@
   font-weight: 500;
   line-height: 18px;
   font-size: 15px;
-  margin-bottom: 0;
 }
 
 .text {
@@ -30,7 +29,6 @@
   font-weight: 300;
   text-align: left;
   font-size: 32px;
-  margin-bottom: -7px;
 }
 
 .container img {

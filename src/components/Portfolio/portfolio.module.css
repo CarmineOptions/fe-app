@@ -4,7 +4,6 @@
   gap: 28px;
 }
 
-
 .info {
   display: flex;
 }
@@ -14,24 +13,6 @@
   flex-flow: column;
   gap: 8px;
   width: 160px;
-}
-
-.info>div>span {
-  font-family: IBM Plex Sans Condensed;
-  text-transform: uppercase;
-}
-
-.info>div>span:first-child {
-  color: var(--GREY);
-  font-size: 15px;
-  font-weight: 500;
-  line-height: 19.5px;
-}
-
-.info>div>span:last-child {
-  font-size: 24px;
-  font-weight: 500;
-  line-height: 31.2px;
 }
 
 .options {
@@ -95,12 +76,6 @@
   margin-bottom: 10px;
 }
 
-.header>div {
-  font-size: 22px;
-  font-weight: 500;
-  line-height: 23.4px;
-}
-
 .stakeitem {
   display: flex;
   gap: 10px;
@@ -140,10 +115,6 @@
   display: flex;
   gap: 5px;
   align-items: baseline;
-}
-
-.maturity>span:last-child {
-  font-size: 15px;
 }
 
 .loadingcontainer {
