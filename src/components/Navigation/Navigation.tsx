@@ -63,8 +63,8 @@ export const Navigation = () => {
   const containerClass = !isMobile
     ? styles.container
     : showNavigation
-    ? `${styles.container} ${styles.mobile}`
-    : `${styles.container} ${styles.mobile} ${styles.hidden}`;
+      ? `${styles.container} ${styles.mobile}`
+      : `${styles.container} ${styles.mobile} ${styles.hidden}`;
 
   const current = window.location.pathname.split("/")[1];
 
@@ -104,6 +104,12 @@ export const Navigation = () => {
                 path="swap"
                 icon={ShuffleAngular}
                 isActive={current === "swap"}
+              />
+              <Nav
+                title="Rewards"
+                path="rewards"
+                icon={Sword}
+                isActive={current === "rewards"}
               />
               <Nav
                 title="Points"
