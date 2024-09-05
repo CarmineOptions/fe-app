@@ -3,8 +3,7 @@ import { useIsMobile } from "../../hooks/useIsMobile";
 import { useShowNavigation } from "../../hooks/useShowNavigation";
 import { setShowNavigation } from "../../redux/actions";
 import { WalletButton } from "../ConnectWallet/Button";
-
-import { LogoLong } from "../Icons";
+import { LogoLong, LogoShort, VerticalDots } from "../Icons";
 
 import styles from "./header.module.css";
 
@@ -13,22 +12,31 @@ export const Header = () => {
   const showNavigation = useShowNavigation();
   const navigate = useNavigate();
 
-  const handleBurgerClick = () => {
+  const handleMobileMenuClick = () => {
     setShowNavigation(!showNavigation);
   };
 
+  const container = isMobile
+    ? styles.header + " " + styles.mobile
+    : styles.header;
+
   return (
-    <header className={styles.header}>
-      {isMobile && (
-        <div onClick={handleBurgerClick} className={styles.burger}>
-          <div></div>
-          <div></div>
-          <div></div>
+    <header className={container}>
+      {isMobile ? (
+        <div onClick={handleMobileMenuClick} className={styles.mobilemenu}>
+          <div>
+            <VerticalDots />
+          </div>
+          <div>
+            <LogoShort />
+          </div>
+        </div>
+      ) : (
+        <div className={styles.logocontainer} onClick={() => navigate("/")}>
+          <LogoLong />
         </div>
       )}
-      <div className={styles.logocontainer} onClick={() => navigate("/")}>
-        <LogoLong />
-      </div>
+
       <WalletButton />
     </header>
   );
