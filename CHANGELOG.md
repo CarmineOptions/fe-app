@@ -1,3 +1,28 @@
+# [2.1.0](https://github.com/CarmineOptions/fe-app/compare/v2.0.4...v2.1.0) (2024-09-05)
+
+
+### Bug Fixes
+
+* avnu widget simple improvements ([197ba4e](https://github.com/CarmineOptions/fe-app/commit/197ba4e30ca0b09c641ff4b6ad6756bd2ebbdd17))
+* badge and price protect ([9692b08](https://github.com/CarmineOptions/fe-app/commit/9692b086feb17ccb7a2b112fd59eac45dab1e4ed))
+* base css, crm staking loading size ([b38a97f](https://github.com/CarmineOptions/fe-app/commit/b38a97f6aee302dcf270a66c546a696c6b4cb13e))
+* better headings ([04203ba](https://github.com/CarmineOptions/fe-app/commit/04203ba5ed3dfe3c05eea1da5062b693c0d08ed1))
+* default option size, navbar ordering ([faae1e0](https://github.com/CarmineOptions/fe-app/commit/faae1e010d3fa0ee383a2ef3e5ed8d5450b4afcb))
+* mobile horizontal scroll ([96de6d7](https://github.com/CarmineOptions/fe-app/commit/96de6d79dacbcb4de4e03cd6ed9f94770b0be3a0))
+* mobile navigation ([01eed12](https://github.com/CarmineOptions/fe-app/commit/01eed120dceb50f0099f6233c212c1d490b1a100))
+* mobile view ([7f21206](https://github.com/CarmineOptions/fe-app/commit/7f212067bc4914d4dc6101989a37715b18f0d395))
+* remove ibm plex sans condensed everywhere ([493d342](https://github.com/CarmineOptions/fe-app/commit/493d34287653542c5369638f991ec655596cad33))
+* rework css ([fef774f](https://github.com/CarmineOptions/fe-app/commit/fef774fd6e72d34f576a0d26410500fb312dc455))
+* rework css, add pool filtering ([b199a2d](https://github.com/CarmineOptions/fe-app/commit/b199a2d693170a61c580c6bb5e20d52fea4f4bd9))
+* short - bid instead of ask ([86b67d5](https://github.com/CarmineOptions/fe-app/commit/86b67d50728c939f36751c6f5c6168cac4083cb9))
+* token badge ([392600d](https://github.com/CarmineOptions/fe-app/commit/392600ddd35c3f2eaad9e61bcfb155d82175f082))
+* tooltip texts ([c58f7e4](https://github.com/CarmineOptions/fe-app/commit/c58f7e42edb3338a25b8c847cf85d3d54e68f6ff))
+
+
+### Features
+
+* new typography and nav ([06ce462](https://github.com/CarmineOptions/fe-app/commit/06ce462fad4755cc66a7d87d9b10ab6a92ff1566))
+
 ## [2.0.4](https://github.com/CarmineOptions/fe-app/compare/v2.0.3...v2.0.4) (2024-09-02)
 
 
