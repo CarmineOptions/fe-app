@@ -87,6 +87,13 @@ export const Navigation = () => {
                 isActive={current === "trade" || current === ""}
               />
               <Nav
+                title="Price Protect"
+                path="priceprotect"
+                icon={ShieldPlus}
+                badge={<NewBadge />}
+                isActive={current === "priceprotect"}
+              />
+              <Nav
                 title="Yield"
                 path="yield"
                 icon={Subtract}
@@ -116,13 +123,6 @@ export const Navigation = () => {
                 icon={Sword}
                 badge={<NewBadge />}
                 isActive={current === "battlecharts"}
-              />
-              <Nav
-                title="Price Protect"
-                path="priceprotect"
-                icon={ShieldPlus}
-                badge={<NewBadge />}
-                isActive={current === "priceprotect"}
               />
             </ul>
           </nav>
