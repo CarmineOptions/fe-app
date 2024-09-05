@@ -2,7 +2,7 @@
   display: flex;
   flex-flow: column;
   gap: 18px;
-  font-family: IBM Plex Sans Condensed, sans;
+  font-family: IBM Plex Sans, sans;
   font-size: 18px;
   font-weight: 500;
   line-height: 23.4px;
