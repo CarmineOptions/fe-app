@@ -1,12 +1,8 @@
 import { AccountInterface } from "starknet";
-
 import GovernanceAbi from "../../abi/amm_abi.json";
 import { GOVERNANCE_ADDRESS } from "../../constants/amm";
 import { debug } from "../../utils/debugger";
 import { ProposalWithOpinion, UserVote } from "../../calls/liveProposals";
-
-import styles from "./Vote.module.css";
-import buttonStyles from "../../style/button.module.css";
 import { useState } from "react";
 import { LoadingAnimation } from "../Loading/Loading";
 import { addTx, markTxAsDone, showToast } from "../../redux/actions";
@@ -14,6 +10,8 @@ import { afterTransaction } from "../../utils/blockchain";
 import { invalidateKey } from "../../queries/client";
 import { TransactionAction } from "../../redux/reducers/transactions";
 import { ToastType } from "../../redux/reducers/ui";
+
+import styles from "./Vote.module.css";
 
 enum Opinion {
   YAY = "1",
@@ -77,13 +75,10 @@ export const VoteButtons = ({
 
   if (processing) {
     return (
-      <div>
-        <button disabled style={{ marginRight: "4rem" }}>
-          <LoadingAnimation />
-        </button>
-        <button disabled>
-          <LoadingAnimation />
-        </button>
+      <div className={styles.votebuttoncontainer}>
+        <div className={styles.loading}>
+          <LoadingAnimation size={20} />
+        </div>
       </div>
     );
   }
@@ -123,7 +118,7 @@ export const VoteButtons = ({
 
   return (
     <div className={styles.votebuttoncontainer}>
-      <button disabled className={buttonStyles.green}>
+      <button disabled className="green">
         {message}
       </button>
     </div>
