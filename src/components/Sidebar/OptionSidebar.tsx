@@ -123,8 +123,8 @@ export const OptionSidebar = ({ option }: Props) => {
 
   useEffect(() => {
     return () => {
-      setAmount(0);
-      setAmountText("");
+      setAmount(1);
+      setAmountText("1");
     };
   }, [option.optionId]);
 
