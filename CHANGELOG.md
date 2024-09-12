@@ -1,3 +1,11 @@
+## [2.1.2](https://github.com/CarmineOptions/fe-app/compare/v2.1.1...v2.1.2) (2024-09-12)
+
+
+### Bug Fixes
+
+* default option size 1 ([3e2f090](https://github.com/CarmineOptions/fe-app/commit/3e2f09045ff09d7e0c1a3f0cbd10ff7d9e5b8b01))
+* vote button loading ([0532ae5](https://github.com/CarmineOptions/fe-app/commit/0532ae5cea48fd5b0e97693c81cc41d2b2935ce9))
+
 ## [2.1.1](https://github.com/CarmineOptions/fe-app/compare/v2.1.0...v2.1.1) (2024-09-05)
 
 
