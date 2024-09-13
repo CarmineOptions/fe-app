@@ -47,7 +47,11 @@ export const TradeTable = () => {
     return <div>Something went wrong</div>;
   }
 
-  const maturities = data.map((o) => o.maturity).filter(uniquePrimitiveValues);
+  const thisPairOptions = data.filter((option) => option.isPair(pair));
+
+  const maturities = thisPairOptions
+    .map((o) => o.maturity)
+    .filter(uniquePrimitiveValues);
 
   if (maturity === undefined) {
     if (maturities.length) {
@@ -55,12 +59,11 @@ export const TradeTable = () => {
     }
   }
 
-  const filtered = data
+  const filtered = thisPairOptions
     .filter(
       (option) =>
         (side === "all" ? true : option.isSide(side)) &&
         option.isType(type) &&
-        option.isPair(pair) &&
         option.maturity === maturity
     )
     .sort((a, b) => a.strike - b.strike);
