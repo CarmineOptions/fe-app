@@ -1,3 +1,10 @@
+## [2.1.3](https://github.com/CarmineOptions/fe-app/compare/v2.1.2...v2.1.3) (2024-09-13)
+
+
+### Bug Fixes
+
+* show maturities for given pair ([81f3e5d](https://github.com/CarmineOptions/fe-app/commit/81f3e5dac45d3241f0a014ed8e810676cb602359))
+
 ## [2.1.2](https://github.com/CarmineOptions/fe-app/compare/v2.1.1...v2.1.2) (2024-09-12)
 
 
