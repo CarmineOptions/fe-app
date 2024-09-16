@@ -1,3 +1,10 @@
+## [2.1.5](https://github.com/CarmineOptions/fe-app/compare/v2.1.4...v2.1.5) (2024-09-16)
+
+
+### Bug Fixes
+
+* display correct closing amount ([542f350](https://github.com/CarmineOptions/fe-app/commit/542f350db6c0a24ef611824b215931d574402fc5))
+
 ## [2.1.4](https://github.com/CarmineOptions/fe-app/compare/v2.1.3...v2.1.4) (2024-09-16)
 
 
