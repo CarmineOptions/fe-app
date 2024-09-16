@@ -325,35 +325,6 @@ export const Widget = () => {
         </div>
       </div>
       <div>
-        {sellTokenBalance === undefined ? (
-          <div className={styles.balancecontainer}>
-            <Skeleton />
-          </div>
-        ) : (
-          <div className={styles.balancecontainer}>
-            <span>
-              Max available to swap{" "}
-              {shortInteger(sellTokenBalance, sellToken.decimals).toFixed(4)}{" "}
-              {sellToken.symbol}
-            </span>
-            <span
-              onClick={() =>
-                setInputValue(
-                  maxDecimals(
-                    shortInteger(
-                      sellTokenBalance - sellTokenBalance / 100000000n, // for STRK tx fails with not enough balance, make it tiny smaller than actual balance
-                      sellToken.decimals
-                    ),
-                    6
-                  )
-                )
-              }
-              className={styles.maxbalance}
-            >
-              Max
-            </span>
-          </div>
-        )}
         <div
           className={
             notEnough
@@ -383,6 +354,36 @@ export const Widget = () => {
             <DownAngled />
           </div>
         </div>
+        {sellTokenBalance === undefined ? (
+          <div className={styles.balancecontainer}>
+            <Skeleton />
+          </div>
+        ) : (
+          <div className={styles.balancecontainer}>
+            <span>
+              Max available to swap{" "}
+              {shortInteger(sellTokenBalance, sellToken.decimals).toFixed(4)}{" "}
+              {sellToken.symbol}
+            </span>
+            <span
+              onClick={() =>
+                setInputValue(
+                  maxDecimals(
+                    shortInteger(
+                      sellTokenBalance - sellTokenBalance / 100000000n, // for STRK tx fails with not enough balance, make it tiny smaller than actual balance
+                      sellToken.decimals
+                    ),
+                    6
+                  )
+                )
+              }
+              className={styles.maxbalance}
+            >
+              Max
+            </span>
+          </div>
+        )}
+
         {notEnough && (
           <div className={styles.insufficient}>
             <span>Insufficient balance!</span>
@@ -395,19 +396,6 @@ export const Widget = () => {
         </div>
       </div>
       <div>
-        {buyTokenBalance === undefined ? (
-          <div className={styles.balancecontainer}>
-            <Skeleton />
-          </div>
-        ) : (
-          <div className={styles.balancecontainer}>
-            <span>
-              Balance{" "}
-              {shortInteger(buyTokenBalance, buyToken.decimals).toFixed(4)}{" "}
-              {buyToken.symbol}
-            </span>{" "}
-          </div>
-        )}
         <div className={styles.tokeninput}>
           <div className={styles.moneywrapper}>
             <input
@@ -436,6 +424,19 @@ export const Widget = () => {
             <DownAngled />
           </div>
         </div>
+        {buyTokenBalance === undefined ? (
+          <div className={styles.balancecontainer}>
+            <Skeleton />
+          </div>
+        ) : (
+          <div className={styles.balancecontainer}>
+            <span>
+              Balance{" "}
+              {shortInteger(buyTokenBalance, buyToken.decimals).toFixed(4)}{" "}
+              {buyToken.symbol}
+            </span>{" "}
+          </div>
+        )}
       </div>
       {quotes && quotes[0] ? (
         <QuoteBox

@@ -23,19 +23,19 @@ const premiaToDisplayValue = (
 ) => {
   // Long Call
   if (option.isCall && option.isLong) {
-    return `$${(premia * base).toFixed(2)}`;
+    return `${(premia * base).toFixed(2)}`;
   }
   // Long Put
   if (option.isPut && option.isLong) {
-    return `$${(premia * quote).toFixed(2)}`;
+    return `${(premia * quote).toFixed(2)}`;
   }
   // Short Call
   if (option.isCall && option.isShort) {
-    return `$${((option.size * quote - premia) * base).toFixed(2)}`;
+    return `${((option.size * quote - premia) * base).toFixed(2)}`;
   }
   // Short Put
   if (option.isPut && option.isShort) {
-    return `$${((option.size * base - premia) * quote).toFixed(2)}`;
+    return `${((option.size * base - premia) * quote).toFixed(2)}`;
   }
   // unreachable
   throw Error('Could not get "premiaToDisplayValue"');
@@ -249,7 +249,9 @@ const WithOption = ({ option }: Props) => {
             }}
           >
             <Typography sx={{ fontSize: "1.2rem" }}>Total Received</Typography>
-            <Typography sx={{ fontSize: "1.2rem" }}>{displayPremia}</Typography>
+            <Typography sx={{ fontSize: "1.2rem" }}>
+              {displayPremia} {option.underlying.symbol}
+            </Typography>
           </Box>
           <Box
             sx={{
@@ -262,7 +264,7 @@ const WithOption = ({ option }: Props) => {
               Slippage {slippage}% limit
             </Typography>
             <Typography sx={{ fontSize: "1rem" }} variant="caption">
-              {displayPremiaWithSlippage}
+              {displayPremiaWithSlippage} {option.underlying.symbol}
             </Typography>
           </Box>
         </Box>

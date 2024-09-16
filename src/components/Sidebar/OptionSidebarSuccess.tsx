@@ -24,7 +24,7 @@ export const OptionSidebarSuccess = ({ option, amount, tx }: Props) => {
   return (
     <div className={`${poolStyles.sidebar} ${poolStyles.success}`}>
       <div className={poolStyles.successmessage}>
-        <span>SUCCESSFUL!</span>
+        <span>SUCCESSFUL</span>
       </div>
       <div className={`${poolStyles.desc} ${poolStyles.success}`}>
         <div className={styles.desc}>
@@ -43,16 +43,16 @@ export const OptionSidebarSuccess = ({ option, amount, tx }: Props) => {
       </div>
       <div className={styles.databox}>
         <div>
-          <span>OPTION SIZE</span>
+          <p>OPTION SIZE</p>
         </div>
         <div>
-          <span style={{ color: grey }}>{amount}</span>
-          <span></span>
+          <p style={{ color: grey }}>{amount}</p>
+          <p></p>
         </div>
       </div>
       <div>
         <button
-          className={"blackandwhite active mainbutton"}
+          className="blackandwhite active mainbutton"
           onClick={handlePortfolioClick}
         >
           View Portfolio
