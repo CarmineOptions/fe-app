@@ -26,6 +26,7 @@ export const ImpermanentLossWidget = () => {
   const [amount, setAmount] = useState<number>(1);
   const [amountText, setAmountText] = useState<string>("1");
   const [price, setPrice] = useState<ILPrice | undefined>();
+  const [error, setError] = useState<string | undefined>();
   const tokenPair = Pair.pairByKey(pair);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -34,6 +35,10 @@ export const ImpermanentLossWidget = () => {
       if (selectedMaturity === undefined) {
         return;
       }
+      // unset old price
+      setPrice(undefined);
+      setError(undefined);
+
       getPrice(
         longInteger(amount, tokenPair.baseToken.decimals),
         tokenPair.baseToken.address,
@@ -49,6 +54,7 @@ export const ImpermanentLossWidget = () => {
           debug("Failed fetching modal data");
           debug("warn", e.message);
           setLoading(false);
+          setError(e.message);
         });
     }),
     [selectedMaturity, amount, pair]
@@ -222,6 +228,12 @@ export const ImpermanentLossWidget = () => {
             </div>
           </div>
         )
+      )}
+      {error && (
+        <div>
+          <h3>Error</h3>
+          <p>{error}</p>
+        </div>
       )}
     </div>
   );
