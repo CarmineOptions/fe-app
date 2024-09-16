@@ -1,3 +1,10 @@
+## [2.1.4](https://github.com/CarmineOptions/fe-app/compare/v2.1.3...v2.1.4) (2024-09-16)
+
+
+### Bug Fixes
+
+* various visual bugs ([95adeb5](https://github.com/CarmineOptions/fe-app/commit/95adeb514ab316d408b5ef472dd6155217a1dad6))
+
 ## [2.1.3](https://github.com/CarmineOptions/fe-app/compare/v2.1.2...v2.1.3) (2024-09-13)
 
 
