@@ -125,6 +125,7 @@ export const OptionSidebar = ({ option }: Props) => {
     return () => {
       setAmount(1);
       setAmountText("1");
+      setTxState(TransactionState.Initial);
     };
   }, [option.optionId]);
 

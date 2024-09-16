@@ -14,7 +14,9 @@ import { store } from "../../redux/store";
 import { useCurrency } from "../../hooks/useCurrency";
 import { OptionWithPosition } from "../../classes/Option";
 import buttonStyles from "../../style/button.module.css";
+import { formatNumber } from "../../utils/utils";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const premiaToDisplayValue = (
   premia: number,
   base: number,
@@ -215,12 +217,11 @@ const WithOption = ({ option }: Props) => {
 
   const slippage = store.getState().settings.slippage;
 
-  const displayPremia = premiaToDisplayValue(premiaNumber, base, quote, option);
-  const displayPremiaWithSlippage = premiaToDisplayValue(
-    premiaWithSlippage,
-    base,
-    quote,
-    option
+  const displayPremia = formatNumber(
+    option.isShort ? size - premiaNumber : premiaNumber
+  );
+  const displayPremiaWithSlippage = formatNumber(
+    option.isShort ? size - premiaWithSlippage : premiaWithSlippage
   );
 
   return (
