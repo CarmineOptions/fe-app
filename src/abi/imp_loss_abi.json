@@ -1,0 +1,104 @@
+[
+  {
+    "name": "ILHedge",
+    "type": "impl",
+    "interface_name": "hoil::interface::IILHedge"
+  },
+  {
+    "name": "hoil::interface::IILHedge",
+    "type": "interface",
+    "items": [
+      {
+        "name": "hedge",
+        "type": "function",
+        "inputs": [
+          {
+            "name": "notional",
+            "type": "core::integer::u128"
+          },
+          {
+            "name": "quote_token_addr",
+            "type": "core::starknet::contract_address::ContractAddress"
+          },
+          {
+            "name": "base_token_addr",
+            "type": "core::starknet::contract_address::ContractAddress"
+          },
+          {
+            "name": "expiry",
+            "type": "core::integer::u64"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "name": "price_hedge",
+        "type": "function",
+        "inputs": [
+          {
+            "name": "notional",
+            "type": "core::integer::u128"
+          },
+          {
+            "name": "quote_token_addr",
+            "type": "core::starknet::contract_address::ContractAddress"
+          },
+          {
+            "name": "base_token_addr",
+            "type": "core::starknet::contract_address::ContractAddress"
+          },
+          {
+            "name": "expiry",
+            "type": "core::integer::u64"
+          }
+        ],
+        "outputs": [
+          {
+            "type": "(core::integer::u128, core::integer::u128)"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "name": "upgrade",
+        "type": "function",
+        "inputs": [
+          {
+            "name": "impl_hash",
+            "type": "core::starknet::class_hash::ClassHash"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "name": "get_owner",
+        "type": "function",
+        "inputs": [],
+        "outputs": [
+          {
+            "type": "core::starknet::contract_address::ContractAddress"
+          }
+        ],
+        "state_mutability": "view"
+      }
+    ]
+  },
+  {
+    "name": "constructor",
+    "type": "constructor",
+    "inputs": [
+      {
+        "name": "owner",
+        "type": "core::starknet::contract_address::ContractAddress"
+      }
+    ]
+  },
+  {
+    "kind": "enum",
+    "name": "hoil::interface::ILHedge::Event",
+    "type": "event",
+    "variants": []
+  }
+]
