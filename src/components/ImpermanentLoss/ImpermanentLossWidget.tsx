@@ -15,6 +15,7 @@ import { longInteger, shortInteger } from "../../utils/computations";
 import { TransactionState } from "../../types/network";
 import { useAccount } from "../../hooks/useAccount";
 import { useCurrency } from "../../hooks/useCurrency";
+import { openWalletConnectDialog } from "../ConnectWallet/Button";
 
 import styles from "./imp_loss.module.css";
 
@@ -279,7 +280,15 @@ export const ImpermanentLossWidget = () => {
               </div>
             </div>
             <div className="topmargin">
-              {txStatus === TransactionState.Initial && (
+              {account === undefined && (
+                <button
+                  className="primary active mainbutton"
+                  onClick={openWalletConnectDialog}
+                >
+                  Connect Wallet
+                </button>
+              )}
+              {account && txStatus === TransactionState.Initial && (
                 <button
                   className="primary active mainbutton"
                   onClick={handleBuy}
@@ -287,17 +296,17 @@ export const ImpermanentLossWidget = () => {
                   Protect
                 </button>
               )}
-              {txStatus === TransactionState.Success && (
+              {account && txStatus === TransactionState.Success && (
                 <button className="green active mainbutton" onClick={handleBuy}>
                   Success
                 </button>
               )}
-              {txStatus === TransactionState.Fail && (
+              {account && txStatus === TransactionState.Fail && (
                 <button className="red active mainbutton" onClick={handleBuy}>
                   Fail
                 </button>
               )}
-              {txStatus === TransactionState.Processing && (
+              {account && txStatus === TransactionState.Processing && (
                 <button className="primary active mainbutton" disabled>
                   <LoadingAnimation size={20} />
                 </button>

@@ -101,7 +101,7 @@ export const buyImpLoss = async (
   }
 
   const getSizeWithSlippage = (size: bigint, slippage: bigint) => {
-    return (size * (200n + slippage)) / 100n;
+    return (size * (100n + slippage)) / 100n;
   };
 
   const approveBase: Call = {
@@ -109,7 +109,7 @@ export const buyImpLoss = async (
     entrypoint: "approve",
     calldata: [
       IMP_LOSS_ADDRESS,
-      getSizeWithSlippage(price.basePrice, 25n),
+      getSizeWithSlippage(price.basePrice, 10n).toString(10),
       "0",
     ],
   };
@@ -119,7 +119,7 @@ export const buyImpLoss = async (
     entrypoint: "approve",
     calldata: [
       IMP_LOSS_ADDRESS,
-      getSizeWithSlippage(price.quotePrice, 25n),
+      getSizeWithSlippage(price.quotePrice, 10n).toString(10),
       "0",
     ],
   };
