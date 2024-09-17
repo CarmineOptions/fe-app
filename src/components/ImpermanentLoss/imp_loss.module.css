@@ -1,0 +1,76 @@
+.container {
+  display: flex;
+  flex-flow: column;
+  max-width: 335px;
+}
+
+.container>div {
+  display: flex;
+  flex-flow: column;
+  gap: 12px;
+}
+
+.container>h2 {
+  margin-bottom: 32px;
+}
+
+.inputcontainer {
+  display: flex;
+  flex-flow: column;
+  gap: 10px;
+}
+
+.tokeninput {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  border: 0.5px solid var(--GREY);
+  height: 67px;
+}
+
+.tokeninput>div:first-child {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  padding: 12px;
+  flex: 2;
+}
+
+.tokeninput>div:last-child {
+  display: flex;
+  padding: 12px;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  background: #262626;
+}
+
+.tokeninput>div>input {
+  border: none;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 24px;
+  text-align: left;
+  min-width: 0;
+  padding: 0;
+  width: 100px;
+}
+
+.tokeninput>div>p {
+  width: 100px;
+}
+
+.buttoncontainer {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.coverageprice {
+  display: flex;
+  justify-content: space-between;
+}
+
+.coverageprice>div:last-child>p {
+  text-align: end;
+}
