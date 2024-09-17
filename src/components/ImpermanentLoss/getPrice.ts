@@ -128,7 +128,7 @@ export const buyImpLoss = async (
     contractAddress: IMP_LOSS_ADDRESS,
     entrypoint: "hedge",
     calldata: [
-      sizeRaw,
+      sizeRaw.toString(10),
       tokenPair.quoteToken.address,
       tokenPair.baseToken.address,
       expiry,
