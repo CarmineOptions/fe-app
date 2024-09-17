@@ -24,7 +24,7 @@ export const ImpermanentLossWidget = () => {
     fetchOptions
   );
   const account = useAccount();
-  const [pair, setPair] = useState<PairKey>(PairKey.ETH_USDC);
+  const [pair, setPair] = useState<PairKey>(PairKey.ETH_STRK);
   const [selectedMaturity, setSelectedMaturity] = useState<
     number | undefined
   >();
@@ -59,8 +59,7 @@ export const ImpermanentLossWidget = () => {
 
       getPrice(
         longInteger(amount, tokenPair.baseToken.decimals),
-        tokenPair.baseToken.address,
-        tokenPair.quoteToken.address,
+        tokenPair,
         selectedMaturity,
         controller.signal
       )
@@ -106,10 +105,6 @@ export const ImpermanentLossWidget = () => {
     setPair(event.target.value as PairKey);
   };
 
-  const handleMaturityChange = (event: SelectChangeEvent<number>) => {
-    setSelectedMaturity(event.target.value as number);
-  };
-
   const handleInputChange = handleNumericChangeFactory(
     setAmountText,
     setAmount,
@@ -125,8 +120,7 @@ export const ImpermanentLossWidget = () => {
     buyImpLoss(
       account,
       sizeRaw,
-      tokenPair.baseToken.address,
-      tokenPair.quoteToken.address,
+      tokenPair,
       selectedMaturity,
       price,
       setTxStatus

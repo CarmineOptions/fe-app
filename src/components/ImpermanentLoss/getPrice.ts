@@ -1,3 +1,5 @@
+import { shortInteger } from "./../../utils/computations";
+import { formatNumber } from "./../../utils/utils";
 import { AccountInterface, BigNumberish, Call } from "starknet";
 import { impLossContract } from "../../constants/starknet";
 import { debug } from "../../utils/debugger";
@@ -14,6 +16,7 @@ import { invalidatePositions } from "../../queries/client";
 import { TransactionAction } from "../../redux/reducers/transactions";
 import { ToastType } from "../../redux/reducers/ui";
 import { afterTransaction } from "../../utils/blockchain";
+import { Pair } from "../../classes/Pair";
 
 type ILResponse = {
   0: bigint;
@@ -27,13 +30,17 @@ export type ILPrice = {
 
 export const getPrice = async (
   sizeRaw: BigNumberish,
-  baseAddress: string,
-  quoteAddress: string,
+  tokenPair: Pair,
   expiry: number,
   signal: AbortSignal
 ): Promise<ILPrice | undefined> => {
   const res = (await impLossContract
-    .call("price_hedge", [sizeRaw, quoteAddress, baseAddress, expiry])
+    .call("price_hedge", [
+      sizeRaw,
+      tokenPair.quoteToken.address,
+      tokenPair.baseToken.address,
+      expiry,
+    ])
     .catch((e: Error) => {
       debug("Failed getting IMP LOSS price", e.message);
       throw Error(e.message);
@@ -52,21 +59,26 @@ export const getPrice = async (
 export const buyImpLoss = async (
   account: AccountInterface,
   sizeRaw: BigNumberish,
-  baseAddress: string,
-  quoteAddress: string,
+  tokenPair: Pair,
   expiry: number,
   price: ILPrice,
   setTxStatus: TxTracking
 ) => {
   setTxStatus(TransactionState.Processing);
   const [baseBalance, quoteBalance] = await Promise.all([
-    balanceOf(account.address, baseAddress),
-    balanceOf(account.address, quoteAddress),
+    balanceOf(account.address, tokenPair.baseToken.address),
+    balanceOf(account.address, tokenPair.quoteToken.address),
   ]);
 
   if (price.basePrice > baseBalance) {
     showToast(
-      `Your balance is ${baseBalance} and you need ${price.basePrice}`,
+      `Your balance is ${formatNumber(
+        shortInteger(baseBalance, tokenPair.baseToken.decimals),
+        5
+      )} ${tokenPair.baseToken.symbol} and you need ${formatNumber(
+        shortInteger(price.basePrice, tokenPair.quoteToken.decimals),
+        5
+      )}  ${tokenPair.baseToken.symbol}`,
       ToastType.Error
     );
     setTxStatus(TransactionState.Fail);
@@ -75,7 +87,13 @@ export const buyImpLoss = async (
 
   if (price.quotePrice > quoteBalance) {
     showToast(
-      `Your balance is ${quoteBalance} and you need ${price.quotePrice}`,
+      `Your balance is ${formatNumber(
+        shortInteger(quoteBalance, tokenPair.quoteToken.decimals),
+        5
+      )} ${tokenPair.quoteToken.symbol} and you need ${formatNumber(
+        shortInteger(price.quotePrice, tokenPair.quoteToken.decimals),
+        5
+      )} ${tokenPair.quoteToken.symbol}`,
       ToastType.Error
     );
     setTxStatus(TransactionState.Fail);
@@ -87,7 +105,7 @@ export const buyImpLoss = async (
   };
 
   const approveBase: Call = {
-    contractAddress: baseAddress,
+    contractAddress: tokenPair.baseToken.address,
     entrypoint: "approve",
     calldata: [
       IMP_LOSS_ADDRESS,
@@ -97,7 +115,7 @@ export const buyImpLoss = async (
   };
 
   const approveQuote: Call = {
-    contractAddress: quoteAddress,
+    contractAddress: tokenPair.quoteToken.address,
     entrypoint: "approve",
     calldata: [
       IMP_LOSS_ADDRESS,
@@ -109,7 +127,12 @@ export const buyImpLoss = async (
   const hedge: Call = {
     contractAddress: IMP_LOSS_ADDRESS,
     entrypoint: "hedge",
-    calldata: [sizeRaw, quoteAddress, baseAddress, expiry],
+    calldata: [
+      sizeRaw,
+      tokenPair.quoteToken.address,
+      tokenPair.baseToken.address,
+      expiry,
+    ],
   };
 
   const res = await account
@@ -120,7 +143,7 @@ export const buyImpLoss = async (
       throw Error(e);
     });
 
-  const id = baseAddress + quoteAddress + expiry;
+  const id = tokenPair.pairId + expiry;
   const hash = res.transaction_hash;
   addTx(hash, id, TransactionAction.ImpLoss);
   afterTransaction(
