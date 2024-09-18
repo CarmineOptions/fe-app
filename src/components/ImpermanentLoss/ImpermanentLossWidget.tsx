@@ -32,6 +32,8 @@ export const ImpermanentLossWidget = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [amount, setAmount] = useState<number>(1);
   const [amountText, setAmountText] = useState<string>("1");
+  const [quoteAmount, setQuoteAmount] = useState<number>(1);
+  const [quoteAmountText, setQuoteAmountText] = useState<string>("1");
   const [price, setPrice] = useState<ILPrice | undefined>();
   const [txStatus, setTxStatus] = useState<TransactionState>(
     TransactionState.Initial
@@ -110,6 +112,24 @@ export const ImpermanentLossWidget = () => {
     setAmountText,
     setAmount,
     (n) => {
+      if (baseTokenPrice && quoteTokenPrice) {
+        const newQuoteText = formatNumber(
+          (n * baseTokenPrice) / quoteTokenPrice,
+          2
+        );
+        const newQuote = parseInt(newQuoteText);
+
+        setQuoteAmount(newQuote);
+        setQuoteAmountText(newQuoteText);
+      }
+      return n;
+    }
+  );
+
+  const handleQuoteInputChange = handleNumericChangeFactory(
+    setQuoteAmountText,
+    setQuoteAmount,
+    (n) => {
       return n;
     }
   );
@@ -187,7 +207,7 @@ export const ImpermanentLossWidget = () => {
               <input
                 onChange={handleInputChange}
                 type="text"
-                placeholder="base size"
+                placeholder="base"
                 value={amountText}
                 className="white-col"
               />
@@ -208,18 +228,15 @@ export const ImpermanentLossWidget = () => {
           <div className={styles.tokeninput}>
             <div>
               <input
+                onChange={handleQuoteInputChange}
                 type="text"
-                placeholder="quote size"
-                value={
-                  amount && baseTokenPrice && quoteTokenPrice
-                    ? formatNumber((amount * baseTokenPrice) / quoteTokenPrice)
-                    : ""
-                }
-                disabled
+                placeholder="quote"
+                value={quoteAmountText}
+                className="white-col"
               />
               <p className="p4 secondary-col">
-                {baseTokenPrice ? (
-                  "$" + formatNumber(amount * baseTokenPrice)
+                {quoteTokenPrice && quoteAmount ? (
+                  "$" + formatNumber(quoteAmount * quoteTokenPrice)
                 ) : (
                   <LoadingAnimation size={20} />
                 )}
