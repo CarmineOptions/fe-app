@@ -21,6 +21,7 @@ import { showToast } from "../../redux/actions";
 import { ToastType } from "../../redux/reducers/ui";
 import { decimalToMath64 } from "../../utils/units";
 import { Close } from "@mui/icons-material";
+import { ProposalText } from "./ProposalText";
 
 const strkUsdcCallPool = new Pool(STRK_ADDRESS, USDC_ADDRESS, OptionType.Call);
 
@@ -304,6 +305,7 @@ export const AddProposal = () => {
           </div>
         ))}
       </div>
+      {options.length > 0 && <ProposalText proposalOptions={options} />}
     </div>
   );
 };
