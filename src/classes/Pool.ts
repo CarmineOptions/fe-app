@@ -21,7 +21,7 @@ import { shortInteger } from "../utils/computations";
 import { bnToOptionType } from "../utils/conversions";
 import { toHex } from "../utils/utils";
 import { Pair, PairKey } from "./Pair";
-import { Token } from "./Token";
+import { Token, TokenKey } from "./Token";
 
 export class Pool extends Pair {
   public type: OptionType;
@@ -202,6 +202,74 @@ export class Pool extends Pair {
 
   get name(): string {
     return `${this.baseToken.symbol}/${this.quoteToken.symbol} ${this.typeAsText} Pool (${this.symbol})`;
+  }
+
+  get strikeStep(): [number, number] {
+    if (
+      this.baseToken.id === TokenKey.ETH &&
+      this.quoteToken.id === TokenKey.USDC
+    ) {
+      // ETH/USDC
+      return [100, 200];
+    }
+    if (
+      this.baseToken.id === TokenKey.STRK &&
+      this.quoteToken.id === TokenKey.USDC
+    ) {
+      // STRK/USDC
+      return [0.05, 0.05];
+    }
+    if (
+      this.baseToken.id === TokenKey.ETH &&
+      this.quoteToken.id === TokenKey.STRK
+    ) {
+      // ETH/STRK
+      return [100, 300];
+    }
+    if (
+      this.baseToken.id === TokenKey.BTC &&
+      this.quoteToken.id === TokenKey.USDC
+    ) {
+      // BTC/USDC
+      return [1000, 3000];
+    }
+
+    // unreachable
+    throw Error("Failed getting strike step");
+  }
+
+  get baseVolatility(): number {
+    if (
+      this.baseToken.id === TokenKey.ETH &&
+      this.quoteToken.id === TokenKey.USDC
+    ) {
+      // ETH/USDC
+      return 55;
+    }
+    if (
+      this.baseToken.id === TokenKey.STRK &&
+      this.quoteToken.id === TokenKey.USDC
+    ) {
+      // STRK/USDC
+      return 90;
+    }
+    if (
+      this.baseToken.id === TokenKey.ETH &&
+      this.quoteToken.id === TokenKey.STRK
+    ) {
+      // ETH/STRK
+      return 100;
+    }
+    if (
+      this.baseToken.id === TokenKey.BTC &&
+      this.quoteToken.id === TokenKey.USDC
+    ) {
+      // BTC/USDC
+      return 55;
+    }
+
+    // unreachable
+    throw Error("Failed getting base volatility");
   }
 }
 
