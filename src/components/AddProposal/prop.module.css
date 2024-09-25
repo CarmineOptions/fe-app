@@ -1,0 +1,58 @@
+.buttons {
+  display: flex;
+  gap: 10px;
+  height: 25.5px;
+}
+
+.buttonscontainer {
+  display: flex;
+  flex-flow: column;
+  gap: 20px;
+}
+
+.optionbox {
+  display: flex;
+  flex-flow: column;
+  border: 1px solid var(--GREY);
+  padding: 5px;
+  width: 300px;
+}
+
+.optionboxcontainer {
+  display: flex;
+  flex-flow: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.optionbox>div {
+  display: flex;
+  align-items: center;
+}
+
+.optionbox>div>p {
+  min-width: 85px;
+}
+
+.optionbox>div input {
+  width: 100%;
+}
+
+.poolselect {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.infobox {
+  border: 1px solid var(--ERROR-BG);
+  background: var(--ERROR-ACCENT);
+  border-radius: 4px;
+  padding: 5px;
+  width: fit-content;
+}
+
+.close {
+  display: flex;
+  justify-content: flex-end;
+}

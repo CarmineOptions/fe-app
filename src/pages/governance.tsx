@@ -12,6 +12,7 @@ import { Airdrop } from "../components/Airdrop/Airdrop";
 import { useEffect } from "react";
 
 import styles from "./governance.module.css";
+import { AddProposal } from "../components/AddProposal";
 
 const VotingSubpage = () => {
   return (
@@ -51,6 +52,16 @@ const AirdropSubpage = () => {
       <h2>Airdrop</h2>
       <div className="divider botmargin topmargin" />
       <Airdrop />
+    </div>
+  );
+};
+
+const ProposeOptionsSubpage = () => {
+  return (
+    <div>
+      <h2>Propose</h2>
+      <div className="divider botmargin topmargin" />
+      <AddProposal />
     </div>
   );
 };
@@ -120,12 +131,23 @@ const Governance = () => {
           >
             Staking
           </button>
+          <button
+            className={`${
+              subpage === GovernanceSubpage.Propose && "primary active"
+            } ${buttonStyles.offset}`}
+            onClick={() => {
+              handleNavigateClick(GovernanceSubpage.Propose);
+            }}
+          >
+            Propose
+          </button>
         </div>
         <div className="divider" />
       </div>
       {subpage === GovernanceSubpage.Voting && <VotingSubpage />}
       {subpage === GovernanceSubpage.Staking && <StakingSubpage />}
       {subpage === GovernanceSubpage.AirDrop && <AirdropSubpage />}
+      {subpage === GovernanceSubpage.Propose && <ProposeOptionsSubpage />}
     </Layout>
   );
 };

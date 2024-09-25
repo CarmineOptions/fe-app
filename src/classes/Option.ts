@@ -47,13 +47,13 @@ export class Option extends Pool {
       typeof strike === "string" ? strike : "0x" + strike.toString(16);
     this.strike = math64toDecimal(strike, mathBase);
     this.side = bnToOptionSide(side);
-    this.optionId = this.generateId();
+    this.optionId = this.generateOptionId();
   }
 
   /**
    * Generates id that uniquily describes option
    */
-  generateId(): string {
+  generateOptionId(): string {
     return JSON.stringify({
       base: this.baseToken.id,
       quote: this.quoteToken.id,
