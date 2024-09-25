@@ -1,3 +1,10 @@
+## [2.1.6](https://github.com/CarmineOptions/fe-app/compare/v2.1.5...v2.1.6) (2024-09-25)
+
+
+### Bug Fixes
+
+* show first maturity when missing maturity selected ([ca8c4dc](https://github.com/CarmineOptions/fe-app/commit/ca8c4dc46f517109f11856c829e01715c64c2fe1))
+
 ## [2.1.5](https://github.com/CarmineOptions/fe-app/compare/v2.1.4...v2.1.5) (2024-09-16)
 
 
