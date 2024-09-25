@@ -53,7 +53,7 @@ export const TradeTable = () => {
     .map((o) => o.maturity)
     .filter(uniquePrimitiveValues);
 
-  if (maturity === undefined) {
+  if (maturity === undefined || !maturities.includes(maturity)) {
     if (maturities.length) {
       setMaturity(maturities[0]);
     }
