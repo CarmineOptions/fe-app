@@ -45,6 +45,17 @@ export const timestampToReadableDate = (ts: number): string =>
     timeZoneName: "short",
   }).format(ts);
 
+export const timestampToReadableDateUtc = (ts: number): string =>
+  new Intl.DateTimeFormat("default", {
+    timeZone: "UTC",
+    hour: "numeric",
+    minute: "numeric",
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    timeZoneName: "short",
+  }).format(ts);
+
 export const timestampToShortTimeDate = (ts: number): string =>
   new Intl.DateTimeFormat("default", {
     hour: "numeric",

@@ -1,4 +1,5 @@
 import { API_URL, NETWORK } from "../constants/amm";
+import { ApiResponse, TokenPriceData } from "../types/api";
 
 export type ApiConfig = {
   network?: "testnet" | "mainnet";
@@ -24,4 +25,14 @@ export const apiUrl = (path: string, config?: ApiConfig): string => {
   const url = new URL(finalPath, base);
 
   return url.toString();
+};
+
+export const fetchTokenPrices = async () => {
+  const url = apiUrl("token-prices");
+  const res = await fetch(url);
+  const body = (await res.json()) as ApiResponse<TokenPriceData>;
+  if (body.status === "success") {
+    return body.data;
+  }
+  throw Error("Failed getting token prices");
 };
