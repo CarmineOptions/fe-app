@@ -1,3 +1,10 @@
+# [2.2.0](https://github.com/CarmineOptions/fe-app/compare/v2.1.6...v2.2.0) (2024-09-27)
+
+
+### Features
+
+* yield page rework ([584ad1c](https://github.com/CarmineOptions/fe-app/commit/584ad1c2d7cb62fc78847d3ea413bb8b171055ed))
+
 ## [2.1.6](https://github.com/CarmineOptions/fe-app/compare/v2.1.5...v2.1.6) (2024-09-25)
 
 
