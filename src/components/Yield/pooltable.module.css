@@ -1,0 +1,42 @@
+.outer {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.inner {
+  min-width: 900px;
+  overflow: hidden;
+}
+
+.container {
+  display: flex;
+  flex-flow: column;
+  margin-top: 32px;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  text-align: left;
+  margin-bottom: 32px;
+}
+
+.item>div {
+  flex: 1 1;
+}
+
+.pooldesc {
+  display: flex;
+  flex-flow: column;
+  gap: 12px;
+}
+
+@media (max-width: 800px) {
+  .itemmobilesize>div {
+    max-width: 75px;
+  }
+
+  .mobilewidth {
+    min-width: 700px;
+  }
+}

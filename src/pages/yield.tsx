@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet";
 import { Layout } from "../components/Layout";
-import { PoolList } from "../components/Yield";
+import { PoolTable } from "../components/Yield";
 
 const YieldPage = () => {
   return (
@@ -13,7 +13,7 @@ const YieldPage = () => {
         />
       </Helmet>
       <h1>Liquidity Pools</h1>
-      <PoolList />
+      <PoolTable />
     </Layout>
   );
 };
