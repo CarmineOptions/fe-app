@@ -293,7 +293,7 @@ main {
   display: flex;
   justify-content: space-between;
   margin: 8px 0;
-  padding: 6px 0;
+  padding: 16px 0;
   border-top: 1px solid var(--GREY);
   border-bottom: 1px solid var(--GREY);
   text-align: left;

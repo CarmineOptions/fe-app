@@ -1,0 +1,11 @@
+.badge {
+  border-radius: 2px;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  width: fit-content;
+}
+
+.defispring {
+  background-color: #EC796B;
+}

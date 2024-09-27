@@ -1,0 +1,205 @@
+import { useQuery } from "react-query";
+import { PairBadge } from "../TokenBadge";
+import { queryDefiSpringApy, queryPoolCapital } from "./fetchStakeCapital";
+import { Pool } from "../../classes/Pool";
+import { shortInteger } from "../../utils/computations";
+import { useCurrency } from "../../hooks/useCurrency";
+import { math64toDecimal } from "../../utils/units";
+import { openSidebar, setSidebarContent } from "../../redux/actions";
+import { PoolSidebar } from "../Sidebar";
+import { LoadingAnimation } from "../Loading/Loading";
+import { QueryKeys } from "../../queries/keys";
+import { TokenKey } from "../../classes/Token";
+import { DefispringBadge } from "../Badges";
+import { formatNumber } from "../../utils/utils";
+import { useStakes } from "../../hooks/useStakes";
+import styles from "./pooltable.module.css";
+import { useIsMobile } from "../../hooks/useIsMobile";
+
+type Props = {
+  pool: Pool;
+};
+
+export const PoolItem = ({ pool }: Props) => {
+  const { isLoading, isError, data } = useQuery(
+    [`pool-data-${pool.apiPoolId}`, pool.apiPoolId],
+    queryPoolCapital
+  );
+  const { data: defispringApy } = useQuery(
+    [QueryKeys.defispringApy],
+    queryDefiSpringApy
+  );
+  const isWideScreen = !useIsMobile();
+  const { data: stakes } = useStakes();
+  const price = useCurrency(pool.underlying.id);
+  const isDefispringPool =
+    pool.baseToken.id !== TokenKey.BTC && pool.quoteToken.id !== TokenKey.BTC;
+
+  const handleClick = () => {
+    setSidebarContent(<PoolSidebar pool={pool} />);
+    openSidebar();
+  };
+
+  if (isLoading) {
+    return (
+      <div className={styles.item}>
+        <div className={styles.pooldesc}>
+          <div>
+            <p>
+              {pool.baseToken.symbol}/{pool.quoteToken.symbol}
+            </p>
+            <PairBadge
+              tokenA={pool.baseToken}
+              tokenB={pool.quoteToken}
+              size="small"
+            />
+          </div>
+          {isDefispringPool && <DefispringBadge />}
+        </div>
+        <div>
+          <LoadingAnimation />
+        </div>
+        <div></div>
+        <div></div>
+      </div>
+    );
+  }
+
+  if (isError || !data) {
+    return (
+      <div className={styles.item}>
+        <div className={styles.pooldesc}>
+          <div>
+            <p>
+              {pool.baseToken.symbol}/{pool.quoteToken.symbol}
+            </p>
+            <PairBadge
+              tokenA={pool.baseToken}
+              tokenB={pool.quoteToken}
+              size="small"
+            />
+          </div>
+          {isDefispringPool && <DefispringBadge />}
+        </div>
+        <div>
+          <p>Failed getting pool data</p>
+        </div>
+        <div></div>
+        <div></div>
+      </div>
+    );
+  }
+
+  const { state, apy } = data;
+
+  const unlocked = shortInteger(state.unlocked_cap, pool.underlying.decimals);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const locked = shortInteger(state.locked_cap, pool.underlying.decimals);
+  const poolPosition = math64toDecimal(state.pool_position);
+  const tvl = unlocked + poolPosition;
+
+  const finalApy = !isDefispringPool
+    ? apy.launch_annualized
+    : defispringApy === undefined
+    ? undefined
+    : defispringApy + apy.launch_annualized;
+
+  const finalApyWeekly = !isDefispringPool
+    ? apy.week_annualized
+    : defispringApy === undefined
+    ? undefined
+    : defispringApy + apy.week_annualized;
+
+  const poolData =
+    stakes === undefined
+      ? undefined
+      : stakes.find((p) => p.lpAddress === pool.lpAddress);
+
+  const userPosition =
+    stakes === undefined
+      ? undefined
+      : poolData === undefined // got data and found nothing about this pool
+      ? 0
+      : poolData.value;
+
+  const isDefispring =
+    pool.baseToken.id !== TokenKey.BTC && pool.quoteToken.id !== TokenKey.BTC;
+
+  return (
+    <div className={styles.item + " " + styles.itemmobilesize}>
+      <div className={styles.pooldesc}>
+        <div>
+          <p>
+            {pool.baseToken.symbol}/<wbr />
+            {pool.quoteToken.symbol}
+          </p>
+          <PairBadge
+            tokenA={pool.baseToken}
+            tokenB={pool.quoteToken}
+            size="small"
+          />
+        </div>
+        {isDefispring && <DefispringBadge />}
+      </div>
+      <div>
+        <p>{pool.typeAsText} Pool</p>
+        <p className="p4 secondary-col">{pool.underlying.symbol}</p>
+      </div>
+      <div>
+        {finalApy === undefined ? (
+          <LoadingAnimation size={20} />
+        ) : (
+          <p className={finalApy > 0 ? "greentext" : "redtext"}>
+            {finalApy.toFixed(2)}%
+          </p>
+        )}
+      </div>
+      {isWideScreen && (
+        <div>
+          {finalApyWeekly === undefined ? (
+            <LoadingAnimation size={20} />
+          ) : (
+            <p className={finalApyWeekly > 0 ? "greentext" : "redtext"}>
+              {finalApyWeekly.toFixed(2)}%
+            </p>
+          )}
+        </div>
+      )}
+      <div>
+        <div>
+          {price === undefined ? (
+            <LoadingAnimation size={20} />
+          ) : (
+            <p>${formatNumber(tvl * price)}</p>
+          )}
+          <p className="p4 secondary-col">
+            {formatNumber(tvl)} {pool.underlying.symbol}
+          </p>
+        </div>
+      </div>
+      {isWideScreen && (
+        <div>
+          <div>
+            {price === undefined || userPosition === undefined ? (
+              <p>-</p>
+            ) : (
+              <p>${formatNumber(tvl * price)}</p>
+            )}
+            {userPosition === undefined ? (
+              <p>- {pool.underlying.symbol}</p>
+            ) : (
+              <p className="p4 secondary-col">
+                {formatNumber(userPosition)} {pool.underlying.symbol}
+              </p>
+            )}
+          </div>
+        </div>
+      )}
+      <div>
+        <button onClick={handleClick} className="primary active mainbutton">
+          {userPosition === undefined ? "View" : "Manage"}
+        </button>
+      </div>
+    </div>
+  );
+};
