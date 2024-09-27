@@ -22,6 +22,8 @@ import { ToastType } from "../../redux/reducers/ui";
 import { decimalToMath64 } from "../../utils/units";
 import { Close } from "@mui/icons-material";
 import { ProposalText } from "./ProposalText";
+import { useAccount } from "../../hooks/useAccount";
+import { proposeOptions } from "./proposeOptions";
 
 const strkUsdcCallPool = new Pool(STRK_ADDRESS, USDC_ADDRESS, OptionType.Call);
 
@@ -70,6 +72,7 @@ const getRelevantMaturities = (count = 10, offset = 1) => {
 };
 
 export const AddProposal = () => {
+  const account = useAccount();
   const { isLoading, isError, data } = useQuery(
     QueryKeys.options,
     fetchOptions
@@ -160,7 +163,10 @@ export const AddProposal = () => {
           "0", // Fixed sign
         ];
       });
-    console.log(payload);
+    if (!account) {
+      return;
+    }
+    proposeOptions(payload, account);
   };
 
   return (
