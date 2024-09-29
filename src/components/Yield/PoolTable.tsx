@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useIsMobile } from "../../hooks/useIsMobile";
 import { Pool } from "../../classes/Pool";
 import {
@@ -14,7 +13,6 @@ import styles from "./pooltable.module.css";
 
 export const PoolTable = () => {
   const isWideScreen = !useIsMobile();
-  const [showPools, setShowPools] = useState<"all" | "call" | "put">("all");
 
   const pools = [
     new Pool(STRK_ADDRESS, USDC_ADDRESS, OptionType.Call),
@@ -26,13 +24,6 @@ export const PoolTable = () => {
     new Pool(BTC_ADDRESS, USDC_ADDRESS, OptionType.Call),
     new Pool(BTC_ADDRESS, USDC_ADDRESS, OptionType.Put),
   ];
-
-  const selectedPools =
-    showPools === "all"
-      ? pools
-      : showPools === "call"
-      ? pools.filter((p) => p.isCall)
-      : pools.filter((p) => p.isPut);
 
   return (
     <div className={styles.outer} style={{ marginTop: "20px" }}>

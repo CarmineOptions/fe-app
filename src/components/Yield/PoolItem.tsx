@@ -165,38 +165,38 @@ export const PoolItem = ({ pool }: Props) => {
           )}
         </div>
       )}
-      <div>
-        <div>
-          {price === undefined ? (
-            <LoadingAnimation size={20} />
-          ) : (
-            <p>${formatNumber(tvl * price)}</p>
-          )}
-          <p className="p4 secondary-col">
-            {formatNumber(tvl)} {pool.underlying.symbol}
-          </p>
-        </div>
-      </div>
       {isWideScreen && (
         <div>
           <div>
-            {price === undefined ||
-            userPosition === undefined ||
-            userPosition === 0 ? (
-              <p>-</p>
+            {price === undefined ? (
+              <LoadingAnimation size={20} />
             ) : (
-              <p>${formatNumber(userPosition * price)}</p>
+              <p>${formatNumber(tvl * price)}</p>
             )}
-            {userPosition === undefined || userPosition === 0 ? (
-              <p>- {pool.underlying.symbol}</p>
-            ) : (
-              <p className="p4 secondary-col">
-                {formatNumber(userPosition)} {pool.underlying.symbol}
-              </p>
-            )}
+            <p className="p4 secondary-col">
+              {formatNumber(tvl)} {pool.underlying.symbol}
+            </p>
           </div>
         </div>
       )}
+      <div>
+        <div>
+          {price === undefined ||
+          userPosition === undefined ||
+          userPosition === 0 ? (
+            <p>-</p>
+          ) : (
+            <p>${formatNumber(userPosition * price)}</p>
+          )}
+          {userPosition === undefined || userPosition === 0 ? (
+            <p>- {pool.underlying.symbol}</p>
+          ) : (
+            <p className="p4 secondary-col">
+              {formatNumber(userPosition)} {pool.underlying.symbol}
+            </p>
+          )}
+        </div>
+      </div>
       <div>
         <button onClick={handleClick} className="primary active mainbutton">
           {userPosition === undefined || userPosition === 0 ? "View" : "Manage"}
