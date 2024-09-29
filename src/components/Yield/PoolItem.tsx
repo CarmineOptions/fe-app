@@ -180,12 +180,14 @@ export const PoolItem = ({ pool }: Props) => {
       {isWideScreen && (
         <div>
           <div>
-            {price === undefined || userPosition === undefined ? (
+            {price === undefined ||
+            userPosition === undefined ||
+            userPosition === 0 ? (
               <p>-</p>
             ) : (
-              <p>${formatNumber(tvl * price)}</p>
+              <p>${formatNumber(userPosition * price)}</p>
             )}
-            {userPosition === undefined ? (
+            {userPosition === undefined || userPosition === 0 ? (
               <p>- {pool.underlying.symbol}</p>
             ) : (
               <p className="p4 secondary-col">
@@ -197,7 +199,7 @@ export const PoolItem = ({ pool }: Props) => {
       )}
       <div>
         <button onClick={handleClick} className="primary active mainbutton">
-          {userPosition === undefined ? "View" : "Manage"}
+          {userPosition === undefined || userPosition === 0 ? "View" : "Manage"}
         </button>
       </div>
     </div>
