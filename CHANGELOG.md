@@ -1,3 +1,10 @@
+## [2.2.1](https://github.com/CarmineOptions/fe-app/compare/v2.2.0...v2.2.1) (2024-09-29)
+
+
+### Bug Fixes
+
+* userposition instead of tvl ([2b5a551](https://github.com/CarmineOptions/fe-app/commit/2b5a551e1d84c955df8019f6cd48c82560532b26))
+
 # [2.2.0](https://github.com/CarmineOptions/fe-app/compare/v2.1.6...v2.2.0) (2024-09-27)
 
 
