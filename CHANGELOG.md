@@ -1,3 +1,10 @@
+## [2.2.2](https://github.com/CarmineOptions/fe-app/compare/v2.2.1...v2.2.2) (2024-09-29)
+
+
+### Bug Fixes
+
+* show user position on mobile ([a0915a8](https://github.com/CarmineOptions/fe-app/commit/a0915a8c940e1f6f382d0f052cb4b2e67e054646))
+
 ## [2.2.1](https://github.com/CarmineOptions/fe-app/compare/v2.2.0...v2.2.1) (2024-09-29)
 
 
