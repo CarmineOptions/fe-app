@@ -1,3 +1,10 @@
+## [2.2.4](https://github.com/CarmineOptions/fe-app/compare/v2.2.3...v2.2.4) (2024-09-30)
+
+
+### Bug Fixes
+
+* price protect event sending ([66d8adf](https://github.com/CarmineOptions/fe-app/commit/66d8adfdbe66505af5ed5b0e57a1904bfe4cd72d))
+
 ## [2.2.3](https://github.com/CarmineOptions/fe-app/compare/v2.2.2...v2.2.3) (2024-09-30)
 
 
