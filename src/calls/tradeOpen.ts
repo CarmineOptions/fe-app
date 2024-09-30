@@ -166,16 +166,6 @@ export const approveAndTradeOpenNew = async (
   const tradeOpen = option.tradeOpenCalldata(size, premiaMath64);
 
   option.sendBeginCheckoutEvent(size, premiaNum, isPriceGuard);
-  const res = await account.execute([approve, tradeOpen]).catch((e) => {
-    debug("Trade open rejected or failed", e.message);
-  });
-
-  if (res === undefined) {
-    updateTradeState(TransactionState.Fail);
-    return;
-  }
-
-  option.sendPurchaseEvent(size, premiaNum, isPriceGuard);
 
   if (isPriceGuard && isMainnet) {
     const options = {
@@ -196,6 +186,17 @@ export const approveAndTradeOpenNew = async (
         console.error(err);
       });
   }
+
+  const res = await account.execute([approve, tradeOpen]).catch((e) => {
+    debug("Trade open rejected or failed", e.message);
+  });
+
+  if (res === undefined) {
+    updateTradeState(TransactionState.Fail);
+    return;
+  }
+
+  option.sendPurchaseEvent(size, premiaNum, isPriceGuard);
 
   const hash = res.transaction_hash;
   addTx(hash, option.optionId, TransactionAction.TradeOpen);
