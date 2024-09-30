@@ -1,3 +1,10 @@
+## [2.2.5](https://github.com/CarmineOptions/fe-app/compare/v2.2.4...v2.2.5) (2024-09-30)
+
+
+### Bug Fixes
+
+* bigint rounding error when withdrawing ([b5a78a6](https://github.com/CarmineOptions/fe-app/commit/b5a78a65a5a58a2520af059c393acef916833272))
+
 ## [2.2.4](https://github.com/CarmineOptions/fe-app/compare/v2.2.3...v2.2.4) (2024-09-30)
 
 
