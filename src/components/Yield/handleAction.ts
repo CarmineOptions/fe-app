@@ -105,7 +105,7 @@ const calculateTokens = (
   const NUM_PRECISSION = 1_000_000;
 
   const percentageWithPrecission =
-    (BigInt(amount * NUM_PRECISSION) * 10n ** BigInt(pool.digits)) /
+    (BigInt(Math.round(amount * NUM_PRECISSION)) * 10n ** BigInt(pool.digits)) /
     pool.valueBase;
 
   const tokens =
