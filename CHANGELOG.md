@@ -1,3 +1,10 @@
+## [2.2.3](https://github.com/CarmineOptions/fe-app/compare/v2.2.2...v2.2.3) (2024-09-30)
+
+
+### Bug Fixes
+
+* send price protect event before signed ([9b70e1e](https://github.com/CarmineOptions/fe-app/commit/9b70e1e92cb05b6ac1220ac9345065b65f889143))
+
 ## [2.2.2](https://github.com/CarmineOptions/fe-app/compare/v2.2.1...v2.2.2) (2024-09-29)
 
 
