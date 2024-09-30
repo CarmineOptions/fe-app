@@ -1,3 +1,10 @@
+## [2.2.6](https://github.com/CarmineOptions/fe-app/compare/v2.2.5...v2.2.6) (2024-09-30)
+
+
+### Bug Fixes
+
+* show correct break even ([6a5fa94](https://github.com/CarmineOptions/fe-app/commit/6a5fa94b1a9c2fc586a7f9b5d3917e0453478213))
+
 ## [2.2.5](https://github.com/CarmineOptions/fe-app/compare/v2.2.4...v2.2.5) (2024-09-30)
 
 
