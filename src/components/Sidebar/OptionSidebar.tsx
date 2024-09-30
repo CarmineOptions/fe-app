@@ -149,13 +149,13 @@ export const OptionSidebar = ({ option }: Props) => {
     premiaUsd === undefined ? "--" : "$" + formatNumber(premiaUsd, 4);
   const unlimited = "Unlimited";
   const breakEven =
-    sizeOnePremia === undefined
+    sizeOnePremia === undefined || price === undefined
       ? "--"
       : `${option.quoteToken.id === TokenKey.USDC ? "$" : ""}` +
         formatNumber(
           option.isCall
-            ? option.strike + sizeOnePremia
-            : option.strike - sizeOnePremia,
+            ? option.strike + sizeOnePremia * price
+            : option.strike - sizeOnePremia * price,
           2
         ) +
         `${
