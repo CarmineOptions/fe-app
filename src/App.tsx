@@ -33,6 +33,7 @@ import PriceGuardPage from "./pages/priceGuard";
 import "./style/base.css";
 import YieldPage from "./pages/yield";
 import SwapPage from "./pages/swap";
+import PriceProtectVideoPage from "./pages/priceProtectVideo";
 
 const App = () => {
   const [check, rerender] = useState(false);
@@ -76,6 +77,10 @@ const App = () => {
                 <Route path="/battlecharts" element={<BattlechartsPage />} />
                 <Route path="/priceprotect" element={<PriceGuardPage />} />
                 <Route path="/yield" element={<YieldPage />} />
+                <Route
+                  path="/price-protect-video"
+                  element={<PriceProtectVideoPage />}
+                />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Router>
