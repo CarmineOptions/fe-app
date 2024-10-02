@@ -12,6 +12,7 @@ import { TransactionAction } from "../../redux/reducers/transactions";
 import { ToastType } from "../../redux/reducers/ui";
 
 import styles from "./Vote.module.css";
+import { QueryKeys } from "../../queries/keys";
 
 enum Opinion {
   YAY = "1",
@@ -48,6 +49,7 @@ const vote = async (
     res.transaction_hash,
     () => {
       invalidateKey(`proposals-${account?.address}`);
+      invalidateKey(`${QueryKeys.proposalVotes}-${propId}`);
       setProcessing(false);
       showToast(`Successfully voted on proposal ${propId}`, ToastType.Success);
       markTxAsDone(hash);
@@ -117,7 +119,7 @@ export const VoteButtons = ({
       : "Already voted No ❌";
 
   return (
-    <div className={styles.votebuttoncontainer}>
+    <div className={styles.votebuttoncontainer + " " + styles.center}>
       <button disabled className="green">
         {message}
       </button>

@@ -3,3 +3,39 @@
   flex-flow: column;
   gap: 28px;
 }
+
+.yaynaycontainer {
+  margin-top: 20px;
+  display: flex;
+  flex-flow: column;
+  gap: 10px;
+}
+
+.yaynaybox {
+  width: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.percentagebar {
+  height: 5px;
+  width: 250px;
+  position: relative;
+  display: flex;
+}
+
+.percentagebar .yay {
+  background-color: var(--SUCCESS-BG);
+  height: 100%;
+}
+
+.percentagebar .nay {
+  background-color: var(--ERROR-BG);
+  height: 100%;
+}
+
+.percentagebar .non {
+  background-color: var(--GREY);
+  height: 100%;
+}

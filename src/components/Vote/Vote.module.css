@@ -1,7 +1,12 @@
 .votebuttoncontainer {
   display: flex;
-  gap: 20px;
+  justify-content: space-between;
   padding-top: 20px;
+  width: 250px;
+}
+
+.center {
+  justify-content: center;
 }
 
 .loading {
