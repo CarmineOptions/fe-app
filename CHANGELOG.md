@@ -1,3 +1,11 @@
+# [2.3.0](https://github.com/CarmineOptions/fe-app/compare/v2.2.6...v2.3.0) (2024-10-02)
+
+
+### Features
+
+* add proposal votes percentage ([809ffa5](https://github.com/CarmineOptions/fe-app/commit/809ffa5a03e14e80e57520d14b25ae4e6eb15d2a))
+* add total supply ([00849d5](https://github.com/CarmineOptions/fe-app/commit/00849d5cceca84a3513f545832e64a908b1105d0))
+
 ## [2.2.6](https://github.com/CarmineOptions/fe-app/compare/v2.2.5...v2.2.6) (2024-09-30)
 
 
