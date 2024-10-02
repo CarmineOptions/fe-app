@@ -1,3 +1,10 @@
+# [2.4.0](https://github.com/CarmineOptions/fe-app/compare/v2.3.0...v2.4.0) (2024-10-02)
+
+
+### Features
+
+* add price protect video popup ([f7622ea](https://github.com/CarmineOptions/fe-app/commit/f7622ea15e72bdb572bd01b15a128a21ca4f78fa))
+
 # [2.3.0](https://github.com/CarmineOptions/fe-app/compare/v2.2.6...v2.3.0) (2024-10-02)
 
 
