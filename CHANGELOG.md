@@ -1,3 +1,10 @@
+## [2.4.2](https://github.com/CarmineOptions/fe-app/compare/v2.4.1...v2.4.2) (2024-10-02)
+
+
+### Bug Fixes
+
+* pp learn more button instead of anchor ([fe5b727](https://github.com/CarmineOptions/fe-app/commit/fe5b7270d4c7afcfcf3b0d022992e274f54c48e6))
+
 ## [2.4.1](https://github.com/CarmineOptions/fe-app/compare/v2.4.0...v2.4.1) (2024-10-02)
 
 
