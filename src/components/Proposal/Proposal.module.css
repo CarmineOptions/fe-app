@@ -19,7 +19,7 @@
 }
 
 .percentagebar {
-  height: 20px;
+  height: 5px;
   width: 250px;
   position: relative;
   display: flex;
@@ -32,5 +32,10 @@
 
 .percentagebar .nay {
   background-color: var(--ERROR-BG);
+  height: 100%;
+}
+
+.percentagebar .non {
+  background-color: var(--GREY);
   height: 100%;
 }
