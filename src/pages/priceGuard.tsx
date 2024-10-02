@@ -8,9 +8,6 @@ import { openPopupWindow, PopupConfig } from "../components/Popup";
 const getVideoPopupConfig = (): PopupConfig => {
   const url = "/price-protect-video";
 
-  return { url };
-
-  // video has fixed size, cannot use this unless video can be resized inside iframe
   const defaultWidth = 987;
   const defaultHeight = 555;
   const aspectRatio = defaultWidth / defaultHeight;
