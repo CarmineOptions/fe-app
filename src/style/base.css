@@ -270,6 +270,25 @@ button.active {
   background-color: var(--bg-color);
 }
 
+button.linkbutton {
+  text-transform: none;
+  color: var(--WHITE);
+  background: none;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  font: inherit;
+}
+
+button.linkbutton:focus {
+  outline: none;
+}
+
+button.linkbutton:hover {
+  text-decoration: none;
+}
+
 div.center {
   display: flex;
   align-items: center;

@@ -54,18 +54,16 @@ const PriceGuardPage = () => {
       <h1>Price Protect</h1>
       <p>
         Safeguard your holdings from major price movement.{" "}
-        <a
-          rel="noopener nofollow noreferrer"
-          target="_blank"
-          href="#"
+        <button
+          className="linkbutton"
           onClick={() => {
             const cfg = getVideoPopupConfig();
-            console.log(cfg);
             openPopupWindow(cfg);
           }}
         >
           Learn more
-        </a>
+        </button>
+        .
       </p>
       <PriceGuard />
       <UserPriceGuard />
