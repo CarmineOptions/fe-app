@@ -33,6 +33,11 @@ export const BraavosAnnounce = () => {
     }
   }, [account, data, show]);
 
+  if (window?.location?.pathname === "/price-protect-video") {
+    // do not show in video popup
+    return null;
+  }
+
   if (isLoading || isError || !data || !show || !account) {
     return null;
   }
