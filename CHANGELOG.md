@@ -1,3 +1,10 @@
+## [2.4.1](https://github.com/CarmineOptions/fe-app/compare/v2.4.0...v2.4.1) (2024-10-02)
+
+
+### Bug Fixes
+
+* price protect video scale ([eb8f36d](https://github.com/CarmineOptions/fe-app/commit/eb8f36d5e8a0d8c34d1bbf12e8b7e8e87b222fa5))
+
 # [2.4.0](https://github.com/CarmineOptions/fe-app/compare/v2.3.0...v2.4.0) (2024-10-02)
 
 
