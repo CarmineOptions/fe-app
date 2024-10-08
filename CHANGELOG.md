@@ -1,3 +1,10 @@
+## [2.5.3](https://github.com/CarmineOptions/fe-app/compare/v2.5.2...v2.5.3) (2024-10-08)
+
+
+### Bug Fixes
+
+* price protect loading animation jumping ([acfc49d](https://github.com/CarmineOptions/fe-app/commit/acfc49d8e9ddf0134333951ca36a4754d03523df))
+
 ## [2.5.2](https://github.com/CarmineOptions/fe-app/compare/v2.5.1...v2.5.2) (2024-10-08)
 
 
