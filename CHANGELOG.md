@@ -1,3 +1,10 @@
+## [2.5.2](https://github.com/CarmineOptions/fe-app/compare/v2.5.1...v2.5.2) (2024-10-08)
+
+
+### Bug Fixes
+
+* wrap proposed options ([1d73a39](https://github.com/CarmineOptions/fe-app/commit/1d73a397151d7261af55e95b42e2c1b54b1014d1))
+
 ## [2.5.1](https://github.com/CarmineOptions/fe-app/compare/v2.5.0...v2.5.1) (2024-10-08)
 
 
