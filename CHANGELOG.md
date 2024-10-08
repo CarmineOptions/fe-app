@@ -1,3 +1,17 @@
+# [2.5.0](https://github.com/CarmineOptions/fe-app/compare/v2.4.2...v2.5.0) (2024-10-08)
+
+
+### Bug Fixes
+
+* add options payload ([908c4c2](https://github.com/CarmineOptions/fe-app/commit/908c4c239cecab97d133c4ad2039ce2af197c67a))
+
+
+### Features
+
+* add options proposal ui ([3fef60b](https://github.com/CarmineOptions/fe-app/commit/3fef60bce8f7bfab0c2d2e4130b60e33591b357f))
+* add proposal text ([ea12721](https://github.com/CarmineOptions/fe-app/commit/ea12721396476e9aeeef45c63b156e22d82ab001))
+* send add options proposal ([e911e55](https://github.com/CarmineOptions/fe-app/commit/e911e55afa0884a54590b086a9b0d83ac52eff68))
+
 ## [2.4.2](https://github.com/CarmineOptions/fe-app/compare/v2.4.1...v2.4.2) (2024-10-02)
 
 
