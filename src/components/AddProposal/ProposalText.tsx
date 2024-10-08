@@ -10,7 +10,8 @@ export const ProposalText = ({
 }: {
   proposalOptions: ProposalOption[];
 }) => {
-  const groupedByPool = proposalOptions.reduce(
+  const nonDuplicates = proposalOptions.filter((o) => o.active !== false);
+  const groupedByPool = nonDuplicates.reduce(
     (acc: { [key: string]: { [key: number]: ProposalOption[] } }, item) => {
       if (!acc[item.pool]) {
         acc[item.pool] = [];

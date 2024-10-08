@@ -111,10 +111,23 @@ export const AddProposal = () => {
   };
 
   const handleSuggest = () => {
-    suggestOptions(data, selectedMaturity).then((suggestedOptions) =>
-      setOptions(suggestedOptions)
-    );
+    suggestOptions(data, selectedMaturity).then((suggestedOptions) => {
+      // ignore duplicates
+      const newOptions = [...options, ...suggestedOptions].filter(
+        (obj, index, self) =>
+          index ===
+          self.findIndex(
+            (o) =>
+              o.maturity === obj.maturity &&
+              o.strike === obj.strike &&
+              o.pool === obj.pool
+          )
+      );
+      setOptions(newOptions);
+    });
   };
+
+  const handleClear = () => setOptions([]);
 
   const handleSave = () => {
     localStorage.setItem("options-proposal-save", JSON.stringify(options));
@@ -212,6 +225,9 @@ export const AddProposal = () => {
           </button>
           <button className="secondary active" onClick={handleSave}>
             Save
+          </button>
+          <button className="secondary active" onClick={handleClear}>
+            Clear
           </button>
         </div>
       </div>
