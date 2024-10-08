@@ -423,8 +423,8 @@ export const PriceGuard = () => {
         <span className={styles.title}>Final coverage price</span>
         <span className={styles.finalprice}>
           {priceLoading || price === undefined ? (
-            <div style={{ height: "46.78px" }}>
-              <LoadingAnimation size={20} />
+            <div>
+              <LoadingAnimation size={28.8} />
             </div>
           ) : (
             <div>
