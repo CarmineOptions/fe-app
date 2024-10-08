@@ -1,3 +1,10 @@
+## [2.5.1](https://github.com/CarmineOptions/fe-app/compare/v2.5.0...v2.5.1) (2024-10-08)
+
+
+### Bug Fixes
+
+* compound suggestions ([59d0522](https://github.com/CarmineOptions/fe-app/commit/59d052287d7a65b532d5473331bc75f6d069cca1))
+
 # [2.5.0](https://github.com/CarmineOptions/fe-app/compare/v2.4.2...v2.5.0) (2024-10-08)
 
 
