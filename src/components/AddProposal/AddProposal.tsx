@@ -152,6 +152,10 @@ export const AddProposal = () => {
   };
 
   const handleSubmit = () => {
+    if (options.length === 0) {
+      showToast("No options selected", ToastType.Warn);
+      return;
+    }
     const payload = options
       .filter((o) => o.active !== false) // filter out active = false (duplicate with live options)
       .flatMap((o) => {

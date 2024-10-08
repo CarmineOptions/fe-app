@@ -60,8 +60,6 @@ export const ProposalText = ({
 
   return (
     <div className={styles.proposaltext}>
-      <p>This proposal adds following options:</p>
-      <br />
       {texts.map((t) => {
         if (t === "") {
           return <br />;
