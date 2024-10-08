@@ -12,6 +12,9 @@ import { Airdrop } from "../components/Airdrop/Airdrop";
 import { useEffect } from "react";
 
 import styles from "./governance.module.css";
+import { AddProposal } from "../components/AddProposal";
+import { useAccount } from "../hooks/useAccount";
+import { coreTeamAddresses } from "../constants/amm";
 
 const VotingSubpage = () => {
   return (
@@ -55,7 +58,18 @@ const AirdropSubpage = () => {
   );
 };
 
+const ProposeOptionsSubpage = () => {
+  return (
+    <div>
+      <h2>Propose</h2>
+      <div className="divider botmargin topmargin" />
+      <AddProposal />
+    </div>
+  );
+};
+
 const Governance = () => {
+  const account = useAccount();
   const subpage = useGovernanceSubpage();
   const navigate = useNavigate();
 
@@ -120,12 +134,26 @@ const Governance = () => {
           >
             Staking
           </button>
+          {/* CURRENTLY ONLY SHOW TO THE CORE TEAM MEMBERS */}
+          {account?.address && coreTeamAddresses.includes(account.address) && (
+            <button
+              className={`${
+                subpage === GovernanceSubpage.Propose && "primary active"
+              } ${buttonStyles.offset}`}
+              onClick={() => {
+                handleNavigateClick(GovernanceSubpage.Propose);
+              }}
+            >
+              Propose
+            </button>
+          )}
         </div>
         <div className="divider" />
       </div>
       {subpage === GovernanceSubpage.Voting && <VotingSubpage />}
       {subpage === GovernanceSubpage.Staking && <StakingSubpage />}
       {subpage === GovernanceSubpage.AirDrop && <AirdropSubpage />}
+      {subpage === GovernanceSubpage.Propose && <ProposeOptionsSubpage />}
     </Layout>
   );
 };

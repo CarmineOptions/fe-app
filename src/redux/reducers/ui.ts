@@ -33,6 +33,7 @@ export enum GovernanceSubpage {
   AirDrop = "airdrop",
   Voting = "voting",
   Staking = "staking",
+  Propose = "propose",
 }
 
 export type ToastState = {
