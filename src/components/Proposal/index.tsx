@@ -27,11 +27,17 @@ export const Proposals = () => {
     return <LoadingAnimation />;
   }
 
-  if (proposals.length === 0) {
+  const validProposals = proposals.filter((p) => p.propId !== 106);
+
+  if (validProposals.length === 0) {
     return <NoContent text="No proposals are currently live" />;
   }
 
   return (
-    <ProposalTable proposals={proposals} account={account} balance={balance} />
+    <ProposalTable
+      proposals={validProposals}
+      account={account}
+      balance={balance}
+    />
   );
 };
