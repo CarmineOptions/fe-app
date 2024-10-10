@@ -1,3 +1,10 @@
+## [2.5.4](https://github.com/CarmineOptions/fe-app/compare/v2.5.3...v2.5.4) (2024-10-10)
+
+
+### Bug Fixes
+
+* do not show bugged proposal 106 ([7df3625](https://github.com/CarmineOptions/fe-app/commit/7df36258af2a7bbe93293a4bb6f945bae2f45d03))
+
 ## [2.5.3](https://github.com/CarmineOptions/fe-app/compare/v2.5.2...v2.5.3) (2024-10-08)
 
 
