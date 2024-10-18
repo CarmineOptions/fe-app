@@ -1,3 +1,10 @@
+## [2.5.5](https://github.com/CarmineOptions/fe-app/compare/v2.5.4...v2.5.5) (2024-10-18)
+
+
+### Bug Fixes
+
+* show bitcoin size 0.1 ([e9c18ab](https://github.com/CarmineOptions/fe-app/commit/e9c18abf686e9f25cc2b8aa2901abc4ffef48fb9))
+
 ## [2.5.4](https://github.com/CarmineOptions/fe-app/compare/v2.5.3...v2.5.4) (2024-10-10)
 
 
