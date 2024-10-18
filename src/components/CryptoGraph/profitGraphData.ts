@@ -14,6 +14,9 @@ const getStep = (option: Option): number => {
   if (option.baseToken.id === TokenKey.STRK) {
     return 0.001;
   }
+  if (option.baseToken.id === TokenKey.BTC) {
+    return 0.5;
+  }
   return 0.1;
 };
 

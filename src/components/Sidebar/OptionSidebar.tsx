@@ -36,8 +36,15 @@ export const OptionSidebar = ({ option }: Props) => {
   const account = useAccount();
   const price = useCurrency(option.underlying.id);
   const balanceRaw = useUserBalance(option.underlying.address);
-  const [amount, setAmount] = useState<number>(1);
-  const [amountText, setAmountText] = useState<string>("1");
+  const defaultAmount =
+    option.baseToken.id === TokenKey.BTC ||
+    option.quoteToken.id === TokenKey.BTC
+      ? 0.1
+      : 1;
+  const [amount, setAmount] = useState<number>(defaultAmount);
+  const [amountText, setAmountText] = useState<string>(
+    defaultAmount.toString()
+  );
   const [loading, setLoading] = useState<boolean>(false);
   const [sizeOnePremia, setSizeOnePremia] = useState<number>();
   const [premiaUsd, setPremiaUsd] = useState<number>();
@@ -122,12 +129,11 @@ export const OptionSidebar = ({ option }: Props) => {
   }, [amount, option.optionId]);
 
   useEffect(() => {
-    return () => {
-      setAmount(1);
-      setAmountText("1");
-      setTxState(TransactionState.Initial);
-    };
-  }, [option.optionId]);
+    // sets default amounts when option changes
+    setAmount(defaultAmount);
+    setAmountText(defaultAmount.toString());
+    setTxState(TransactionState.Initial);
+  }, [defaultAmount, option.optionId]);
 
   const balance =
     balanceRaw === undefined

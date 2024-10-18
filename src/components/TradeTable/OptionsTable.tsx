@@ -8,6 +8,7 @@ import { ReactComponent as PlusIcon } from "./plus.svg";
 import styles from "./table.module.css";
 import { openSidebar, setSidebarContent } from "../../redux/actions";
 import { OptionSidebar } from "../Sidebar";
+import { TokenKey } from "../../classes/Token";
 
 type Props = {
   options: OptionWithPremia[];
@@ -70,6 +71,9 @@ const OptionsTable = ({ options, tokenPair, side }: Props) => {
             return null;
           }
 
+          const isBtc =
+            o.baseToken.id === TokenKey.BTC || o.quoteToken.id === TokenKey.BTC;
+
           return (
             <>
               {priceReady && index !== false && index === i && (
@@ -90,28 +94,19 @@ const OptionsTable = ({ options, tokenPair, side }: Props) => {
                     onClick={() => handleOptionClick(o)}
                   >
                     {o.premia.toFixed(3)} {o.symbol}{" "}
+                    {isBtc && <span className="l2">size 0.1</span>}
                     <div className={styles.square}>
                       <PlusIcon />
                     </div>
                   </div>
                 )}
-                {side === OptionSide.Short && (
+                {(side === OptionSide.Short || side === "all") && (
                   <div
                     className={`${styles.premiacontainer} ${styles.short}`}
                     onClick={() => handleOptionClick(o)}
                   >
                     {o.premia.toFixed(3)} {o.symbol}{" "}
-                    <div className={styles.square}>
-                      <PlusIcon />
-                    </div>
-                  </div>
-                )}
-                {side === "all" && (
-                  <div
-                    className={`${styles.premiacontainer} ${styles.short}`}
-                    onClick={() => handleOptionClick(short!)}
-                  >
-                    {short!.premia.toFixed(3)} {o.symbol}{" "}
+                    {isBtc && <span className="l2">size 0.1</span>}
                     <div className={styles.square}>
                       <PlusIcon />
                     </div>
