@@ -1,3 +1,10 @@
+# [2.6.0](https://github.com/CarmineOptions/fe-app/compare/v2.5.5...v2.6.0) (2024-10-21)
+
+
+### Features
+
+* add keplr wallet ([59d0240](https://github.com/CarmineOptions/fe-app/commit/59d02407fb20a4c1823cd0b1d5bf5bdafd61ad49))
+
 ## [2.5.5](https://github.com/CarmineOptions/fe-app/compare/v2.5.4...v2.5.5) (2024-10-18)
 
 
