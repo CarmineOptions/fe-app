@@ -7,6 +7,7 @@ export enum SupportedWalletIds {
   Braavos = "braavos",
   OKXWallet = "okxwallet",
   Bitget = "bitkeep",
+  Keplr = "keplr",
 }
 
 export type UserBalance = {

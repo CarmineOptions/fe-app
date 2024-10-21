@@ -4,6 +4,8 @@ import { openAccountDialog } from "../../redux/actions";
 import { addressElision } from "../../utils/utils";
 
 import styles from "./button.module.css";
+import { SupportedWalletIds } from "../../types/wallet";
+import { CSSProperties } from "react";
 
 export const AccountInfo = () => {
   const wallet = useWallet();
@@ -19,10 +21,18 @@ export const AccountInfo = () => {
   const { account } = wallet;
   const { address } = account;
 
+  const sx: CSSProperties = {};
+
+  console.log(wallet);
+
+  if (wallet.id === SupportedWalletIds.Braavos) {
+    sx.background = "#222a39";
+  }
+
   return (
     <button className={`primary active ${styles.custom}`} onClick={handleClick}>
       <div className={styles.walletinfo}>
-        <WalletIcon wallet={wallet} />
+        <WalletIcon wallet={wallet} sx={sx} />
         <span>{addressElision(address)}</span>
       </div>
     </button>
