@@ -43,6 +43,9 @@ export const getWallet = (): ConnectedStarknetWindowObject | undefined => {
     case SupportedWalletIds.Bitget:
       wallet = window.starknet_bitkeep;
       break;
+    case SupportedWalletIds.Keplr:
+      wallet = window.starknet_keplr;
+      break;
     default:
       return undefined;
   }

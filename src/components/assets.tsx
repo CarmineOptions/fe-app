@@ -20,11 +20,14 @@ export const BraavosIcon = ({ sx }: IconProps) => (
   <Box component="img" sx={sx} alt="Braavos wallet icon" src="braavos.svg" />
 );
 
-export const WalletIcon = ({ sx, wallet }: WalletIconProps) => (
-  <Box
-    component="img"
-    className={styles.walleticon}
-    alt={`${wallet.id} wallet icon`}
-    src={wallet.icon}
-  />
-);
+export const WalletIcon = ({ sx, wallet }: WalletIconProps) => {
+  return (
+    <Box
+      sx={sx}
+      component="img"
+      className={styles.walleticon}
+      alt={`${wallet.id} wallet icon`}
+      src={wallet.icon}
+    />
+  );
+};
