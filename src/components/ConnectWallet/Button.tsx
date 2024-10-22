@@ -126,7 +126,7 @@ const addCustomWallet = (wallet: CustomWallet) => {
   }
 
   Array.from(paragraphs).map((p) => (p.innerText = ""));
-  paragraphs[0].innerText = wallet.name;
+  paragraphs[0].innerText = "Get " + wallet.name;
   img.alt = wallet.alt || "";
   img.src = wallet.image;
 
