@@ -1,10 +1,10 @@
 import { useQuery } from "react-query";
 import { QueryKeys } from "../queries/keys";
-import { useAccount } from "./useAccount";
 import { fetchPositions } from "../components/PositionTable/fetchPositions";
+import { useAccount } from "@starknet-react/core";
 
 export const usePositions = () => {
-  const account = useAccount();
+  const { account } = useAccount();
 
   const key = `${QueryKeys.position}-${account?.address}`;
 

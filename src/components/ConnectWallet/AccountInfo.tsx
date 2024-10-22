@@ -1,16 +1,26 @@
 import { WalletIcon } from "../assets";
-import { useWallet } from "../../hooks/useWallet";
 import { openAccountDialog } from "../../redux/actions";
 import { addressElision } from "../../utils/utils";
 
-import styles from "./button.module.css";
 import { SupportedWalletIds } from "../../types/wallet";
 import { CSSProperties } from "react";
+import { useAccount } from "@starknet-react/core";
+import { useDomain } from "../../hooks/useDomain";
+
+import styles from "./button.module.css";
+
+const truncateUsername = (username: string, maxLength = 15) => {
+  if (username.length > maxLength) {
+    return username.substring(0, maxLength) + "...";
+  }
+  return username;
+};
 
 export const AccountInfo = () => {
-  const wallet = useWallet();
+  const { connector, address } = useAccount();
+  const { username } = useDomain();
 
-  if (!wallet) {
+  if (connector === undefined || address === undefined) {
     return null;
   }
 
@@ -18,22 +28,21 @@ export const AccountInfo = () => {
     openAccountDialog();
   };
 
-  const { account } = wallet;
-  const { address } = account;
-
   const sx: CSSProperties = {};
 
-  console.log(wallet);
-
-  if (wallet.id === SupportedWalletIds.Braavos) {
+  if (connector.id === SupportedWalletIds.Braavos) {
     sx.background = "#222a39";
   }
 
   return (
     <button className={`primary active ${styles.custom}`} onClick={handleClick}>
       <div className={styles.walletinfo}>
-        <WalletIcon wallet={wallet} sx={sx} />
-        <span>{addressElision(address)}</span>
+        <WalletIcon wallet={connector} sx={sx} />
+        {username === undefined ? (
+          <span>{addressElision(address)}</span>
+        ) : (
+          <span>{truncateUsername(username)}</span>
+        )}
       </div>
     </button>
   );

@@ -27,7 +27,6 @@ export const SlippageChange = ({
     }
 
     if (value.startsWith(".") || value.startsWith(",")) {
-      console.log("YES");
       setSlippageText("0" + value);
     } else {
       setSlippageText(value);

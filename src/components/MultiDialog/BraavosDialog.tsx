@@ -1,8 +1,8 @@
 import { Skeleton } from "@mui/material";
 import { useQuery } from "react-query";
-import { useAccount } from "../../hooks/useAccount";
 import { QueryKeys } from "../../queries/keys";
 import { fetchBraavosBonus } from "../Points/fetch";
+import { useAccount } from "@starknet-react/core";
 
 import { ReactComponent as BraavosIcon } from "../Points/braavos_icon.svg";
 import { ReactComponent as TwitterX } from "./twitterx.svg";
@@ -10,7 +10,7 @@ import { ReactComponent as TwitterX } from "./twitterx.svg";
 import styles from "./braavos.module.css";
 
 export const BraavosDialog = () => {
-  const account = useAccount();
+  const { account } = useAccount();
   const { data, isLoading, isError } = useQuery(
     QueryKeys.braavosBonus,
     fetchBraavosBonus

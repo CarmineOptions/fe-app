@@ -1,25 +1,18 @@
 import { ContentCopy, Info, PowerSettingsNew } from "@mui/icons-material";
 import { IconButton, Link, Skeleton, Tooltip, Typography } from "@mui/material";
 
-// import { useWallet } from "react";
-// import { constants } from "starknet";
-// import { StarknetIdNavigator } from "starknetid.js";
-
-import { useWallet } from "../../hooks/useWallet";
-import { disconnect } from "../../network/account";
-// import { closeDialog, showToast, transferDialogEnable } from "../../network/provider";
-import { closeDialog, showToast, transferDialogEnable } from "../../redux/actions";
+import {
+  closeDialog,
+  showToast,
+  transferDialogEnable,
+} from "../../redux/actions";
 import { ToastType } from "../../redux/reducers/ui";
 import { addressElision, getStarkscanUrl } from "../../utils/utils";
 import { WalletIcon } from "../assets";
 import { RecentTransaction } from "./RecentTransactions";
 import styles from "./walletinfo.module.css";
-
-const handleDisconnect = () => {
-  closeDialog();  
-  disconnect();
-  transferDialogEnable();
-};
+import { useAccount, useDisconnect } from "@starknet-react/core";
+import { useDomain } from "../../hooks/useDomain";
 
 const handleCopy = (msg: string) => {
   navigator.clipboard
@@ -40,38 +33,30 @@ const buttonStyle = {
 };
 
 export const WalletInfo = () => {
-  const wallet = useWallet();
-  // const [starkName, setStarkName] = useState("");
-  if (!wallet) {
+  const { account, address, connector } = useAccount();
+  const { disconnect } = useDisconnect();
+  const { username } = useDomain();
+
+  if (!account || !address || !connector) {
     return <Skeleton width={256} height={88} />;
   }
-  
-  const { account } = wallet;
-  const { address } = account;
-  const exploreUrl = getStarkscanUrl({  
-    chainId: wallet.account.chainId,
-    contractHash: address,
-  });
-  // // eslint-disable-next-line react-hooks/rules-of-hooks
-  // useEffect(() => { 
-  //   const fetchStarkName = async () => {
-  //     const starknetIdNavigator = new StarknetIdNavigator(
-  //       provider,
-  //       wallet.chainId as constants.StarknetChainId
-  //     );
-  //     const starkname = await starknetIdNavigator.getStarkName(address ?? "");
-  //   }
-  //   fetchStarkName();
-  // }, [address, wallet]);
+
+  const explorerUrl = getStarkscanUrl({ contractHash: address });
+
+  const handleDisconnect = () => {
+    closeDialog();
+    disconnect();
+    transferDialogEnable();
+  };
 
   return (
     <div>
       <div className={styles.header}>
         <Tooltip title={address}>
           <div className={styles.account} onClick={() => handleCopy(address)}>
-            <WalletIcon sx={iconStyle} wallet={wallet} />
-            <Typography sx={{ opacity: "70%", textTransform: "uppercase" }}>
-              {addressElision(address)}
+            <WalletIcon sx={iconStyle} wallet={connector} />
+            <Typography sx={{ opacity: "70%" }}>
+              {username === undefined ? addressElision(address) : username}
             </Typography>
           </div>
         </Tooltip>
@@ -83,7 +68,7 @@ export const WalletInfo = () => {
         </Tooltip>
 
         <Tooltip title="Explore">
-          <Link target="_blank" href={exploreUrl} rel="noreferrer">
+          <Link target="_blank" href={explorerUrl} rel="noreferrer">
             <IconButton sx={buttonStyle}>
               <Info />
             </IconButton>

@@ -1,6 +1,6 @@
 import { AccountInterface } from "starknet";
 import { openWalletConnectDialog } from "../ConnectWallet/Button";
-import { useAccount } from "../../hooks/useAccount";
+import { useAccount, useConnect } from "@starknet-react/core";
 import { LoadingAnimation } from "../Loading/Loading";
 
 import styles from "./portfolio.module.css";
@@ -93,14 +93,15 @@ export const MyStakeWithAccount = ({
 };
 
 export const MyStake = () => {
-  const account = useAccount();
+  const { account } = useAccount();
+  const { connectAsync } = useConnect();
 
   if (!account) {
     return (
       <div>
         <button
           className="mainbutton primary active"
-          onClick={openWalletConnectDialog}
+          onClick={() => openWalletConnectDialog(connectAsync)}
         >
           Connect Wallet
         </button>

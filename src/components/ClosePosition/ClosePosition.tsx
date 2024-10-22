@@ -9,12 +9,12 @@ import { useDebounce } from "../../hooks/useDebounce";
 import { math64toDecimal, math64ToInt } from "../../utils/units";
 import { getPremiaWithSlippage, shortInteger } from "../../utils/computations";
 import { tradeClose } from "../../calls/tradeClose";
-import { useAccount } from "../../hooks/useAccount";
 import { store } from "../../redux/store";
 import { useCurrency } from "../../hooks/useCurrency";
 import { OptionWithPosition } from "../../classes/Option";
 import buttonStyles from "../../style/button.module.css";
 import { formatNumber } from "../../utils/utils";
+import { useAccount } from "@starknet-react/core";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const premiaToDisplayValue = (
@@ -94,7 +94,7 @@ type Props = {
 };
 
 const WithOption = ({ option }: Props) => {
-  const account = useAccount();
+  const { account } = useAccount();
   const base = useCurrency(option.baseToken.id);
   const quote = useCurrency(option.quoteToken.id);
 

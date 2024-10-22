@@ -11,7 +11,7 @@ import { ProfitGraph } from "../CryptoGraph/ProfitGraph";
 import { getProfitGraphData } from "../CryptoGraph/profitGraphData";
 import { fetchModalData } from "./fetchModalData";
 import { ProfitTable, ProfitTableSkeleton } from "./ProfitTable";
-import { useAccount } from "../../hooks/useAccount";
+import { useAccount, useConnect } from "@starknet-react/core";
 import { showToast } from "../../redux/actions";
 import { ToastType } from "../../redux/reducers/ui";
 import { OptionWithPremia } from "../../classes/Option";
@@ -88,7 +88,8 @@ const getBaseAmount = (pairId: PairKey) => {
 };
 
 export const TradeCard = ({ option }: TradeCardProps) => {
-  const account = useAccount();
+  const { account } = useAccount();
+  const { connectAsync } = useConnect();
   // base amount for BTC is 0.1 and 1 for anything else
   const baseAmount = getBaseAmount(option.pairId);
   const [amount, setAmount] = useState<number>(baseAmount);
@@ -195,7 +196,7 @@ export const TradeCard = ({ option }: TradeCardProps) => {
       return (
         <button
           className={buttonStyles.green}
-          onClick={openWalletConnectDialog}
+          onClick={() => openWalletConnectDialog(connectAsync)}
         >
           Connect Wallet
         </button>

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useAccount } from "../../hooks/useAccount";
 import { defiSpringClaim } from "../../calls/getDefiSpringClaim";
 import { AccountInterface } from "starknet";
 import { getDefiSpringData } from "./fetch";
@@ -23,6 +22,7 @@ import styles from "./defi.module.css";
 import { QueryKeys } from "../../queries/keys";
 import { useQuery } from "react-query";
 import { invalidateKey } from "../../queries/client";
+import { useAccount, useConnect } from "@starknet-react/core";
 
 export const RewardsWithAccount = ({
   account,
@@ -157,13 +157,17 @@ export const RewardsWithAccount = ({
 };
 
 export const Rewards = () => {
-  const account = useAccount();
+  const { account } = useAccount();
+  const { connectAsync } = useConnect();
 
   if (!account) {
     return (
       <div>
         <p>Connect wallet to access Starknet Rewards</p>
-        <button className="primary active" onClick={openWalletConnectDialog}>
+        <button
+          className="primary active"
+          onClick={() => openWalletConnectDialog(connectAsync)}
+        >
           Connect Wallet
         </button>
       </div>

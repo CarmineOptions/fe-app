@@ -34,6 +34,7 @@ import "./style/base.css";
 import YieldPage from "./pages/yield";
 import SwapPage from "./pages/swap";
 import PriceProtectVideoPage from "./pages/priceProtectVideo";
+import { StarknetProvider } from "./components/StarknetProvider";
 
 const App = () => {
   const [check, rerender] = useState(false);
@@ -45,53 +46,55 @@ const App = () => {
 
   return (
     <Provider store={store}>
-      <Controller>
-        <CssBaseline />
-        {acceptedTermsAndConditions ? (
-          <>
-            <Router>
-              <Routes>
-                {oldPathRedirects.map(([oldPath, newPath], i) => (
+      <StarknetProvider>
+        <Controller>
+          <CssBaseline />
+          {acceptedTermsAndConditions ? (
+            <>
+              <Router>
+                <Routes>
+                  {oldPathRedirects.map(([oldPath, newPath], i) => (
+                    <Route
+                      key={i}
+                      path={oldPath}
+                      element={<Navigate to={newPath} replace />}
+                    />
+                  ))}
+                  <Route path="/" element={<TradePage />} />
+                  <Route path="/trade" element={<TradePage />} />
+                  {/* <Route path="/priceGuard" element={<PriceGuard />} /> */}
+                  <Route path="/portfolio/:target?" element={<Portfolio />} />
+                  <Route path="/staking" element={<StakePage />} />
+                  <Route path="/swap" element={<SwapPage />} />
                   <Route
-                    key={i}
-                    path={oldPath}
-                    element={<Navigate to={newPath} replace />}
+                    path="/staking-explained"
+                    element={<StakingExplainedPage />}
                   />
-                ))}
-                <Route path="/" element={<TradePage />} />
-                <Route path="/trade" element={<TradePage />} />
-                {/* <Route path="/priceGuard" element={<PriceGuard />} /> */}
-                <Route path="/portfolio/:target?" element={<Portfolio />} />
-                <Route path="/staking" element={<StakePage />} />
-                <Route path="/swap" element={<SwapPage />} />
-                <Route
-                  path="/staking-explained"
-                  element={<StakingExplainedPage />}
-                />
-                <Route path="/apy-info" element={<APYInfoPage />} />
-                <Route path="/settings" element={<Settings />} />
-                <Route path="/dashboard" element={<TradeDashboardPage />} />
-                <Route path="/governance/:target?" element={<Governance />} />
-                <Route path="/leaderboard" element={<LeaderboardPage />} />
-                <Route path="/rewards" element={<StarknetRewards />} />
-                <Route path="/battlecharts" element={<BattlechartsPage />} />
-                <Route path="/priceprotect" element={<PriceGuardPage />} />
-                <Route path="/yield" element={<YieldPage />} />
-                <Route
-                  path="/price-protect-video"
-                  element={<PriceProtectVideoPage />}
-                />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </Router>
-            <MultiDialog />
-            <Toast />
-            <BraavosAnnounce />
-          </>
-        ) : (
-          <TermsAndConditions check={check} rerender={rerender} />
-        )}
-      </Controller>
+                  <Route path="/apy-info" element={<APYInfoPage />} />
+                  <Route path="/settings" element={<Settings />} />
+                  <Route path="/dashboard" element={<TradeDashboardPage />} />
+                  <Route path="/governance/:target?" element={<Governance />} />
+                  <Route path="/leaderboard" element={<LeaderboardPage />} />
+                  <Route path="/rewards" element={<StarknetRewards />} />
+                  <Route path="/battlecharts" element={<BattlechartsPage />} />
+                  <Route path="/priceprotect" element={<PriceGuardPage />} />
+                  <Route path="/yield" element={<YieldPage />} />
+                  <Route
+                    path="/price-protect-video"
+                    element={<PriceProtectVideoPage />}
+                  />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </Router>
+              <MultiDialog />
+              <Toast />
+              <BraavosAnnounce />
+            </>
+          ) : (
+            <TermsAndConditions check={check} rerender={rerender} />
+          )}
+        </Controller>
+      </StarknetProvider>
     </Provider>
   );
 };

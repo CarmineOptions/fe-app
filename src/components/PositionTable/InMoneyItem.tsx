@@ -4,7 +4,7 @@ import { debug } from "../../utils/debugger";
 import { tradeSettle } from "../../calls/tradeSettle";
 import { invalidatePositions } from "../../queries/client";
 import { afterTransaction } from "../../utils/blockchain";
-import { useAccount } from "../../hooks/useAccount";
+import { useAccount } from "@starknet-react/core";
 import { showToast } from "../../redux/actions";
 import { ToastType } from "../../redux/reducers/ui";
 import { useTxPending } from "../../hooks/useRecentTxs";
@@ -17,7 +17,7 @@ type Props = {
 
 export const InMoneyItem = ({ option }: Props) => {
   const txPending = useTxPending(option.optionId, TransactionAction.Settle);
-  const account = useAccount();
+  const { account } = useAccount();
 
   const handleSettle = () => {
     if (!account || !option?.sizeHex) {

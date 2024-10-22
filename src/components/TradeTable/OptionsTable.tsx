@@ -75,7 +75,7 @@ const OptionsTable = ({ options, tokenPair, side }: Props) => {
             o.baseToken.id === TokenKey.BTC || o.quoteToken.id === TokenKey.BTC;
 
           return (
-            <>
+            <div key={i}>
               {priceReady && index !== false && index === i && (
                 <div className={styles.price}>
                   <div></div>
@@ -86,7 +86,7 @@ const OptionsTable = ({ options, tokenPair, side }: Props) => {
                   <div></div>
                 </div>
               )}
-              <div key={i} className="tableitem">
+              <div className="tableitem">
                 <div>${o.strike}</div>
                 {(side === OptionSide.Long || side === "all") && (
                   <div
@@ -123,7 +123,7 @@ const OptionsTable = ({ options, tokenPair, side }: Props) => {
                   <div></div>
                 </div>
               )}
-            </>
+            </div>
           );
         })}
       </div>
