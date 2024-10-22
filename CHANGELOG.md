@@ -1,3 +1,16 @@
+# [2.7.0](https://github.com/CarmineOptions/fe-app/compare/v2.6.1...v2.7.0) (2024-10-22)
+
+
+### Bug Fixes
+
+* add get to not installed wallets ([2ed301e](https://github.com/CarmineOptions/fe-app/commit/2ed301ed1a189f82ac64162bb237fd33bb643cb9))
+* remove metamask ([8bbaabf](https://github.com/CarmineOptions/fe-app/commit/8bbaabf907bee5cc2a9f6c66aafbb3510d270c1c))
+
+
+### Features
+
+* switch to starknet-react ([d91081d](https://github.com/CarmineOptions/fe-app/commit/d91081dbbdbe9bbd6828bdf92b4fa21a13c4b15e))
+
 ## [2.6.1](https://github.com/CarmineOptions/fe-app/compare/v2.6.0...v2.6.1) (2024-10-22)
 
 
