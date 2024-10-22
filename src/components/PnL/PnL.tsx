@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 import { userPnLQuery } from "./getTrades";
-import { useAccount } from "../../hooks/useAccount";
+import { useAccount } from "@starknet-react/core";
 import {
   CartesianGrid,
   Legend,
@@ -81,7 +81,7 @@ const ProfitAndLossWithAddress = ({ address }: { address: string }) => {
 };
 
 export const ProfitAndLoss = () => {
-  const account = useAccount();
+  const { account } = useAccount();
 
   if (!account) {
     return <div>Need to connect wallet</div>;

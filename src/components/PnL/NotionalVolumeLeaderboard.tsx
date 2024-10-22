@@ -1,11 +1,11 @@
 import { useQuery } from "react-query";
 import { tradeLeaderboardDataQuery } from "./getTrades";
 import { Leaderboard } from "../Leaderboard";
-import { useAccount } from "../../hooks/useAccount";
+import { useAccount } from "@starknet-react/core";
 import { LoadingAnimation } from "../Loading/Loading";
 
 export const NotionalVolumeLeaderboard = () => {
-  const account = useAccount();
+  const { account } = useAccount();
   const { isLoading, isError, data } = useQuery(
     ["notional-volume-leaderboard", account?.address],
     tradeLeaderboardDataQuery

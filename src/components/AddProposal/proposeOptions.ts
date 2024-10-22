@@ -1,5 +1,6 @@
 import { AccountInterface } from "starknet";
 import { AMM_ADDRESS, GOVERNANCE_ADDRESS } from "../../constants/amm";
+import { debug } from "../../utils/debugger";
 
 export const proposeOptions = async (
   options: string[],
@@ -17,10 +18,10 @@ export const proposeOptions = async (
     ],
   };
 
-  console.log("Executing add options proposal:", call);
+  debug("Executing add options proposal:", call);
 
   await account
     .execute(call)
-    .then((res) => console.log("Send TX", res.transaction_hash))
+    .then((res) => debug("Send TX", res.transaction_hash))
     .catch(() => {});
 };

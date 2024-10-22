@@ -7,7 +7,7 @@ import { useCurrency } from "../../hooks/useCurrency";
 import { useUserBalance } from "../../hooks/useUserBalance";
 import { shortInteger } from "../../utils/computations";
 import { math64toDecimal } from "../../utils/units";
-import { useAccount } from "../../hooks/useAccount";
+import { useAccount, useConnect } from "@starknet-react/core";
 import { openWalletConnectDialog } from "../ConnectWallet/Button";
 import { setSidebarContent, showToast } from "../../redux/actions";
 import { PoolSidebarSuccess } from "./PoolSidebarSuccess";
@@ -31,7 +31,8 @@ type Props = {
 };
 
 export const PoolSidebar = ({ pool, initialAction }: Props) => {
-  const account = useAccount();
+  const { account } = useAccount();
+  const { connectAsync } = useConnect();
   const { data: poolInfo } = usePoolInfo(pool.apiPoolId);
   const { data: stakes } = useStakes();
   const price = useCurrency(pool.underlying.id);
@@ -202,7 +203,7 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
           <div>
             {account === undefined ? (
               <button
-                onClick={openWalletConnectDialog}
+                onClick={() => openWalletConnectDialog(connectAsync)}
                 className={"primary active mainbutton"}
               >
                 Connect Wallet

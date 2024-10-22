@@ -4,7 +4,6 @@ import { formatUnits, parseUnits } from "ethers";
 import { Skeleton, Tooltip } from "@mui/material";
 import { Settings, WarningAmber } from "@mui/icons-material";
 
-import { useAccount } from "../../hooks/useAccount";
 import { openWalletConnectDialog } from "../ConnectWallet/Button";
 import { TokenDisplay, TokenSelect } from "./TokenSelect";
 import { StrkToken, Token, UsdcToken } from "../../classes/Token";
@@ -24,6 +23,8 @@ import { SlippageChange } from "./Slippage";
 import styles from "./widget.module.css";
 import { shortInteger } from "../../utils/computations";
 import { useUserBalance } from "../../hooks/useUserBalance";
+import { useAccount, useConnect } from "@starknet-react/core";
+import { debug } from "../../utils/debugger";
 
 const AVNU_BASE_URL = "https://starknet.api.avnu.fi";
 const CARMINE_BENEFICIARY_ADDRESS =
@@ -140,7 +141,8 @@ const QuoteBox = ({
 };
 
 export const Widget = () => {
-  const account = useAccount();
+  const { account } = useAccount();
+  const { connectAsync } = useConnect();
   const abortControllerRef = useRef<AbortController | null>(null);
   const [inputValue, setInputValue] = useState("");
   const [debouncedValue, setDebouncedValue] = useState(inputValue);
@@ -232,7 +234,6 @@ export const Widget = () => {
       fetchQuotes(params, { baseUrl: AVNU_BASE_URL, abortSignal })
         .then((quotes) => {
           setLoading(false);
-          console.log(quotes);
           if (quotes && quotes[0]) {
             calculatePriceImpact(quotes[0]);
           }
@@ -277,7 +278,7 @@ export const Widget = () => {
         );
       })
       .catch((error: Error) => {
-        console.log(error);
+        debug("Swap failed", error);
         setLoading(false);
         setErrorMessage(error.message);
       });
@@ -294,7 +295,7 @@ export const Widget = () => {
         </div>
         <button
           className="primary active mainbutton"
-          onClick={openWalletConnectDialog}
+          onClick={() => openWalletConnectDialog(connectAsync)}
         >
           Connect Wallet
         </button>

@@ -22,8 +22,8 @@ import { ToastType } from "../../redux/reducers/ui";
 import { decimalToMath64 } from "../../utils/units";
 import { Close } from "@mui/icons-material";
 import { ProposalText } from "./ProposalText";
-import { useAccount } from "../../hooks/useAccount";
 import { proposeOptions } from "./proposeOptions";
+import { useAccount } from "@starknet-react/core";
 
 const strkUsdcCallPool = new Pool(STRK_ADDRESS, USDC_ADDRESS, OptionType.Call);
 
@@ -72,7 +72,7 @@ const getRelevantMaturities = (count = 20, offset = 1) => {
 };
 
 export const AddProposal = () => {
-  const account = useAccount();
+  const { account } = useAccount();
   const { isLoading, isError, data } = useQuery(
     QueryKeys.options,
     fetchOptions

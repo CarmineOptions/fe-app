@@ -213,13 +213,6 @@ const calculateNotionalVolume = (
     return acc;
   }, {} as { [key: string]: number });
 
-  const sum = Object.values(result).reduce(
-    (accumulator, currentValue) => accumulator + currentValue,
-    0
-  );
-
-  console.log("TOTAL NOTIONAL VOLUME:", sum);
-
   return result;
 };
 

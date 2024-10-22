@@ -5,7 +5,7 @@ import styles from "./announce.module.css";
 import { useQuery } from "react-query";
 import { QueryKeys } from "../../queries/keys";
 import { fetchBraavosBonus } from "../Points/fetch";
-import { useAccount } from "../../hooks/useAccount";
+import { useAccount } from "@starknet-react/core";
 
 const cookieName = "carmine-braavos-bonus-announce";
 const HIDE_TIME_MS = 1; // for the duration of this session
@@ -16,7 +16,7 @@ const setShowCookie = () =>
   setCookieWithExpiry(cookieName, "closed", HIDE_TIME_MS);
 
 export const BraavosAnnounce = () => {
-  const account = useAccount();
+  const { account } = useAccount();
   const [show, setShow] = useState(shouldShow());
   const { data, isLoading, isError } = useQuery(
     QueryKeys.braavosBonus,

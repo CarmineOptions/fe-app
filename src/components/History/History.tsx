@@ -1,12 +1,12 @@
 import { Typography } from "@mui/material";
 import { useQuery } from "react-query";
 
-import { useAccount } from "../../hooks/useAccount";
 import { QueryKeys } from "../../queries/keys";
 import { LoadingAnimation } from "../Loading/Loading";
 import { fetchHistoricalData } from "./fetchHistoricalData";
 import { TransactionsTable } from "./TransactionDisplay";
 import { IStake, ITrade } from "../../types/history";
+import { useAccount } from "@starknet-react/core";
 
 type PropsAddress = {
   address: string;
@@ -51,7 +51,7 @@ const TradeHistoryWithAddress = ({ address }: PropsAddress) => {
 };
 
 export const TradeHistory = () => {
-  const account = useAccount();
+  const { account } = useAccount();
 
   if (!account) {
     return <p>Connect your wallet to see your trade history</p>;

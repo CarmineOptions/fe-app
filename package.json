@@ -10,9 +10,10 @@
     "@mui/icons-material": "^5.10.6",
     "@mui/material": "^5.10.7",
     "@reduxjs/toolkit": "^1.8.6",
+    "@starknet-react/chains": "^3.0.2",
+    "@starknet-react/core": "^3.0.3",
     "bn.js": "^5.2.1",
     "ethers": "^6.8",
-    "get-starknet-core": "^3.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.0.0",
     "react-helmet": "^6.1.0",
@@ -24,7 +25,7 @@
     "recharts": "^2.1.16",
     "redux": "^4.2.0",
     "starknet": "^6.11.0",
-    "starknetkit": "^2.2.15"
+    "starknetkit": "^2.3.2"
   },
   "scripts": {
     "start": "GENERATE_SOURCEMAP=false react-scripts start",
