@@ -8,7 +8,6 @@ export enum SupportedWalletIds {
   OKXWallet = "okxwallet",
   Bitget = "bitkeep",
   Keplr = "keplr",
-  Metamask = "metamask",
 }
 
 export type UserBalance = {
