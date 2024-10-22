@@ -54,7 +54,7 @@ export type ProposalOption = {
   active?: boolean;
 };
 
-const getRelevantMaturities = (count = 10, offset = 1) => {
+const getRelevantMaturities = (count = 20, offset = 1) => {
   const SOME_THURSDAY = 1726790399;
   const WEEK = 604800;
 
@@ -239,6 +239,15 @@ export const AddProposal = () => {
         {options.map((option, index) => (
           <div key={index} className={styles.optionbox}>
             <div className={styles.close}>
+              <div>
+                {option.active === false && (
+                  <Tooltip title="Duplicates are not included in the final payload">
+                    <div className={styles.infobox}>
+                      <p className="error-col">This option is a duplicate</p>
+                    </div>
+                  </Tooltip>
+                )}
+              </div>
               <Tooltip title="Remove this option">
                 <IconButton
                   sx={{ minWidth: 0 }}
@@ -248,13 +257,7 @@ export const AddProposal = () => {
                 </IconButton>
               </Tooltip>
             </div>
-            {option.active === false && (
-              <Tooltip title="Duplicates are not included in the final payload">
-                <div className={styles.infobox}>
-                  <p className="error-col">This option is a duplicate</p>
-                </div>
-              </Tooltip>
-            )}
+
             <div>
               <p>Pool</p>
               <Select

@@ -244,7 +244,7 @@ export class Pool extends Pair {
       this.quoteToken.id === TokenKey.USDC
     ) {
       // ETH/USDC
-      return 55;
+      return 60;
     }
     if (
       this.baseToken.id === TokenKey.STRK &&
