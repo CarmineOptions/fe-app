@@ -1,5 +1,5 @@
 import { useReducer } from "react";
-import { useAccount } from "../../hooks/useAccount";
+import { useAccount } from "@starknet-react/core";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 import styles from "./Referral.module.css";
@@ -65,7 +65,7 @@ const ReferralLink = ({ code }: { code: string }) => {
 };
 
 const GetReferralLink = () => {
-  const account = useAccount();
+  const { account } = useAccount();
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const handleClick = () => {

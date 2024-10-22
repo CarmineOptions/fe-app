@@ -1,9 +1,9 @@
 import { TransferState, transferLpCapital, userLpBalance } from "./transfer";
-import { useAccount } from "../../hooks/useAccount";
+import { useAccount } from "@starknet-react/core";
 import { useState } from "react";
 
 export const TransferButton = () => {
-  const account = useAccount();
+  const { account } = useAccount();
   const [txState, setTxState] = useState(TransferState.Initial);
 
   const handleClick = async () => {

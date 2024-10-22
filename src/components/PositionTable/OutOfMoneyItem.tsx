@@ -4,7 +4,7 @@ import { debug } from "../../utils/debugger";
 import { tradeSettle } from "../../calls/tradeSettle";
 import { invalidatePositions } from "../../queries/client";
 import { afterTransaction } from "../../utils/blockchain";
-import { useAccount } from "../../hooks/useAccount";
+import { useAccount } from "@starknet-react/core";
 import { useTxPending } from "../../hooks/useRecentTxs";
 import { TransactionAction } from "../../redux/reducers/transactions";
 import buttonStyles from "../../style/button.module.css";
@@ -15,7 +15,7 @@ type Props = {
 
 export const OutOfMoneyItem = ({ option }: Props) => {
   const txPending = useTxPending(option.optionId, TransactionAction.Settle);
-  const account = useAccount();
+  const { account } = useAccount();
 
   const handleSettle = () => {
     if (!account || !option?.size) {

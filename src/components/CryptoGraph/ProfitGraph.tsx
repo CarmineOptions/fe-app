@@ -62,8 +62,6 @@ export const ProfitGraph = ({ data }: ProfitGraphProps) => {
       return;
     }
 
-    console.log(data);
-
     const payload: CurrencyData = data.activePayload[0].payload;
 
     if (payload) {

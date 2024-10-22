@@ -2,7 +2,7 @@ import { FunctionComponent } from "react";
 import { useQuery } from "react-query";
 
 import { OptionWithPosition } from "../../classes/Option";
-import { useAccount } from "../../hooks/useAccount";
+import { useAccount } from "@starknet-react/core";
 import { QueryKeys } from "../../queries/keys";
 import { LoadingAnimation } from "../Loading/Loading";
 import { NoContent } from "../TableNoContent";
@@ -125,7 +125,7 @@ const PositionsWithAddress = ({ address }: PropsAddress) => {
 };
 
 export const Positions = () => {
-  const account = useAccount();
+  const { account } = useAccount();
 
   if (!account) {
     const child = () =>

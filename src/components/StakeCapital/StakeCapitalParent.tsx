@@ -17,7 +17,7 @@ import {
   STRK_ADDRESS,
   USDC_ADDRESS,
 } from "../../constants/amm";
-import { useAccount } from "../../hooks/useAccount";
+import { useAccount } from "@starknet-react/core";
 import tableStyles from "../../style/table.module.css";
 import { OptionType } from "../../types/options";
 import { timestampToReadableDate } from "../../utils/utils";
@@ -49,7 +49,7 @@ const getDefispringApy = async (setDefispringApy: (n: number) => void) => {
 };
 
 export const StakeCapitalParent = () => {
-  const account = useAccount();
+  const { account } = useAccount();
   const [defispringApy, setDefispringApy] = useState<number | undefined>();
 
   useEffect(() => {

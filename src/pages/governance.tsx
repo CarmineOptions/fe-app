@@ -10,11 +10,11 @@ import buttonStyles from "../style/button.module.css";
 import { setGovernanceSubpage } from "../redux/actions";
 import { Airdrop } from "../components/Airdrop/Airdrop";
 import { useEffect } from "react";
+import { AddProposal } from "../components/AddProposal";
+import { coreTeamAddresses } from "../constants/amm";
 
 import styles from "./governance.module.css";
-import { AddProposal } from "../components/AddProposal";
-import { useAccount } from "../hooks/useAccount";
-import { coreTeamAddresses } from "../constants/amm";
+import { useAccount } from "@starknet-react/core";
 
 const VotingSubpage = () => {
   return (
@@ -69,7 +69,7 @@ const ProposeOptionsSubpage = () => {
 };
 
 const Governance = () => {
-  const account = useAccount();
+  const { account } = useAccount();
   const subpage = useGovernanceSubpage();
   const navigate = useNavigate();
 

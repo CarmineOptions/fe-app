@@ -3,12 +3,12 @@ import { NoContent } from "../TableNoContent";
 import ProposalTable from "./ProposalTable";
 import { queryProposalsWithOpinions } from "../../calls/liveProposals";
 import { LoadingAnimation } from "../Loading/Loading";
-import { useAccount } from "../../hooks/useAccount";
+import { useAccount } from "@starknet-react/core";
 import { useUserBalance } from "../../hooks/useUserBalance";
 import { VE_CRM_ADDRESS } from "../../constants/amm";
 
 export const Proposals = () => {
-  const account = useAccount();
+  const { account } = useAccount();
   const balance = useUserBalance(VE_CRM_ADDRESS);
   const {
     isLoading,

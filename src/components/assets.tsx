@@ -1,15 +1,15 @@
 import { SxProps } from "@mui/system";
 import { Box } from "@mui/material";
-import { ConnectedStarknetWindowObject } from "get-starknet-core";
 
 import styles from "./ConnectWallet/button.module.css";
+import { Connector } from "@starknet-react/core";
 
 interface IconProps {
   sx?: SxProps;
 }
 
 interface WalletIconProps extends IconProps {
-  wallet: ConnectedStarknetWindowObject;
+  wallet: Connector;
 }
 
 export const ArgentIcon = ({ sx }: IconProps) => (
@@ -21,13 +21,15 @@ export const BraavosIcon = ({ sx }: IconProps) => (
 );
 
 export const WalletIcon = ({ sx, wallet }: WalletIconProps) => {
+  const icon = typeof wallet.icon === "string" ? wallet.icon : wallet.icon.dark;
+
   return (
     <Box
       sx={sx}
       component="img"
       className={styles.walleticon}
       alt={`${wallet.id} wallet icon`}
-      src={wallet.icon}
+      src={icon}
     />
   );
 };

@@ -5,7 +5,7 @@ import { handleNumericChangeFactory } from "../../utils/inputHandling";
 import { useCurrency } from "../../hooks/useCurrency";
 import { useUserBalance } from "../../hooks/useUserBalance";
 import { shortInteger } from "../../utils/computations";
-import { useAccount } from "../../hooks/useAccount";
+import { useAccount, useConnect } from "@starknet-react/core";
 import { openWalletConnectDialog } from "../ConnectWallet/Button";
 import { TransactionState } from "../../types/network";
 import { OptionWithPremia } from "../../classes/Option";
@@ -33,7 +33,8 @@ type Props = {
 };
 
 export const OptionSidebar = ({ option }: Props) => {
-  const account = useAccount();
+  const { account } = useAccount();
+  const { connectAsync } = useConnect();
   const price = useCurrency(option.underlying.id);
   const balanceRaw = useUserBalance(option.underlying.address);
   const defaultAmount =
@@ -266,7 +267,7 @@ export const OptionSidebar = ({ option }: Props) => {
       {account === undefined ? (
         <button
           className="mainbutton primary active"
-          onClick={openWalletConnectDialog}
+          onClick={() => openWalletConnectDialog(connectAsync)}
         >
           Connect Wallet
         </button>

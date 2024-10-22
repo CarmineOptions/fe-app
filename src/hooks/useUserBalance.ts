@@ -1,5 +1,5 @@
+import { useAccount } from "@starknet-react/core";
 import { balanceOf } from "./../calls/balanceOf";
-import { useAccount } from "./useAccount";
 import { QueryFunctionContext, useQuery } from "react-query";
 
 export const queryUserBalance = async ({
@@ -18,7 +18,7 @@ export const queryUserBalance = async ({
 };
 
 export const useUserBalance = (tokenAddress: string): bigint | undefined => {
-  const account = useAccount();
+  const { account } = useAccount();
 
   const { data } = useQuery(
     [`${account?.address}-${tokenAddress}`, account?.address, tokenAddress],

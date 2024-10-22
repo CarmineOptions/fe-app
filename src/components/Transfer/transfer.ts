@@ -14,6 +14,7 @@ import LegacyAmmAbi from "../../abi/legacy_amm_abi.json";
 import ERC20Abi from "../../abi/lptoken_abi.json";
 import NewAmmAbi from "../../abi/amm_abi.json";
 import { afterTransaction } from "../../utils/blockchain";
+import { debug } from "../../utils/debugger";
 
 type LegacyPoolInfo = {
   pool_info: { lptoken_address: bigint };
@@ -49,6 +50,7 @@ export const userLpBalance = async (
   const res = (await LegacyAmmContract.call(AMM_METHODS.GET_USER_POOL_INFOS, [
     userAddress,
   ]).catch((e: string) => {
+    debug("Failed getting legacy AMM LP balance", e);
     throw Error("Failed getting legacy AMM LP balance");
   })) as LegacyRes;
 

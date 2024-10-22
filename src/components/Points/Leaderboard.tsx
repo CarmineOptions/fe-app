@@ -18,7 +18,7 @@ import {
   TableRow,
 } from "@mui/material";
 import { addressElision } from "../../utils/utils";
-import { useAccount } from "../../hooks/useAccount";
+import { useAccount } from "@starknet-react/core";
 import { ReactNode } from "react";
 import { BraavosBadge } from "./BraavosBadge";
 import styles from "./points.module.css";
@@ -113,7 +113,7 @@ const UserItem = ({
 }: {
   braavos?: { [key: string]: BraavosBonus };
 }) => {
-  const account = useAccount();
+  const { account } = useAccount();
 
   if (!account) {
     return null;

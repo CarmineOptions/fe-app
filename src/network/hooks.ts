@@ -65,12 +65,12 @@ const transferLps = (address: string) => {
 /**
  * Gets executed when a wallet is connected
  */
-export const onConnect = (account: AccountInterface) => {
+export const onConnect = (account: AccountInterface, address: string) => {
   if (isMainnet) {
     // report user came with referral
-    reportReferral(account.address);
+    reportReferral(address);
 
     // prompt user to transfer capital from old AMM
-    transferLps(account.address);
+    transferLps(address);
   }
 };

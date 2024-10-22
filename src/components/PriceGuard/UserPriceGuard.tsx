@@ -1,7 +1,7 @@
 import { LoadingAnimation } from "../Loading/Loading";
 import { useQuery } from "react-query";
 import { QueryKeys } from "../../queries/keys";
-import { useAccount } from "../../hooks/useAccount";
+import { useAccount, useConnect } from "@starknet-react/core";
 import { AccountInterface } from "starknet";
 import { fetchPositions } from "../PositionTable/fetchPositions";
 import { OptionWithPosition } from "../../classes/Option";
@@ -336,14 +336,17 @@ const WithAccount = ({ account }: { account: AccountInterface }) => {
 };
 
 export const UserPriceGuard = () => {
-  const account = useAccount();
+  const { account } = useAccount();
+  const { connectAsync } = useConnect();
 
   if (!account) {
     return (
       <div className={styles.wrapper}>
         <h1>My Price Protect</h1>
         <p>Connect your wallet to view active & claimable Price Protections</p>
-        <button onClick={openWalletConnectDialog}>Connect Wallet</button>
+        <button onClick={() => openWalletConnectDialog(connectAsync)}>
+          Connect Wallet
+        </button>
       </div>
     );
   }

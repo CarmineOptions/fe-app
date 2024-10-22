@@ -10,10 +10,10 @@ import { RootState } from "../../redux/store";
 import { shortInteger } from "../../utils/computations";
 import { useState } from "react";
 import { TransferState, transferLpCapital } from "./transfer";
-import { useAccount } from "../../hooks/useAccount";
+import { useAccount } from "@starknet-react/core";
 
 export const TransferDialog = () => {
-  const account = useAccount();
+  const { account } = useAccount();
   const transferData = useSelector((s: RootState) => s.ui.transferData);
   const [txState, setTxState] = useState(TransferState.Initial);
 

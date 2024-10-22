@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useQuery } from "react-query";
 import { AccountInterface } from "starknet";
 
-import { useAccount } from "../../hooks/useAccount";
 import { Eligible, getAirdropDataQuery } from "./getProof";
 import { shortInteger } from "../../utils/computations";
 import { isMainnet } from "../../constants/amm";
@@ -10,6 +9,7 @@ import { QueryKeys } from "../../queries/keys";
 import { AirdropModal } from "./AirdropModal";
 import airdropStyles from "./airdrop.module.css";
 import { formatNumber } from "../../utils/utils";
+import { useAccount } from "@starknet-react/core";
 
 const ClaimAndStake = ({
   account,
@@ -86,7 +86,7 @@ export const AirdropWithAccount = ({
 };
 
 export const Airdrop = () => {
-  const account = useAccount();
+  const { account } = useAccount();
 
   if (!account) {
     return (

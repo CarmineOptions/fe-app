@@ -14,7 +14,7 @@ import { fetchCapital } from "./fetchCapital";
 import { useQuery } from "react-query";
 import { QueryKeys } from "../../queries/keys";
 import { AccountInterface } from "starknet";
-import { useAccount } from "../../hooks/useAccount";
+import { useAccount } from "@starknet-react/core";
 import tableStyles from "../../style/table.module.css";
 
 type Props = { address: string; account: AccountInterface };
@@ -61,7 +61,7 @@ const WithdrawParentWithAccount = ({ address, account }: Props) => {
 };
 
 export const WithdrawParent = () => {
-  const account = useAccount();
+  const { account } = useAccount();
 
   if (!account)
     return <NoContent text="Connect wallet to see your staked capital" />;

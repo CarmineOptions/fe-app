@@ -11,7 +11,6 @@ import { timestampToReadableDate } from "../../utils/utils";
 import { useDialog } from "../../hooks/useDialog";
 import { closeDialog } from "../../redux/actions";
 import { DialogContentElem } from "../../redux/reducers/ui";
-import { WalletBox } from "../ConnectWallet/Content";
 import { SlippageContent } from "../Slippage/SlippageContent";
 import { Close } from "@mui/icons-material";
 import { ClosePosition } from "../ClosePosition/ClosePosition";
@@ -158,11 +157,6 @@ export const MultiDialog = () => {
       {dialogContent === DialogContentElem.Slippage && (
         <Border>
           <SlippageContent />
-        </Border>
-      )}
-      {dialogContent === DialogContentElem.Wallet && (
-        <Border>
-          <WalletBox />
         </Border>
       )}
       {dialogContent === DialogContentElem.CloseOption && (

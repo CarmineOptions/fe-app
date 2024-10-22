@@ -1,7 +1,6 @@
 import { AccountInterface } from "starknet";
 import { useQuery } from "react-query";
 
-import { useAccount } from "../../hooks/useAccount";
 import { openWalletConnectDialog } from "../ConnectWallet/Button";
 import { shortInteger } from "../../utils/computations";
 import { Stakes } from "./Stakes";
@@ -10,6 +9,7 @@ import { fetchStakingData } from "./calls";
 import { StakeCrm } from "./StakeCRM";
 import { LoadingAnimation } from "../Loading/Loading";
 import { formatNumber } from "../../utils/utils";
+import { useAccount, useConnect } from "@starknet-react/core";
 
 export const StakeWithAccount = ({
   account,
@@ -66,10 +66,15 @@ export const StakeWithAccount = ({
 };
 
 export const CarmineStaking = () => {
-  const account = useAccount();
+  const { account } = useAccount();
+  const { connectAsync } = useConnect();
 
   if (!account) {
-    return <button onClick={openWalletConnectDialog}>Connect wallet</button>;
+    return (
+      <button onClick={() => openWalletConnectDialog(connectAsync)}>
+        Connect wallet
+      </button>
+    );
   }
 
   return <StakeWithAccount account={account} />;
