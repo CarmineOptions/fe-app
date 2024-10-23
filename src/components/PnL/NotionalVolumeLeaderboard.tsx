@@ -4,7 +4,7 @@ import { Leaderboard } from "../Leaderboard";
 import { useAccount } from "@starknet-react/core";
 import { LoadingAnimation } from "../Loading/Loading";
 import { useDomains } from "../../hooks/useDomains";
-import { standardiseAddress } from "../../utils/utils";
+import { formatNumber, standardiseAddress } from "../../utils/utils";
 import { useDomain } from "../../hooks/useDomain";
 
 export const NotionalVolumeLeaderboard = () => {
@@ -32,11 +32,11 @@ export const NotionalVolumeLeaderboard = () => {
   const parseData = (pnl: number, vol: number): [JSX.Element, JSX.Element] => {
     const isPnlNegative = pnl < 0;
     const PnlElem = (
-      <span style={{ color: isPnlNegative ? "#CB3737" : "#37CB4F" }}>
-        {isPnlNegative && "-"}${Math.abs(pnl).toFixed(2)}
-      </span>
+      <p style={{ color: isPnlNegative ? "#CB3737" : "#37CB4F" }}>
+        {isPnlNegative && "-"}${formatNumber(Math.abs(pnl))}
+      </p>
     );
-    const VolElem = <span>${vol.toFixed(2)}</span>;
+    const VolElem = <p>${formatNumber(vol)}</p>;
 
     return [PnlElem, VolElem];
   };
@@ -45,8 +45,7 @@ export const NotionalVolumeLeaderboard = () => {
     ({ address, notionalVolume, pnl, position }) => {
       const username = domains
         ? domains.find(
-            ({ domain, address: adr }) =>
-              standardiseAddress(adr) === standardiseAddress(address)
+            (d) => standardiseAddress(d.address) === standardiseAddress(address)
           )?.domain
         : undefined;
       return {

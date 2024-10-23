@@ -18,6 +18,31 @@ type Props = {
   user?: ItemProps;
 };
 
+export const ClickableUser = ({
+  address,
+  username,
+  position,
+}: {
+  address: string;
+  username: string | undefined;
+  position: number;
+}) => (
+  <div className={styles.wallet}>
+    {position < 3 ? <BlackWalletIcon /> : <WalletIcon />}
+    <a
+      target="_blank"
+      rel="noopener nofollow noreferrer"
+      href={`https://starkscan.co/contract/${address}`}
+      style={{
+        color: position < 3 ? "black" : "white",
+        textDecoration: "none",
+      }}
+    >
+      {username ? username : addressElision(address)}
+    </a>
+  </div>
+);
+
 const LeaderboardItem = ({
   position,
   address,
@@ -29,12 +54,11 @@ const LeaderboardItem = ({
     <tr className={className ?? ""}>
       <td>{position}</td>
       <td>
-        <div className={styles.wallet}>
-          {position === 1 && <BlackWalletIcon />}
-          {position === 2 && <BlackWalletIcon />}
-          {position > 2 && <WalletIcon />}
-          {username ? username : addressElision(address)}
-        </div>
+        <ClickableUser
+          address={address}
+          username={username}
+          position={position}
+        />
       </td>
       {data.map((v) => (
         <td>{v}</td>
