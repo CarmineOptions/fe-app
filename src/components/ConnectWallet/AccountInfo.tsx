@@ -18,7 +18,7 @@ const truncateUsername = (username: string, maxLength = 15) => {
 
 export const AccountInfo = () => {
   const { connector, address } = useAccount();
-  const { username } = useDomain();
+  const { username } = useDomain(address);
 
   if (connector === undefined || address === undefined) {
     return null;
@@ -38,7 +38,7 @@ export const AccountInfo = () => {
     <button className={`primary active ${styles.custom}`} onClick={handleClick}>
       <div className={styles.walletinfo}>
         <WalletIcon wallet={connector} sx={sx} />
-        {username === undefined ? (
+        {!username ? (
           <span>{addressElision(address)}</span>
         ) : (
           <span>{truncateUsername(username)}</span>

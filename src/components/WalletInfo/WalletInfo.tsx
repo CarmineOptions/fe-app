@@ -35,7 +35,7 @@ const buttonStyle = {
 export const WalletInfo = () => {
   const { account, address, connector } = useAccount();
   const { disconnect } = useDisconnect();
-  const { username } = useDomain();
+  const { username } = useDomain(address);
 
   if (!account || !address || !connector) {
     return <Skeleton width={256} height={88} />;
