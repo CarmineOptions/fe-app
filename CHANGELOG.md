@@ -1,3 +1,11 @@
+## [2.7.2](https://github.com/CarmineOptions/fe-app/compare/v2.7.1...v2.7.2) (2024-10-23)
+
+
+### Bug Fixes
+
+* add usernames to battlecharts ([abddba2](https://github.com/CarmineOptions/fe-app/commit/abddba20533a9ba1af2bdd7f43dd260616af3741))
+* add usernames to points ([586d980](https://github.com/CarmineOptions/fe-app/commit/586d98003e28c129690d4679bdacf09344c0ee19))
+
 ## [2.7.1](https://github.com/CarmineOptions/fe-app/compare/v2.7.0...v2.7.1) (2024-10-23)
 
 
