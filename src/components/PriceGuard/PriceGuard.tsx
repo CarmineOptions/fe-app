@@ -4,9 +4,6 @@ import { useUserBalance } from "../../hooks/useUserBalance";
 import { useCurrency } from "../../hooks/useCurrency";
 import { LoadingAnimation } from "../Loading/Loading";
 import { shortInteger } from "../../utils/computations";
-import { useQuery } from "@tanstack/react-query";
-import { QueryKeys } from "../../queries/keys";
-import { fetchOptions } from "../TradeTable/fetchOptions";
 import {
   debounce,
   timestampToPriceGuardDate,

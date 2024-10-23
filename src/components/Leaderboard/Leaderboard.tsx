@@ -7,6 +7,7 @@ import styles from "./leaderboard.module.css";
 export type ItemProps = {
   position: number;
   address: string;
+  username?: string;
   data: (string | JSX.Element)[];
   className?: string;
 };
@@ -17,7 +18,13 @@ type Props = {
   user?: ItemProps;
 };
 
-const LeaderboardItem = ({ position, address, data, className }: ItemProps) => {
+const LeaderboardItem = ({
+  position,
+  address,
+  username,
+  data,
+  className,
+}: ItemProps) => {
   return (
     <tr className={className ?? ""}>
       <td>{position}</td>
@@ -26,7 +33,7 @@ const LeaderboardItem = ({ position, address, data, className }: ItemProps) => {
           {position === 1 && <BlackWalletIcon />}
           {position === 2 && <BlackWalletIcon />}
           {position > 2 && <WalletIcon />}
-          {addressElision(address)}
+          {username ? username : addressElision(address)}
         </div>
       </td>
       {data.map((v) => (
@@ -70,14 +77,16 @@ export const Leaderboard = ({ header, items, user }: Props) => {
             className={styles.user}
             position={user.position}
             address={user.address}
+            username={user.username}
             data={user.data}
           />
         )}
-        {items.map(({ position, address, data }, i) => (
+        {items.map(({ position, address, username, data }, i) => (
           <LeaderboardItem
             className={positionToClassName(position)}
             position={position}
             address={address}
+            username={username}
             data={data}
             key={i}
           />

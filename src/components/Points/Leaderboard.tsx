@@ -17,20 +17,28 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { addressElision } from "../../utils/utils";
+import { addressElision, standardiseAddress } from "../../utils/utils";
 import { useAccount } from "@starknet-react/core";
 import { ReactNode } from "react";
 import { BraavosBadge } from "./BraavosBadge";
 import styles from "./points.module.css";
+import { useDomains } from "../../hooks/useDomains";
+import { useDomain } from "../../hooks/useDomain";
 
-export const ClickableUser = ({ address }: { address: string }) => (
+export const ClickableUser = ({
+  address,
+  username,
+}: {
+  address: string;
+  username: string | undefined;
+}) => (
   <a
     target="_blank"
     rel="noopener nofollow noreferrer"
     href={`https://starkscan.co/contract/${address}`}
     style={{ width: "115px" }}
   >
-    {addressElision(address)}
+    {username ? username : addressElision(address)}
   </a>
 );
 
@@ -39,10 +47,12 @@ const formatBigNumber = (n: number): string =>
 
 const Item = ({
   data,
+  username,
   braavosBonus,
   sx,
 }: {
   data: UserPoints;
+  username?: string;
   braavosBonus?: BraavosBonus;
   sx?: any;
 }) => {
@@ -70,7 +80,7 @@ const Item = ({
       <TableCell>{displayPosition}</TableCell>
       <TableCell>
         <div className={styles.leaderuser}>
-          <ClickableUser address={address} />
+          <ClickableUser address={address} username={username} />
           {braavosBonus && <BraavosBadge data={braavosBonus} />}
         </div>
       </TableCell>
@@ -94,6 +104,7 @@ const UserItemWithAccount = ({
     queryKey: [QueryKeys.userPoints, address],
     queryFn: async () => fetchUserPoints(address),
   });
+  const { username } = useDomain(address);
 
   if (isLoading || isError || !data) {
     return null;
@@ -102,6 +113,7 @@ const UserItemWithAccount = ({
   return (
     <Item
       data={data}
+      username={username ? username : undefined}
       braavosBonus={braavosBonus}
       sx={{ background: "#323232" }}
     />
@@ -137,6 +149,10 @@ export const Leaderboard = () => {
     queryKey: [QueryKeys.braavosBonus],
     queryFn: fetchBraavosBonus,
   });
+  const addresses = data
+    ? data.map((p) => standardiseAddress(p.address))
+    : undefined;
+  const { domains } = useDomains(addresses);
 
   if (isLoading) {
     return <LoadingAnimation />;
@@ -176,13 +192,22 @@ export const Leaderboard = () => {
         </TableHead>
         <TableBody>
           <UserItem braavos={braavosData} />
-          {data!.map((userPoints, i) => (
-            <Item
-              data={userPoints}
-              braavosBonus={braavosData && braavosData[userPoints.address]}
-              key={i}
-            />
-          ))}
+          {data!.map((userPoints, i) => {
+            const username =
+              domains?.find(
+                (d) =>
+                  standardiseAddress(d.address) ===
+                  standardiseAddress(userPoints.address)
+              )?.domain || undefined;
+            return (
+              <Item
+                data={userPoints}
+                username={username}
+                braavosBonus={braavosData && braavosData[userPoints.address]}
+                key={i}
+              />
+            );
+          })}
         </TableBody>
       </Table>
     </TableContainer>
