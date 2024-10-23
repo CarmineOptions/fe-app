@@ -1,9 +1,10 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { QueryKeys } from "../queries/keys";
-import { queryProposalVotes } from "../calls/getProposalVotes";
+import { fetchProposalVotes } from "../calls/getProposalVotes";
 
 export const useProposalVotes = (propId: number) => {
-  const key = `${QueryKeys.proposalVotes}-${propId}`;
-
-  return useQuery([key, propId], queryProposalVotes);
+  return useQuery({
+    queryKey: [QueryKeys.proposalVotes, propId],
+    queryFn: () => fetchProposalVotes(propId),
+  });
 };

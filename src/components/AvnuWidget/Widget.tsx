@@ -159,8 +159,8 @@ export const Widget = () => {
   const [slippage, setSlippage] = useState<number>(0.005); // default slippage .5%
   const [slippageOpen, setslippageOpen] = useState<boolean>(false);
   const [refreshCounter, setRefresh] = useState(0);
-  const buyTokenBalance = useUserBalance(buyToken.address);
-  const sellTokenBalance = useUserBalance(sellToken.address);
+  const { data: buyTokenBalance } = useUserBalance(buyToken.address);
+  const { data: sellTokenBalance } = useUserBalance(sellToken.address);
   const [notEnough, setNotEnough] = useState(false);
 
   const refresh = () => setRefresh(refreshCounter + 1);

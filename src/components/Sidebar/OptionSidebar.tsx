@@ -36,7 +36,7 @@ export const OptionSidebar = ({ option }: Props) => {
   const { account } = useAccount();
   const { connectAsync } = useConnect();
   const price = useCurrency(option.underlying.id);
-  const balanceRaw = useUserBalance(option.underlying.address);
+  const { data: balanceRaw } = useUserBalance(option.underlying.address);
   const defaultAmount =
     option.baseToken.id === TokenKey.BTC ||
     option.quoteToken.id === TokenKey.BTC

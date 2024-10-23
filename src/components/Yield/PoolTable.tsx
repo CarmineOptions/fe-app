@@ -38,8 +38,8 @@ export const PoolTable = () => {
           <div></div>
         </div>
         <div className={styles.container}>
-          {pools.map((pool) => (
-            <PoolItem pool={pool} />
+          {pools.map((pool, i) => (
+            <PoolItem key={i} pool={pool} />
           ))}
         </div>
       </div>

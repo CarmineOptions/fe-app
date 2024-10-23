@@ -1,4 +1,3 @@
-import { QueryFunctionContext } from "react-query";
 import { getDefiSpringClaimed } from "../../calls/getDefiSpringClaim";
 
 type ClaimCalldata = {
@@ -20,8 +19,7 @@ export type DefiSpringData = {
   claimed: bigint;
 };
 
-const defiSpringUrl =
-  "https://app.carmine.finance/defispring";
+const defiSpringUrl = "https://app.carmine.finance/defispring";
 
 export const fetchUserAllocation = async (address: string): Promise<bigint> => {
   const res = await fetch(
@@ -47,11 +45,9 @@ export const fetchCalldata = async (
   throw Error(message);
 };
 
-export const getDefiSpringData = async ({
-  queryKey,
-}: QueryFunctionContext<[string, string]>): Promise<DefiSpringData> => {
-  const address = queryKey[1];
-
+export const getDefiSpringData = async (
+  address: string
+): Promise<DefiSpringData> => {
   const allocationPromise = fetchUserAllocation(address);
   const calldataPromise = fetchCalldata(address);
   const claimedPromise = getDefiSpringClaimed(address);

@@ -19,4 +19,6 @@ export enum QueryKeys {
   proposalVotes = "PROPOSAL_VOTES",
   totalSupply = "TOTAL_SUPPLY",
   userDomain = "USER_DOMAIN",
+  poolData = "POOL_DATA",
+  apy = "APY",
 }

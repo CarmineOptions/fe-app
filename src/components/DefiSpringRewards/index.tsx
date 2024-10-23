@@ -20,21 +20,22 @@ import { LoadingAnimation } from "../Loading/Loading";
 import buttonStyles from "../../style/button.module.css";
 import styles from "./defi.module.css";
 import { QueryKeys } from "../../queries/keys";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { invalidateKey } from "../../queries/client";
 import { useAccount, useConnect } from "@starknet-react/core";
 
 export const RewardsWithAccount = ({
   account,
+  address,
 }: {
   account: AccountInterface;
+  address: string | undefined;
 }) => {
-  const address = account.address;
-
-  const { isLoading, isError, data } = useQuery(
-    [QueryKeys.defispring, address],
-    getDefiSpringData
-  );
+  const { isLoading, isError, data } = useQuery({
+    queryKey: [QueryKeys.defispring, address],
+    queryFn: async () => getDefiSpringData(address!),
+    enabled: !!address,
+  });
 
   const [claiming, setClaiming] = useState<boolean>(false);
 
@@ -157,10 +158,10 @@ export const RewardsWithAccount = ({
 };
 
 export const Rewards = () => {
-  const { account } = useAccount();
+  const { account, address } = useAccount();
   const { connectAsync } = useConnect();
 
-  if (!account) {
+  if (!account || !address) {
     return (
       <div>
         <p>Connect wallet to access Starknet Rewards</p>
@@ -174,5 +175,5 @@ export const Rewards = () => {
     );
   }
 
-  return <RewardsWithAccount account={account} />;
+  return <RewardsWithAccount account={account} address={address} />;
 };

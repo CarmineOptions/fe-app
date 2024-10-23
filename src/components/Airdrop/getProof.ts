@@ -2,7 +2,7 @@ import { hexToBN } from "../../utils/utils";
 import { debug } from "../../utils/debugger";
 import { apiUrl } from "../../api";
 import { readStorage } from "../CarmineStaking/calls";
-import { QueryFunctionContext } from "react-query";
+import { QueryFunctionContext } from "@tanstack/react-query";
 
 export type Eligible = {
   eligible: true;

@@ -1,15 +1,17 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { tradeLeaderboardDataQuery } from "./getTrades";
 import { Leaderboard } from "../Leaderboard";
 import { useAccount } from "@starknet-react/core";
 import { LoadingAnimation } from "../Loading/Loading";
 
 export const NotionalVolumeLeaderboard = () => {
-  const { account } = useAccount();
-  const { isLoading, isError, data } = useQuery(
-    ["notional-volume-leaderboard", account?.address],
-    tradeLeaderboardDataQuery
-  );
+  const { account, address } = useAccount();
+  const { isLoading, isError, error, data } = useQuery({
+    queryKey: ["notional-volume-leaderboard", address],
+    queryFn: async () => tradeLeaderboardDataQuery(address!),
+  });
+
+  console.log("BATTLECHARTS", { isLoading, isError, data, error });
 
   if (isLoading) {
     return <LoadingAnimation />;

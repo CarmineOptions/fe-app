@@ -78,7 +78,7 @@ const calcPortfolioValue = (
 export const MyPortfolio = () => {
   const prices = useCurrencies();
   const { data: positions } = usePositions();
-  const { data: stakes } = useStakes();
+  const { stakes } = useStakes();
   const [options, setOptions] = useState<"live" | "itm" | "otm">("live");
 
   const { positionsValueUsd, stakesValueUsd, totalValueUsd } =

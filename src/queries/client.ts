@@ -1,4 +1,4 @@
-import { QueryClient, QueryClientConfig } from "react-query";
+import { QueryClient, QueryClientConfig } from "@tanstack/react-query";
 import { QueryKeys } from "./keys";
 
 // 5 minutes
@@ -15,8 +15,8 @@ const queryConfig: QueryClientConfig = {
 export const queryClient = new QueryClient(queryConfig);
 
 export const invalidatePositions = () =>
-  queryClient.invalidateQueries(QueryKeys.position);
+  queryClient.invalidateQueries({ queryKey: [QueryKeys.position] });
 export const invalidateStake = () =>
-  queryClient.invalidateQueries(QueryKeys.stake);
+  queryClient.invalidateQueries({ queryKey: [QueryKeys.stake] });
 export const invalidateKey = (queryKey: QueryKeys | string) =>
-  queryClient.invalidateQueries(queryKey);
+  queryClient.invalidateQueries({ queryKey: [queryKey] });

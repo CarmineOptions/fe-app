@@ -1,4 +1,3 @@
-import { QueryFunctionContext } from "react-query";
 import { GovernanceContract } from "../utils/blockchain";
 
 export const fetchLiveProposals = async (): Promise<number[]> => {
@@ -46,12 +45,9 @@ export const fetchUserVotes = async (
   return proposals.map((propId, index) => ({ propId, opinion: parsed[index] }));
 };
 
-export const queryProposalsWithOpinions = async ({
-  queryKey,
-}: QueryFunctionContext<[string, string | undefined]>): Promise<
-  ProposalWithOpinion[]
-> => {
-  const userAddress = queryKey[1];
+export const fetchProposalsWithOpinions = async (
+  address: string
+): Promise<ProposalWithOpinion[]> => {
   const proposals = await fetchLiveProposals();
-  return fetchUserVotes(proposals, userAddress);
+  return fetchUserVotes(proposals, address);
 };

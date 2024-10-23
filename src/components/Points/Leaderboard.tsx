@@ -1,11 +1,11 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { QueryKeys } from "../../queries/keys";
 import {
   BraavosBonus,
   UserPoints,
   fetchBraavosBonus,
   fetchTopUserPoints,
-  fetchUserPointsQuery,
+  fetchUserPoints,
 } from "./fetch";
 import { LoadingAnimation } from "../Loading/Loading";
 import tableStyles from "../../style/table.module.css";
@@ -90,10 +90,10 @@ const UserItemWithAccount = ({
   address: string;
   braavosBonus?: BraavosBonus;
 }) => {
-  const { isLoading, isError, data } = useQuery(
-    [QueryKeys.userPoints, address],
-    fetchUserPointsQuery
-  );
+  const { isLoading, isError, data } = useQuery({
+    queryKey: [QueryKeys.userPoints, address],
+    queryFn: async () => fetchUserPoints(address),
+  });
 
   if (isLoading || isError || !data) {
     return null;
@@ -113,20 +113,15 @@ const UserItem = ({
 }: {
   braavos?: { [key: string]: BraavosBonus };
 }) => {
-  const { account } = useAccount();
+  const { address } = useAccount();
 
-  if (!account) {
+  if (!address) {
     return null;
   }
 
-  const braavosBonus = braavos && braavos[account.address];
+  const braavosBonus = braavos && braavos[address];
 
-  return (
-    <UserItemWithAccount
-      braavosBonus={braavosBonus}
-      address={account.address}
-    />
-  );
+  return <UserItemWithAccount braavosBonus={braavosBonus} address={address} />;
 };
 
 const Bold = ({ children }: { children: ReactNode }) => (
@@ -134,14 +129,14 @@ const Bold = ({ children }: { children: ReactNode }) => (
 );
 
 export const Leaderboard = () => {
-  const { isLoading, isError, data } = useQuery(
-    QueryKeys.topUserPoints,
-    fetchTopUserPoints
-  );
-  const { data: braavosData } = useQuery(
-    QueryKeys.braavosBonus,
-    fetchBraavosBonus
-  );
+  const { isLoading, isError, data } = useQuery({
+    queryKey: [QueryKeys.topUserPoints],
+    queryFn: fetchTopUserPoints,
+  });
+  const { data: braavosData } = useQuery({
+    queryKey: [QueryKeys.braavosBonus],
+    queryFn: fetchBraavosBonus,
+  });
 
   if (isLoading) {
     return <LoadingAnimation />;

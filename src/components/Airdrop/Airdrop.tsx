@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { AccountInterface } from "starknet";
 
-import { Eligible, getAirdropDataQuery } from "./getProof";
+import { Eligible, getProof } from "./getProof";
 import { shortInteger } from "../../utils/computations";
 import { isMainnet } from "../../constants/amm";
 import { QueryKeys } from "../../queries/keys";
@@ -47,13 +47,15 @@ const AirdropTemplate = ({ message }: { message: string }) => (
 
 export const AirdropWithAccount = ({
   account,
+  address,
 }: {
   account: AccountInterface;
+  address: string;
 }) => {
-  const { isLoading, isError, data } = useQuery(
-    [QueryKeys.airdropData, account.address],
-    getAirdropDataQuery
-  );
+  const { isLoading, isError, data } = useQuery({
+    queryKey: [QueryKeys.airdropData, address],
+    queryFn: async () => getProof(address),
+  });
 
   if (isError) {
     return (
@@ -86,9 +88,9 @@ export const AirdropWithAccount = ({
 };
 
 export const Airdrop = () => {
-  const { account } = useAccount();
+  const { account, address } = useAccount();
 
-  if (!account) {
+  if (!account || !address) {
     return (
       <AirdropTemplate message="Connect your wallet to see if you are eligible for an airdrop" />
     );
@@ -100,5 +102,5 @@ export const Airdrop = () => {
     );
   }
 
-  return <AirdropWithAccount account={account} />;
+  return <AirdropWithAccount account={account} address={address} />;
 };

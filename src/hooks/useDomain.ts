@@ -1,17 +1,10 @@
-import { QueryFunctionContext, useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { QueryKeys } from "../queries/keys";
 import { useAccount } from "@starknet-react/core";
 
 type DomainResponse = { domain?: string; domain_expiry?: number };
 
-export const queryDomain = async ({
-  queryKey,
-}: QueryFunctionContext<[string, string | undefined]>): Promise<
-  string | undefined
-> => {
-  const address = queryKey[1];
-  if (!address) return;
-
+export const fetchDomain = async (address: string): Promise<string | null> => {
   const res = await fetch(
     `https://api.starknet.id/addr_to_domain?addr=${address}`
   );
@@ -20,17 +13,21 @@ export const queryDomain = async ({
   if (body.domain) {
     return body.domain;
   }
+
+  return null;
 };
 
 export const useDomain = () => {
   const { address } = useAccount();
 
-  const key = `${QueryKeys.userDomain}-${address}`;
-
-  const { data, ...res } = useQuery([key, address], queryDomain);
+  const { data, ...res } = useQuery({
+    queryKey: [QueryKeys.userDomain, address],
+    queryFn: async () => fetchDomain(address!),
+    enabled: !!address,
+  });
 
   return {
     ...res,
-    username: data as string | undefined,
+    username: data as string | undefined | null,
   };
 };

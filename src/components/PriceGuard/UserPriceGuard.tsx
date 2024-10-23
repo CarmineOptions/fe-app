@@ -1,9 +1,6 @@
 import { LoadingAnimation } from "../Loading/Loading";
-import { useQuery } from "react-query";
-import { QueryKeys } from "../../queries/keys";
 import { useAccount, useConnect } from "@starknet-react/core";
 import { AccountInterface } from "starknet";
-import { fetchPositions } from "../PositionTable/fetchPositions";
 import { OptionWithPosition } from "../../classes/Option";
 import { showToast } from "../../redux/actions";
 import { useTxPending } from "../../hooks/useRecentTxs";
@@ -18,6 +15,7 @@ import { invalidatePositions } from "../../queries/client";
 import { ToastType } from "../../redux/reducers/ui";
 import { ReactComponent as ArrowIcon } from "./arrow.svg";
 import { TokenNamedBadge } from "../TokenBadge/Badge";
+import { usePositions } from "../../hooks/usePositions";
 
 const PriceGuardDisplay = ({
   option,
@@ -99,10 +97,7 @@ const PriceGuardDisplay = ({
 type Sorter = "asset" | "amount" | "price" | "duration" | "status";
 
 const WithAccount = ({ account }: { account: AccountInterface }) => {
-  const { isLoading, isError, data } = useQuery(
-    [QueryKeys.position, account.address],
-    fetchPositions
-  );
+  const { data, isLoading, isError } = usePositions();
   const [asset, setAsset] = useState<TokenKey | "all">("all");
   const [order, setOrder] = useState<"asc" | "desc">("asc");
   const [sortBy, setSortBy] = useState<Sorter | undefined>();

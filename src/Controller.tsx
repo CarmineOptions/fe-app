@@ -1,9 +1,9 @@
 import { ThemeProvider } from "@mui/material";
-import { QueryClientProvider } from "react-query";
 import { queryClient } from "./queries/client";
 import { ReactNode, useEffect } from "react";
 import { theme } from "./style/themes";
 import { setIsMobile } from "./redux/actions";
+import { QueryClientProvider } from "@tanstack/react-query";
 
 type Props = { children: ReactNode };
 

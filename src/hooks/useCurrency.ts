@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { TokenKey } from "../classes/Token";
 import { apiUrl } from "../api";
 import { ApiResponse, TokenPriceData } from "../types/api";
@@ -14,10 +14,10 @@ const tokenPriceQuery = async () => {
 };
 
 export const useCurrency = (id: TokenKey): number | undefined => {
-  const { isLoading, isError, data } = useQuery(
-    [QueryKeys.tokenPrices],
-    tokenPriceQuery
-  );
+  const { isLoading, isError, data } = useQuery({
+    queryKey: [QueryKeys.tokenPrices],
+    queryFn: tokenPriceQuery,
+  });
 
   if (isLoading || isError || !data) {
     return undefined;

@@ -15,6 +15,7 @@ import { coreTeamAddresses } from "../constants/amm";
 
 import styles from "./governance.module.css";
 import { useAccount } from "@starknet-react/core";
+import { standardiseAddress } from "../utils/utils";
 
 const VotingSubpage = () => {
   return (
@@ -69,7 +70,7 @@ const ProposeOptionsSubpage = () => {
 };
 
 const Governance = () => {
-  const { account } = useAccount();
+  const { address } = useAccount();
   const subpage = useGovernanceSubpage();
   const navigate = useNavigate();
 
@@ -135,18 +136,19 @@ const Governance = () => {
             Staking
           </button>
           {/* CURRENTLY ONLY SHOW TO THE CORE TEAM MEMBERS */}
-          {account?.address && coreTeamAddresses.includes(account.address) && (
-            <button
-              className={`${
-                subpage === GovernanceSubpage.Propose && "primary active"
-              } ${buttonStyles.offset}`}
-              onClick={() => {
-                handleNavigateClick(GovernanceSubpage.Propose);
-              }}
-            >
-              Propose
-            </button>
-          )}
+          {address &&
+            coreTeamAddresses.includes(standardiseAddress(address)) && (
+              <button
+                className={`${
+                  subpage === GovernanceSubpage.Propose && "primary active"
+                } ${buttonStyles.offset}`}
+                onClick={() => {
+                  handleNavigateClick(GovernanceSubpage.Propose);
+                }}
+              >
+                Propose
+              </button>
+            )}
         </div>
         <div className="divider" />
       </div>
