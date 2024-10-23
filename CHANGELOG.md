@@ -1,3 +1,10 @@
+## [2.7.1](https://github.com/CarmineOptions/fe-app/compare/v2.7.0...v2.7.1) (2024-10-23)
+
+
+### Bug Fixes
+
+* update react query ([1fcbf08](https://github.com/CarmineOptions/fe-app/commit/1fcbf0829004b890241faad37074b35ddb702297))
+
 # [2.7.0](https://github.com/CarmineOptions/fe-app/compare/v2.6.1...v2.7.0) (2024-10-22)
 
 
