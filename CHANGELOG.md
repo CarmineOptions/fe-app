@@ -1,3 +1,11 @@
+## [2.7.3](https://github.com/CarmineOptions/fe-app/compare/v2.7.2...v2.7.3) (2024-10-23)
+
+
+### Bug Fixes
+
+* battlecharts fontsize ([9989bbb](https://github.com/CarmineOptions/fe-app/commit/9989bbbf4e73b673e8dd50e5136d5374b4d4af68))
+* rework points leaderboard ([120641f](https://github.com/CarmineOptions/fe-app/commit/120641fab9a977dca466fd6ffd69b99d96c473fc))
+
 ## [2.7.2](https://github.com/CarmineOptions/fe-app/compare/v2.7.1...v2.7.2) (2024-10-23)
 
 
