@@ -41,6 +41,12 @@
   border: solid 1px var(--GREY);
 }
 
+.badgecontainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .badge {
   background: #FAB000;
   color: black;
@@ -60,7 +66,7 @@
   color: black;
 }
 
-.first td span {
+.first td p {
   color: black;
 }
 
@@ -77,7 +83,7 @@
   color: black;
 }
 
-.second td span {
+.second td p {
   color: black;
 }
 

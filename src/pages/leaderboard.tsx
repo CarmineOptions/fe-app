@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 import { Layout } from "../components/Layout";
-import { Leaderboard } from "../components/Points";
+import { PointsLeaderboard } from "../components/Points";
 import { Helmet } from "react-helmet";
 
 const LeaderboardPage = () => {
@@ -20,7 +20,7 @@ const LeaderboardPage = () => {
         <p>Elevate Your Status, Enhance Your Rewards</p>
         <p>Season 2 is now live!</p>
         <h2>Leaderboard</h2>
-        <Leaderboard />
+        <PointsLeaderboard />
       </div>
     </Layout>
   );

@@ -148,6 +148,7 @@ export const MultiDialog = () => {
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
       PaperProps={{ sx: { borderRadius: 0 } }}
+      disableScrollLock
     >
       {dialogContent === DialogContentElem.NetworkMismatch && (
         <Border>

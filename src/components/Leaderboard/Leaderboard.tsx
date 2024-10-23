@@ -3,6 +3,8 @@ import { ReactComponent as BlackWalletIcon } from "./wallet.svg";
 import { ReactComponent as WalletIcon } from "./whiteWallet.svg";
 
 import styles from "./leaderboard.module.css";
+import { BraavosBonus } from "../Points/fetch";
+import { BraavosBadge } from "../Points";
 
 export type ItemProps = {
   position: number;
@@ -10,13 +12,47 @@ export type ItemProps = {
   username?: string;
   data: (string | JSX.Element)[];
   className?: string;
+  braavos?: BraavosBonus;
 };
 
 type Props = {
   header: string[];
   items: ItemProps[];
   user?: ItemProps;
+  braavos?: {
+    [key: string]: BraavosBonus;
+  };
 };
+
+export const ClickableUser = ({
+  address,
+  username,
+  position,
+  braavos,
+}: {
+  address: string;
+  username: string | undefined;
+  position: number;
+  braavos?: BraavosBonus;
+}) => (
+  <div className={styles.badgecontainer}>
+    <div className={styles.wallet}>
+      {position < 3 ? <BlackWalletIcon /> : <WalletIcon />}
+      <a
+        target="_blank"
+        rel="noopener nofollow noreferrer"
+        href={`https://starkscan.co/contract/${address}`}
+        style={{
+          color: position < 3 ? "black" : "white",
+          textDecoration: "none",
+        }}
+      >
+        {username ? username : addressElision(address)}
+      </a>
+    </div>
+    {braavos && <BraavosBadge data={braavos} />}
+  </div>
+);
 
 const LeaderboardItem = ({
   position,
@@ -24,17 +60,18 @@ const LeaderboardItem = ({
   username,
   data,
   className,
+  braavos,
 }: ItemProps) => {
   return (
     <tr className={className ?? ""}>
       <td>{position}</td>
       <td>
-        <div className={styles.wallet}>
-          {position === 1 && <BlackWalletIcon />}
-          {position === 2 && <BlackWalletIcon />}
-          {position > 2 && <WalletIcon />}
-          {username ? username : addressElision(address)}
-        </div>
+        <ClickableUser
+          address={address}
+          username={username}
+          position={position}
+          braavos={braavos}
+        />
       </td>
       {data.map((v) => (
         <td>{v}</td>
@@ -44,7 +81,7 @@ const LeaderboardItem = ({
   );
 };
 
-export const Leaderboard = ({ header, items, user }: Props) => {
+export const Leaderboard = ({ header, items, user, braavos }: Props) => {
   const positionToClassName = (position: number) => {
     if (position > 3 || position < 1) {
       return;
@@ -79,6 +116,7 @@ export const Leaderboard = ({ header, items, user }: Props) => {
             address={user.address}
             username={user.username}
             data={user.data}
+            braavos={braavos && braavos[user.address]}
           />
         )}
         {items.map(({ position, address, username, data }, i) => (
@@ -88,6 +126,7 @@ export const Leaderboard = ({ header, items, user }: Props) => {
             address={address}
             username={username}
             data={data}
+            braavos={braavos && braavos[address]}
             key={i}
           />
         ))}
