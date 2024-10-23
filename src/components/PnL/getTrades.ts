@@ -1,4 +1,5 @@
-import { QueryFunctionContext } from "react-query";
+import { standardiseAddress } from "./../../utils/utils";
+import { QueryFunctionContext } from "@tanstack/react-query";
 import { apiUrl } from "../../api";
 
 export type TradeWithPrices = {
@@ -225,7 +226,7 @@ type TradeLeaderboardData = {
 
 const calculateLeaderboardData = (
   trades: TradeWithPrices[],
-  address?: string
+  address: string | undefined
 ): [TradeLeaderboardData[], TradeLeaderboardData | undefined] => {
   const userMap: { [key: string]: TradeWithPrices[] } = trades.reduce(
     (acc, obj) => {
@@ -259,13 +260,15 @@ const calculateLeaderboardData = (
     return [tradeLeaderboardData, undefined];
   }
 
-  const index = sortedCallers.findIndex(([a, _]) => a === address);
+  const stdAddress = standardiseAddress(address);
+
+  const index = sortedCallers.findIndex(([a, _]) => a === stdAddress);
 
   const user = {
-    address,
-    notionalVolume: calculateNotionalVolumeSingleUser(userMap[address]),
+    address: stdAddress,
+    notionalVolume: calculateNotionalVolumeSingleUser(userMap[stdAddress]),
     position: index + 1,
-    pnl: calculatePnL(userMap[address]).at(-1)?.usd || 0,
+    pnl: calculatePnL(userMap[stdAddress]).at(-1)?.usd || 0,
   };
 
   return [tradeLeaderboardData, user];
@@ -278,11 +281,9 @@ export const notionalVolumeQuery = async (): Promise<{
   return calculateNotionalVolume(allTrades);
 };
 
-export const tradeLeaderboardDataQuery = async ({
-  queryKey,
-}: QueryFunctionContext<[string, string | undefined]>): Promise<
-  [TradeLeaderboardData[], TradeLeaderboardData | undefined]
-> => {
+export const tradeLeaderboardDataQuery = async (
+  address: string | undefined
+): Promise<[TradeLeaderboardData[], TradeLeaderboardData | undefined]> => {
   const allTrades = await getAllTrades();
-  return calculateLeaderboardData(allTrades, queryKey[1]);
+  return calculateLeaderboardData(allTrades, address);
 };

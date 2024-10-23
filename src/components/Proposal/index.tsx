@@ -1,23 +1,24 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { NoContent } from "../TableNoContent";
 import ProposalTable from "./ProposalTable";
-import { queryProposalsWithOpinions } from "../../calls/liveProposals";
+import { fetchProposalsWithOpinions } from "../../calls/liveProposals";
 import { LoadingAnimation } from "../Loading/Loading";
 import { useAccount } from "@starknet-react/core";
 import { useUserBalance } from "../../hooks/useUserBalance";
 import { VE_CRM_ADDRESS } from "../../constants/amm";
 
 export const Proposals = () => {
-  const { account } = useAccount();
-  const balance = useUserBalance(VE_CRM_ADDRESS);
+  const { account, address } = useAccount();
+  const { data: balance } = useUserBalance(VE_CRM_ADDRESS);
   const {
     isLoading,
     isError,
     data: proposals,
-  } = useQuery(
-    [`proposals-${account?.address}`, account?.address],
-    queryProposalsWithOpinions
-  );
+  } = useQuery({
+    queryKey: ["proposals-with-opinion", address],
+    queryFn: async () => fetchProposalsWithOpinions(address!),
+    enabled: !!address,
+  });
 
   if (isError) {
     return <p>Something went wrong, please try again later.</p>;

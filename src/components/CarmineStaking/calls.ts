@@ -1,4 +1,4 @@
-import { QueryFunctionContext } from "react-query";
+import { QueryFunctionContext } from "@tanstack/react-query";
 import { getStakes } from "../../calls/carmineStake";
 import { balanceOf } from "../../calls/balanceOf";
 import {
@@ -23,10 +23,9 @@ type StakingData = {
   stakes: CarmineStake[];
 };
 
-export const fetchStakingData = async ({
-  queryKey,
-}: QueryFunctionContext<[string, string]>): Promise<StakingData> => {
-  const address = queryKey[1];
+export const fetchStakingData = async (
+  address: string
+): Promise<StakingData> => {
   const promises = [
     balanceOf(address, VE_CRM_ADDRESS),
     balanceOf(address, CRM_ADDRESS),

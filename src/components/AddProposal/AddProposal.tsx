@@ -11,9 +11,6 @@ import {
 } from "../../constants/amm";
 import { OptionType } from "../../types/options";
 import { PairNamedBadge } from "../TokenBadge";
-import { useQuery } from "react-query";
-import { QueryKeys } from "../../queries/keys";
-import { fetchOptions } from "../TradeTable/fetchOptions";
 import { LoadingAnimation } from "../Loading/Loading";
 import { handleDuplicates, suggestOptions } from "./suggest";
 import { timestampToDateAndTime } from "../../utils/utils";
@@ -24,6 +21,7 @@ import { Close } from "@mui/icons-material";
 import { ProposalText } from "./ProposalText";
 import { proposeOptions } from "./proposeOptions";
 import { useAccount } from "@starknet-react/core";
+import { useOptions } from "../../hooks/useOptions";
 
 const strkUsdcCallPool = new Pool(STRK_ADDRESS, USDC_ADDRESS, OptionType.Call);
 
@@ -73,10 +71,7 @@ const getRelevantMaturities = (count = 20, offset = 1) => {
 
 export const AddProposal = () => {
   const { account } = useAccount();
-  const { isLoading, isError, data } = useQuery(
-    QueryKeys.options,
-    fetchOptions
-  );
+  const { isLoading, isError, options: data } = useOptions();
   const [options, setOptions] = useState<ProposalOption[]>([]);
 
   const maturities = getRelevantMaturities();

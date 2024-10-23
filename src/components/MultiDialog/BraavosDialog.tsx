@@ -1,5 +1,5 @@
 import { Skeleton } from "@mui/material";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { QueryKeys } from "../../queries/keys";
 import { fetchBraavosBonus } from "../Points/fetch";
 import { useAccount } from "@starknet-react/core";

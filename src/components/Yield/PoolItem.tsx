@@ -1,6 +1,4 @@
-import { useQuery } from "react-query";
 import { PairBadge } from "../TokenBadge";
-import { queryDefiSpringApy, queryPoolCapital } from "./fetchStakeCapital";
 import { Pool } from "../../classes/Pool";
 import { shortInteger } from "../../utils/computations";
 import { useCurrency } from "../../hooks/useCurrency";
@@ -8,29 +6,65 @@ import { math64toDecimal } from "../../utils/units";
 import { openSidebar, setSidebarContent } from "../../redux/actions";
 import { PoolSidebar } from "../Sidebar";
 import { LoadingAnimation } from "../Loading/Loading";
-import { QueryKeys } from "../../queries/keys";
 import { TokenKey } from "../../classes/Token";
 import { DefispringBadge } from "../Badges";
 import { formatNumber } from "../../utils/utils";
 import { useStakes } from "../../hooks/useStakes";
 import styles from "./pooltable.module.css";
 import { useIsMobile } from "../../hooks/useIsMobile";
+import { useDefispringApy } from "../../hooks/useDefyspringApy";
+import { usePoolApy } from "../../hooks/usePoolApy";
+import { usePoolState } from "../../hooks/usePoolState";
 
 type Props = {
   pool: Pool;
 };
 
+const usePoolData = (pool: Pool) => {
+  const {
+    apy,
+    isLoading: isApyLoading,
+    isError: isApyError,
+  } = usePoolApy(pool);
+  const {
+    poolState,
+    isLoading: isPoolStateLoading,
+    isError: isPoolStateError,
+  } = usePoolState(pool);
+
+  if (isApyError || isPoolStateError) {
+    return {
+      data: undefined,
+      isError: true,
+      isLoading: false,
+    };
+  }
+
+  if (isApyLoading || isPoolStateLoading) {
+    return {
+      data: undefined,
+      isError: false,
+      isLoading: true,
+    };
+  }
+
+  if (apy && poolState) {
+    return {
+      data: { state: poolState, apy },
+      isLoading: false,
+      isError: false,
+    };
+  }
+
+  throw Error("Pool state - unreachable");
+};
+
 export const PoolItem = ({ pool }: Props) => {
-  const { isLoading, isError, data } = useQuery(
-    [`pool-data-${pool.apiPoolId}`, pool.apiPoolId],
-    queryPoolCapital
-  );
-  const { data: defispringApy } = useQuery(
-    [QueryKeys.defispringApy],
-    queryDefiSpringApy
-  );
+  const { data, isLoading, isError } = usePoolData(pool);
+
+  const { defispringApy } = useDefispringApy();
   const isWideScreen = !useIsMobile();
-  const { data: stakes } = useStakes();
+  const { stakes } = useStakes();
   const price = useCurrency(pool.underlying.id);
   const isDefispringPool =
     pool.baseToken.id !== TokenKey.BTC && pool.quoteToken.id !== TokenKey.BTC;

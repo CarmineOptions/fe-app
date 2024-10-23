@@ -1,4 +1,4 @@
-import { QueryFunctionContext } from "react-query";
+import { QueryFunctionContext } from "@tanstack/react-query";
 import { apiUrl } from "../../api";
 import { ApiResponse, APYData, PoolData } from "../../types/api";
 

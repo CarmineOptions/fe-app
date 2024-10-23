@@ -1,6 +1,6 @@
 import { OptionWithPosition } from "../../classes/Option";
 import { debug } from "../../utils/debugger";
-import { QueryFunctionContext } from "react-query";
+import { QueryFunctionContext } from "@tanstack/react-query";
 import { getOptionsWithPositionOfUser } from "../../calls/getOptionsWithPosition";
 import { parseBatchOfOptions } from "../../utils/optionParsers/batch";
 import { parseOptionWithPosition } from "../../utils/optionParsers/parseOptionWithPosition";

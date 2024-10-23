@@ -5,15 +5,13 @@ import OptionsTable from "./OptionsTable";
 import { isCall, isLong, uniquePrimitiveValues } from "../../utils/utils";
 import { LoadingAnimation } from "../Loading/Loading";
 import { NoContent } from "../TableNoContent";
-import { fetchOptions } from "./fetchOptions";
-import { useQuery } from "react-query";
-import { QueryKeys } from "../../queries/keys";
 import { Pair, PairKey } from "../../classes/Pair";
 import { PairNamedBadge } from "../TokenBadge";
 import { BtcToken, EthToken, StrkToken, UsdcToken } from "../../classes/Token";
 import { InfoIcon } from "../InfoIcon";
 
 import styles from "./tradetable.module.css";
+import { useOptions } from "../../hooks/useOptions";
 
 const getText = (type: OptionType, side: OptionSide | "all") => {
   if (side === "all") {
@@ -27,10 +25,7 @@ const getText = (type: OptionType, side: OptionSide | "all") => {
 };
 
 export const TradeTable = () => {
-  const { isLoading, isError, data } = useQuery(
-    QueryKeys.options,
-    fetchOptions
-  );
+  const { isLoading, isError, options } = useOptions();
   const [side, setSide] = useState<OptionSide.Long | OptionSide.Short | "all">(
     "all"
   );
@@ -43,11 +38,11 @@ export const TradeTable = () => {
     return <LoadingAnimation />;
   }
 
-  if (isError || !data) {
+  if (isError || !options) {
     return <div>Something went wrong</div>;
   }
 
-  const thisPairOptions = data.filter((option) => option.isPair(pair));
+  const thisPairOptions = options.filter((option) => option.isPair(pair));
 
   const maturities = thisPairOptions
     .map((o) => o.maturity)

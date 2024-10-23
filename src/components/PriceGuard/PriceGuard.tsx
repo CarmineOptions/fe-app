@@ -4,7 +4,7 @@ import { useUserBalance } from "../../hooks/useUserBalance";
 import { useCurrency } from "../../hooks/useCurrency";
 import { LoadingAnimation } from "../Loading/Loading";
 import { shortInteger } from "../../utils/computations";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { QueryKeys } from "../../queries/keys";
 import { fetchOptions } from "../TradeTable/fetchOptions";
 import {
@@ -24,6 +24,7 @@ import { ReactComponent as CogIcon } from "./cog.svg";
 import styles from "./priceguard.module.css";
 import { TokenNamedBadge } from "../TokenBadge";
 import { TransactionState } from "../../types/network";
+import { useOptions } from "../../hooks/useOptions";
 
 const InfoIcon = ({ msg }: { msg: string }) => {
   return (
@@ -40,16 +41,13 @@ export const PriceGuard = () => {
   const { connectAsync } = useConnect();
   const [currency, setCurrency] = useState<TokenKey>(TokenKey.STRK);
   const token = Token.byKey(currency);
-  const balance = useUserBalance(token.address);
+  const { data: balance } = useUserBalance(token.address);
   const displayBalance =
     balance === undefined
       ? undefined
       : shortInteger(balance.toString(10), token.decimals).toFixed(4);
   const valueInUsd = useCurrency(currency);
-  const { isLoading, isError, data } = useQuery(
-    QueryKeys.options,
-    fetchOptions
-  );
+  const { options, isLoading, isError } = useOptions();
   const [currentStrike, setCurrentStrike] = useState<number>();
   const [size, setSize] = useState<number>(0);
   const [textSize, setTextSize] = useState<string>("");
@@ -66,10 +64,10 @@ export const PriceGuard = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const callWithDelay = useCallback(
     debounce((size: number, controller: AbortController) => {
-      if (!data) {
+      if (!options) {
         return;
       }
-      const options = data.filter(
+      const longPuts = options.filter(
         // only Long Puts for the chosen currency
         (o) =>
           o.baseToken.id === currency &&
@@ -78,7 +76,7 @@ export const PriceGuard = () => {
           o.isLong &&
           o.isFresh
       );
-      const pickedOption = options.find(
+      const pickedOption = longPuts.find(
         (o) => o.maturity === expiry && o.strike === currentStrike
       )!;
 
@@ -101,7 +99,7 @@ export const PriceGuard = () => {
           setPriceLoading(false);
         });
     }),
-    [data, expiry, currentStrike]
+    [options, expiry, currentStrike]
   );
 
   useEffect(() => {
@@ -111,17 +109,17 @@ export const PriceGuard = () => {
       controller.abort();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currency, expiry, currentStrike, size, data]);
+  }, [currency, expiry, currentStrike, size, options]);
 
   if (valueInUsd === undefined || isLoading) {
     return <LoadingAnimation />;
   }
 
-  if (isError || !data) {
+  if (isError || !options) {
     return <p>Something went wrong, please try again later</p>;
   }
 
-  const options = data.filter(
+  const longPuts = options.filter(
     // only Long Puts for the chosen currency
     (o) =>
       o.baseToken.id === currency &&
@@ -133,7 +131,7 @@ export const PriceGuard = () => {
 
   const handleCurrencyChange = (event: SelectChangeEvent) => {
     const newCurrency = event.target.value as TokenKey;
-    const options = data.filter(
+    const longPuts = options.filter(
       // only Long Puts for the chosen currency
       (o) =>
         o.baseToken.id === newCurrency &&
@@ -143,8 +141,8 @@ export const PriceGuard = () => {
         o.isFresh
     );
     setCurrency(newCurrency);
-    if (options.length) {
-      setCurrentStrike(options[0].strike);
+    if (longPuts.length) {
+      setCurrentStrike(longPuts[0].strike);
     }
   };
 
@@ -181,30 +179,30 @@ export const PriceGuard = () => {
   };
 
   // show all expiries
-  const expiries = options
+  const expiries = longPuts
     .map((o) => o.maturity)
     .filter(uniquePrimitiveValues)
     .sort();
 
-  if (options.length > 0 && (!expiry || !expiries.includes(expiry))) {
+  if (longPuts.length > 0 && (!expiry || !expiries.includes(expiry))) {
     setExpiry(expiries[0]);
   }
 
   // show strikes for current expiry
-  const strikes = options
+  const strikes = longPuts
     .filter((o) => o.maturity === expiry)
     .map((o) => o.strike)
     .filter(uniquePrimitiveValues)
     .sort();
 
   if (
-    options.length > 0 &&
+    longPuts.length > 0 &&
     (!currentStrike || !strikes.includes(currentStrike))
   ) {
     setCurrentStrike(strikes[0]);
   }
 
-  const pickedOption = options.find(
+  const pickedOption = longPuts.find(
     (o) => o.maturity === expiry && o.strike === currentStrike
   )!;
 

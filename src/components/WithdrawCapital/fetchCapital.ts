@@ -1,5 +1,5 @@
 import { debug } from "../../utils/debugger";
-import { QueryFunctionContext } from "react-query";
+import { QueryFunctionContext } from "@tanstack/react-query";
 import { getUserPoolInfo } from "../../calls/getUserPoolInfo";
 import { UserPoolInfo } from "../../classes/Pool";
 

@@ -1,29 +1,21 @@
 import { useAccount } from "@starknet-react/core";
 import { balanceOf } from "./../calls/balanceOf";
-import { QueryFunctionContext, useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
+import { QueryKeys } from "../queries/keys";
 
-export const queryUserBalance = async ({
-  queryKey,
-}: QueryFunctionContext<[string, string | undefined, string]>): Promise<
-  bigint | undefined
-> => {
-  const userAddress = queryKey[1];
-  const tokenAddress = queryKey[2];
-
-  if (!userAddress) {
-    return undefined;
-  }
-
+export const queryUserBalance = async (
+  userAddress: string,
+  tokenAddress: string
+): Promise<bigint | undefined> => {
   return balanceOf(userAddress, tokenAddress);
 };
 
-export const useUserBalance = (tokenAddress: string): bigint | undefined => {
-  const { account } = useAccount();
+export const useUserBalance = (tokenAddress: string) => {
+  const { address } = useAccount();
 
-  const { data } = useQuery(
-    [`${account?.address}-${tokenAddress}`, account?.address, tokenAddress],
-    queryUserBalance
-  );
-
-  return data;
+  return useQuery({
+    queryKey: [QueryKeys.userBalance, address, tokenAddress],
+    queryFn: async () => queryUserBalance(address!, tokenAddress),
+    enabled: !!address,
+  });
 };

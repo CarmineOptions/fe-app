@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 import { OptionWithPosition } from "../../classes/Option";
 import { useAccount } from "@starknet-react/core";

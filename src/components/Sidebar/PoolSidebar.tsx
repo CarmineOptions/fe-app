@@ -18,12 +18,10 @@ import { usePoolInfo } from "../../hooks/usePoolInfo";
 
 import styles from "./pool.module.css";
 import { formatNumber } from "../../utils/utils";
-import { useQuery } from "react-query";
-import { QueryKeys } from "../../queries/keys";
-import { queryDefiSpringApy } from "../Yield/fetchStakeCapital";
 import { TokenKey } from "../../classes/Token";
 import { LoadingAnimation } from "../Loading/Loading";
 import { BoxTwoValues } from "./Utils";
+import { useDefispringApy } from "../../hooks/useDefyspringApy";
 
 type Props = {
   pool: Pool;
@@ -33,10 +31,10 @@ type Props = {
 export const PoolSidebar = ({ pool, initialAction }: Props) => {
   const { account } = useAccount();
   const { connectAsync } = useConnect();
-  const { data: poolInfo } = usePoolInfo(pool.apiPoolId);
-  const { data: stakes } = useStakes();
+  const { poolInfo } = usePoolInfo(pool.apiPoolId);
+  const { stakes } = useStakes();
   const price = useCurrency(pool.underlying.id);
-  const balanceRaw = useUserBalance(pool.underlying.address);
+  const { data: balanceRaw } = useUserBalance(pool.underlying.address);
   const [action, setAction] = useState<"deposit" | "withdraw">(
     initialAction === undefined ? "deposit" : initialAction
   );
@@ -45,10 +43,7 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
   const [txState, setTxState] = useState<TransactionState>(
     TransactionState.Initial
   );
-  const { data: defispringApy } = useQuery(
-    [QueryKeys.defispringApy],
-    queryDefiSpringApy
-  );
+  const { defispringApy } = useDefispringApy();
 
   const state = poolInfo?.state;
   const apy = poolInfo?.apy;

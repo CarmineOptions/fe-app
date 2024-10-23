@@ -1,4 +1,3 @@
-import { QueryFunctionContext } from "react-query";
 import { apiUrl } from "../../api";
 
 export type UserPoints = {
@@ -46,10 +45,3 @@ export const fetchBraavosBonus = async (): Promise<{
         return res.data;
       }
     });
-
-export const fetchUserPointsQuery = async ({
-  queryKey,
-}: QueryFunctionContext<[string, string]>): Promise<UserPoints> => {
-  const address = queryKey[1];
-  return fetchUserPoints(address);
-};

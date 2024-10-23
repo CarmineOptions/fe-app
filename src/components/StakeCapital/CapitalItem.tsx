@@ -1,22 +1,17 @@
 import { TableCell, TableRow } from "@mui/material";
-import { useQuery } from "react-query";
 
 import { Pool } from "../../classes/Pool";
-import { QueryKeys } from "../../queries/keys";
-import { fetchStakeCapital } from "./fetchStakeCapital";
 import { LoadingAnimation } from "../Loading/Loading";
 
 import styles from "./CapitalItem.module.css";
+import { usePoolState } from "../../hooks/usePoolState";
 
 type Props = {
   pool: Pool;
 };
 
 export const CapitalItemContent = ({ pool }: Props) => {
-  const { data, isLoading, isError } = useQuery(
-    [QueryKeys.stake, pool],
-    fetchStakeCapital
-  );
+  const { poolState, isLoading, isError } = usePoolState(pool);
 
   if (isLoading) {
     return (
@@ -26,7 +21,7 @@ export const CapitalItemContent = ({ pool }: Props) => {
     );
   }
 
-  if (isError || !data.data) {
+  if (isError || !poolState) {
     return <p>Failed fetching data.</p>;
   }
 
@@ -34,9 +29,9 @@ export const CapitalItemContent = ({ pool }: Props) => {
   const biDigits = BigInt(pool.digits - precission);
 
   const unlocked =
-    Number(BigInt(data.data.unlocked_cap) / 10n ** biDigits) / 10 ** precission;
+    Number(BigInt(poolState.unlocked_cap) / 10n ** biDigits) / 10 ** precission;
   const locked =
-    Number(BigInt(data.data.locked_cap) / 10n ** biDigits) / 10 ** precission;
+    Number(BigInt(poolState.locked_cap) / 10n ** biDigits) / 10 ** precission;
 
   return (
     <div className={styles.grid}>

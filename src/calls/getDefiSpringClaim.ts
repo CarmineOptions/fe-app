@@ -3,7 +3,7 @@ import { debug } from "../utils/debugger";
 import { AccountInterface, Contract } from "starknet";
 
 import ABI from "../abi/defi_spring_abi.json";
-import { QueryFunctionContext } from "react-query";
+import { QueryFunctionContext } from "@tanstack/react-query";
 
 const defiSpringContractAddress =
   "0x07838fe8cdd61eb445f7773d9648476b571f17242058859ed7fba9074ee915d1";

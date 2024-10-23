@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { isCookieSet, setCookieWithExpiry } from "../../utils/cookies";
 import { ReactComponent as BraavosIcon } from "../Points/braavos_icon.svg";
 import styles from "./announce.module.css";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { QueryKeys } from "../../queries/keys";
 import { fetchBraavosBonus } from "../Points/fetch";
 import { useAccount } from "@starknet-react/core";
@@ -18,10 +18,10 @@ const setShowCookie = () =>
 export const BraavosAnnounce = () => {
   const { account } = useAccount();
   const [show, setShow] = useState(shouldShow());
-  const { data, isLoading, isError } = useQuery(
-    QueryKeys.braavosBonus,
-    fetchBraavosBonus
-  );
+  const { data, isLoading, isError } = useQuery({
+    queryKey: [QueryKeys.braavosBonus],
+    queryFn: fetchBraavosBonus,
+  });
   const handleClose = () => {
     setShowCookie();
     setShow(false);

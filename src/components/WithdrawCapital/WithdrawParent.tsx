@@ -11,7 +11,7 @@ import { isNonEmptyArray } from "../../utils/utils";
 import { WithdrawItem } from "./WithdrawItem";
 import { NoContent } from "../TableNoContent";
 import { fetchCapital } from "./fetchCapital";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { QueryKeys } from "../../queries/keys";
 import { AccountInterface } from "starknet";
 import { useAccount } from "@starknet-react/core";

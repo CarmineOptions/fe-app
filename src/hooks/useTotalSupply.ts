@@ -1,9 +1,10 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { QueryKeys } from "../queries/keys";
-import { queryTotalSupply } from "../calls/totalSupply";
+import { getTotalSupply } from "../calls/totalSupply";
 
 export const useTotalSupply = (address: string) => {
-  const key = `${QueryKeys.totalSupply}-${address}`;
-
-  return useQuery([key, address], queryTotalSupply);
+  return useQuery({
+    queryKey: [QueryKeys.totalSupply, address],
+    queryFn: () => getTotalSupply(address),
+  });
 };

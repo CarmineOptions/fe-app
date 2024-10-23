@@ -1,5 +1,5 @@
 import { IVote, RawOptionHistory } from "../../types/history";
-import { QueryFunctionContext } from "react-query";
+import { QueryFunctionContext } from "@tanstack/react-query";
 import { ITradeHistory, RawTradeHistory } from "../../types/history";
 import { debug, LogTypes } from "../../utils/debugger";
 import { Option } from "../../classes/Option";

@@ -56,7 +56,7 @@ export const MyStakeWithAccount = ({
 }: {
   account: AccountInterface;
 }) => {
-  const { isLoading, isError, data } = useStakes();
+  const { isLoading, isError, stakes } = useStakes();
 
   if (isLoading) {
     return (
@@ -66,7 +66,7 @@ export const MyStakeWithAccount = ({
     );
   }
 
-  if (isError || !data) {
+  if (isError || !stakes) {
     return (
       <div>
         <span>Something went wrong</span>
@@ -84,7 +84,7 @@ export const MyStakeWithAccount = ({
           <div>Value $</div>
           <div></div>
         </div>
-        {data.map((stake, i) => (
+        {stakes.map((stake, i) => (
           <Item key={i} stake={stake} account={account} />
         ))}
       </div>

@@ -1,4 +1,3 @@
-import { QueryFunctionContext } from "react-query";
 import { GovernanceContract } from "../utils/blockchain";
 import { shortInteger } from "../utils/computations";
 import { debug } from "../utils/debugger";
@@ -24,12 +23,4 @@ export const fetchProposalVotes = async (
   )) as ProposalVotesResponse;
 
   return { yay: shortInteger(res[0], 18), nay: shortInteger(res[1], 18) };
-};
-
-export const queryProposalVotes = async ({
-  queryKey,
-}: QueryFunctionContext<[string, number]>): Promise<ProposalVotes> => {
-  const propId = queryKey[1];
-
-  return fetchProposalVotes(propId);
 };
