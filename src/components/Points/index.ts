@@ -1,4 +1,4 @@
 import { BraavosBadge } from "./BraavosBadge";
-import { Leaderboard } from "./Leaderboard";
+import { PointsLeaderboard } from "./PointsLeaderboard";
 
-export { BraavosBadge, Leaderboard };
+export { BraavosBadge, PointsLeaderboard };

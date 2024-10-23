@@ -11,10 +11,10 @@ import styles from "./braavos.module.css";
 
 export const BraavosDialog = () => {
   const { account } = useAccount();
-  const { data, isLoading, isError } = useQuery(
-    QueryKeys.braavosBonus,
-    fetchBraavosBonus
-  );
+  const { data, isLoading, isError } = useQuery({
+    queryKey: [QueryKeys.braavosBonus],
+    queryFn: fetchBraavosBonus,
+  });
 
   if (!account) {
     return (

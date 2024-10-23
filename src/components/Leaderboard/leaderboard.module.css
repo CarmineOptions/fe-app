@@ -41,6 +41,12 @@
   border: solid 1px var(--GREY);
 }
 
+.badgecontainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .badge {
   background: #FAB000;
   color: black;
