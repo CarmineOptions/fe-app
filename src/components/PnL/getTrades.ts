@@ -165,12 +165,8 @@ const calculatePnL = (trades: TradeWithPrices[]): PnL[] => {
   return pnl;
 };
 
-export const userPnLQuery = async ({
-  queryKey,
-}: QueryFunctionContext<[string, string]>): Promise<PnL[]> => {
-  const userAddress = queryKey[1];
-
-  const trades = await getUserTrades(userAddress);
+export const userPnLQuery = async (address: string): Promise<PnL[]> => {
+  const trades = await getUserTrades(address);
 
   return calculatePnL(trades);
 };

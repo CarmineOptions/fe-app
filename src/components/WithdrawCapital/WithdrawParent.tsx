@@ -20,10 +20,11 @@ import tableStyles from "../../style/table.module.css";
 type Props = { address: string; account: AccountInterface };
 
 const WithdrawParentWithAccount = ({ address, account }: Props) => {
-  const { isLoading, isError, isFetching, data } = useQuery(
-    [QueryKeys.stake, address],
-    fetchCapital
-  );
+  const { isLoading, isError, isFetching, data } = useQuery({
+    queryKey: [QueryKeys.stake, address],
+    queryFn: async () => fetchCapital(address),
+    enabled: !!address,
+  });
 
   if (isLoading) {
     return (

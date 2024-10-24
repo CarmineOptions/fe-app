@@ -1,5 +1,4 @@
 import { IVote, RawOptionHistory } from "../../types/history";
-import { QueryFunctionContext } from "@tanstack/react-query";
 import { ITradeHistory, RawTradeHistory } from "../../types/history";
 import { debug, LogTypes } from "../../utils/debugger";
 import { Option } from "../../classes/Option";
@@ -40,20 +39,10 @@ type HistoricResponse = {
   votes: IVote[];
 };
 
-export const fetchHistoricalData = async ({
-  queryKey,
-}: QueryFunctionContext<
-  [string, string | undefined]
->): Promise<HistoricResponse> => {
-  const walletAddress = queryKey[1];
-
-  if (!walletAddress) {
-    throw Error(
-      `getHistoricalData did not get walletAddress: ${walletAddress}`
-    );
-  }
-
-  const votesPromise = fetch(apiUrl(`votes?address=${walletAddress}`))
+export const fetchHistoricalData = async (
+  address: string
+): Promise<HistoricResponse> => {
+  const votesPromise = fetch(apiUrl(`votes?address=${address}`))
     .then((res) => res.json())
     .then((v) => {
       if (v?.status === "success") {
@@ -66,7 +55,7 @@ export const fetchHistoricalData = async ({
       return [];
     });
 
-  const tradesPromise = fetch(apiUrl(`transactions?address=${walletAddress}`))
+  const tradesPromise = fetch(apiUrl(`transactions?address=${address}`))
     .then((res) => res.json())
     .then((v) => {
       if (v?.status === "success") {

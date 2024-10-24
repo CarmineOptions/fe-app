@@ -14,10 +14,10 @@ import {
 } from "recharts";
 
 const ProfitAndLossWithAddress = ({ address }: { address: string }) => {
-  const { isLoading, isError, data } = useQuery(
-    [`trades-with-prices-${address}`, address],
-    userPnLQuery
-  );
+  const { isLoading, isError, data } = useQuery({
+    queryKey: [`trades-with-prices-${address}`, address],
+    queryFn: async () => userPnLQuery(address),
+  });
 
   if (isLoading) {
     return <div>Loading...</div>;

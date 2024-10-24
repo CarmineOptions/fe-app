@@ -13,10 +13,10 @@ type PropsAddress = {
 };
 
 const TradeHistoryWithAddress = ({ address }: PropsAddress) => {
-  const { isLoading, isError, data } = useQuery(
-    [QueryKeys.tradeHistory, address],
-    fetchHistoricalData
-  );
+  const { isLoading, isError, data } = useQuery({
+    queryKey: [QueryKeys.tradeHistory, address],
+    queryFn: async () => fetchHistoricalData(address),
+  });
 
   if (isLoading) {
     return <LoadingAnimation />;

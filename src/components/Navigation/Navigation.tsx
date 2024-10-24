@@ -13,6 +13,7 @@ import {
   Sword,
   Wallet,
 } from "../Icons";
+import { setShowNavigation } from "../../redux/actions";
 
 import styles from "./nav.module.css";
 
@@ -31,7 +32,7 @@ const Nav = ({
 }) => {
   return (
     <li className={isActive ? styles.active : ""}>
-      <NavLink to={`/${path}`}>
+      <NavLink to={`/${path}`} onClick={() => setShowNavigation(false)}>
         <div className={styles.navlinktitle}>
           <div>
             <Icon
@@ -63,8 +64,8 @@ export const Navigation = () => {
   const containerClass = !isMobile
     ? styles.container
     : showNavigation
-      ? `${styles.container} ${styles.mobile}`
-      : `${styles.container} ${styles.mobile} ${styles.hidden}`;
+    ? `${styles.container} ${styles.mobile}`
+    : `${styles.container} ${styles.mobile} ${styles.hidden}`;
 
   const current = window.location.pathname.split("/")[1];
 
