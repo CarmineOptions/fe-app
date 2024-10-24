@@ -1,3 +1,10 @@
+## [2.7.4](https://github.com/CarmineOptions/fe-app/compare/v2.7.3...v2.7.4) (2024-10-24)
+
+
+### Bug Fixes
+
+* useQuery and mobile navigation ([4b48f58](https://github.com/CarmineOptions/fe-app/commit/4b48f5827d31644b7d0c15157c40d8f9540b75ad))
+
 ## [2.7.3](https://github.com/CarmineOptions/fe-app/compare/v2.7.2...v2.7.3) (2024-10-23)
 
 
