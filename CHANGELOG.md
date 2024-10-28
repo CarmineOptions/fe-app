@@ -1,3 +1,10 @@
+## [2.7.5](https://github.com/CarmineOptions/fe-app/compare/v2.7.4...v2.7.5) (2024-10-28)
+
+
+### Bug Fixes
+
+* airdrop modal spacing ([5282c86](https://github.com/CarmineOptions/fe-app/commit/5282c8656f8cc08e05638ea8461a36059d44dcc9))
+
 ## [2.7.4](https://github.com/CarmineOptions/fe-app/compare/v2.7.3...v2.7.4) (2024-10-24)
 
 
