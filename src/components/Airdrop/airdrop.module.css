@@ -29,6 +29,9 @@
   background: black;
   border: 1px solid white;
   padding: 30px;
+  display: flex;
+  flex-flow: column;
+  gap: 20px;
 }
 
 .modal h3 {

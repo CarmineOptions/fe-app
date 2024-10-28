@@ -24,9 +24,9 @@ const ClaimAndStake = ({
   return (
     <div>
       <div className={airdropStyles.claim}>
-        <span>
+        <p>
           You are eligible to claim {amountHumanReadable} <b>veCRM</b>!
-        </span>
+        </p>
         <button className="primary active" onClick={() => setOpen(true)}>
           Claim
         </button>
@@ -42,7 +42,9 @@ const ClaimAndStake = ({
 };
 
 const AirdropTemplate = ({ message }: { message: string }) => (
-  <div className={airdropStyles.textcontainer}>{message}</div>
+  <div className={airdropStyles.textcontainer}>
+    <p>{message}</p>
+  </div>
 );
 
 export const AirdropWithAccount = ({
