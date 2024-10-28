@@ -35,6 +35,7 @@ import SwapPage from "./pages/swap";
 import PriceProtectVideoPage from "./pages/priceProtectVideo";
 import { StarknetProvider } from "./components/StarknetProvider";
 import { Toaster } from "react-hot-toast";
+import PailPage from "./pages/pail";
 
 const App = () => {
   const [check, rerender] = useState(false);
@@ -83,6 +84,7 @@ const App = () => {
                     path="/price-protect-video"
                     element={<PriceProtectVideoPage />}
                   />
+                  <Route path="/pail" element={<PailPage />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </Router>
