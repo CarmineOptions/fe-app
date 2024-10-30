@@ -29,7 +29,7 @@ const OptionsTable = ({ options, tokenPair, side }: Props) => {
   };
 
   const filtered = options.filter(
-    (o) => side !== "all" || o.side === OptionSide.Long
+    (o) => (side === "all" && o.side === OptionSide.Long) || o.side === side
   );
 
   const index =
@@ -100,12 +100,24 @@ const OptionsTable = ({ options, tokenPair, side }: Props) => {
                     </div>
                   </div>
                 )}
-                {(side === OptionSide.Short || side === "all") && (
+                {side === OptionSide.Short && (
                   <div
                     className={`${styles.premiacontainer} ${styles.short}`}
                     onClick={() => handleOptionClick(o)}
                   >
                     {o.premia.toFixed(3)} {o.symbol}{" "}
+                    {isBtc && <span className="l2">size 0.1</span>}
+                    <div className={styles.square}>
+                      <PlusIcon />
+                    </div>
+                  </div>
+                )}
+                {side === "all" && (
+                  <div
+                    className={`${styles.premiacontainer} ${styles.short}`}
+                    onClick={() => handleOptionClick(short!)}
+                  >
+                    {short!.premia.toFixed(3)} {o.symbol}{" "}
                     {isBtc && <span className="l2">size 0.1</span>}
                     <div className={styles.square}>
                       <PlusIcon />
