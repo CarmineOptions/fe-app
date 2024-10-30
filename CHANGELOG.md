@@ -1,3 +1,10 @@
+## [2.7.6](https://github.com/CarmineOptions/fe-app/compare/v2.7.5...v2.7.6) (2024-10-30)
+
+
+### Bug Fixes
+
+* options filtering ([bbc8765](https://github.com/CarmineOptions/fe-app/commit/bbc876578dcf7ad0b947c4f72153619da394e631))
+
 ## [2.7.5](https://github.com/CarmineOptions/fe-app/compare/v2.7.4...v2.7.5) (2024-10-28)
 
 
