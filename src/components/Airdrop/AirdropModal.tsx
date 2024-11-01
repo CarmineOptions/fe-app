@@ -21,8 +21,6 @@ import { ToastType } from "../../redux/reducers/ui";
 import { useState } from "react";
 import { TransactionState, TxTracking } from "../../types/network";
 import { LoadingAnimation } from "../Loading/Loading";
-import GovernanceABI from "../../abi/governance_abi.json";
-import TokenABI from "../../abi/lptoken_abi.json";
 import { invalidateKey } from "../../queries/client";
 import { QueryKeys } from "../../queries/keys";
 
@@ -44,7 +42,11 @@ export const claim = async (
     entrypoint: "claim",
     calldata,
   };
-  const res = await account.execute(call, [GovernanceABI]).catch(() => null);
+  const res = await account.execute(call).catch((e) => {
+    console.log("Failed claiming airdrop", e.message);
+    console.error(e);
+    return null;
+  });
 
   if (res?.transaction_hash) {
     const hash = res.transaction_hash;
@@ -104,10 +106,7 @@ export const claimAndStake = async (
   };
 
   const res = await account
-    .execute(
-      [claimCall, unstakeAirdropCall, approveCall, stakeCall],
-      [GovernanceABI, GovernanceABI, TokenABI, GovernanceABI]
-    )
+    .execute([claimCall, unstakeAirdropCall, approveCall, stakeCall])
     .catch(() => null);
 
   if (res?.transaction_hash) {

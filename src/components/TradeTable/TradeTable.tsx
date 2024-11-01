@@ -7,7 +7,13 @@ import { LoadingAnimation } from "../Loading/Loading";
 import { NoContent } from "../TableNoContent";
 import { Pair, PairKey } from "../../classes/Pair";
 import { PairNamedBadge } from "../TokenBadge";
-import { BtcToken, EthToken, StrkToken, UsdcToken } from "../../classes/Token";
+import {
+  BtcToken,
+  EkuboToken,
+  EthToken,
+  StrkToken,
+  UsdcToken,
+} from "../../classes/Token";
 import { InfoIcon } from "../InfoIcon";
 
 import styles from "./tradetable.module.css";
@@ -84,7 +90,7 @@ export const TradeTable = () => {
             },
             ".css-1ly9a1d-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input":
               { padding: 0 },
-            width: "270px",
+            width: "288px",
           }}
         >
           <MenuItem value={PairKey.STRK_USDC}>
@@ -95,6 +101,9 @@ export const TradeTable = () => {
           </MenuItem>
           <MenuItem value={PairKey.ETH_STRK}>
             <PairNamedBadge tokenA={EthToken} tokenB={StrkToken} />
+          </MenuItem>
+          <MenuItem value={PairKey.EKUBO_USDC}>
+            <PairNamedBadge tokenA={EkuboToken} tokenB={UsdcToken} />
           </MenuItem>
           <MenuItem value={PairKey.BTC_USDC}>
             <PairNamedBadge tokenA={BtcToken} tokenB={UsdcToken} />

@@ -8,6 +8,7 @@ export enum PairKey {
   BTC_USDC = "wBTC / USDC",
   ETH_STRK = "ETH / STRK",
   STRK_USDC = "STRK / USDC",
+  EKUBO_USDC = "EKUBO / USDC",
 }
 
 export class Pair {
@@ -33,6 +34,9 @@ export class Pair {
     }
     if (base.id === TokenKey.STRK && quote.id === TokenKey.USDC) {
       return PairKey.STRK_USDC;
+    }
+    if (base.id === TokenKey.EKUBO && quote.id === TokenKey.USDC) {
+      return PairKey.EKUBO_USDC;
     }
 
     // unreachable
@@ -62,6 +66,12 @@ export class Pair {
       return new Pair(
         Token.byKey(TokenKey.ETH).address,
         Token.byKey(TokenKey.STRK).address
+      );
+    }
+    if (key === PairKey.EKUBO_USDC) {
+      return new Pair(
+        Token.byKey(TokenKey.EKUBO).address,
+        Token.byKey(TokenKey.USDC).address
       );
     }
     // unreachable

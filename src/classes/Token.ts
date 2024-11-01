@@ -4,6 +4,7 @@ import {
   AMM_ADDRESS,
   AMM_METHODS,
   BTC_ADDRESS,
+  EKUBO_ADDRESS,
   ETH_ADDRESS,
   STRK_ADDRESS,
   USDC_ADDRESS,
@@ -14,6 +15,7 @@ export enum TokenKey {
   USDC = "usdc",
   BTC = "btc",
   STRK = "strk",
+  EKUBO = "ekubo-protocol",
 }
 
 const TOKENS: [TokenKey, string, number, string, string][] = [
@@ -44,6 +46,13 @@ const TOKENS: [TokenKey, string, number, string, string][] = [
     18,
     STRK_ADDRESS,
     "https://assets.coingecko.com/coins/images/26433/small/starknet.png",
+  ],
+  [
+    TokenKey.EKUBO,
+    "EKUBO",
+    18,
+    EKUBO_ADDRESS,
+    "https://assets.coingecko.com/coins/images/37715/standard/135474885.png",
   ],
 ];
 
@@ -130,3 +139,4 @@ export const EthToken = Token.byKey(TokenKey.ETH);
 export const StrkToken = Token.byKey(TokenKey.STRK);
 export const UsdcToken = Token.byKey(TokenKey.USDC);
 export const BtcToken = Token.byKey(TokenKey.BTC);
+export const EkuboToken = Token.byKey(TokenKey.EKUBO);
