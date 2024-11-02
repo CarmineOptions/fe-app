@@ -8,6 +8,8 @@ import {
   BASE_DIGITS,
   BTC_USDC_CALL_ADDRESS,
   BTC_USDC_PUT_ADDRESS,
+  EKUBO_USDC_CALL_ADDRESS,
+  EKUBO_USDC_PUT_ADDRESS,
   ETH_STRK_CALL_ADDRESS,
   ETH_STRK_PUT_ADDRESS,
   ETH_USDC_CALL_ADDRESS,
@@ -73,6 +75,16 @@ export class Pool extends Pair {
       case PairKey.STRK_USDC + OptionType.Put:
         this.lpAddress = STRK_USDC_PUT_ADDRESS;
         this.apiPoolId = "strk-usdc-put";
+
+        break;
+      case PairKey.EKUBO_USDC + OptionType.Call:
+        this.lpAddress = EKUBO_USDC_CALL_ADDRESS;
+        this.apiPoolId = "ekubo-usdc-call";
+
+        break;
+      case PairKey.EKUBO_USDC + OptionType.Put:
+        this.lpAddress = EKUBO_USDC_PUT_ADDRESS;
+        this.apiPoolId = "ekubo-usdc-put";
 
         break;
       default:

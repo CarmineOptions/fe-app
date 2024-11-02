@@ -23,6 +23,7 @@ export type TokenPriceData = {
   usdc: number;
   strk: number;
   btc: number;
+  ekubo: number;
 };
 
 export type ApiResponse<Data> = {

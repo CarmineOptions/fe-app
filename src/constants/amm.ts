@@ -8,6 +8,7 @@ export const ETH_ADDRESS = config.ETH_ADDRESS;
 export const USDC_ADDRESS = config.USDC_ADDRESS;
 export const BTC_ADDRESS = config.BTC_ADDRESS;
 export const STRK_ADDRESS = config.STRK_ADDRESS;
+export const EKUBO_ADDRESS = config.EKUBO_ADDRESS;
 export const VE_CRM_ADDRESS = config.VE_CRM_ADDRESS;
 export const CRM_ADDRESS = config.CRM_ADDRESS;
 export const ETH_USDC_CALL_ADDRESS = config.ETH_USDC_CALL_ADDRESS;
@@ -18,6 +19,8 @@ export const ETH_STRK_CALL_ADDRESS = config.ETH_STRK_CALL_ADDRESS;
 export const ETH_STRK_PUT_ADDRESS = config.ETH_STRK_PUT_ADDRESS;
 export const STRK_USDC_CALL_ADDRESS = config.STRK_USDC_CALL_ADDRESS;
 export const STRK_USDC_PUT_ADDRESS = config.STRK_USDC_PUT_ADDRESS;
+export const EKUBO_USDC_CALL_ADDRESS = config.EKUBO_USDC_CALL_ADDRESS;
+export const EKUBO_USDC_PUT_ADDRESS = config.EKUBO_USDC_PUT_ADDRESS;
 
 export const MAINNET_AUX_CONTRACT_ADDRESS =
   "0x03e174d3d7dce00ad5e15299593a28c3defc660c77220867c921611a3aef4149";
