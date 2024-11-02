@@ -61,7 +61,6 @@ const usePoolData = (pool: Pool) => {
 
 export const PoolItem = ({ pool }: Props) => {
   const { data, isLoading, isError } = usePoolData(pool);
-
   const { defispringApy } = useDefispringApy();
   const isWideScreen = !useIsMobile();
   const { stakes } = useStakes();

@@ -15,7 +15,7 @@ export enum TokenKey {
   USDC = "usdc",
   BTC = "btc",
   STRK = "strk",
-  EKUBO = "ekubo-protocol",
+  EKUBO = "ekubo",
 }
 
 const TOKENS: [TokenKey, string, number, string, string][] = [
