@@ -1,3 +1,15 @@
+# [2.8.0](https://github.com/CarmineOptions/fe-app/compare/v2.7.6...v2.8.0) (2024-11-02)
+
+
+### Bug Fixes
+
+* fetch ekubo pool data ([e95fcb2](https://github.com/CarmineOptions/fe-app/commit/e95fcb24561743ee245a32eeb628b993f980107e))
+
+
+### Features
+
+* add ekubo pools ([8be101b](https://github.com/CarmineOptions/fe-app/commit/8be101b40498024253580f535491b8aef2d0f739))
+
 ## [2.7.6](https://github.com/CarmineOptions/fe-app/compare/v2.7.5...v2.7.6) (2024-10-30)
 
 
