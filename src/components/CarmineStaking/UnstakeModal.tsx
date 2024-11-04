@@ -24,6 +24,7 @@ import { CarmineStake } from "../../classes/CarmineStake";
 
 import styles from "./modal.module.css";
 import buttonStyles from "../../style/button.module.css";
+import { useSendTransaction } from "@starknet-react/core";
 
 export const unstakeAndStake = async (
   account: AccountInterface,
@@ -103,6 +104,7 @@ export const UnstakeModal = ({ account, stake, open, setOpen }: Props) => {
     TransactionState.Initial
   );
   const [yearState, setYearState] = useState(TransactionState.Initial);
+  const { sendAsync } = useSendTransaction({ calls: undefined });
 
   const handleClose = () => {
     setOpen(false);
@@ -112,7 +114,7 @@ export const UnstakeModal = ({ account, stake, open, setOpen }: Props) => {
     setYearState(TransactionState.Initial);
   };
 
-  const handleUnstake = () => unstake(account, stake, setUnstakeState);
+  const handleUnstake = () => unstake(sendAsync, stake, setUnstakeState);
 
   const handle1month = () => {
     setSixMonthsState(TransactionState.Processing);
