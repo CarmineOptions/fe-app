@@ -1,3 +1,10 @@
+## [2.8.2](https://github.com/CarmineOptions/fe-app/compare/v2.8.1...v2.8.2) (2024-11-04)
+
+
+### Bug Fixes
+
+* account.execute without abi ([e7c177c](https://github.com/CarmineOptions/fe-app/commit/e7c177c0f263dea4ebb439823e8de93bc5d65a85))
+
 ## [2.8.1](https://github.com/CarmineOptions/fe-app/compare/v2.8.0...v2.8.1) (2024-11-04)
 
 
