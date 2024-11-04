@@ -11,8 +11,6 @@ import { provider } from "../../network/provider";
 
 // ABIs
 import LegacyAmmAbi from "../../abi/legacy_amm_abi.json";
-import ERC20Abi from "../../abi/lptoken_abi.json";
-import NewAmmAbi from "../../abi/amm_abi.json";
 import { afterTransaction } from "../../utils/blockchain";
 import { debug } from "../../utils/debugger";
 
@@ -91,7 +89,6 @@ export const transferLpCapital = async (
 ) => {
   setState(TransferState.Processing);
   const actions = [];
-  const abis = [];
 
   // WITHDRAW FROM POOLS
 
@@ -108,7 +105,6 @@ export const transferLpCapital = async (
         0, // uint256 0
       ],
     });
-    abis.push(LegacyAmmAbi);
   }
   if (data.put?.size) {
     actions.push({
@@ -123,7 +119,6 @@ export const transferLpCapital = async (
         0, // uint256 0
       ],
     });
-    abis.push(LegacyAmmAbi);
   }
 
   // APPROVE WITHDRAWN
@@ -134,7 +129,6 @@ export const transferLpCapital = async (
       entrypoint: AMM_METHODS.APPROVE,
       calldata: [AMM_ADDRESS, data.call.value.toString(10), "0"],
     });
-    abis.push(ERC20Abi);
   }
   if (data.put?.size) {
     actions.push({
@@ -142,7 +136,6 @@ export const transferLpCapital = async (
       entrypoint: AMM_METHODS.APPROVE,
       calldata: [AMM_ADDRESS, data.put.value.toString(10), "0"],
     });
-    abis.push(ERC20Abi);
   }
 
   // STAKE WITHDRAWN
@@ -160,7 +153,6 @@ export const transferLpCapital = async (
         0, // uint256 0
       ],
     });
-    abis.push(NewAmmAbi);
   }
   if (data.put?.size) {
     actions.push({
@@ -175,10 +167,9 @@ export const transferLpCapital = async (
         0, // uint256 0
       ],
     });
-    abis.push(NewAmmAbi);
   }
 
-  const res = await account.execute(actions, abis).catch((e) => {
+  const res = await account.execute(actions).catch((e) => {
     setState(TransferState.Fail);
   });
 

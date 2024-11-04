@@ -1,4 +1,3 @@
-import AmmAbi from "../abi/amm_abi.json";
 import { AccountInterface } from "starknet";
 import { OptionWithPosition } from "../classes/Option";
 import { debug, LogTypes } from "../utils/debugger";
@@ -12,7 +11,7 @@ export const tradeSettle = async (
   option: OptionWithPosition
 ) => {
   try {
-    const res = await account.execute(option.tradeSettleCalldata, [AmmAbi]);
+    const res = await account.execute(option.tradeSettleCalldata);
     if (res?.transaction_hash) {
       const hash = res.transaction_hash;
       addTx(hash, option.optionId, TransactionAction.Settle);

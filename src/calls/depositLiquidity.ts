@@ -1,7 +1,5 @@
 import { debug } from "../utils/debugger";
 import { AccountInterface } from "starknet";
-import LpAbi from "../abi/lptoken_abi.json";
-import AmmAbi from "../abi/amm_abi.json";
 import { afterTransaction } from "../utils/blockchain";
 import { addTx, markTxAsDone, markTxAsFailed } from "../redux/actions";
 import { TransactionAction } from "../redux/reducers/transactions";
@@ -27,7 +25,7 @@ export const depositLiquidity = async (
   pool.sendStakeBeginCheckoutEvent(sizeNum);
 
   const res = await account
-    .execute([approveCalldata, depositLiquidityCalldata], [LpAbi, AmmAbi])
+    .execute([approveCalldata, depositLiquidityCalldata])
     .catch((e: Error) => {
       debug('"Stake capital" user rejected or failed');
     });

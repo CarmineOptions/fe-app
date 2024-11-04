@@ -38,7 +38,7 @@ export const defiSpringClaim = async (
     calldata,
     contractAddress: defiSpringContractAddress,
   };
-  const res = await account.execute(call, [ABI]).catch((e) => {
+  const res = await account.execute(call).catch((e) => {
     debug("Trade open rejected or failed", e.message);
     throw Error("Trade open rejected or failed");
   });

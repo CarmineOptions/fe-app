@@ -1,4 +1,3 @@
-import AmmAbi from "../abi/amm_abi.json";
 import { AccountInterface } from "starknet";
 import { OptionWithPosition } from "../classes/Option";
 import { debug, LogTypes } from "../utils/debugger";
@@ -29,8 +28,7 @@ export const tradeClose = async (
     ).toString(10);
 
     const res = await account.execute(
-      option.tradeCloseCalldata(size, premiaWithSlippage),
-      [AmmAbi]
+      option.tradeCloseCalldata(size, premiaWithSlippage)
     );
 
     if (res?.transaction_hash) {

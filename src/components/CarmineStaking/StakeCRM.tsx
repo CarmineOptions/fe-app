@@ -1,5 +1,7 @@
 import { AccountInterface } from "starknet";
 import { useState } from "react";
+import { Tooltip } from "@mui/material";
+
 import { longInteger, shortInteger } from "../../utils/computations";
 import {
   CARMINE_STAKING_MONTH,
@@ -23,10 +25,6 @@ import { invalidateKey } from "../../queries/client";
 import { QueryKeys } from "../../queries/keys";
 
 import styles from "./vest.module.css";
-
-import GovernanceABI from "../../abi/governance_abi.json";
-import TokenABI from "../../abi/lptoken_abi.json";
-import { Tooltip } from "@mui/material";
 
 type Props = {
   account: AccountInterface;
@@ -53,9 +51,7 @@ const stake = async (
     calldata: [length.toString(10), amount.toString(10)],
   };
 
-  const res = await account
-    .execute([approveCall, stakeCall], [TokenABI, GovernanceABI])
-    .catch(() => null);
+  const res = await account.execute([approveCall, stakeCall]).catch(() => null);
 
   if (res?.transaction_hash) {
     const hash = res.transaction_hash;

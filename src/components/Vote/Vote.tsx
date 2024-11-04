@@ -1,5 +1,4 @@
 import { AccountInterface } from "starknet";
-import GovernanceAbi from "../../abi/amm_abi.json";
 import { GOVERNANCE_ADDRESS } from "../../constants/amm";
 import { debug } from "../../utils/debugger";
 import { ProposalWithOpinion, UserVote } from "../../calls/liveProposals";
@@ -33,7 +32,7 @@ const vote = async (
     calldata: [propId, opinion],
   };
 
-  const res = await account.execute(call, [GovernanceAbi]).catch((e) => {
+  const res = await account.execute(call).catch((e) => {
     debug("Vote rejected or failed", e.message);
   });
 

@@ -1,6 +1,5 @@
 import { AccountInterface } from "starknet";
 import { debug } from "../../utils/debugger";
-import AmmAbi from "../../abi/amm_abi.json";
 import { invalidateStake } from "../../queries/client";
 import { afterTransaction } from "../../utils/blockchain";
 import {
@@ -62,7 +61,7 @@ export const withdrawCall = async (
 
   debug("Withdraw call", withdraw);
 
-  const res = await account.execute(withdraw, [AmmAbi]).catch((e) => {
+  const res = await account.execute(withdraw).catch((e) => {
     debug("Withdraw rejected by user or failed\n", e.message);
     setProcessing(false);
   });

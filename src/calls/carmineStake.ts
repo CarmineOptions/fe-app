@@ -2,7 +2,6 @@ import { AccountInterface } from "starknet";
 import { governanceContract } from "../constants/starknet";
 import { CarmineStakeResult } from "../types/governance";
 
-import GovernanceABI from "../abi/governance_abi.json";
 import { GOVERNANCE_ADDRESS } from "../constants/amm";
 import {
   addTx,
@@ -67,7 +66,7 @@ export const stakeCarmineToken = async (
     entrypoint: "stake",
     calldata: [length, amount],
   };
-  const res = await account.execute(call, [GovernanceABI]).catch(() => {
+  const res = await account.execute(call).catch(() => {
     showToast("Failed to stake CRM", ToastType.Error);
     setState(TransactionState.Fail);
     return undefined;
@@ -114,13 +113,11 @@ export const claimAndStakeCarmineToken = async (
     entrypoint: "stake",
     calldata: [length, amount],
   };
-  const res = await account
-    .execute([claimCall, stakeCall], [GovernanceABI])
-    .catch(() => {
-      showToast("Failed to claim & stake", ToastType.Error);
-      setState(TransactionState.Fail);
-      return undefined;
-    });
+  const res = await account.execute([claimCall, stakeCall]).catch(() => {
+    showToast("Failed to claim & stake", ToastType.Error);
+    setState(TransactionState.Fail);
+    return undefined;
+  });
 
   if (!res) {
     return;
@@ -154,7 +151,7 @@ export const unstakeAirdrop = async (
     entrypoint: "unstake_airdrop",
     calldata: [],
   };
-  const res = await account.execute(call, [GovernanceABI]).catch(() => {
+  const res = await account.execute(call).catch(() => {
     showToast("Failed to unstake", ToastType.Error);
     return undefined;
   });

@@ -24,9 +24,6 @@ import { unstakeAirdrop } from "../../calls/carmineStake";
 
 import styles from "./modal.module.css";
 
-import GovernanceABI from "../../abi/governance_abi.json";
-import TokenABI from "../../abi/lptoken_abi.json";
-
 export const unstakeAndStake = async (
   account: AccountInterface,
   amount: bigint,
@@ -52,10 +49,7 @@ export const unstakeAndStake = async (
   };
 
   const res = await account
-    .execute(
-      [unstakeCall, approveCall, stakeCall],
-      [GovernanceABI, TokenABI, GovernanceABI]
-    )
+    .execute([unstakeCall, approveCall, stakeCall])
     .catch(() => null);
 
   if (res?.transaction_hash) {

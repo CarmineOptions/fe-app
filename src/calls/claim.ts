@@ -1,6 +1,5 @@
 import { AccountInterface } from "starknet";
 import { afterTransaction } from "../utils/blockchain";
-import GovernanceAbi from "../abi/governance_abi.json";
 import { GOVERNANCE_ADDRESS } from "../constants/amm";
 
 export const claim = async (
@@ -19,7 +18,7 @@ export const claim = async (
     entrypoint: "claim",
     calldata,
   };
-  const res = await account.execute(call, [GovernanceAbi]).catch(() => null);
+  const res = await account.execute(call).catch(() => null);
 
   if (res === null) {
     setText("Transaction was rejected");
