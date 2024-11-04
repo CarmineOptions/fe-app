@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { defiSpringClaim } from "../../calls/getDefiSpringClaim";
 import { AccountInterface } from "starknet";
 import { getDefiSpringData } from "./fetch";
 import { shortInteger } from "../../utils/computations";
@@ -22,7 +21,12 @@ import styles from "./defi.module.css";
 import { QueryKeys } from "../../queries/keys";
 import { useQuery } from "@tanstack/react-query";
 import { invalidateKey } from "../../queries/client";
-import { useAccount, useConnect } from "@starknet-react/core";
+import {
+  useAccount,
+  useConnect,
+  useSendTransaction,
+} from "@starknet-react/core";
+import { DEFISPRING_CONTRACT_ADDRESS } from "../../constants/amm";
 
 export const RewardsWithAccount = ({
   account,
@@ -35,6 +39,9 @@ export const RewardsWithAccount = ({
     queryKey: [QueryKeys.defispring, address],
     queryFn: async () => getDefiSpringData(address!),
     enabled: !!address,
+  });
+  const { sendAsync } = useSendTransaction({
+    calls: undefined,
   });
 
   const [claiming, setClaiming] = useState<boolean>(false);
@@ -93,12 +100,18 @@ export const RewardsWithAccount = ({
     return <p>Something went wrong, please try again later</p>;
   }
 
-  const call = [data.amount, data.proof.length, ...data.proof];
+  const calldata = [data.amount, data.proof.length, ...data.proof];
 
   const claim = async () => {
     setClaiming(true);
     try {
-      const { transaction_hash: hash } = await defiSpringClaim(account, call);
+      const { transaction_hash: hash } = await sendAsync([
+        {
+          entrypoint: "claim",
+          calldata,
+          contractAddress: DEFISPRING_CONTRACT_ADDRESS,
+        },
+      ]);
       setClaiming(false);
       addTx(hash, `reward-claim-${hash}`, TransactionAction.ClaimReward);
       afterTransaction(
