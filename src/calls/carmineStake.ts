@@ -1,4 +1,4 @@
-import { AccountInterface } from "starknet";
+import { Call } from "starknet";
 import { governanceContract } from "../constants/starknet";
 import { CarmineStakeResult } from "../types/governance";
 
@@ -14,6 +14,7 @@ import { afterTransaction } from "../utils/blockchain";
 import { ToastType } from "../redux/reducers/ui";
 import { TransactionState, TxTracking } from "../types/network";
 import { CarmineStake } from "../classes/CarmineStake";
+import { RequestResult } from "@starknet-react/core";
 
 const isEmptyStake = (stake: CarmineStakeResult): boolean => {
   if (stake.amount_staked === 0n && stake.start_date === 0n) {
@@ -55,7 +56,9 @@ export const getStakes = async (address: string): Promise<CarmineStake[]> => {
 };
 
 export const stakeCarmineToken = async (
-  account: AccountInterface,
+  sendAsync: (
+    args?: Call[]
+  ) => Promise<RequestResult<"wallet_addInvokeTransaction">>,
   length: bigint,
   amount: bigint,
   setState: TxTracking
@@ -66,7 +69,7 @@ export const stakeCarmineToken = async (
     entrypoint: "stake",
     calldata: [length, amount],
   };
-  const res = await account.execute(call).catch(() => {
+  const res = await sendAsync([call]).catch(() => {
     showToast("Failed to stake CRM", ToastType.Error);
     setState(TransactionState.Fail);
     return undefined;
@@ -95,7 +98,9 @@ export const stakeCarmineToken = async (
 };
 
 export const claimAndStakeCarmineToken = async (
-  account: AccountInterface,
+  sendAsync: (
+    args?: Call[]
+  ) => Promise<RequestResult<"wallet_addInvokeTransaction">>,
   claimData: string[],
   length: bigint,
   amount: bigint,
@@ -113,7 +118,7 @@ export const claimAndStakeCarmineToken = async (
     entrypoint: "stake",
     calldata: [length, amount],
   };
-  const res = await account.execute([claimCall, stakeCall]).catch(() => {
+  const res = await sendAsync([claimCall, stakeCall]).catch(() => {
     showToast("Failed to claim & stake", ToastType.Error);
     setState(TransactionState.Fail);
     return undefined;
@@ -142,7 +147,9 @@ export const claimAndStakeCarmineToken = async (
 };
 
 export const unstakeAirdrop = async (
-  account: AccountInterface,
+  sendAsync: (
+    args?: Call[]
+  ) => Promise<RequestResult<"wallet_addInvokeTransaction">>,
   setTxState: TxTracking
 ) => {
   setTxState(TransactionState.Processing);
@@ -151,7 +158,7 @@ export const unstakeAirdrop = async (
     entrypoint: "unstake_airdrop",
     calldata: [],
   };
-  const res = await account.execute(call).catch(() => {
+  const res = await sendAsync([call]).catch(() => {
     showToast("Failed to unstake", ToastType.Error);
     return undefined;
   });
@@ -180,7 +187,9 @@ export const unstakeAirdrop = async (
 };
 
 export const unstake = async (
-  account: AccountInterface,
+  sendAsync: (
+    args?: Call[]
+  ) => Promise<RequestResult<"wallet_addInvokeTransaction">>,
   stake: CarmineStake,
   setTxState: TxTracking
 ) => {
@@ -190,7 +199,7 @@ export const unstake = async (
     entrypoint: "unstake",
     calldata: [stake.id],
   };
-  const res = await account.execute(call).catch(() => {
+  const res = await sendAsync([call]).catch(() => {
     showToast("Failed to unstake", ToastType.Error);
     return undefined;
   });
