@@ -1,3 +1,11 @@
+## [2.8.3](https://github.com/CarmineOptions/fe-app/compare/v2.8.2...v2.8.3) (2024-11-04)
+
+
+### Bug Fixes
+
+* carmine staking ([b1aa23a](https://github.com/CarmineOptions/fe-app/commit/b1aa23a1201768d0af0986e2340a8988e555cc4e))
+* useSendTransaction for defispring claim ([f681c64](https://github.com/CarmineOptions/fe-app/commit/f681c6456a2949b30b6edf564f7b4902ce210d6a))
+
 ## [2.8.2](https://github.com/CarmineOptions/fe-app/compare/v2.8.1...v2.8.2) (2024-11-04)
 
 
