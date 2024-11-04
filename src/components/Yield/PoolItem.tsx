@@ -6,7 +6,6 @@ import { math64toDecimal } from "../../utils/units";
 import { openSidebar, setSidebarContent } from "../../redux/actions";
 import { PoolSidebar } from "../Sidebar";
 import { LoadingAnimation } from "../Loading/Loading";
-import { TokenKey } from "../../classes/Token";
 import { DefispringBadge } from "../Badges";
 import { formatNumber } from "../../utils/utils";
 import { useStakes } from "../../hooks/useStakes";
@@ -65,9 +64,6 @@ export const PoolItem = ({ pool }: Props) => {
   const isWideScreen = !useIsMobile();
   const { stakes } = useStakes();
   const price = useCurrency(pool.underlying.id);
-  const isDefispringPool =
-    pool.baseToken.id !== TokenKey.BTC && pool.quoteToken.id !== TokenKey.BTC;
-
   const handleClick = () => {
     setSidebarContent(<PoolSidebar pool={pool} />);
     openSidebar();
@@ -87,7 +83,7 @@ export const PoolItem = ({ pool }: Props) => {
               size="small"
             />
           </div>
-          {isDefispringPool && <DefispringBadge />}
+          {pool.isDefispringEligible && <DefispringBadge />}
         </div>
         <div>
           <LoadingAnimation />
@@ -112,7 +108,7 @@ export const PoolItem = ({ pool }: Props) => {
               size="small"
             />
           </div>
-          {isDefispringPool && <DefispringBadge />}
+          {pool.isDefispringEligible && <DefispringBadge />}
         </div>
         <div>
           <p>Failed getting pool data</p>
@@ -131,13 +127,13 @@ export const PoolItem = ({ pool }: Props) => {
   const poolPosition = math64toDecimal(state.pool_position);
   const tvl = unlocked + poolPosition;
 
-  const finalApy = !isDefispringPool
+  const finalApy = !pool.isDefispringEligible
     ? apy.launch_annualized
     : defispringApy === undefined
     ? undefined
     : defispringApy + apy.launch_annualized;
 
-  const finalApyWeekly = !isDefispringPool
+  const finalApyWeekly = !pool.isDefispringEligible
     ? apy.week_annualized
     : defispringApy === undefined
     ? undefined
@@ -155,9 +151,6 @@ export const PoolItem = ({ pool }: Props) => {
       ? 0
       : poolData.value;
 
-  const isDefispring =
-    pool.baseToken.id !== TokenKey.BTC && pool.quoteToken.id !== TokenKey.BTC;
-
   return (
     <div className={styles.item + " " + styles.itemmobilesize}>
       <div className={styles.pooldesc}>
@@ -172,7 +165,7 @@ export const PoolItem = ({ pool }: Props) => {
             size="small"
           />
         </div>
-        {isDefispring && <DefispringBadge />}
+        {pool.isDefispringEligible && <DefispringBadge />}
       </div>
       <div>
         <p>{pool.typeAsText} Pool</p>

@@ -283,6 +283,18 @@ export class Pool extends Pair {
     // unreachable
     throw Error("Failed getting base volatility");
   }
+
+  get isDefispringEligible(): boolean {
+    if (
+      this.baseToken.id === TokenKey.BTC ||
+      this.baseToken.id === TokenKey.EKUBO ||
+      this.quoteToken.id === TokenKey.BTC ||
+      this.quoteToken.id === TokenKey.EKUBO
+    ) {
+      return false;
+    }
+    return true;
+  }
 }
 
 export class PoolInfo extends Pool {
