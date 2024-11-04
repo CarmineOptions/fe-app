@@ -1,3 +1,10 @@
+## [2.8.1](https://github.com/CarmineOptions/fe-app/compare/v2.8.0...v2.8.1) (2024-11-04)
+
+
+### Bug Fixes
+
+* ekubo not defispring eligible ([09508ae](https://github.com/CarmineOptions/fe-app/commit/09508aefd82338c429d56f62bdfc4da0ca1f2e1a))
+
 # [2.8.0](https://github.com/CarmineOptions/fe-app/compare/v2.7.6...v2.8.0) (2024-11-02)
 
 
