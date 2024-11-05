@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { connect, Connector, StarknetkitConnector } from "starknetkit";
+import { connect } from "starknetkit";
 import { AccountInfo } from "./AccountInfo";
 import { SupportedWalletIds } from "../../types/wallet";
 import { onConnect } from "../../network/hooks";
@@ -9,13 +9,9 @@ import { debug } from "../../utils/debugger";
 import { ConnectVariables, useAccount, useConnect } from "@starknet-react/core";
 import { InjectedConnector } from "starknetkit/injected";
 import { isMainnet } from "../../constants/amm";
+import { constants } from "starknet";
 
 import styles from "./button.module.css";
-import {
-  ArgentMobileConnector,
-  isInArgentMobileAppBrowser,
-} from "starknetkit/argentMobile";
-import { constants } from "starknet";
 
 type CustomWallet = {
   id: SupportedWalletIds;
@@ -177,21 +173,14 @@ export const openWalletConnectDialog = async (
     modalMode: "alwaysAsk",
     dappName: "Carmine Options AMM",
     modalTheme: "dark",
-    connectors: isInArgentMobileAppBrowser()
-      ? [
-          ArgentMobileConnector.init({
-            options: {
-              dappName: "Carmine Options AMM",
-              projectId: "7f4efbc06ed01f0edd1d0558369e885a",
-              chainId: constants.NetworkName.SN_MAIN,
-              url: window.location.hostname,
-              icons: ["https://app.carmine.finance/android-chrome-512x512.png"],
-              rpcUrl: "https://api.carmine.finance/api/v1/mainnet/call",
-            },
-          }) as StarknetkitConnector,
-          ...injectedToBeShown,
-        ]
-      : [...injectedToBeShown],
+    connectors: [...injectedToBeShown],
+    argentMobileOptions: {
+      dappName: "Carmine Options AMM",
+      projectId: "7f4efbc06ed01f0edd1d0558369e885a",
+      chainId: constants.NetworkName.SN_MAIN,
+      url: window.location.hostname,
+      icons: ["https://app.carmine.finance/android-chrome-512x512.png"],
+    },
   })
     .then((modalResult) => {
       const { connector } = modalResult;
