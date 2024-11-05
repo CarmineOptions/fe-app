@@ -170,7 +170,7 @@ export const openWalletConnectDialog = async (
   ].map((id) => new InjectedConnector({ options: { id } }));
 
   connect({
-    modalMode: "alwaysAsk",
+    modalMode: "canAsk",
     dappName: "Carmine Options AMM",
     modalTheme: "dark",
     connectors: [...injectedToBeShown],
