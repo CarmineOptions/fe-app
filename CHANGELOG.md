@@ -1,3 +1,10 @@
+## [2.8.4](https://github.com/CarmineOptions/fe-app/compare/v2.8.3...v2.8.4) (2024-11-05)
+
+
+### Bug Fixes
+
+* argent mobile correct chain id ([1584e6c](https://github.com/CarmineOptions/fe-app/commit/1584e6cb3bbdef397ffe9ad48fcee5536d10327e))
+
 ## [2.8.3](https://github.com/CarmineOptions/fe-app/compare/v2.8.2...v2.8.3) (2024-11-04)
 
 
