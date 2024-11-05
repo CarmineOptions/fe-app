@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { connect } from "starknetkit";
 import { AccountInfo } from "./AccountInfo";
 import { SupportedWalletIds } from "../../types/wallet";
@@ -177,7 +176,9 @@ export const openWalletConnectDialog = async (
     argentMobileOptions: {
       dappName: "Carmine Options AMM",
       projectId: "7f4efbc06ed01f0edd1d0558369e885a",
-      chainId: constants.NetworkName.SN_MAIN,
+      chainId: isMainnet
+        ? constants.NetworkName.SN_MAIN
+        : constants.NetworkName.SN_SEPOLIA,
       url: window.location.hostname,
       icons: ["https://app.carmine.finance/android-chrome-512x512.png"],
     },
