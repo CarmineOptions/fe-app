@@ -104,7 +104,9 @@ export const UnstakeModal = ({ account, stake, open, setOpen }: Props) => {
     TransactionState.Initial
   );
   const [yearState, setYearState] = useState(TransactionState.Initial);
-  const { sendAsync } = useSendTransaction({ calls: undefined });
+  const { sendAsync } = useSendTransaction({
+    calls: undefined,
+  });
 
   const handleClose = () => {
     setOpen(false);

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { connect, Connector } from "starknetkit";
+import { connect, Connector, StarknetkitConnector } from "starknetkit";
 import { AccountInfo } from "./AccountInfo";
 import { SupportedWalletIds } from "../../types/wallet";
 import { onConnect } from "../../network/hooks";
@@ -11,6 +11,11 @@ import { InjectedConnector } from "starknetkit/injected";
 import { isMainnet } from "../../constants/amm";
 
 import styles from "./button.module.css";
+import {
+  ArgentMobileConnector,
+  isInArgentMobileAppBrowser,
+} from "starknetkit/argentMobile";
+import { constants } from "starknet";
 
 type CustomWallet = {
   id: SupportedWalletIds;
@@ -162,15 +167,30 @@ export const openWalletConnectDialog = async (
       }
     );
 
+  const injectedToBeShown = [
+    SupportedWalletIds.ArgentX,
+    SupportedWalletIds.Braavos,
+    ...injectedCustomConnectors,
+  ].map((id) => new InjectedConnector({ options: { id } }));
+
+  const argentMobileConnector = ArgentMobileConnector.init({
+    options: {
+      dappName: "Carmine Options AMM",
+      projectId: "YOUR_PROJECT_ID", // wallet connect project id
+      chainId: constants.NetworkName.SN_MAIN,
+      url: window.location.hostname,
+      icons: ["https://app.carmine.finance/android-chrome-512x512.png"],
+      rpcUrl: "https://api.carmine.finance/api/v1/mainnet/call",
+    },
+  }) as StarknetkitConnector;
+
   connect({
     modalMode: "alwaysAsk",
     dappName: "Carmine Options AMM",
     modalTheme: "dark",
-    connectors: [
-      SupportedWalletIds.ArgentX,
-      SupportedWalletIds.Braavos,
-      ...injectedCustomConnectors,
-    ].map((id) => new InjectedConnector({ options: { id } })),
+    connectors: isInArgentMobileAppBrowser()
+      ? [argentMobileConnector, ...injectedToBeShown]
+      : [...injectedToBeShown],
   })
     .then((modalResult) => {
       const { connector } = modalResult;
