@@ -1,12 +1,11 @@
 import { LoadingAnimation } from "../Loading/Loading";
-import { useAccount, useConnect } from "@starknet-react/core";
+import { useAccount } from "@starknet-react/core";
 import { AccountInterface } from "starknet";
 import { OptionWithPosition } from "../../classes/Option";
 import { showToast } from "../../redux/actions";
 import { useTxPending } from "../../hooks/useRecentTxs";
 import { TransactionAction } from "../../redux/reducers/transactions";
 import styles from "./user_priceguard.module.css";
-import { openWalletConnectDialog } from "../ConnectWallet/Button";
 import { ReactNode, useState } from "react";
 import { TokenKey } from "../../classes/Token";
 import { timestampToPriceGuardDate } from "../../utils/utils";
@@ -16,6 +15,7 @@ import { ToastType } from "../../redux/reducers/ui";
 import { ReactComponent as ArrowIcon } from "./arrow.svg";
 import { TokenNamedBadge } from "../TokenBadge/Badge";
 import { usePositions } from "../../hooks/usePositions";
+import { useConnectWallet } from "../../hooks/useConnectWallet";
 
 const PriceGuardDisplay = ({
   option,
@@ -332,16 +332,14 @@ const WithAccount = ({ account }: { account: AccountInterface }) => {
 
 export const UserPriceGuard = () => {
   const { account } = useAccount();
-  const { connectAsync } = useConnect();
+  const { openWalletConnectModal } = useConnectWallet();
 
   if (!account) {
     return (
       <div className={styles.wrapper}>
         <h1>My Price Protect</h1>
         <p>Connect your wallet to view active & claimable Price Protections</p>
-        <button onClick={() => openWalletConnectDialog(connectAsync)}>
-          Connect Wallet
-        </button>
+        <button onClick={openWalletConnectModal}>Connect Wallet</button>
       </div>
     );
   }

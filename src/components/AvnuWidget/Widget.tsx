@@ -4,7 +4,6 @@ import { formatUnits, parseUnits } from "ethers";
 import { Skeleton, Tooltip } from "@mui/material";
 import { Settings, WarningAmber } from "@mui/icons-material";
 
-import { openWalletConnectDialog } from "../ConnectWallet/Button";
 import { TokenDisplay, TokenSelect } from "./TokenSelect";
 import { StrkToken, Token, UsdcToken } from "../../classes/Token";
 import { LoadingAnimation } from "../Loading/Loading";
@@ -23,8 +22,9 @@ import { SlippageChange } from "./Slippage";
 import styles from "./widget.module.css";
 import { shortInteger } from "../../utils/computations";
 import { useUserBalance } from "../../hooks/useUserBalance";
-import { useAccount, useConnect } from "@starknet-react/core";
+import { useAccount } from "@starknet-react/core";
 import { debug } from "../../utils/debugger";
+import { useConnectWallet } from "../../hooks/useConnectWallet";
 
 const AVNU_BASE_URL = "https://starknet.api.avnu.fi";
 const CARMINE_BENEFICIARY_ADDRESS =
@@ -142,7 +142,7 @@ const QuoteBox = ({
 
 export const Widget = () => {
   const { account } = useAccount();
-  const { connectAsync } = useConnect();
+  const { openWalletConnectModal } = useConnectWallet();
   const abortControllerRef = useRef<AbortController | null>(null);
   const [inputValue, setInputValue] = useState("");
   const [debouncedValue, setDebouncedValue] = useState(inputValue);
@@ -295,7 +295,7 @@ export const Widget = () => {
         </div>
         <button
           className="primary active mainbutton"
-          onClick={() => openWalletConnectDialog(connectAsync)}
+          onClick={openWalletConnectModal}
         >
           Connect Wallet
         </button>

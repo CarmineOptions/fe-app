@@ -2,7 +2,6 @@ import { useState } from "react";
 import { AccountInterface } from "starknet";
 import { getDefiSpringData } from "./fetch";
 import { shortInteger } from "../../utils/computations";
-import { openWalletConnectDialog } from "../ConnectWallet/Button";
 import { Skeleton } from "@mui/material";
 import { addressElision } from "../../utils/utils";
 import {
@@ -21,12 +20,9 @@ import styles from "./defi.module.css";
 import { QueryKeys } from "../../queries/keys";
 import { useQuery } from "@tanstack/react-query";
 import { invalidateKey } from "../../queries/client";
-import {
-  useAccount,
-  useConnect,
-  useSendTransaction,
-} from "@starknet-react/core";
+import { useAccount, useSendTransaction } from "@starknet-react/core";
 import { DEFISPRING_CONTRACT_ADDRESS } from "../../constants/amm";
+import { useConnectWallet } from "../../hooks/useConnectWallet";
 
 export const RewardsWithAccount = ({
   account,
@@ -172,16 +168,13 @@ export const RewardsWithAccount = ({
 
 export const Rewards = () => {
   const { account, address } = useAccount();
-  const { connectAsync } = useConnect();
+  const { openWalletConnectModal } = useConnectWallet();
 
   if (!account || !address) {
     return (
       <div>
         <p>Connect wallet to access Starknet Rewards</p>
-        <button
-          className="primary active"
-          onClick={() => openWalletConnectDialog(connectAsync)}
-        >
+        <button className="primary active" onClick={openWalletConnectModal}>
           Connect Wallet
         </button>
       </div>

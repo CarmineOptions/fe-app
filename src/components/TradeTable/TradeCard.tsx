@@ -1,4 +1,5 @@
 import { debounce } from "@mui/material";
+import { useAccount } from "@starknet-react/core";
 import { LoadingAnimation } from "../Loading/Loading";
 import { useState, useCallback, useEffect } from "react";
 import { approveAndTradeOpen } from "../../calls/tradeOpen";
@@ -11,15 +12,15 @@ import { ProfitGraph } from "../CryptoGraph/ProfitGraph";
 import { getProfitGraphData } from "../CryptoGraph/profitGraphData";
 import { fetchModalData } from "./fetchModalData";
 import { ProfitTable, ProfitTableSkeleton } from "./ProfitTable";
-import { useAccount, useConnect } from "@starknet-react/core";
 import { showToast } from "../../redux/actions";
 import { ToastType } from "../../redux/reducers/ui";
 import { OptionWithPremia } from "../../classes/Option";
-import style from "./card.module.css";
-import buttonStyles from "../../style/button.module.css";
 import { math64toDecimal } from "../../utils/units";
 import { PairKey } from "../../classes/Pair";
-import { openWalletConnectDialog } from "../ConnectWallet/Button";
+import { useConnectWallet } from "../../hooks/useConnectWallet";
+
+import style from "./card.module.css";
+import buttonStyles from "../../style/button.module.css";
 
 type TemplateProps = {
   option: OptionWithPremia;
@@ -89,8 +90,7 @@ const getBaseAmount = (pairId: PairKey) => {
 
 export const TradeCard = ({ option }: TradeCardProps) => {
   const { account } = useAccount();
-  const { connectAsync } = useConnect();
-  // base amount for BTC is 0.1 and 1 for anything else
+  const { openWalletConnectModal } = useConnectWallet(); // base amount for BTC is 0.1 and 1 for anything else
   const baseAmount = getBaseAmount(option.pairId);
   const [amount, setAmount] = useState<number>(baseAmount);
   const [inputText, setInputText] = useState<string>(baseAmount.toString(10));
@@ -194,10 +194,7 @@ export const TradeCard = ({ option }: TradeCardProps) => {
   const BuyButton = () => {
     if (!account) {
       return (
-        <button
-          className={buttonStyles.green}
-          onClick={() => openWalletConnectDialog(connectAsync)}
-        >
+        <button className={buttonStyles.green} onClick={openWalletConnectModal}>
           Connect Wallet
         </button>
       );

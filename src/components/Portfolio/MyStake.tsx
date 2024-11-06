@@ -1,6 +1,5 @@
 import { AccountInterface } from "starknet";
-import { openWalletConnectDialog } from "../ConnectWallet/Button";
-import { useAccount, useConnect } from "@starknet-react/core";
+import { useAccount } from "@starknet-react/core";
 import { LoadingAnimation } from "../Loading/Loading";
 
 import styles from "./portfolio.module.css";
@@ -11,6 +10,7 @@ import { useStakes } from "../../hooks/useStakes";
 import { openSidebar, setSidebarContent } from "../../redux/actions";
 import { PoolSidebar } from "../Sidebar";
 import { formatNumber } from "../../utils/utils";
+import { useConnectWallet } from "../../hooks/useConnectWallet";
 
 const Item = ({
   account,
@@ -94,14 +94,14 @@ export const MyStakeWithAccount = ({
 
 export const MyStake = () => {
   const { account } = useAccount();
-  const { connectAsync } = useConnect();
+  const { openWalletConnectModal } = useConnectWallet();
 
   if (!account) {
     return (
       <div>
         <button
           className="mainbutton primary active"
-          onClick={() => openWalletConnectDialog(connectAsync)}
+          onClick={openWalletConnectModal}
         >
           Connect Wallet
         </button>
