@@ -1,4 +1,4 @@
-import { AccountInterface } from "starknet";
+import { Call } from "starknet";
 
 import { depositLiquidity } from "../../calls/depositLiquidity";
 import { Pool } from "../../classes/Pool";
@@ -9,13 +9,21 @@ import { longInteger, shortInteger } from "../../utils/computations";
 import { debug } from "../../utils/debugger";
 import { decimalToInt } from "../../utils/units";
 import { balanceOf } from "./../../calls/balanceOf";
+import { RequestResult } from "@starknet-react/core";
 
 export const handleStake = async (
-  account: AccountInterface,
+  sendAsync: (
+    args?: Call[]
+  ) => Promise<RequestResult<"wallet_addInvokeTransaction">>,
+  address: string | undefined,
   amount: number,
   pool: Pool,
   setLoading: (v: boolean) => void
 ) => {
+  if (!address) {
+    showToast("Could not read address", ToastType.Warn);
+    return;
+  }
   if (!amount) {
     showToast("Cannot stake 0 amount", ToastType.Warn);
     return;
@@ -23,7 +31,7 @@ export const handleStake = async (
   debug(`Staking ${amount} into ${pool.typeAsText} pool`);
   setLoading(true);
 
-  const balance = await balanceOf(account.address, pool.underlying.address);
+  const balance = await balanceOf(address, pool.underlying.address);
 
   const bnAmount = longInteger(amount, pool.digits);
 
@@ -54,5 +62,5 @@ export const handleStake = async (
     setLoading(false);
   };
 
-  depositLiquidity(account, size, amount, pool, ok, nok);
+  depositLiquidity(sendAsync, size, amount, pool, ok, nok);
 };

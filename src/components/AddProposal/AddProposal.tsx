@@ -20,7 +20,7 @@ import { decimalToMath64 } from "../../utils/units";
 import { Close } from "@mui/icons-material";
 import { ProposalText } from "./ProposalText";
 import { proposeOptions } from "./proposeOptions";
-import { useAccount } from "@starknet-react/core";
+import { useAccount, useSendTransaction } from "@starknet-react/core";
 import { useOptions } from "../../hooks/useOptions";
 
 const strkUsdcCallPool = new Pool(STRK_ADDRESS, USDC_ADDRESS, OptionType.Call);
@@ -71,6 +71,7 @@ const getRelevantMaturities = (count = 20, offset = 1) => {
 
 export const AddProposal = () => {
   const { account } = useAccount();
+  const { sendAsync } = useSendTransaction({});
   const { isLoading, isError, options: data } = useOptions();
   const [options, setOptions] = useState<ProposalOption[]>([]);
 
@@ -178,7 +179,7 @@ export const AddProposal = () => {
     if (!account) {
       return;
     }
-    proposeOptions(payload, account);
+    proposeOptions(payload, sendAsync);
   };
 
   return (

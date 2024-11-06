@@ -1,5 +1,4 @@
-import { AccountInterface } from "starknet";
-import { useAccount } from "@starknet-react/core";
+import { useAccount, useSendTransaction } from "@starknet-react/core";
 import { LoadingAnimation } from "../Loading/Loading";
 import { OptionWithPosition } from "../../classes/Option";
 import { PairNamedBadge, TokenBadge } from "../TokenBadge";
@@ -34,13 +33,7 @@ const Header = ({ state }: { state: "live" | "itm" | "otm" }) => {
   );
 };
 
-const LiveItem = ({
-  account,
-  option,
-}: {
-  account: AccountInterface;
-  option: OptionWithPosition;
-}) => {
+const LiveItem = ({ option }: { option: OptionWithPosition }) => {
   const price = useCurrency(option.underlying.id);
   const [date, time] = timestampToPriceGuardDate(option.maturity);
   const className = `${styles.item} ${styles.optionitem}`;
@@ -86,22 +79,18 @@ const LiveItem = ({
   );
 };
 
-const OtmItem = ({
-  account,
-  option,
-}: {
-  account: AccountInterface;
-  option: OptionWithPosition;
-}) => {
+const OtmItem = ({ option }: { option: OptionWithPosition }) => {
+  const { sendAsync } = useSendTransaction({});
+  const { address } = useAccount();
   const [date, time] = timestampToPriceGuardDate(option.maturity);
   const className = `${styles.item} ${styles.otmitem}`;
 
   const handleSettle = () => {
-    if (!account || !option?.size) {
+    if (!address || !option?.size) {
       return;
     }
 
-    tradeSettle(account, option).then((res) => {
+    tradeSettle(sendAsync, option).then((res) => {
       if (res?.transaction_hash) {
         afterTransaction(res.transaction_hash, () => {
           invalidatePositions();
@@ -136,23 +125,19 @@ const OtmItem = ({
   );
 };
 
-const ItmItem = ({
-  account,
-  option,
-}: {
-  account: AccountInterface;
-  option: OptionWithPosition;
-}) => {
+const ItmItem = ({ option }: { option: OptionWithPosition }) => {
+  const { sendAsync } = useSendTransaction({});
+  const { address } = useAccount();
   const price = useCurrency(option.underlying.id);
   const [date, time] = timestampToPriceGuardDate(option.maturity);
   const className = `${styles.item} ${styles.optionitem}`;
 
   const handleSettle = () => {
-    if (!account || !option?.sizeHex) {
+    if (!address || !option?.sizeHex) {
       return;
     }
 
-    tradeSettle(account, option)
+    tradeSettle(sendAsync, option)
       .then((res) => {
         if (res?.transaction_hash) {
           afterTransaction(res.transaction_hash, () => {
@@ -203,10 +188,8 @@ const ItmItem = ({
 };
 
 export const MyOptionsWithAccount = ({
-  account,
   state,
 }: {
-  account: AccountInterface;
   state: "live" | "itm" | "otm";
 }) => {
   const { isLoading, isError, data } = usePositions();
@@ -241,7 +224,7 @@ export const MyOptionsWithAccount = ({
       <div className={styles.list}>
         <Header state={state} />
         {selected.map((o, i) => (
-          <Item key={i} option={o} account={account} />
+          <Item key={i} option={o} />
         ))}
       </div>
     </div>
@@ -265,5 +248,5 @@ export const MyOptions = ({ state }: { state: "live" | "itm" | "otm" }) => {
     );
   }
 
-  return <MyOptionsWithAccount account={account} state={state} />;
+  return <MyOptionsWithAccount state={state} />;
 };

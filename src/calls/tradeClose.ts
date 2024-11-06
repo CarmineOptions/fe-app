@@ -1,4 +1,4 @@
-import { AccountInterface } from "starknet";
+import { Call } from "starknet";
 import { OptionWithPosition } from "../classes/Option";
 import { debug, LogTypes } from "../utils/debugger";
 import { invalidatePositions } from "../queries/client";
@@ -12,9 +12,12 @@ import {
 } from "../redux/actions";
 import { TransactionAction } from "../redux/reducers/transactions";
 import { ToastType } from "../redux/reducers/ui";
+import { RequestResult } from "@starknet-react/core";
 
 export const tradeClose = async (
-  account: AccountInterface,
+  sendAsync: (
+    args?: Call[]
+  ) => Promise<RequestResult<"wallet_addInvokeTransaction">>,
   option: OptionWithPosition,
   premia: bigint,
   size: number,
@@ -27,9 +30,9 @@ export const tradeClose = async (
       isClosing
     ).toString(10);
 
-    const res = await account.execute(
-      option.tradeCloseCalldata(size, premiaWithSlippage)
-    );
+    const res = await sendAsync([
+      option.tradeCloseCalldata(size, premiaWithSlippage),
+    ]);
 
     if (res?.transaction_hash) {
       const hash = res.transaction_hash;

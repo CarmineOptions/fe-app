@@ -7,7 +7,6 @@ import {
   TableBody,
 } from "@mui/material";
 import { useState } from "react";
-import { AccountInterface } from "starknet";
 
 import { CarmineStake } from "../../classes/CarmineStake";
 import { shortInteger } from "../../utils/computations";
@@ -29,13 +28,7 @@ const Item = ({ stake }: { stake: CarmineStake }) => {
   );
 };
 
-const InitialVeCarmItem = ({
-  amount,
-  account,
-}: {
-  amount: bigint;
-  account: AccountInterface;
-}) => {
+const InitialVeCarmItem = ({ amount }: { amount: bigint }) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -52,24 +45,13 @@ const InitialVeCarmItem = ({
         >
           Restake & Unstake
         </button>
-        <StakingModal
-          account={account}
-          amount={amount}
-          open={open}
-          setOpen={setOpen}
-        />
+        <StakingModal amount={amount} open={open} setOpen={setOpen} />
       </TableCell>
     </TableRow>
   );
 };
 
-const ExpiredItem = ({
-  stake,
-  account,
-}: {
-  stake: CarmineStake;
-  account: AccountInterface;
-}) => {
+const ExpiredItem = ({ stake }: { stake: CarmineStake }) => {
   const [open, setOpen] = useState(false);
   return (
     <TableRow>
@@ -85,12 +67,7 @@ const ExpiredItem = ({
         >
           Restake & Unstake
         </button>
-        <UnstakeModal
-          account={account}
-          stake={stake}
-          open={open}
-          setOpen={setOpen}
-        />
+        <UnstakeModal stake={stake} open={open} setOpen={setOpen} />
       </TableCell>
     </TableRow>
   );
@@ -99,10 +76,9 @@ const ExpiredItem = ({
 type Props = {
   stakes: CarmineStake[];
   veBalance: bigint;
-  account: AccountInterface;
 };
 
-export const Stakes = ({ stakes, veBalance, account }: Props) => {
+export const Stakes = ({ stakes, veBalance }: Props) => {
   const balanceInStakes = stakes.reduce((acc, cur) => {
     if (cur.isNotWithdrawn) {
       return acc + cur.amountVotingToken;
@@ -134,10 +110,10 @@ export const Stakes = ({ stakes, veBalance, account }: Props) => {
             </TableHead>
             <TableBody>
               {initialVeCarm > 0n && (
-                <InitialVeCarmItem account={account} amount={initialVeCarm} />
+                <InitialVeCarmItem amount={initialVeCarm} />
               )}
               {expired.map((stake, i) => (
-                <ExpiredItem stake={stake} account={account} key={i} />
+                <ExpiredItem stake={stake} key={i} />
               ))}
             </TableBody>
           </Table>

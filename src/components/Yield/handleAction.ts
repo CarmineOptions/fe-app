@@ -1,4 +1,4 @@
-import { AccountInterface } from "starknet";
+import { Call } from "starknet";
 import { Pool, UserPoolInfo } from "../../classes/Pool";
 import { invalidateStake } from "../../queries/client";
 import {
@@ -16,14 +16,22 @@ import { balanceOf } from "../../calls/balanceOf";
 import { TransactionAction } from "../../redux/reducers/transactions";
 import { afterTransaction } from "../../utils/blockchain";
 import { TransactionState, TxTracking } from "../../types/network";
+import { RequestResult } from "@starknet-react/core";
 
 export const handleDeposit = async (
-  account: AccountInterface,
+  sendAsync: (
+    args?: Call[]
+  ) => Promise<RequestResult<"wallet_addInvokeTransaction">>,
+  address: string | undefined,
   amount: number,
   pool: Pool,
   setTxState: TxTracking,
   done: (tx: string) => void
 ) => {
+  if (!address) {
+    showToast("Could not read address", ToastType.Warn);
+    return;
+  }
   if (!amount) {
     showToast("Cannot stake 0 amount", ToastType.Warn);
     return;
@@ -31,7 +39,7 @@ export const handleDeposit = async (
   debug(`Staking ${amount} into ${pool.typeAsText} pool`);
   setTxState(TransactionState.Processing);
 
-  const balance = await balanceOf(account.address, pool.underlying.address);
+  const balance = await balanceOf(address, pool.underlying.address);
 
   const bnAmount = longInteger(amount, pool.digits);
 
@@ -63,12 +71,13 @@ export const handleDeposit = async (
 
   pool.sendStakeBeginCheckoutEvent(amount);
 
-  const res = await account
-    .execute([approveCalldata, depositLiquidityCalldata])
-    .catch((e: Error) => {
-      debug('"Stake capital" user rejected or failed');
-      setTxState(TransactionState.Fail);
-    });
+  const res = await sendAsync([
+    approveCalldata,
+    depositLiquidityCalldata,
+  ]).catch((e: Error) => {
+    debug('"Stake capital" user rejected or failed');
+    setTxState(TransactionState.Fail);
+  });
 
   pool.sendStakePurchaseEvent(amount);
 
@@ -118,7 +127,9 @@ const calculateTokens = (
 };
 
 export const handleWithdraw = async (
-  account: AccountInterface,
+  sendAsync: (
+    args?: Call[]
+  ) => Promise<RequestResult<"wallet_addInvokeTransaction">>,
   amount: number,
   pool: UserPoolInfo,
   setTxState: TxTracking
@@ -147,7 +158,7 @@ export const handleWithdraw = async (
 
   debug("Withdraw call", withdraw);
 
-  const res = await account.execute(withdraw).catch((e) => {
+  const res = await sendAsync([withdraw]).catch((e) => {
     debug("Withdraw rejected by user or failed\n", e.message);
     setTxState(TransactionState.Fail);
   });

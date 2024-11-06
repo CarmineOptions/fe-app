@@ -4,7 +4,7 @@ import {
   markTxAsFailed,
   showToast,
 } from "./../redux/actions";
-import { AccountInterface } from "starknet";
+import { Call } from "starknet";
 import { Option } from "../classes/Option";
 import { debug } from "../utils/debugger";
 import { getToApprove, shortInteger } from "../utils/computations";
@@ -16,9 +16,13 @@ import { math64toDecimal, math64ToInt } from "../utils/units";
 import { apiUrl } from "../api";
 import { isMainnet } from "../constants/amm";
 import { TransactionState, TxTracking } from "../types/network";
+import { RequestResult } from "@starknet-react/core";
 
 export const approveAndTradeOpen = async (
-  account: AccountInterface,
+  address: string,
+  sendAsync: (
+    args?: Call[]
+  ) => Promise<RequestResult<"wallet_addInvokeTransaction">>,
   option: Option,
   size: number,
   premiaNum: number,
@@ -75,7 +79,7 @@ export const approveAndTradeOpen = async (
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        user_address: account.address,
+        user_address: address,
         calldata: tradeOpen.calldata,
       }),
     };
@@ -90,7 +94,7 @@ export const approveAndTradeOpen = async (
       });
   }
 
-  const res = await account.execute([approve, tradeOpen]).catch((e) => {
+  const res = await sendAsync([approve, tradeOpen]).catch((e) => {
     debug("Trade open rejected or failed", e.message);
     throw Error("Trade open rejected or failed");
   });
@@ -128,7 +132,10 @@ export const approveAndTradeOpen = async (
 };
 
 export const approveAndTradeOpenNew = async (
-  account: AccountInterface,
+  address: string,
+  sendAsync: (
+    args?: Call[]
+  ) => Promise<RequestResult<"wallet_addInvokeTransaction">>,
   option: Option,
   size: number,
   premiaMath64: bigint,
@@ -172,7 +179,7 @@ export const approveAndTradeOpenNew = async (
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        user_address: account.address,
+        user_address: address,
         calldata: tradeOpen.calldata,
       }),
     };
@@ -187,7 +194,7 @@ export const approveAndTradeOpenNew = async (
       });
   }
 
-  const res = await account.execute([approve, tradeOpen]).catch((e) => {
+  const res = await sendAsync([approve, tradeOpen]).catch((e) => {
     debug("Trade open rejected or failed", e.message);
   });
 

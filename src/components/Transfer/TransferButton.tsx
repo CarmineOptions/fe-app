@@ -1,19 +1,20 @@
 import { TransferState, transferLpCapital, userLpBalance } from "./transfer";
-import { useAccount } from "@starknet-react/core";
+import { useAccount, useSendTransaction } from "@starknet-react/core";
 import { useState } from "react";
 
 export const TransferButton = () => {
-  const { account } = useAccount();
+  const { address } = useAccount();
+  const { sendAsync } = useSendTransaction({});
   const [txState, setTxState] = useState(TransferState.Initial);
 
   const handleClick = async () => {
-    if (!account) {
+    if (!address) {
       return;
     }
-    const transferData = await userLpBalance(account.address);
+    const transferData = await userLpBalance(address);
 
     if (transferData.shouldTransfer) {
-      transferLpCapital(account, transferData, setTxState);
+      transferLpCapital(sendAsync, transferData, setTxState);
     }
   };
 

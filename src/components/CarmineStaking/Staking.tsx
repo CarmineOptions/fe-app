@@ -1,4 +1,3 @@
-import { AccountInterface } from "starknet";
 import { useQuery } from "@tanstack/react-query";
 
 import { shortInteger } from "../../utils/computations";
@@ -11,13 +10,7 @@ import { formatNumber } from "../../utils/utils";
 import { useAccount } from "@starknet-react/core";
 import { useConnectWallet } from "../../hooks/useConnectWallet";
 
-export const StakeWithAccount = ({
-  account,
-  address,
-}: {
-  account: AccountInterface;
-  address: string;
-}) => {
+export const StakeWithAccount = ({ address }: { address: string }) => {
   const { isLoading, isError, data } = useQuery({
     queryKey: [QueryKeys.carmineStakes, address],
     queryFn: async () => fetchStakingData(address),
@@ -58,22 +51,20 @@ export const StakeWithAccount = ({
         You have {humanReadableCarmBalance} <b>CRM</b> and{" "}
         {humanReadableVeCarmBalance} <b>veCRM</b>
       </p>
-      {carmBalance > 0n && (
-        <StakeCrm account={account} carmBalance={carmBalance} />
-      )}
+      {carmBalance > 0n && <StakeCrm carmBalance={carmBalance} />}
 
-      <Stakes stakes={stakes} veBalance={veCarmBalance} account={account} />
+      <Stakes stakes={stakes} veBalance={veCarmBalance} />
     </div>
   );
 };
 
 export const CarmineStaking = () => {
-  const { account, address } = useAccount();
+  const { address } = useAccount();
   const { openWalletConnectModal } = useConnectWallet();
 
-  if (!account || !address) {
+  if (!address) {
     return <button onClick={openWalletConnectModal}>Connect wallet</button>;
   }
 
-  return <StakeWithAccount account={account} address={address} />;
+  return <StakeWithAccount address={address} />;
 };

@@ -1,4 +1,3 @@
-import { AccountInterface } from "starknet";
 import { Tooltip } from "@mui/material";
 
 import { VoteButtons } from "../Vote/Vote";
@@ -15,7 +14,6 @@ import styles from "./Proposal.module.css";
 type Props = {
   proposal: ProposalWithOpinion;
   balance?: bigint;
-  account?: AccountInterface;
 };
 
 const VoteScore = ({
@@ -55,7 +53,7 @@ const VoteScore = ({
   );
 };
 
-export const ProposalItem = ({ proposal, balance, account }: Props) => {
+export const ProposalItem = ({ proposal, balance }: Props) => {
   const { data: votes } = useProposalVotes(proposal.propId);
   const { data: totalSupplyRaw } = useTotalSupply(VE_CRM_ADDRESS);
 
@@ -70,7 +68,7 @@ export const ProposalItem = ({ proposal, balance, account }: Props) => {
         <VoteScore proposalVotes={votes} totalSupply={totalSupply} />
       )}
       <div>
-        <VoteButtons proposal={proposal} balance={balance} account={account} />
+        <VoteButtons proposal={proposal} balance={balance} />
       </div>
     </div>
   );

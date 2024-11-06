@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { AccountInterface } from "starknet";
+import { useAccount } from "@starknet-react/core";
 
 import { Eligible, getProof } from "./getProof";
 import { shortInteger } from "../../utils/computations";
@@ -9,15 +9,8 @@ import { QueryKeys } from "../../queries/keys";
 import { AirdropModal } from "./AirdropModal";
 import airdropStyles from "./airdrop.module.css";
 import { formatNumber } from "../../utils/utils";
-import { useAccount } from "@starknet-react/core";
 
-const ClaimAndStake = ({
-  account,
-  data,
-}: {
-  account: AccountInterface;
-  data: Eligible;
-}) => {
+const ClaimAndStake = ({ data }: { data: Eligible }) => {
   const [open, setOpen] = useState(false);
   const amountHumanReadable = shortInteger(data.claimable, 18);
 
@@ -31,12 +24,7 @@ const ClaimAndStake = ({
           Claim
         </button>
       </div>
-      <AirdropModal
-        account={account}
-        data={data}
-        open={open}
-        setOpen={setOpen}
-      />
+      <AirdropModal data={data} open={open} setOpen={setOpen} />
     </div>
   );
 };
@@ -47,13 +35,7 @@ const AirdropTemplate = ({ message }: { message: string }) => (
   </div>
 );
 
-export const AirdropWithAccount = ({
-  account,
-  address,
-}: {
-  account: AccountInterface;
-  address: string;
-}) => {
+export const AirdropWithAccount = ({ address }: { address: string }) => {
   const { isLoading, isError, data } = useQuery({
     queryKey: [QueryKeys.airdropData, address],
     queryFn: async () => getProof(address),
@@ -81,7 +63,7 @@ export const AirdropWithAccount = ({
       );
     }
 
-    return <ClaimAndStake account={account} data={data} />;
+    return <ClaimAndStake data={data} />;
   }
 
   return (
@@ -90,9 +72,9 @@ export const AirdropWithAccount = ({
 };
 
 export const Airdrop = () => {
-  const { account, address } = useAccount();
+  const { address } = useAccount();
 
-  if (!account || !address) {
+  if (!address) {
     return (
       <AirdropTemplate message="Connect your wallet to see if you are eligible for an airdrop" />
     );
@@ -104,5 +86,5 @@ export const Airdrop = () => {
     );
   }
 
-  return <AirdropWithAccount account={account} address={address} />;
+  return <AirdropWithAccount address={address} />;
 };

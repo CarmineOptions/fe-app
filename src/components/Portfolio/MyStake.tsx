@@ -1,4 +1,3 @@
-import { AccountInterface } from "starknet";
 import { useAccount } from "@starknet-react/core";
 import { LoadingAnimation } from "../Loading/Loading";
 
@@ -12,13 +11,7 @@ import { PoolSidebar } from "../Sidebar";
 import { formatNumber } from "../../utils/utils";
 import { useConnectWallet } from "../../hooks/useConnectWallet";
 
-const Item = ({
-  account,
-  stake,
-}: {
-  account: AccountInterface;
-  stake: UserPoolInfo;
-}) => {
+const Item = ({ stake }: { stake: UserPoolInfo }) => {
   const price = useCurrency(stake.underlying.id);
   const handleClick = () => {
     setSidebarContent(<PoolSidebar pool={stake} initialAction="withdraw" />);
@@ -51,11 +44,7 @@ const Item = ({
   );
 };
 
-export const MyStakeWithAccount = ({
-  account,
-}: {
-  account: AccountInterface;
-}) => {
+export const MyStakeWithAccount = () => {
   const { isLoading, isError, stakes } = useStakes();
 
   if (isLoading) {
@@ -85,7 +74,7 @@ export const MyStakeWithAccount = ({
           <div></div>
         </div>
         {stakes.map((stake, i) => (
-          <Item key={i} stake={stake} account={account} />
+          <Item key={i} stake={stake} />
         ))}
       </div>
     </div>
@@ -109,5 +98,5 @@ export const MyStake = () => {
     );
   }
 
-  return <MyStakeWithAccount account={account} />;
+  return <MyStakeWithAccount />;
 };

@@ -1,6 +1,5 @@
 import { LoadingAnimation } from "../Loading/Loading";
-import { useAccount } from "@starknet-react/core";
-import { AccountInterface } from "starknet";
+import { useAccount, useSendTransaction } from "@starknet-react/core";
 import { OptionWithPosition } from "../../classes/Option";
 import { showToast } from "../../redux/actions";
 import { useTxPending } from "../../hooks/useRecentTxs";
@@ -17,13 +16,8 @@ import { TokenNamedBadge } from "../TokenBadge/Badge";
 import { usePositions } from "../../hooks/usePositions";
 import { useConnectWallet } from "../../hooks/useConnectWallet";
 
-const PriceGuardDisplay = ({
-  option,
-  account,
-}: {
-  option: OptionWithPosition;
-  account: AccountInterface;
-}) => {
+const PriceGuardDisplay = ({ option }: { option: OptionWithPosition }) => {
+  const { sendAsync } = useSendTransaction({});
   const txPending = useTxPending(
     option.optionId,
     TransactionAction.TradeSettle
@@ -41,8 +35,7 @@ const PriceGuardDisplay = ({
 
   const handleButtonClick = () => {
     setSettling(true);
-    account
-      .execute(option.tradeSettleCalldata)
+    sendAsync([option.tradeSettleCalldata])
       .then((res) => {
         if (res?.transaction_hash) {
           afterTransaction(res.transaction_hash, () => {
@@ -96,7 +89,7 @@ const PriceGuardDisplay = ({
 
 type Sorter = "asset" | "amount" | "price" | "duration" | "status";
 
-const WithAccount = ({ account }: { account: AccountInterface }) => {
+const WithAccount = () => {
   const { data, isLoading, isError } = usePositions();
   const [asset, setAsset] = useState<TokenKey | "all">("all");
   const [order, setOrder] = useState<"asc" | "desc">("asc");
@@ -323,7 +316,7 @@ const WithAccount = ({ account }: { account: AccountInterface }) => {
     <Header>
       <div className="tablecontent">
         {sorted.map((o, i) => (
-          <PriceGuardDisplay option={o} account={account} key={i} />
+          <PriceGuardDisplay option={o} key={i} />
         ))}
       </div>
     </Header>
@@ -344,5 +337,5 @@ export const UserPriceGuard = () => {
     );
   }
 
-  return <WithAccount account={account} />;
+  return <WithAccount />;
 };

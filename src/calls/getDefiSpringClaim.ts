@@ -1,6 +1,6 @@
 import { provider } from "../network/provider";
 import { debug } from "../utils/debugger";
-import { AccountInterface, Contract } from "starknet";
+import { Contract } from "starknet";
 
 import ABI from "../abi/defi_spring_abi.json";
 import { QueryFunctionContext } from "@tanstack/react-query";
@@ -27,21 +27,4 @@ export const getDefiSpringClaimed = async (
     });
 
   return res as bigint;
-};
-
-export const defiSpringClaim = async (
-  account: AccountInterface,
-  calldata: (string | number)[]
-) => {
-  const call = {
-    entrypoint: "claim",
-    calldata,
-    contractAddress: defiSpringContractAddress,
-  };
-  const res = await account.execute(call).catch((e) => {
-    debug("Trade open rejected or failed", e.message);
-    throw Error("Trade open rejected or failed");
-  });
-
-  return res;
 };
