@@ -1,3 +1,10 @@
+## [2.8.5](https://github.com/CarmineOptions/fe-app/compare/v2.8.4...v2.8.5) (2024-11-06)
+
+
+### Bug Fixes
+
+* use open wallet connect modal hook ([4c100bf](https://github.com/CarmineOptions/fe-app/commit/4c100bf191bc6a92cc30548b1d0f1270eba25dfa))
+
 ## [2.8.4](https://github.com/CarmineOptions/fe-app/compare/v2.8.3...v2.8.4) (2024-11-05)
 
 
