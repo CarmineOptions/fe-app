@@ -1,3 +1,10 @@
+## [2.8.6](https://github.com/CarmineOptions/fe-app/compare/v2.8.5...v2.8.6) (2024-11-06)
+
+
+### Bug Fixes
+
+* use sendAsync ([ae5e347](https://github.com/CarmineOptions/fe-app/commit/ae5e347774e465958eff75c28ab0f41309f47259))
+
 ## [2.8.5](https://github.com/CarmineOptions/fe-app/compare/v2.8.4...v2.8.5) (2024-11-06)
 
 
