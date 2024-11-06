@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useAccount, useConnect } from "@starknet-react/core";
+import { useAccount } from "@starknet-react/core";
 import { useUserBalance } from "../../hooks/useUserBalance";
 import { useCurrency } from "../../hooks/useCurrency";
 import { LoadingAnimation } from "../Loading/Loading";
@@ -13,7 +13,6 @@ import { handleNumericChangeFactory } from "../../utils/inputHandling";
 import { Token, TokenKey } from "../../classes/Token";
 import { getPremia } from "../../calls/getPremia";
 import { math64toDecimal } from "../../utils/units";
-import { openWalletConnectDialog } from "../ConnectWallet/Button";
 import { Info } from "@mui/icons-material";
 import { MenuItem, Select, SelectChangeEvent, Tooltip } from "@mui/material";
 import { approveAndTradeOpenNew } from "../../calls/tradeOpen";
@@ -22,6 +21,7 @@ import styles from "./priceguard.module.css";
 import { TokenNamedBadge } from "../TokenBadge";
 import { TransactionState } from "../../types/network";
 import { useOptions } from "../../hooks/useOptions";
+import { useConnectWallet } from "../../hooks/useConnectWallet";
 
 const InfoIcon = ({ msg }: { msg: string }) => {
   return (
@@ -35,7 +35,7 @@ const InfoIcon = ({ msg }: { msg: string }) => {
 
 export const PriceGuard = () => {
   const { account } = useAccount();
-  const { connectAsync } = useConnect();
+  const { openWalletConnectModal } = useConnectWallet();
   const [currency, setCurrency] = useState<TokenKey>(TokenKey.STRK);
   const token = Token.byKey(currency);
   const { data: balance } = useUserBalance(token.address);
@@ -435,10 +435,7 @@ export const PriceGuard = () => {
       </div>
       <div>
         {account === undefined ? (
-          <button
-            className={styles.buybutton}
-            onClick={() => openWalletConnectDialog(connectAsync)}
-          >
+          <button className={styles.buybutton} onClick={openWalletConnectModal}>
             Connect Wallet
           </button>
         ) : price === undefined || priceMath64 === undefined ? (

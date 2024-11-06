@@ -7,8 +7,7 @@ import { useCurrency } from "../../hooks/useCurrency";
 import { useUserBalance } from "../../hooks/useUserBalance";
 import { shortInteger } from "../../utils/computations";
 import { math64toDecimal } from "../../utils/units";
-import { useAccount, useConnect } from "@starknet-react/core";
-import { openWalletConnectDialog } from "../ConnectWallet/Button";
+import { useAccount } from "@starknet-react/core";
 import { setSidebarContent, showToast } from "../../redux/actions";
 import { PoolSidebarSuccess } from "./PoolSidebarSuccess";
 import { TransactionState } from "../../types/network";
@@ -22,6 +21,7 @@ import { TokenKey } from "../../classes/Token";
 import { LoadingAnimation } from "../Loading/Loading";
 import { BoxTwoValues } from "./Utils";
 import { useDefispringApy } from "../../hooks/useDefyspringApy";
+import { useConnectWallet } from "../../hooks/useConnectWallet";
 
 type Props = {
   pool: Pool;
@@ -30,7 +30,7 @@ type Props = {
 
 export const PoolSidebar = ({ pool, initialAction }: Props) => {
   const { account } = useAccount();
-  const { connectAsync } = useConnect();
+  const { openWalletConnectModal } = useConnectWallet();
   const { poolInfo } = usePoolInfo(pool.apiPoolId);
   const { stakes } = useStakes();
   const price = useCurrency(pool.underlying.id);
@@ -198,7 +198,7 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
           <div>
             {account === undefined ? (
               <button
-                onClick={() => openWalletConnectDialog(connectAsync)}
+                onClick={openWalletConnectModal}
                 className={"primary active mainbutton"}
               >
                 Connect Wallet

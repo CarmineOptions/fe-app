@@ -19,10 +19,9 @@ import { debug } from "../../utils/debugger";
 import { TokenKey } from "../../classes/Token";
 import { StarknetIcon } from "../Icons";
 import { DefiSpringStakingMessage, DefiSpringTooltip } from "../DefiSpring";
-import { openWalletConnectDialog } from "../ConnectWallet/Button";
 
 import stakeItemStyles from "./stakeitem.module.css";
-import { useConnect } from "@starknet-react/core";
+import { useConnectWallet } from "../../hooks/useConnectWallet";
 
 type Props = {
   account: AccountInterface | undefined;
@@ -112,7 +111,7 @@ const ApyNotAvailable = () => {
 };
 
 export const StakeCapitalItem = ({ account, pool, defispringApy }: Props) => {
-  const { connectAsync } = useConnect();
+  const { openWalletConnectModal } = useConnectWallet();
   const txPending = useTxPending(pool.poolId, TransactionAction.Stake);
   const [amount, setAmount] = useState<number>(0);
   const [showLockInfo, setLockInfo] = useState<boolean>(false);
@@ -171,7 +170,7 @@ export const StakeCapitalItem = ({ account, pool, defispringApy }: Props) => {
           ) : (
             <button
               className={buttonStyles.secondary}
-              onClick={() => openWalletConnectDialog(connectAsync)}
+              onClick={openWalletConnectModal}
             >
               Connect wallet
             </button>

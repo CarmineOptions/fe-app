@@ -1,6 +1,5 @@
 import { AccountInterface } from "starknet";
-import { openWalletConnectDialog } from "../ConnectWallet/Button";
-import { useAccount, useConnect } from "@starknet-react/core";
+import { useAccount } from "@starknet-react/core";
 import { LoadingAnimation } from "../Loading/Loading";
 import { OptionWithPosition } from "../../classes/Option";
 import { PairNamedBadge, TokenBadge } from "../TokenBadge";
@@ -17,6 +16,7 @@ import { ToastType } from "../../redux/reducers/ui";
 import { usePositions } from "../../hooks/usePositions";
 import { useCurrency } from "../../hooks/useCurrency";
 import styles from "./portfolio.module.css";
+import { useConnectWallet } from "../../hooks/useConnectWallet";
 
 const Header = ({ state }: { state: "live" | "itm" | "otm" }) => {
   return (
@@ -250,14 +250,14 @@ export const MyOptionsWithAccount = ({
 
 export const MyOptions = ({ state }: { state: "live" | "itm" | "otm" }) => {
   const { account } = useAccount();
-  const { connectAsync } = useConnect();
+  const { openWalletConnectModal } = useConnectWallet();
 
   if (!account) {
     return (
       <div>
         <button
           className="mainbutton primary active"
-          onClick={() => openWalletConnectDialog(connectAsync)}
+          onClick={openWalletConnectModal}
         >
           Connect Wallet
         </button>
