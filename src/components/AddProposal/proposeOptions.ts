@@ -1,10 +1,13 @@
-import { AccountInterface } from "starknet";
+import { Call } from "starknet";
 import { AMM_ADDRESS, GOVERNANCE_ADDRESS } from "../../constants/amm";
 import { debug } from "../../utils/debugger";
+import { RequestResult } from "@starknet-react/core";
 
 export const proposeOptions = async (
   options: string[],
-  account: AccountInterface
+  sendAsync: (
+    args?: Call[]
+  ) => Promise<RequestResult<"wallet_addInvokeTransaction">>
 ) => {
   const call = {
     contractAddress: GOVERNANCE_ADDRESS,
@@ -20,8 +23,7 @@ export const proposeOptions = async (
 
   debug("Executing add options proposal:", call);
 
-  await account
-    .execute(call)
+  await sendAsync([call])
     .then((res) => debug("Send TX", res.transaction_hash))
     .catch(() => {});
 };

@@ -7,7 +7,7 @@ import { useCurrency } from "../../hooks/useCurrency";
 import { useUserBalance } from "../../hooks/useUserBalance";
 import { shortInteger } from "../../utils/computations";
 import { math64toDecimal } from "../../utils/units";
-import { useAccount } from "@starknet-react/core";
+import { useAccount, useSendTransaction } from "@starknet-react/core";
 import { setSidebarContent, showToast } from "../../redux/actions";
 import { PoolSidebarSuccess } from "./PoolSidebarSuccess";
 import { TransactionState } from "../../types/network";
@@ -29,7 +29,8 @@ type Props = {
 };
 
 export const PoolSidebar = ({ pool, initialAction }: Props) => {
-  const { account } = useAccount();
+  const { address } = useAccount();
+  const { sendAsync } = useSendTransaction({});
   const { openWalletConnectModal } = useConnectWallet();
   const { poolInfo } = usePoolInfo(pool.apiPoolId);
   const { stakes } = useStakes();
@@ -120,15 +121,15 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
   };
 
   const handleActionClick = () => {
-    if (action === "deposit" && account) {
+    if (action === "deposit" && address) {
       const done = (tx: string) => {
         setSidebarContent(
           <PoolSidebarSuccess pool={pool} amount={amount} tx={tx} />
         );
       };
-      handleDeposit(account, amount, pool, setTxState, done);
+      handleDeposit(sendAsync, address, amount, pool, setTxState, done);
     }
-    if (action === "withdraw" && account && poolData && userPosition) {
+    if (action === "withdraw" && address && poolData && userPosition) {
       if (userPosition < amount) {
         showToast(
           `Cannot withdraw ${formatNumber(amount)}, you have ${formatNumber(
@@ -138,7 +139,7 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
         setTxState(TransactionState.Fail);
         return;
       }
-      handleWithdraw(account, amount, poolData, setTxState);
+      handleWithdraw(sendAsync, amount, poolData, setTxState);
     }
   };
   return (
@@ -196,7 +197,7 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
         </div>
         <div>
           <div>
-            {account === undefined ? (
+            {address === undefined ? (
               <button
                 onClick={openWalletConnectModal}
                 className={"primary active mainbutton"}

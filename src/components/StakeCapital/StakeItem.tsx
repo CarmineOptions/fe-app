@@ -6,7 +6,8 @@ import {
   useTheme,
 } from "@mui/material";
 import { CSSProperties, useEffect, useState } from "react";
-import { AccountInterface } from "starknet";
+import { useAccount, useSendTransaction } from "@starknet-react/core";
+
 import { Pool } from "../../classes/Pool";
 import { useTxPending } from "../../hooks/useRecentTxs";
 import { TransactionAction } from "../../redux/reducers/transactions";
@@ -19,12 +20,11 @@ import { debug } from "../../utils/debugger";
 import { TokenKey } from "../../classes/Token";
 import { StarknetIcon } from "../Icons";
 import { DefiSpringStakingMessage, DefiSpringTooltip } from "../DefiSpring";
-
-import stakeItemStyles from "./stakeitem.module.css";
 import { useConnectWallet } from "../../hooks/useConnectWallet";
 
+import stakeItemStyles from "./stakeitem.module.css";
+
 type Props = {
-  account: AccountInterface | undefined;
   pool: Pool;
   defispringApy?: number;
 };
@@ -110,7 +110,9 @@ const ApyNotAvailable = () => {
   );
 };
 
-export const StakeCapitalItem = ({ account, pool, defispringApy }: Props) => {
+export const StakeCapitalItem = ({ pool, defispringApy }: Props) => {
+  const { sendAsync } = useSendTransaction({});
+  const { address } = useAccount();
   const { openWalletConnectModal } = useConnectWallet();
   const txPending = useTxPending(pool.poolId, TransactionAction.Stake);
   const [amount, setAmount] = useState<number>(0);
@@ -126,7 +128,7 @@ export const StakeCapitalItem = ({ account, pool, defispringApy }: Props) => {
   const handleChange = handleNumericChangeFactory(setText, setAmount);
 
   const handleStakeClick = () =>
-    handleStake(account!, amount, pool, setLoading);
+    handleStake(sendAsync, address, amount, pool, setLoading);
   const handleLockedInfo = () => setLockInfo(!showLockInfo);
 
   const [weekly, sinceLaunch] = apy || [undefined, undefined];
@@ -159,7 +161,7 @@ export const StakeCapitalItem = ({ account, pool, defispringApy }: Props) => {
           <input type="text" value={text} onChange={handleChange} />
         </TableCell>
         <TableCell sx={{ display: "flex", alignItems: "center" }} align="right">
-          {account ? (
+          {address ? (
             <button
               className={buttonStyles.secondary}
               disabled={loading || txPending}

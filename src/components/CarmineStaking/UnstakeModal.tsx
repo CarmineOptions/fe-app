@@ -1,5 +1,5 @@
 import { Dialog, Tooltip } from "@mui/material";
-import { AccountInterface } from "starknet";
+import { Call } from "starknet";
 
 import {
   CARMINE_STAKING_MONTH,
@@ -24,10 +24,12 @@ import { CarmineStake } from "../../classes/CarmineStake";
 
 import styles from "./modal.module.css";
 import buttonStyles from "../../style/button.module.css";
-import { useSendTransaction } from "@starknet-react/core";
+import { RequestResult, useSendTransaction } from "@starknet-react/core";
 
 export const unstakeAndStake = async (
-  account: AccountInterface,
+  sendAsync: (
+    args?: Call[]
+  ) => Promise<RequestResult<"wallet_addInvokeTransaction">>,
   stake: CarmineStake,
   length: number,
   setTxState: TxTracking
@@ -50,9 +52,9 @@ export const unstakeAndStake = async (
     calldata: [length.toString(10), stake.amountStaked.toString(10)],
   };
 
-  const res = await account
-    .execute([unstakeCall, approveCall, stakeCall])
-    .catch(() => null);
+  const res = await sendAsync([unstakeCall, approveCall, stakeCall]).catch(
+    () => null
+  );
 
   if (res?.transaction_hash) {
     const hash = res.transaction_hash;
@@ -78,7 +80,6 @@ export const unstakeAndStake = async (
 };
 
 type Props = {
-  account: AccountInterface;
   stake: CarmineStake;
   open: boolean;
   setOpen: (open: boolean) => void;
@@ -97,7 +98,7 @@ export const stateToClassName = (state: TransactionState) => {
   return buttonStyles.secondary;
 };
 
-export const UnstakeModal = ({ account, stake, open, setOpen }: Props) => {
+export const UnstakeModal = ({ stake, open, setOpen }: Props) => {
   const [unstakeState, setUnstakeState] = useState(TransactionState.Initial);
   const [monthState, setMonthState] = useState(TransactionState.Initial);
   const [sixMonthsState, setSixMonthsState] = useState(
@@ -121,18 +122,21 @@ export const UnstakeModal = ({ account, stake, open, setOpen }: Props) => {
   const handle1month = () => {
     setSixMonthsState(TransactionState.Processing);
     setYearState(TransactionState.Processing);
-    unstakeAndStake(account, stake, CARMINE_STAKING_MONTH, setMonthState).then(
-      () => {
-        setSixMonthsState(TransactionState.Initial);
-        setYearState(TransactionState.Initial);
-      }
-    );
+    unstakeAndStake(
+      sendAsync,
+      stake,
+      CARMINE_STAKING_MONTH,
+      setMonthState
+    ).then(() => {
+      setSixMonthsState(TransactionState.Initial);
+      setYearState(TransactionState.Initial);
+    });
   };
   const handle6months = () => {
     setMonthState(TransactionState.Processing);
     setYearState(TransactionState.Processing);
     unstakeAndStake(
-      account,
+      sendAsync,
       stake,
       6 * CARMINE_STAKING_MONTH,
       setSixMonthsState
@@ -144,7 +148,7 @@ export const UnstakeModal = ({ account, stake, open, setOpen }: Props) => {
   const handleYear = () => {
     setMonthState(TransactionState.Processing);
     setSixMonthsState(TransactionState.Processing);
-    unstakeAndStake(account, stake, CARMINE_STAKING_YEAR, setYearState).then(
+    unstakeAndStake(sendAsync, stake, CARMINE_STAKING_YEAR, setYearState).then(
       () => {
         setMonthState(TransactionState.Initial);
         setSixMonthsState(TransactionState.Initial);

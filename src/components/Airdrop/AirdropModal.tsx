@@ -1,5 +1,7 @@
 import { Dialog, Tooltip } from "@mui/material";
-import { AccountInterface } from "starknet";
+import { Call } from "starknet";
+import { RequestResult, useSendTransaction } from "@starknet-react/core";
+
 import { Eligible } from "./getProof";
 
 import { shortInteger } from "../../utils/computations";
@@ -27,7 +29,9 @@ import { QueryKeys } from "../../queries/keys";
 import styles from "./airdrop.module.css";
 
 export const claim = async (
-  account: AccountInterface,
+  sendAsync: (
+    args?: Call[]
+  ) => Promise<RequestResult<"wallet_addInvokeTransaction">>,
   data: string[],
   setTxState: TxTracking
 ) => {
@@ -42,7 +46,7 @@ export const claim = async (
     entrypoint: "claim",
     calldata,
   };
-  const res = await account.execute(call).catch((e) => {
+  const res = await sendAsync([call]).catch((e) => {
     console.log("Failed claiming airdrop", e.message);
     console.error(e);
     return null;
@@ -73,7 +77,9 @@ export const claim = async (
 };
 
 export const claimAndStake = async (
-  account: AccountInterface,
+  sendAsync: (
+    args?: Call[]
+  ) => Promise<RequestResult<"wallet_addInvokeTransaction">>,
   data: string[],
   airdropAmount: bigint,
   length: number,
@@ -105,9 +111,12 @@ export const claimAndStake = async (
     calldata: [length, airdropAmount.toString(10)],
   };
 
-  const res = await account
-    .execute([claimCall, unstakeAirdropCall, approveCall, stakeCall])
-    .catch(() => null);
+  const res = await sendAsync([
+    claimCall,
+    unstakeAirdropCall,
+    approveCall,
+    stakeCall,
+  ]).catch(() => null);
 
   if (res?.transaction_hash) {
     const hash = res.transaction_hash;
@@ -133,7 +142,6 @@ export const claimAndStake = async (
 };
 
 type Props = {
-  account: AccountInterface;
   data: Eligible;
   open: boolean;
   setOpen: (open: boolean) => void;
@@ -152,7 +160,8 @@ const stateToClassName = (state: TransactionState) => {
   return "mainbutton active primary";
 };
 
-export const AirdropModal = ({ account, data, open, setOpen }: Props) => {
+export const AirdropModal = ({ data, open, setOpen }: Props) => {
+  const { sendAsync } = useSendTransaction({});
   const [claimState, setClaimState] = useState(TransactionState.Initial);
   const [monthState, setMonthState] = useState(TransactionState.Initial);
   const [sixMonthsState, setSixMonthsState] = useState(
@@ -168,13 +177,13 @@ export const AirdropModal = ({ account, data, open, setOpen }: Props) => {
     setYearState(TransactionState.Initial);
   };
 
-  const handleClaim = () => claim(account, data.proof, setClaimState);
+  const handleClaim = () => claim(sendAsync, data.proof, setClaimState);
 
   const handle1month = () => {
     setSixMonthsState(TransactionState.Processing);
     setYearState(TransactionState.Processing);
     claimAndStake(
-      account,
+      sendAsync,
       data.proof,
       data.claimable,
       CARMINE_STAKING_MONTH,
@@ -188,7 +197,7 @@ export const AirdropModal = ({ account, data, open, setOpen }: Props) => {
     setMonthState(TransactionState.Processing);
     setYearState(TransactionState.Processing);
     claimAndStake(
-      account,
+      sendAsync,
       data.proof,
       data.claimable,
       6 * CARMINE_STAKING_MONTH,
@@ -202,7 +211,7 @@ export const AirdropModal = ({ account, data, open, setOpen }: Props) => {
     setMonthState(TransactionState.Processing);
     setSixMonthsState(TransactionState.Processing);
     claimAndStake(
-      account,
+      sendAsync,
       data.proof,
       data.claimable,
       CARMINE_STAKING_YEAR,

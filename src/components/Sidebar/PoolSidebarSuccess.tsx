@@ -15,7 +15,7 @@ type Props = {
 };
 
 export const PoolSidebarSuccess = ({ pool, amount, tx }: Props) => {
-  const { data: stakes } = useStakes();
+  const { stakes } = useStakes();
   const price = useCurrency(pool.underlying.id);
   const navigate = useNavigate();
 

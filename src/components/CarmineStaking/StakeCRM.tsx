@@ -1,4 +1,4 @@
-import { AccountInterface } from "starknet";
+import { Call } from "starknet";
 import { useState } from "react";
 import { Tooltip } from "@mui/material";
 
@@ -25,14 +25,16 @@ import { invalidateKey } from "../../queries/client";
 import { QueryKeys } from "../../queries/keys";
 
 import styles from "./vest.module.css";
+import { RequestResult, useSendTransaction } from "@starknet-react/core";
 
 type Props = {
-  account: AccountInterface;
   carmBalance: bigint;
 };
 
 const stake = async (
-  account: AccountInterface,
+  sendAsync: (
+    args?: Call[]
+  ) => Promise<RequestResult<"wallet_addInvokeTransaction">>,
   amount: bigint,
   length: number,
   setTxState: TxTracking
@@ -51,7 +53,7 @@ const stake = async (
     calldata: [length.toString(10), amount.toString(10)],
   };
 
-  const res = await account.execute([approveCall, stakeCall]).catch(() => null);
+  const res = await sendAsync([approveCall, stakeCall]).catch(() => null);
 
   if (res?.transaction_hash) {
     const hash = res.transaction_hash;
@@ -78,7 +80,8 @@ const stake = async (
   }
 };
 
-export const StakeCrm = ({ account, carmBalance }: Props) => {
+export const StakeCrm = ({ carmBalance }: Props) => {
+  const { sendAsync } = useSendTransaction({});
   const [inputValue, setInputValue] = useState("");
   const [amount, setSelectedAmount] = useState(0n);
 
@@ -93,7 +96,7 @@ export const StakeCrm = ({ account, carmBalance }: Props) => {
   const handle1month = () => {
     setSixMonthsState(TransactionState.Processing);
     setYearState(TransactionState.Processing);
-    stake(account, amount, CARMINE_STAKING_MONTH, setMonthState).then(() => {
+    stake(sendAsync, amount, CARMINE_STAKING_MONTH, setMonthState).then(() => {
       setSixMonthsState(TransactionState.Initial);
       setYearState(TransactionState.Initial);
     });
@@ -101,7 +104,7 @@ export const StakeCrm = ({ account, carmBalance }: Props) => {
   const handle6months = () => {
     setMonthState(TransactionState.Processing);
     setYearState(TransactionState.Processing);
-    stake(account, amount, 6 * CARMINE_STAKING_MONTH, setSixMonthsState).then(
+    stake(sendAsync, amount, 6 * CARMINE_STAKING_MONTH, setSixMonthsState).then(
       () => {
         setMonthState(TransactionState.Initial);
         setYearState(TransactionState.Initial);
@@ -111,7 +114,7 @@ export const StakeCrm = ({ account, carmBalance }: Props) => {
   const handleYear = () => {
     setMonthState(TransactionState.Processing);
     setSixMonthsState(TransactionState.Processing);
-    stake(account, amount, CARMINE_STAKING_YEAR, setYearState).then(() => {
+    stake(sendAsync, amount, CARMINE_STAKING_YEAR, setYearState).then(() => {
       setMonthState(TransactionState.Initial);
       setSixMonthsState(TransactionState.Initial);
     });

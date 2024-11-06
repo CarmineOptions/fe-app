@@ -13,13 +13,12 @@ import { NoContent } from "../TableNoContent";
 import { fetchCapital } from "./fetchCapital";
 import { useQuery } from "@tanstack/react-query";
 import { QueryKeys } from "../../queries/keys";
-import { AccountInterface } from "starknet";
 import { useAccount } from "@starknet-react/core";
 import tableStyles from "../../style/table.module.css";
 
-type Props = { address: string; account: AccountInterface };
+type Props = { address: string };
 
-const WithdrawParentWithAccount = ({ address, account }: Props) => {
+const WithdrawParentWithAccount = ({ address }: Props) => {
   const { isLoading, isError, isFetching, data } = useQuery({
     queryKey: [QueryKeys.stake, address],
     queryFn: async () => fetchCapital(address),
@@ -54,7 +53,7 @@ const WithdrawParentWithAccount = ({ address, account }: Props) => {
       </TableHead>
       <TableBody>
         {data.map((userPoolInfo, i) => (
-          <WithdrawItem key={i} account={account} userPoolInfo={userPoolInfo} />
+          <WithdrawItem key={i} userPoolInfo={userPoolInfo} />
         ))}
       </TableBody>
     </Table>
@@ -62,12 +61,10 @@ const WithdrawParentWithAccount = ({ address, account }: Props) => {
 };
 
 export const WithdrawParent = () => {
-  const { account } = useAccount();
+  const { address } = useAccount();
 
-  if (!account)
+  if (!address)
     return <NoContent text="Connect wallet to see your staked capital" />;
 
-  return (
-    <WithdrawParentWithAccount account={account} address={account.address} />
-  );
+  return <WithdrawParentWithAccount address={address} />;
 };

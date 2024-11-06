@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useAccount } from "@starknet-react/core";
+import { useAccount, useSendTransaction } from "@starknet-react/core";
 import { useUserBalance } from "../../hooks/useUserBalance";
 import { useCurrency } from "../../hooks/useCurrency";
 import { LoadingAnimation } from "../Loading/Loading";
@@ -34,7 +34,8 @@ const InfoIcon = ({ msg }: { msg: string }) => {
 };
 
 export const PriceGuard = () => {
-  const { account } = useAccount();
+  const { address } = useAccount();
+  const { sendAsync } = useSendTransaction({});
   const { openWalletConnectModal } = useConnectWallet();
   const [currency, setCurrency] = useState<TokenKey>(TokenKey.STRK);
   const token = Token.byKey(currency);
@@ -207,7 +208,7 @@ export const PriceGuard = () => {
     const [tradeState, updateTradeState] = useState(TransactionState.Initial);
     const handleButtonClick = () => {
       if (
-        !account ||
+        !address ||
         priceMath64 === undefined ||
         price === undefined ||
         balance === undefined
@@ -219,7 +220,8 @@ export const PriceGuard = () => {
         100000n;
 
       approveAndTradeOpenNew(
-        account,
+        address,
+        sendAsync,
         pickedOption,
         size,
         premiaWithSlippage,
@@ -434,7 +436,7 @@ export const PriceGuard = () => {
         </span>
       </div>
       <div>
-        {account === undefined ? (
+        {address === undefined ? (
           <button className={styles.buybutton} onClick={openWalletConnectModal}>
             Connect Wallet
           </button>

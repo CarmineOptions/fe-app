@@ -10,16 +10,17 @@ import { RootState } from "../../redux/store";
 import { shortInteger } from "../../utils/computations";
 import { useState } from "react";
 import { TransferState, transferLpCapital } from "./transfer";
-import { useAccount } from "@starknet-react/core";
+import { useAccount, useSendTransaction } from "@starknet-react/core";
 
 export const TransferDialog = () => {
-  const { account } = useAccount();
+  const { address } = useAccount();
+  const { sendAsync } = useSendTransaction({});
   const transferData = useSelector((s: RootState) => s.ui.transferData);
   const [txState, setTxState] = useState(TransferState.Initial);
 
   const handleClick = () => {
-    if (transferData && account) {
-      transferLpCapital(account, transferData, setTxState);
+    if (transferData && address) {
+      transferLpCapital(sendAsync, transferData, setTxState);
     }
   };
 

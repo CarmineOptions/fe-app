@@ -1,4 +1,4 @@
-import { AccountInterface } from "starknet";
+import { Call } from "starknet";
 import { GOVERNANCE_ADDRESS } from "../../constants/amm";
 import { debug } from "../../utils/debugger";
 import { ProposalWithOpinion, UserVote } from "../../calls/liveProposals";
@@ -12,6 +12,11 @@ import { ToastType } from "../../redux/reducers/ui";
 
 import styles from "./Vote.module.css";
 import { QueryKeys } from "../../queries/keys";
+import {
+  RequestResult,
+  useAccount,
+  useSendTransaction,
+} from "@starknet-react/core";
 
 enum Opinion {
   YAY = "1",
@@ -19,7 +24,10 @@ enum Opinion {
 }
 
 const vote = async (
-  account: AccountInterface,
+  sendAsync: (
+    args?: Call[]
+  ) => Promise<RequestResult<"wallet_addInvokeTransaction">>,
+  address: string | undefined,
   propId: number,
   opinion: Opinion,
   setProcessing: (b: boolean) => void
@@ -32,7 +40,7 @@ const vote = async (
     calldata: [propId, opinion],
   };
 
-  const res = await account.execute(call).catch((e) => {
+  const res = await sendAsync([call]).catch((e) => {
     debug("Vote rejected or failed", e.message);
   });
 
@@ -47,7 +55,7 @@ const vote = async (
   afterTransaction(
     res.transaction_hash,
     () => {
-      invalidateKey(`proposals-${account?.address}`);
+      invalidateKey(`proposals-${address}`);
       invalidateKey(`${QueryKeys.proposalVotes}-${propId}`);
       setProcessing(false);
       showToast(`Successfully voted on proposal ${propId}`, ToastType.Success);
@@ -62,16 +70,13 @@ const vote = async (
 };
 
 type VoteButtonsProps = {
-  account?: AccountInterface;
   proposal: ProposalWithOpinion;
   balance?: bigint;
 };
 
-export const VoteButtons = ({
-  account,
-  proposal,
-  balance,
-}: VoteButtonsProps) => {
+export const VoteButtons = ({ proposal, balance }: VoteButtonsProps) => {
+  const { sendAsync } = useSendTransaction({});
+  const { address } = useAccount();
   const [processing, setProcessing] = useState(false);
 
   if (processing) {
@@ -83,7 +88,7 @@ export const VoteButtons = ({
       </div>
     );
   }
-  if (!account) {
+  if (!address) {
     return <p>Connect wallet to vote</p>;
   }
   if (!balance) {
@@ -95,7 +100,13 @@ export const VoteButtons = ({
         <button
           className="primary active"
           onClick={() =>
-            vote(account, proposal.propId, Opinion.YAY, setProcessing)
+            vote(
+              sendAsync,
+              address,
+              proposal.propId,
+              Opinion.YAY,
+              setProcessing
+            )
           }
         >
           Vote Yes
@@ -103,7 +114,13 @@ export const VoteButtons = ({
         <button
           className="primary active"
           onClick={() =>
-            vote(account, proposal.propId, Opinion.NAY, setProcessing)
+            vote(
+              sendAsync,
+              address,
+              proposal.propId,
+              Opinion.NAY,
+              setProcessing
+            )
           }
         >
           Vote No

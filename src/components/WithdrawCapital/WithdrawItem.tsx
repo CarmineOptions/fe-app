@@ -6,7 +6,6 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import { AccountInterface } from "starknet";
 import { withdrawCall } from "./withdrawCall";
 import { handleNumericChangeFactory } from "../../utils/inputHandling";
 import { showToast } from "../../redux/actions";
@@ -15,13 +14,14 @@ import { useTxPending } from "../../hooks/useRecentTxs";
 import { TransactionAction } from "../../redux/reducers/transactions";
 import buttonStyles from "../../style/button.module.css";
 import { UserPoolInfo } from "../../classes/Pool";
+import { useSendTransaction } from "@starknet-react/core";
 
 type Props = {
   userPoolInfo: UserPoolInfo;
-  account: AccountInterface;
 };
 
-export const WithdrawItem = ({ account, userPoolInfo }: Props) => {
+export const WithdrawItem = ({ userPoolInfo }: Props) => {
+  const { sendAsync } = useSendTransaction({});
   const { value } = userPoolInfo;
 
   const txPending = useTxPending(
@@ -39,10 +39,10 @@ export const WithdrawItem = ({ account, userPoolInfo }: Props) => {
       showToast("Cannot withdraw 0", ToastType.Warn);
       return;
     }
-    withdrawCall(account, setProcessing, userPoolInfo, amount);
+    withdrawCall(sendAsync, setProcessing, userPoolInfo, amount);
   };
   const handleWithdrawAll = () =>
-    withdrawCall(account, setProcessing, userPoolInfo, "all");
+    withdrawCall(sendAsync, setProcessing, userPoolInfo, "all");
 
   const displayDigits = 5;
 

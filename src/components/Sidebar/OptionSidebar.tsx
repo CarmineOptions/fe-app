@@ -5,7 +5,7 @@ import { handleNumericChangeFactory } from "../../utils/inputHandling";
 import { useCurrency } from "../../hooks/useCurrency";
 import { useUserBalance } from "../../hooks/useUserBalance";
 import { shortInteger } from "../../utils/computations";
-import { useAccount } from "@starknet-react/core";
+import { useAccount, useSendTransaction } from "@starknet-react/core";
 import { TransactionState } from "../../types/network";
 import { OptionWithPremia } from "../../classes/Option";
 import {
@@ -33,7 +33,8 @@ type Props = {
 };
 
 export const OptionSidebar = ({ option }: Props) => {
-  const { account } = useAccount();
+  const { sendAsync } = useSendTransaction({});
+  const { address } = useAccount();
   const { openWalletConnectModal } = useConnectWallet();
   const price = useCurrency(option.underlying.id);
   const { data: balanceRaw } = useUserBalance(option.underlying.address);
@@ -64,8 +65,8 @@ export const OptionSidebar = ({ option }: Props) => {
   );
 
   const handleBuy = () => {
-    if (!account) {
-      debug(LogTypes.WARN, "No account", account);
+    if (!address) {
+      debug(LogTypes.WARN, "No address", address);
       return;
     }
 
@@ -86,7 +87,8 @@ export const OptionSidebar = ({ option }: Props) => {
     };
 
     approveAndTradeOpenNew(
-      account,
+      address,
+      sendAsync,
       option,
       amount,
       premiaMath64,
@@ -100,7 +102,7 @@ export const OptionSidebar = ({ option }: Props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const callWithDelay = useCallback(
     debounce((size: number, controller: AbortController) => {
-      fetchModalData(size, option, account, controller.signal)
+      fetchModalData(size, option, address, controller.signal)
         .then((v) => {
           if (v && v.prices && v.premiaMath64) {
             const { prices } = v;
@@ -264,7 +266,7 @@ export const OptionSidebar = ({ option }: Props) => {
           </span>
         </div>
       </div>
-      {account === undefined ? (
+      {address === undefined ? (
         <button
           className="mainbutton primary active"
           onClick={openWalletConnectModal}

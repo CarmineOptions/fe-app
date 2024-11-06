@@ -1,12 +1,15 @@
 import { debug } from "../utils/debugger";
-import { AccountInterface } from "starknet";
+import { Call } from "starknet";
 import { afterTransaction } from "../utils/blockchain";
 import { addTx, markTxAsDone, markTxAsFailed } from "../redux/actions";
 import { TransactionAction } from "../redux/reducers/transactions";
 import { Pool } from "../classes/Pool";
+import { RequestResult } from "@starknet-react/core";
 
 export const depositLiquidity = async (
-  account: AccountInterface,
+  sendAsync: (
+    args?: Call[]
+  ) => Promise<RequestResult<"wallet_addInvokeTransaction">>,
   size: string,
   sizeNum: number,
   pool: Pool,
@@ -24,11 +27,12 @@ export const depositLiquidity = async (
 
   pool.sendStakeBeginCheckoutEvent(sizeNum);
 
-  const res = await account
-    .execute([approveCalldata, depositLiquidityCalldata])
-    .catch((e: Error) => {
-      debug('"Stake capital" user rejected or failed');
-    });
+  const res = await sendAsync([
+    approveCalldata,
+    depositLiquidityCalldata,
+  ]).catch((e: Error) => {
+    debug('"Stake capital" user rejected or failed');
+  });
 
   pool.sendStakePurchaseEvent(sizeNum);
 

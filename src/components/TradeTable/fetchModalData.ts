@@ -1,4 +1,3 @@
-import { AccountInterface } from "starknet";
 import { FinancialData } from "../../types/options";
 import { getPremia } from "../../calls/getPremia";
 import { LogTypes, debug } from "../../utils/debugger";
@@ -15,13 +14,13 @@ type ModalData = {
 export const fetchModalData = async (
   size: number,
   option: OptionWithPremia,
-  account: AccountInterface | undefined,
+  address: string | undefined,
   signal: AbortSignal
 ): Promise<ModalData | undefined> => {
   const [{ base, quote }, premiaMath64, balance] = await Promise.all([
     option.tokenPricesInUsd(),
     getPremia(option, size, false),
-    account ? balanceOf(account.address, option.underlying.address) : undefined,
+    address ? balanceOf(address, option.underlying.address) : undefined,
   ]).catch((e: Error) => {
     debug("Failed fetching ETH or premia", e.message);
     debug(LogTypes.ERROR, e);

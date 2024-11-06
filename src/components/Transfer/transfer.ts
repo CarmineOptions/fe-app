@@ -1,6 +1,6 @@
 import { AMM_ADDRESS, ETH_ADDRESS, USDC_ADDRESS } from "../../constants/amm";
 import {
-  AccountInterface,
+  Call,
   Contract,
   InvokeFunctionResponse,
   Uint256,
@@ -13,6 +13,7 @@ import { provider } from "../../network/provider";
 import LegacyAmmAbi from "../../abi/legacy_amm_abi.json";
 import { afterTransaction } from "../../utils/blockchain";
 import { debug } from "../../utils/debugger";
+import { RequestResult } from "@starknet-react/core";
 
 type LegacyPoolInfo = {
   pool_info: { lptoken_address: bigint };
@@ -83,7 +84,9 @@ export enum TransferState {
 }
 
 export const transferLpCapital = async (
-  account: AccountInterface,
+  sendAsync: (
+    args?: Call[]
+  ) => Promise<RequestResult<"wallet_addInvokeTransaction">>,
   data: TransferData,
   setState: (state: TransferState) => void
 ) => {
@@ -169,7 +172,7 @@ export const transferLpCapital = async (
     });
   }
 
-  const res = await account.execute(actions).catch((e) => {
+  const res = await sendAsync(actions).catch((e) => {
     setState(TransferState.Fail);
   });
 

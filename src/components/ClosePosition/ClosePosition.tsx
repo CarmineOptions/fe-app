@@ -1,5 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import { ReactNode, useState } from "react";
+import { useAccount, useSendTransaction } from "@starknet-react/core";
+
 import { useCloseOption } from "../../hooks/useCloseOption";
 import { usePremiaQuery } from "../../hooks/usePremiaQuery";
 import { debug } from "../../utils/debugger";
@@ -12,9 +14,9 @@ import { tradeClose } from "../../calls/tradeClose";
 import { store } from "../../redux/store";
 import { useCurrency } from "../../hooks/useCurrency";
 import { OptionWithPosition } from "../../classes/Option";
-import buttonStyles from "../../style/button.module.css";
 import { formatNumber } from "../../utils/utils";
-import { useAccount } from "@starknet-react/core";
+
+import buttonStyles from "../../style/button.module.css";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const premiaToDisplayValue = (
@@ -95,6 +97,7 @@ type Props = {
 
 const WithOption = ({ option }: Props) => {
   const { account } = useAccount();
+  const { sendAsync } = useSendTransaction({});
   const base = useCurrency(option.baseToken.id);
   const quote = useCurrency(option.quoteToken.id);
 
@@ -126,7 +129,7 @@ const WithOption = ({ option }: Props) => {
       return;
     }
 
-    tradeClose(account, option, premia, size, true);
+    tradeClose(sendAsync, option, premia, size, true);
   };
 
   if (debouncedSize === 0) {
