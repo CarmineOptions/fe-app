@@ -1,20 +1,14 @@
 import { Call } from "starknet";
+import { RequestResult } from "@starknet-react/core";
+import toast from "react-hot-toast";
 import { governanceContract } from "../constants/starknet";
 import { CarmineStakeResult } from "../types/governance";
-
 import { GOVERNANCE_ADDRESS } from "../constants/amm";
-import {
-  addTx,
-  markTxAsDone,
-  markTxAsFailed,
-  showToast,
-} from "../redux/actions";
+import { addTx, markTxAsDone, markTxAsFailed } from "../redux/actions";
 import { TransactionAction } from "../redux/reducers/transactions";
 import { afterTransaction } from "../utils/blockchain";
-import { ToastType } from "../redux/reducers/ui";
 import { TransactionState, TxTracking } from "../types/network";
 import { CarmineStake } from "../classes/CarmineStake";
-import { RequestResult } from "@starknet-react/core";
 
 const isEmptyStake = (stake: CarmineStakeResult): boolean => {
   if (stake.amount_staked === 0n && stake.start_date === 0n) {
@@ -70,7 +64,7 @@ export const stakeCarmineToken = async (
     calldata: [length, amount],
   };
   const res = await sendAsync([call]).catch(() => {
-    showToast("Failed to stake CRM", ToastType.Error);
+    toast.error("Failed to stake CRM");
     setState(TransactionState.Fail);
     return undefined;
   });
@@ -86,12 +80,12 @@ export const stakeCarmineToken = async (
     hash,
     () => {
       markTxAsDone(hash);
-      showToast("Successfully staked CRM", ToastType.Success);
+      toast.success("Successfully staked CRM");
       setState(TransactionState.Success);
     },
     () => {
       markTxAsFailed(hash);
-      showToast("Failed to stake CRM", ToastType.Error);
+      toast.error("Failed to stake CRM");
       setState(TransactionState.Fail);
     }
   );
@@ -119,7 +113,7 @@ export const claimAndStakeCarmineToken = async (
     calldata: [length, amount],
   };
   const res = await sendAsync([claimCall, stakeCall]).catch(() => {
-    showToast("Failed to claim & stake", ToastType.Error);
+    toast.error("Failed to claim & stake");
     setState(TransactionState.Fail);
     return undefined;
   });
@@ -135,12 +129,12 @@ export const claimAndStakeCarmineToken = async (
     hash,
     () => {
       markTxAsDone(hash);
-      showToast("Successfully claimed & staked CRM", ToastType.Success);
+      toast.success("Successfully claimed & staked CRM");
       setState(TransactionState.Success);
     },
     () => {
       markTxAsFailed(hash);
-      showToast("Failed to claim & stake CRM", ToastType.Error);
+      toast.error("Failed to claim & stake CRM");
       setState(TransactionState.Fail);
     }
   );
@@ -159,7 +153,7 @@ export const unstakeAirdrop = async (
     calldata: [],
   };
   const res = await sendAsync([call]).catch(() => {
-    showToast("Failed to unstake", ToastType.Error);
+    toast.error("Failed to unstake");
     return undefined;
   });
 
@@ -175,12 +169,12 @@ export const unstakeAirdrop = async (
     hash,
     () => {
       markTxAsDone(hash);
-      showToast("Successfully unstaked CRM", ToastType.Success);
+      toast.success("Successfully unstaked CRM");
       setTxState(TransactionState.Success);
     },
     () => {
       markTxAsFailed(hash);
-      showToast("Failed to unstake CRM", ToastType.Error);
+      toast.error("Failed to unstake CRM");
       setTxState(TransactionState.Fail);
     }
   );
@@ -200,7 +194,7 @@ export const unstake = async (
     calldata: [stake.id],
   };
   const res = await sendAsync([call]).catch(() => {
-    showToast("Failed to unstake", ToastType.Error);
+    toast.error("Failed to unstake");
     return undefined;
   });
 
@@ -216,12 +210,12 @@ export const unstake = async (
     hash,
     () => {
       markTxAsDone(hash);
-      showToast("Successfully unstaked CRM", ToastType.Success);
+      toast.success("Successfully unstaked CRM");
       setTxState(TransactionState.Success);
     },
     () => {
       markTxAsFailed(hash);
-      showToast("Failed to unstake CRM", ToastType.Error);
+      toast.error("Failed to unstake CRM");
       setTxState(TransactionState.Fail);
     }
   );

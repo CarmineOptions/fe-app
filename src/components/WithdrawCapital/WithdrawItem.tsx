@@ -8,13 +8,12 @@ import {
 import { useState } from "react";
 import { withdrawCall } from "./withdrawCall";
 import { handleNumericChangeFactory } from "../../utils/inputHandling";
-import { showToast } from "../../redux/actions";
-import { ToastType } from "../../redux/reducers/ui";
 import { useTxPending } from "../../hooks/useRecentTxs";
 import { TransactionAction } from "../../redux/reducers/transactions";
 import buttonStyles from "../../style/button.module.css";
 import { UserPoolInfo } from "../../classes/Pool";
 import { useSendTransaction } from "@starknet-react/core";
+import toast from "react-hot-toast";
 
 type Props = {
   userPoolInfo: UserPoolInfo;
@@ -36,7 +35,7 @@ export const WithdrawItem = ({ userPoolInfo }: Props) => {
 
   const handleWithdraw = () => {
     if (!amount) {
-      showToast("Cannot withdraw 0", ToastType.Warn);
+      toast("Cannot withdraw 0");
       return;
     }
     withdrawCall(sendAsync, setProcessing, userPoolInfo, amount);

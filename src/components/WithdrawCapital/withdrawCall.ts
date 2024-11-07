@@ -6,12 +6,11 @@ import {
   addTx,
   markTxAsDone,
   openNotEnoughUnlockedCapitalDialog,
-  showToast,
 } from "../../redux/actions";
-import { ToastType } from "../../redux/reducers/ui";
 import { TransactionAction } from "../../redux/reducers/transactions";
 import { UserPoolInfo } from "../../classes/Pool";
 import { RequestResult } from "@starknet-react/core";
+import toast from "react-hot-toast";
 
 const calculateTokens = (
   pool: UserPoolInfo,
@@ -76,7 +75,7 @@ export const withdrawCall = async (
     afterTransaction(res.transaction_hash, () => {
       invalidateStake();
       setProcessing(false);
-      showToast("Successfully withdrew capital", ToastType.Success);
+      toast.success("Successfully withdrew capital");
       markTxAsDone(hash);
     });
   }

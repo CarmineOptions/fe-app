@@ -17,8 +17,7 @@ import { fetchModalData } from "../TradeTable/fetchModalData";
 import { debug, LogTypes } from "../../utils/debugger";
 import { LoadingAnimation } from "../Loading/Loading";
 import { TokenKey } from "../../classes/Token";
-import { setSidebarContent, showToast } from "../../redux/actions";
-import { ToastType } from "../../redux/reducers/ui";
+import { setSidebarContent } from "../../redux/actions";
 import { approveAndTradeOpenNew } from "../../calls/tradeOpen";
 import { OptionSidebarSuccess } from "./OptionSidebarSuccess";
 
@@ -27,6 +26,7 @@ import styles from "./option.module.css";
 import { getProfitGraphData } from "../CryptoGraph/profitGraphData";
 import { ProfitGraph } from "../CryptoGraph/ProfitGraph";
 import { useConnectWallet } from "../../hooks/useConnectWallet";
+import toast from "react-hot-toast";
 
 type Props = {
   option: OptionWithPremia;
@@ -76,7 +76,7 @@ export const OptionSidebar = ({ option }: Props) => {
     }
 
     if (!amount) {
-      showToast("Cannot trade size 0", ToastType.Warn);
+      toast.error("Cannot trade size 0");
       return;
     }
 

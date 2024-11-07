@@ -1,5 +1,4 @@
-import { showToast } from "../../redux/actions";
-import { ToastType } from "../../redux/reducers/ui";
+import toast from "react-hot-toast";
 import { timestampToReadableDateUtc } from "../../utils/utils";
 import { pools, ProposalOption } from "./AddProposal";
 
@@ -54,8 +53,8 @@ export const ProposalText = ({
     const txt = texts.join("\n");
     navigator.clipboard
       .writeText(txt)
-      .then(() => showToast("Copied to clipboard", ToastType.Success))
-      .catch(() => showToast("Failed to copy to clipboard", ToastType.Warn));
+      .then(() => toast.success("Copied to clipboard"))
+      .catch(() => toast.error("Failed to copy to clipboard"));
   };
 
   return (

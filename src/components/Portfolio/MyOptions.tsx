@@ -3,19 +3,15 @@ import { LoadingAnimation } from "../Loading/Loading";
 import { OptionWithPosition } from "../../classes/Option";
 import { PairNamedBadge, TokenBadge } from "../TokenBadge";
 import { timestampToPriceGuardDate, formatNumber } from "../../utils/utils";
-import {
-  openCloseOptionDialog,
-  setCloseOption,
-  showToast,
-} from "../../redux/actions";
+import { openCloseOptionDialog, setCloseOption } from "../../redux/actions";
 import { tradeSettle } from "../../calls/tradeSettle";
 import { afterTransaction } from "../../utils/blockchain";
 import { invalidatePositions } from "../../queries/client";
-import { ToastType } from "../../redux/reducers/ui";
 import { usePositions } from "../../hooks/usePositions";
 import { useCurrency } from "../../hooks/useCurrency";
 import styles from "./portfolio.module.css";
 import { useConnectWallet } from "../../hooks/useConnectWallet";
+import toast from "react-hot-toast";
 
 const Header = ({ state }: { state: "live" | "itm" | "otm" }) => {
   return (
@@ -142,12 +138,12 @@ const ItmItem = ({ option }: { option: OptionWithPosition }) => {
         if (res?.transaction_hash) {
           afterTransaction(res.transaction_hash, () => {
             invalidatePositions();
-            showToast("Successfully settled position", ToastType.Success);
+            toast.success("Successfully settled position");
           });
         }
       })
       .catch(() => {
-        showToast("Failed settling position", ToastType.Error);
+        toast.error("Failed settling position");
       });
   };
 

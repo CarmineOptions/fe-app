@@ -1,24 +1,20 @@
 import { ContentCopy, Info, PowerSettingsNew } from "@mui/icons-material";
 import { IconButton, Link, Skeleton, Tooltip, Typography } from "@mui/material";
 
-import {
-  closeDialog,
-  showToast,
-  transferDialogEnable,
-} from "../../redux/actions";
-import { ToastType } from "../../redux/reducers/ui";
+import { closeDialog, transferDialogEnable } from "../../redux/actions";
 import { addressElision, getStarkscanUrl } from "../../utils/utils";
 import { WalletIcon } from "../assets";
 import { RecentTransaction } from "./RecentTransactions";
 import styles from "./walletinfo.module.css";
 import { useAccount, useDisconnect } from "@starknet-react/core";
 import { useDomain } from "../../hooks/useDomain";
+import toast from "react-hot-toast";
 
 const handleCopy = (msg: string) => {
   navigator.clipboard
     .writeText(msg)
-    .then(() => showToast("Address copied!"))
-    .catch(() => showToast("Failed to copy", ToastType.Warn));
+    .then(() => toast.success("Address copied!"))
+    .catch(() => toast.error("Failed to copy"));
 };
 
 const iconStyle = {

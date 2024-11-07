@@ -7,15 +7,9 @@ import {
   CRM_ADDRESS,
   GOVERNANCE_ADDRESS,
 } from "../../constants/amm";
-import {
-  addTx,
-  markTxAsDone,
-  markTxAsFailed,
-  showToast,
-} from "../../redux/actions";
+import { addTx, markTxAsDone, markTxAsFailed } from "../../redux/actions";
 import { afterTransaction } from "../../utils/blockchain";
 import { TransactionAction } from "../../redux/reducers/transactions";
-import { ToastType } from "../../redux/reducers/ui";
 import { useState } from "react";
 import { TransactionState, TxTracking } from "../../types/network";
 import { LoadingAnimation } from "../Loading/Loading";
@@ -25,6 +19,7 @@ import { CarmineStake } from "../../classes/CarmineStake";
 import styles from "./modal.module.css";
 import buttonStyles from "../../style/button.module.css";
 import { RequestResult, useSendTransaction } from "@starknet-react/core";
+import toast from "react-hot-toast";
 
 export const unstakeAndStake = async (
   sendAsync: (
@@ -64,18 +59,18 @@ export const unstakeAndStake = async (
       res.transaction_hash,
       () => {
         setTxState(TransactionState.Success);
-        showToast("Successfully restaked", ToastType.Success);
+        toast.success("Successfully restaked");
         markTxAsDone(hash);
       },
       () => {
         setTxState(TransactionState.Fail);
-        showToast("Failed restaking", ToastType.Error);
+        toast.error("Failed restaking");
         markTxAsFailed(hash);
       }
     );
   } else {
     setTxState(TransactionState.Fail);
-    showToast("Failed restaking", ToastType.Error);
+    toast.error("Failed restaking");
   }
 };
 

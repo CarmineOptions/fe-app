@@ -8,7 +8,7 @@ import { useUserBalance } from "../../hooks/useUserBalance";
 import { shortInteger } from "../../utils/computations";
 import { math64toDecimal } from "../../utils/units";
 import { useAccount, useSendTransaction } from "@starknet-react/core";
-import { setSidebarContent, showToast } from "../../redux/actions";
+import { setSidebarContent } from "../../redux/actions";
 import { PoolSidebarSuccess } from "./PoolSidebarSuccess";
 import { TransactionState } from "../../types/network";
 import { useStakes } from "../../hooks/useStakes";
@@ -22,6 +22,7 @@ import { useDefispringApy } from "../../hooks/useDefyspringApy";
 import { useConnectWallet } from "../../hooks/useConnectWallet";
 
 import styles from "./pool.module.css";
+import toast from "react-hot-toast";
 
 type Props = {
   pool: Pool;
@@ -131,7 +132,7 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
     }
     if (action === "withdraw" && address && poolData && userPosition) {
       if (userPosition < amount) {
-        showToast(
+        toast.error(
           `Cannot withdraw ${formatNumber(amount)}, you have ${formatNumber(
             userPosition
           )}`

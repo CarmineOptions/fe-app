@@ -1,7 +1,6 @@
 import { LoadingAnimation } from "../Loading/Loading";
 import { useAccount, useSendTransaction } from "@starknet-react/core";
 import { OptionWithPosition } from "../../classes/Option";
-import { showToast } from "../../redux/actions";
 import { useTxPending } from "../../hooks/useRecentTxs";
 import { TransactionAction } from "../../redux/reducers/transactions";
 import styles from "./user_priceguard.module.css";
@@ -10,11 +9,11 @@ import { TokenKey } from "../../classes/Token";
 import { timestampToPriceGuardDate } from "../../utils/utils";
 import { afterTransaction } from "../../utils/blockchain";
 import { invalidatePositions } from "../../queries/client";
-import { ToastType } from "../../redux/reducers/ui";
 import { ReactComponent as ArrowIcon } from "./arrow.svg";
 import { TokenNamedBadge } from "../TokenBadge/Badge";
 import { usePositions } from "../../hooks/usePositions";
 import { useConnectWallet } from "../../hooks/useConnectWallet";
+import toast from "react-hot-toast";
 
 const PriceGuardDisplay = ({ option }: { option: OptionWithPosition }) => {
   const { sendAsync } = useSendTransaction({});
@@ -40,13 +39,13 @@ const PriceGuardDisplay = ({ option }: { option: OptionWithPosition }) => {
         if (res?.transaction_hash) {
           afterTransaction(res.transaction_hash, () => {
             invalidatePositions();
-            showToast("Successfully claimed Price Protect", ToastType.Success);
+            toast.success("Successfully claimed Price Protect");
             setSettling(false);
           });
         }
       })
       .catch(() => {
-        showToast("Failed claiming Price Protect", ToastType.Error);
+        toast.error("Failed claiming Price Protect");
         setSettling(false);
       });
   };

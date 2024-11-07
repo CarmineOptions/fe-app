@@ -4,11 +4,10 @@ import { debug } from "../../utils/debugger";
 import { ProposalWithOpinion, UserVote } from "../../calls/liveProposals";
 import { useState } from "react";
 import { LoadingAnimation } from "../Loading/Loading";
-import { addTx, markTxAsDone, showToast } from "../../redux/actions";
+import { addTx, markTxAsDone } from "../../redux/actions";
 import { afterTransaction } from "../../utils/blockchain";
 import { invalidateKey } from "../../queries/client";
 import { TransactionAction } from "../../redux/reducers/transactions";
-import { ToastType } from "../../redux/reducers/ui";
 
 import styles from "./Vote.module.css";
 import { QueryKeys } from "../../queries/keys";
@@ -17,6 +16,7 @@ import {
   useAccount,
   useSendTransaction,
 } from "@starknet-react/core";
+import toast from "react-hot-toast";
 
 enum Opinion {
   YAY = "1",
@@ -58,12 +58,12 @@ const vote = async (
       invalidateKey(`proposals-${address}`);
       invalidateKey(`${QueryKeys.proposalVotes}-${propId}`);
       setProcessing(false);
-      showToast(`Successfully voted on proposal ${propId}`, ToastType.Success);
+      toast.success(`Successfully voted on proposal ${propId}`);
       markTxAsDone(hash);
     },
     () => {
       setProcessing(false);
-      showToast(`Vote on proposal ${propId} failed`, ToastType.Error);
+      toast.error(`Vote on proposal ${propId} failed`);
       markTxAsDone(hash);
     }
   );
