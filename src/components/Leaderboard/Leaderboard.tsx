@@ -73,8 +73,8 @@ const LeaderboardItem = ({
           braavos={braavos}
         />
       </td>
-      {data.map((v) => (
-        <td>{v}</td>
+      {data.map((v, i) => (
+        <td key={i}>{v}</td>
       ))}
       {className === styles.user && <div className={styles.badge}>YOU</div>}
     </tr>

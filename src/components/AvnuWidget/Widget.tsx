@@ -7,15 +7,9 @@ import { Settings, WarningAmber } from "@mui/icons-material";
 import { TokenDisplay, TokenSelect } from "./TokenSelect";
 import { StrkToken, Token, UsdcToken } from "../../classes/Token";
 import { LoadingAnimation } from "../Loading/Loading";
-import {
-  addTx,
-  markTxAsDone,
-  markTxAsFailed,
-  showToast,
-} from "../../redux/actions";
+import { addTx, markTxAsDone, markTxAsFailed } from "../../redux/actions";
 import { TransactionAction } from "../../redux/reducers/transactions";
 import { afterTransaction } from "../../utils/blockchain";
-import { ToastType } from "../../redux/reducers/ui";
 import { maxDecimals } from "../../utils/utils";
 import { SlippageChange } from "./Slippage";
 
@@ -25,6 +19,7 @@ import { useUserBalance } from "../../hooks/useUserBalance";
 import { useAccount } from "@starknet-react/core";
 import { debug } from "../../utils/debugger";
 import { useConnectWallet } from "../../hooks/useConnectWallet";
+import toast from "react-hot-toast";
 
 const AVNU_BASE_URL = "https://starknet.api.avnu.fi";
 const CARMINE_BENEFICIARY_ADDRESS =
@@ -269,11 +264,11 @@ export const Widget = () => {
           hash,
           () => {
             markTxAsDone(hash);
-            showToast("Swap successfull", ToastType.Success);
+            toast.success("Swap successfull");
           },
           () => {
             markTxAsFailed(hash);
-            showToast("Swap failed", ToastType.Error);
+            toast.error("Swap failed");
           }
         );
       })

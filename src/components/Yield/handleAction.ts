@@ -6,9 +6,7 @@ import {
   markTxAsDone,
   markTxAsFailed,
   openNotEnoughUnlockedCapitalDialog,
-  showToast,
 } from "../../redux/actions";
-import { ToastType } from "../../redux/reducers/ui";
 import { longInteger, shortInteger } from "../../utils/computations";
 import { debug } from "../../utils/debugger";
 import { decimalToInt } from "../../utils/units";
@@ -17,6 +15,7 @@ import { TransactionAction } from "../../redux/reducers/transactions";
 import { afterTransaction } from "../../utils/blockchain";
 import { TransactionState, TxTracking } from "../../types/network";
 import { RequestResult } from "@starknet-react/core";
+import toast from "react-hot-toast";
 
 export const handleDeposit = async (
   sendAsync: (
@@ -29,11 +28,11 @@ export const handleDeposit = async (
   done: (tx: string) => void
 ) => {
   if (!address) {
-    showToast("Could not read address", ToastType.Warn);
+    toast.error("Could not read address");
     return;
   }
   if (!amount) {
-    showToast("Cannot stake 0 amount", ToastType.Warn);
+    toast("Cannot stake 0 amount");
     return;
   }
   debug(`Staking ${amount} into ${pool.typeAsText} pool`);
@@ -48,11 +47,10 @@ export const handleDeposit = async (
       shortInteger(balance.toString(10), pool.digits),
       amount,
     ];
-    showToast(
+    toast.error(
       `Trying to stake ${pool.symbol} ${needs.toFixed(4)}, but you only have ${
         pool.symbol
-      }${has.toFixed(4)}`,
-      ToastType.Warn
+      }${has.toFixed(4)}`
     );
     setTxState(TransactionState.Fail);
     return;
@@ -135,7 +133,7 @@ export const handleWithdraw = async (
   setTxState: TxTracking
 ) => {
   if (!amount) {
-    showToast("Cannot withdraw 0", ToastType.Warn);
+    toast("Cannot withdraw 0");
     return;
   }
 
@@ -175,12 +173,12 @@ export const handleWithdraw = async (
     () => {
       invalidateStake();
       setTxState(TransactionState.Success);
-      showToast("Successfully withdrew capital", ToastType.Success);
+      toast.success("Successfully withdrew capital");
       markTxAsDone(hash);
     },
     () => {
       setTxState(TransactionState.Fail);
-      showToast("Capital withdrawl failed", ToastType.Success);
+      toast("Capital withdrawl failed");
       markTxAsFailed(hash);
     }
   );

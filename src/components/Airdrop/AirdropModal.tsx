@@ -1,9 +1,9 @@
 import { Dialog, Tooltip } from "@mui/material";
 import { Call } from "starknet";
 import { RequestResult, useSendTransaction } from "@starknet-react/core";
+import toast from "react-hot-toast";
 
 import { Eligible } from "./getProof";
-
 import { shortInteger } from "../../utils/computations";
 import {
   CARMINE_STAKING_MONTH,
@@ -11,15 +11,9 @@ import {
   CRM_ADDRESS,
   GOVERNANCE_ADDRESS,
 } from "../../constants/amm";
-import {
-  addTx,
-  markTxAsDone,
-  markTxAsFailed,
-  showToast,
-} from "../../redux/actions";
+import { addTx, markTxAsDone, markTxAsFailed } from "../../redux/actions";
 import { afterTransaction } from "../../utils/blockchain";
 import { TransactionAction } from "../../redux/reducers/transactions";
-import { ToastType } from "../../redux/reducers/ui";
 import { useState } from "react";
 import { TransactionState, TxTracking } from "../../types/network";
 import { LoadingAnimation } from "../Loading/Loading";
@@ -60,19 +54,19 @@ export const claim = async (
       res.transaction_hash,
       () => {
         setTxState(TransactionState.Success);
-        showToast("Successfully claimed airdrop", ToastType.Success);
+        toast.success("Successfully claimed airdrop");
         markTxAsDone(hash);
         invalidateKey(QueryKeys.airdropData);
       },
       () => {
         setTxState(TransactionState.Fail);
-        showToast("Failed claiming airdrop", ToastType.Error);
+        toast.error("Failed claiming airdrop");
         markTxAsFailed(hash);
       }
     );
   } else {
     setTxState(TransactionState.Fail);
-    showToast("Failed claiming airdrop", ToastType.Error);
+    toast.error("Failed claiming airdrop");
   }
 };
 
@@ -126,18 +120,18 @@ export const claimAndStake = async (
       res.transaction_hash,
       () => {
         setTxState(TransactionState.Success);
-        showToast("Successfully claimed and staked airdrop", ToastType.Success);
+        toast.success("Successfully claimed and staked airdrop");
         markTxAsDone(hash);
       },
       () => {
         setTxState(TransactionState.Fail);
-        showToast("Failed claiming airdrop", ToastType.Error);
+        toast.error("Failed claiming airdrop");
         markTxAsFailed(hash);
       }
     );
   } else {
     setTxState(TransactionState.Fail);
-    showToast("Failed claiming airdrop", ToastType.Error);
+    toast.error("Failed claiming airdrop");
   }
 };
 

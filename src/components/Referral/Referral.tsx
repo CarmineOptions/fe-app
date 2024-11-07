@@ -1,11 +1,9 @@
 import { useReducer } from "react";
 import { useAccount } from "@starknet-react/core";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-
-import styles from "./Referral.module.css";
-import { showToast } from "../../redux/actions";
-import { ToastType } from "../../redux/reducers/ui";
 import { apiUrl } from "../../api";
+import styles from "./Referral.module.css";
+import toast from "react-hot-toast";
 
 enum ActionType {
   Fetching,
@@ -48,7 +46,7 @@ const ReferralLink = ({ code }: { code: string }) => {
 
   const handleCopy = () => {
     navigator.clipboard.writeText(link);
-    showToast("Referral link copied", ToastType.Success);
+    toast.success("Referral link copied");
   };
 
   return (

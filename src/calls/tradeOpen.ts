@@ -1,22 +1,18 @@
-import {
-  addTx,
-  markTxAsDone,
-  markTxAsFailed,
-  showToast,
-} from "./../redux/actions";
+import { addTx, markTxAsDone, markTxAsFailed } from "./../redux/actions";
 import { Call } from "starknet";
+import { RequestResult } from "@starknet-react/core";
+import toast from "react-hot-toast";
+
 import { Option } from "../classes/Option";
 import { debug } from "../utils/debugger";
 import { getToApprove, shortInteger } from "../utils/computations";
 import { afterTransaction } from "../utils/blockchain";
 import { invalidatePositions } from "../queries/client";
 import { TransactionAction } from "../redux/reducers/transactions";
-import { ToastType } from "../redux/reducers/ui";
 import { math64toDecimal, math64ToInt } from "../utils/units";
 import { apiUrl } from "../api";
 import { isMainnet } from "../constants/amm";
 import { TransactionState, TxTracking } from "../types/network";
-import { RequestResult } from "@starknet-react/core";
 
 export const approveAndTradeOpen = async (
   address: string,
@@ -60,11 +56,10 @@ export const approveAndTradeOpen = async (
       has,
       needs,
     });
-    showToast(
+    toast(
       `To open this position you need ${option.symbol}\u00A0${Number(
         needs
-      ).toFixed(4)}, but you only have ${option.symbol}\u00A0${has.toFixed(4)}`,
-      ToastType.Warn
+      ).toFixed(4)}, but you only have ${option.symbol}\u00A0${has.toFixed(4)}`
     );
     throw Error("Not enough funds");
   }
@@ -113,7 +108,7 @@ export const approveAndTradeOpen = async (
           failed: false,
           processing: false,
         });
-        showToast("Successfully opened position", ToastType.Success);
+        toast.success("Successfully opened position");
       },
       () => {
         markTxAsFailed(hash);
@@ -121,7 +116,7 @@ export const approveAndTradeOpen = async (
           failed: true,
           processing: false,
         });
-        showToast("Failed to open position", ToastType.Error);
+        toast.error("Failed to open position");
       }
     );
   } else {
@@ -145,7 +140,7 @@ export const approveAndTradeOpenNew = async (
   callback?: (tx: string) => void
 ) => {
   if (size === 0) {
-    showToast("Cannot open position with size 0", ToastType.Warn);
+    toast("Cannot open position with size 0");
     return;
   }
   updateTradeState(TransactionState.Processing);
@@ -159,11 +154,10 @@ export const approveAndTradeOpenNew = async (
       shortInteger(balance.toString(10), option.digits),
       toApproveNumber,
     ];
-    showToast(
+    toast(
       `To open this position you need ${option.symbol}\u00A0${Number(
         needs
-      ).toFixed(4)}, but you only have ${option.symbol}\u00A0${has.toFixed(4)}`,
-      ToastType.Warn
+      ).toFixed(4)}, but you only have ${option.symbol}\u00A0${has.toFixed(4)}`
     );
     updateTradeState(TransactionState.Fail);
     return;
@@ -213,7 +207,7 @@ export const approveAndTradeOpenNew = async (
       markTxAsDone(hash);
       invalidatePositions();
       updateTradeState(TransactionState.Success);
-      showToast("Successfully opened position", ToastType.Success);
+      toast.success("Successfully opened position");
       if (callback) {
         callback(hash);
       }
@@ -221,7 +215,7 @@ export const approveAndTradeOpenNew = async (
     () => {
       markTxAsFailed(hash);
       updateTradeState(TransactionState.Fail);
-      showToast("Failed to open position", ToastType.Error);
+      toast.error("Failed to open position");
     }
   );
 };

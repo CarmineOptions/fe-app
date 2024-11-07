@@ -16,12 +16,6 @@ export enum DialogContentElem {
   BraavosBonusModal = "BraavosBonusModal",
 }
 
-export enum ToastType {
-  Warn = "warn",
-  Info = "info",
-  Success = "success",
-  Error = "error",
-}
 export enum PortfolioParamType {
   AirDrop = "airdrop",
   History = "history",
@@ -36,12 +30,6 @@ export enum GovernanceSubpage {
   Propose = "propose",
 }
 
-export type ToastState = {
-  message: string;
-  open: boolean;
-  type: ToastType;
-};
-
 export type ReferralSent = {
   code: string;
   address: string;
@@ -50,7 +38,6 @@ export type ReferralSent = {
 export interface UiState {
   dialogOpen: boolean;
   dialogContent: DialogContentElem;
-  toastState: ToastState;
   activeCloseOption?: OptionWithPosition;
   transferData?: TransferData;
   transferDialogShown: boolean;
@@ -68,7 +55,6 @@ export const ui = createSlice({
   initialState: {
     dialogOpen: false,
     dialogContent: DialogContentElem.Wallet,
-    toastState: { message: "", type: ToastType.Info, open: false },
     transferDialogShown: false,
     portfolioParam: PortfolioParamType.MyPortfolio,
     governanceSubpage: GovernanceSubpage.Voting,
@@ -89,10 +75,6 @@ export const ui = createSlice({
     setCloseOptionState: (state, action: { payload: OptionWithPosition }) => {
       // @ts-ignore
       state.activeCloseOption = action.payload;
-      return state;
-    },
-    setToastState: (state, action: { payload: Partial<ToastState> }) => {
-      state.toastState = { ...state.toastState, ...action.payload };
       return state;
     },
     setTransferDataModalState: (state, action: { payload: TransferData }) => {
@@ -142,7 +124,6 @@ export const ui = createSlice({
 export const {
   toggleDialog,
   setCloseOptionState,
-  setToastState,
   setTransferDataModalState,
   setTransferDialogShown,
   setParamState,

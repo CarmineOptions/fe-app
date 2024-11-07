@@ -4,15 +4,9 @@ import { getDefiSpringData } from "./fetch";
 import { shortInteger } from "../../utils/computations";
 import { Skeleton } from "@mui/material";
 import { addressElision } from "../../utils/utils";
-import {
-  addTx,
-  markTxAsDone,
-  markTxAsFailed,
-  showToast,
-} from "../../redux/actions";
+import { addTx, markTxAsDone, markTxAsFailed } from "../../redux/actions";
 import { TransactionAction } from "../../redux/reducers/transactions";
 import { afterTransaction } from "../../utils/blockchain";
-import { ToastType } from "../../redux/reducers/ui";
 import { LoadingAnimation } from "../Loading/Loading";
 
 import buttonStyles from "../../style/button.module.css";
@@ -23,6 +17,7 @@ import { invalidateKey } from "../../queries/client";
 import { useAccount, useSendTransaction } from "@starknet-react/core";
 import { DEFISPRING_CONTRACT_ADDRESS } from "../../constants/amm";
 import { useConnectWallet } from "../../hooks/useConnectWallet";
+import toast from "react-hot-toast";
 
 export const RewardsWithAccount = ({
   account,
@@ -114,12 +109,12 @@ export const RewardsWithAccount = ({
         hash,
         () => {
           markTxAsDone(hash);
-          showToast("Claim successfull", ToastType.Success);
+          toast.success("Claim successfull");
           invalidateKey(QueryKeys.defispring);
         },
         () => {
           markTxAsFailed(hash);
-          showToast("Claim failed", ToastType.Error);
+          toast.error("Claim failed");
         }
       );
     } catch (_) {

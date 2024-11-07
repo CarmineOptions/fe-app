@@ -13,19 +13,14 @@ import { TransactionState, TxTracking } from "../../types/network";
 import { stateToClassName } from "./StakingModal";
 import { LoadingAnimation } from "../Loading/Loading";
 import { TransactionAction } from "../../redux/reducers/transactions";
-import {
-  addTx,
-  markTxAsDone,
-  markTxAsFailed,
-  showToast,
-} from "../../redux/actions";
+import { addTx, markTxAsDone, markTxAsFailed } from "../../redux/actions";
 import { afterTransaction } from "../../utils/blockchain";
-import { ToastType } from "../../redux/reducers/ui";
 import { invalidateKey } from "../../queries/client";
 import { QueryKeys } from "../../queries/keys";
 
 import styles from "./vest.module.css";
 import { RequestResult, useSendTransaction } from "@starknet-react/core";
+import toast from "react-hot-toast";
 
 type Props = {
   carmBalance: bigint;
@@ -63,20 +58,20 @@ const stake = async (
       res.transaction_hash,
       () => {
         setTxState(TransactionState.Success);
-        showToast("Successfully claimed and staked airdrop", ToastType.Success);
+        toast.success("Successfully claimed and staked airdrop");
         markTxAsDone(hash);
         // success, refetch new CRM balance
         invalidateKey(QueryKeys.carmineStakes);
       },
       () => {
         setTxState(TransactionState.Fail);
-        showToast("Failed claiming airdrop", ToastType.Error);
+        toast.error("Failed claiming airdrop");
         markTxAsFailed(hash);
       }
     );
   } else {
     setTxState(TransactionState.Fail);
-    showToast("Failed claiming airdrop", ToastType.Error);
+    toast.error("Failed claiming airdrop");
   }
 };
 

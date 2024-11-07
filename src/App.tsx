@@ -10,7 +10,6 @@ import {
 
 import { BraavosAnnounce } from "./components/Announce";
 import { MultiDialog } from "./components/MultiDialog/MultiDialog";
-import { Toast } from "./components/Toast/Toast";
 import { Controller } from "./Controller";
 import TermsAndConditions from "./pages/termsAndConditions";
 import { store } from "./redux/store";
@@ -35,6 +34,7 @@ import YieldPage from "./pages/yield";
 import SwapPage from "./pages/swap";
 import PriceProtectVideoPage from "./pages/priceProtectVideo";
 import { StarknetProvider } from "./components/StarknetProvider";
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
   const [check, rerender] = useState(false);
@@ -87,7 +87,13 @@ const App = () => {
                 </Routes>
               </Router>
               <MultiDialog />
-              <Toast />
+              <Toaster
+                position="bottom-left"
+                reverseOrder={false}
+                toastOptions={{
+                  style: { background: "#333", color: "white" },
+                }}
+              />
               <BraavosAnnounce />
             </>
           ) : (

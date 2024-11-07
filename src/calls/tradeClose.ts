@@ -4,15 +4,10 @@ import { debug, LogTypes } from "../utils/debugger";
 import { invalidatePositions } from "../queries/client";
 import { afterTransaction } from "../utils/blockchain";
 import { getPremiaWithSlippage } from "../utils/computations";
-import {
-  addTx,
-  markTxAsDone,
-  markTxAsFailed,
-  showToast,
-} from "../redux/actions";
+import { addTx, markTxAsDone, markTxAsFailed } from "../redux/actions";
 import { TransactionAction } from "../redux/reducers/transactions";
-import { ToastType } from "../redux/reducers/ui";
 import { RequestResult } from "@starknet-react/core";
+import toast from "react-hot-toast";
 
 export const tradeClose = async (
   sendAsync: (
@@ -42,11 +37,11 @@ export const tradeClose = async (
         () => {
           markTxAsDone(hash);
           invalidatePositions();
-          showToast("Position closed successfully", ToastType.Success);
+          toast.success("Position closed successfully");
         },
         () => {
           markTxAsFailed(hash);
-          showToast("Position closed failed", ToastType.Error);
+          toast.error("Position closed failed");
         }
       );
     }

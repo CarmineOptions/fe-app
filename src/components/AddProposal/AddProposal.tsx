@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 import styles from "./prop.module.css";
 import { IconButton, MenuItem, Select, Tooltip } from "@mui/material";
@@ -15,8 +16,6 @@ import { PairNamedBadge } from "../TokenBadge";
 import { LoadingAnimation } from "../Loading/Loading";
 import { handleDuplicates, suggestOptions } from "./suggest";
 import { timestampToDateAndTime } from "../../utils/utils";
-import { showToast } from "../../redux/actions";
-import { ToastType } from "../../redux/reducers/ui";
 import { decimalToMath64 } from "../../utils/units";
 import { Close } from "@mui/icons-material";
 import { ProposalText } from "./ProposalText";
@@ -106,7 +105,7 @@ export const AddProposal = () => {
   const handleRemove = (index: number) => {
     const optionsWithoutElement = options.filter((_, i) => i !== index);
     setOptions(optionsWithoutElement);
-    showToast("Proposal option removed");
+    toast.success("Proposal option removed");
   };
 
   const handleSuggest = () => {
@@ -130,29 +129,29 @@ export const AddProposal = () => {
 
   const handleSave = () => {
     localStorage.setItem("options-proposal-save", JSON.stringify(options));
-    showToast("Proposal options saved", ToastType.Success);
+    toast.success("Proposal options saved");
   };
 
   const handleLoad = () => {
     const loadedData = localStorage.getItem("options-proposal-save");
 
     if (loadedData === null) {
-      showToast("Did not find any saved data", ToastType.Warn);
+      toast("Did not find any saved data");
       return;
     }
 
     try {
       const parsed = JSON.parse(loadedData);
       setOptions(parsed);
-      showToast("Proposal options loaded", ToastType.Success);
+      toast.success("Proposal options loaded");
     } catch (error) {
-      showToast("Failed to read saved data", ToastType.Error);
+      toast.error("Failed to read saved data");
     }
   };
 
   const handleSubmit = () => {
     if (options.length === 0) {
-      showToast("No options selected", ToastType.Warn);
+      toast.error("No options selected");
       return;
     }
     const payload = options
