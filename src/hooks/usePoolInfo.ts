@@ -1,12 +1,42 @@
-import { useQuery } from "@tanstack/react-query";
-import { queryPoolCapital } from "../components/Yield/fetchStakeCapital";
-import { QueryKeys } from "../queries/keys";
+import { Pool } from "../classes/Pool";
+import { usePoolApy } from "./usePoolApy";
+import { usePoolState } from "./usePoolState";
 
-export const usePoolInfo = (id: string) => {
-  const { data: poolInfo, ...rest } = useQuery({
-    queryKey: [QueryKeys.poolData, id],
-    queryFn: () => queryPoolCapital(id),
-  });
+export const usePoolInfo = (pool: Pool) => {
+  const {
+    apy,
+    isLoading: isApyLoading,
+    isError: isApyError,
+  } = usePoolApy(pool);
+  const {
+    poolState,
+    isLoading: isPoolStateLoading,
+    isError: isPoolStateError,
+  } = usePoolState(pool);
 
-  return { poolInfo, ...rest };
+  if (isApyError || isPoolStateError) {
+    return {
+      poolInfo: undefined,
+      isError: true,
+      isLoading: false,
+    };
+  }
+
+  if (isApyLoading || isPoolStateLoading) {
+    return {
+      poolInfo: undefined,
+      isError: false,
+      isLoading: true,
+    };
+  }
+
+  if (apy && poolState) {
+    return {
+      poolInfo: { state: poolState, apy },
+      isLoading: false,
+      isError: false,
+    };
+  }
+
+  throw Error("Pool state - unreachable");
 };

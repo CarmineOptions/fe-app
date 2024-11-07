@@ -245,6 +245,13 @@ export class Pool extends Pair {
       // BTC/USDC
       return [1000, 3000];
     }
+    if (
+      this.baseToken.id === TokenKey.EKUBO &&
+      this.quoteToken.id === TokenKey.USDC
+    ) {
+      // EKUBO/USDC
+      return [0.05, 0.05];
+    }
 
     // unreachable
     throw Error("Failed getting strike step");
@@ -278,6 +285,13 @@ export class Pool extends Pair {
     ) {
       // BTC/USDC
       return 55;
+    }
+    if (
+      this.baseToken.id === TokenKey.EKUBO &&
+      this.quoteToken.id === TokenKey.USDC
+    ) {
+      // EKUBO/USDC
+      return 70;
     }
 
     // unreachable

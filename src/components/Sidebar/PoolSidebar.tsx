@@ -14,14 +14,14 @@ import { TransactionState } from "../../types/network";
 import { useStakes } from "../../hooks/useStakes";
 import { handleDeposit, handleWithdraw } from "../Yield/handleAction";
 import { usePoolInfo } from "../../hooks/usePoolInfo";
-
-import styles from "./pool.module.css";
 import { formatNumber } from "../../utils/utils";
 import { TokenKey } from "../../classes/Token";
 import { LoadingAnimation } from "../Loading/Loading";
 import { BoxTwoValues } from "./Utils";
 import { useDefispringApy } from "../../hooks/useDefyspringApy";
 import { useConnectWallet } from "../../hooks/useConnectWallet";
+
+import styles from "./pool.module.css";
 
 type Props = {
   pool: Pool;
@@ -32,7 +32,7 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
   const { address } = useAccount();
   const { sendAsync } = useSendTransaction({});
   const { openWalletConnectModal } = useConnectWallet();
-  const { poolInfo } = usePoolInfo(pool.apiPoolId);
+  const { poolInfo } = usePoolInfo(pool);
   const { stakes } = useStakes();
   const price = useCurrency(pool.underlying.id);
   const { data: balanceRaw } = useUserBalance(pool.underlying.address);
