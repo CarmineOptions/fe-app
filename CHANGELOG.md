@@ -1,3 +1,10 @@
+# [2.9.0](https://github.com/CarmineOptions/fe-app/compare/v2.8.7...v2.9.0) (2024-11-07)
+
+
+### Features
+
+* use react hot toast ([7aedbc3](https://github.com/CarmineOptions/fe-app/commit/7aedbc32c82fa30ac7b6be7f36901a7ca09b3bf6))
+
 ## [2.8.7](https://github.com/CarmineOptions/fe-app/compare/v2.8.6...v2.8.7) (2024-11-07)
 
 
