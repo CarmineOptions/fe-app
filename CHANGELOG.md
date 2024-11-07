@@ -1,3 +1,10 @@
+## [2.8.7](https://github.com/CarmineOptions/fe-app/compare/v2.8.6...v2.8.7) (2024-11-07)
+
+
+### Bug Fixes
+
+* pool state fetching ([6465311](https://github.com/CarmineOptions/fe-app/commit/6465311337cd7b208d93655e9f9cc099543f179c))
+
 ## [2.8.6](https://github.com/CarmineOptions/fe-app/compare/v2.8.5...v2.8.6) (2024-11-06)
 
 
