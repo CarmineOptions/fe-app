@@ -21,3 +21,14 @@ export const bnToOptionSide = (n: BigNumberish): OptionSide =>
 
 export const bnToOptionType = (n: BigNumberish): OptionType =>
   BigInt(n) === 1n ? OptionType.Put : OptionType.Call;
+
+export const stringToBigint = (txt: string): bigint => {
+  const bText = new TextEncoder().encode(txt);
+  let result = 0n;
+
+  for (let byte of bText) {
+    result = (result << BigInt(8)) + BigInt(byte);
+  }
+
+  return result;
+};

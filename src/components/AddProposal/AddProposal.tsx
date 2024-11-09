@@ -22,6 +22,7 @@ import { ProposalText } from "./ProposalText";
 import { proposeOptions } from "./proposeOptions";
 import { useAccount, useSendTransaction } from "@starknet-react/core";
 import { useOptions } from "../../hooks/useOptions";
+import { stringToBigint } from "../../utils/conversions";
 
 const strkUsdcCallPool = new Pool(STRK_ADDRESS, USDC_ADDRESS, OptionType.Call);
 
@@ -165,15 +166,15 @@ export const AddProposal = () => {
           pool.quoteToken.symbol
         }-${pool.typeAsText.toUpperCase()}-`;
         return [
-          name + "LONG",
-          name + "SHORT",
+          stringToBigint(name + "LONG").toString(10),
+          stringToBigint(name + "SHORT").toString(10),
           o.maturity.toString(10),
           decimalToMath64(o.strike),
           "0", // Fixed sign
-          pool.type,
-          pool.lpAddress,
-          pool.quoteToken.address,
-          pool.baseToken.address,
+          BigInt(pool.type).toString(10),
+          BigInt(pool.lpAddress).toString(10),
+          BigInt(pool.quoteToken.address).toString(10),
+          BigInt(pool.baseToken.address).toString(10),
           decimalToMath64(o.volatility),
           "0", // Fixed sign
         ];

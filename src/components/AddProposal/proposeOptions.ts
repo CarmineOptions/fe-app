@@ -9,16 +9,17 @@ export const proposeOptions = async (
     args?: Call[]
   ) => Promise<RequestResult<"wallet_addInvokeTransaction">>
 ) => {
+  const calldata = [
+    "2", // add options custom proposal prop id
+    options.length + 2, // length of the payload Span<felt252>
+    AMM_ADDRESS,
+    options.length / 11, // length of the array of options (each option is 11 fields)
+    ...options,
+  ];
   const call = {
     contractAddress: GOVERNANCE_ADDRESS,
     entrypoint: "submit_custom_proposal",
-    calldata: [
-      "0x2", // add options custom proposal prop id
-      options.length + 2, // length of the payload Span<felt252>
-      AMM_ADDRESS,
-      options.length / 11, // length of the array of options (each option is 11 fields)
-      ...options,
-    ],
+    calldata,
   };
 
   debug("Executing add options proposal:", call);
