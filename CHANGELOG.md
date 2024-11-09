@@ -1,3 +1,10 @@
+## [2.9.1](https://github.com/CarmineOptions/fe-app/compare/v2.9.0...v2.9.1) (2024-11-09)
+
+
+### Bug Fixes
+
+* propose options everything base10 ([1628d5b](https://github.com/CarmineOptions/fe-app/commit/1628d5b6594ea57695ccedfba273d42ee3ffef4c))
+
 # [2.9.0](https://github.com/CarmineOptions/fe-app/compare/v2.8.7...v2.9.0) (2024-11-07)
 
 
