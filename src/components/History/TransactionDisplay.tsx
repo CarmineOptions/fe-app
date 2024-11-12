@@ -261,6 +261,7 @@ export const TransactionsTable = ({
 }: TransactionsTableProps) => {
   return (
     <div>
+      <h1 style={{ marginTop: "40px" }}>Trade History</h1>
       <TradesTable trades={trades} />
       <h1 style={{ marginTop: "40px" }}>Liquidity History</h1>
       <StakesTable stakes={stakes} />

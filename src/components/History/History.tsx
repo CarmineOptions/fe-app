@@ -7,6 +7,7 @@ import { fetchHistoricalData } from "./fetchHistoricalData";
 import { TransactionsTable } from "./TransactionDisplay";
 import { IStake, ITrade } from "../../types/history";
 import { useAccount } from "@starknet-react/core";
+import { useConnectWallet } from "../../hooks/useConnectWallet";
 
 type PropsAddress = {
   address: string;
@@ -16,6 +17,7 @@ const TradeHistoryWithAddress = ({ address }: PropsAddress) => {
   const { isLoading, isError, data } = useQuery({
     queryKey: [QueryKeys.tradeHistory, address],
     queryFn: async () => fetchHistoricalData(address),
+    enabled: !!address,
   });
 
   if (isLoading) {
@@ -51,11 +53,22 @@ const TradeHistoryWithAddress = ({ address }: PropsAddress) => {
 };
 
 export const TradeHistory = () => {
-  const { account } = useAccount();
+  const { address } = useAccount();
+  const { openWalletConnectModal } = useConnectWallet();
 
-  if (!account) {
-    return <p>Connect your wallet to see your trade history</p>;
+  if (!address) {
+    return (
+      <div className="gapcolumn">
+        <p>Connect your wallet to see your trade history</p>
+        <button
+          className="mainbutton primary active"
+          onClick={openWalletConnectModal}
+        >
+          Connect Wallet
+        </button>
+      </div>
+    );
   }
 
-  return <TradeHistoryWithAddress address={account.address} />;
+  return <TradeHistoryWithAddress address={address} />;
 };
