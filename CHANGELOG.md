@@ -1,3 +1,10 @@
+## [2.9.2](https://github.com/CarmineOptions/fe-app/compare/v2.9.1...v2.9.2) (2024-11-12)
+
+
+### Bug Fixes
+
+* history data fetching ([79a6914](https://github.com/CarmineOptions/fe-app/commit/79a6914476fc4b3816bb343a01428bbf84b23964))
+
 ## [2.9.1](https://github.com/CarmineOptions/fe-app/compare/v2.9.0...v2.9.1) (2024-11-09)
 
 
