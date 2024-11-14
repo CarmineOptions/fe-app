@@ -17,7 +17,7 @@ export type AddressBN = bigint;
 
 export const Cubit = (n: BigNumberish): cubit => {
   const bi = BigInt(n);
-  return bi > 0n ? { mag: bi, sign: false } : { mag: bi, sign: true };
+  return bi >= 0n ? { mag: bi, sign: false } : { mag: bi, sign: true };
 };
 
 export const isCubit = (n: unknown): n is cubit => {

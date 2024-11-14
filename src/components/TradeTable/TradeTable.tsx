@@ -1,6 +1,6 @@
-import { OptionSide, OptionType } from "../../types/options";
 import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { useState } from "react";
+import { OptionSide, OptionType } from "../../types/options";
 import OptionsTable from "./OptionsTable";
 import { isCall, isLong, uniquePrimitiveValues } from "../../utils/utils";
 import { LoadingAnimation } from "../Loading/Loading";
@@ -15,9 +15,9 @@ import {
   UsdcToken,
 } from "../../classes/Token";
 import { InfoIcon } from "../InfoIcon";
+import { useOptions } from "../../hooks/useOptions";
 
 import styles from "./tradetable.module.css";
-import { useOptions } from "../../hooks/useOptions";
 import { useSearchParams } from "react-router-dom";
 
 const getText = (type: OptionType, side: OptionSide | "all") => {

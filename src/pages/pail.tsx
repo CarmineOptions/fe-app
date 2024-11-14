@@ -14,6 +14,7 @@ const PailPage = () => {
         />
       </Helmet>
       <h1>Protection Against Impermanent Loss</h1>
+      <div className={"divider topmargin botmargin"} />
       <Pail />
     </Layout>
   );

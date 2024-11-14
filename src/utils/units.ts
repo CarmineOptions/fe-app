@@ -34,6 +34,9 @@ export const decimalToMath64 = (n: Decimal): Math64 => {
 export const math64ToInt = (n: BigNumberish, digits: number): Int =>
   ((BigInt(n) * 10n ** BigInt(digits)) / BASE_MATH_64).toString(10);
 
+export const math64ToBigInt = (n: BigNumberish, digits: number): bigint =>
+  (BigInt(n) * 10n ** BigInt(digits)) / BASE_MATH_64;
+
 export const intToMath64 = (n: BigNumberish, digits: number): Math64 =>
   ((BigInt(n) * BASE_MATH_64) / 10n ** BigInt(digits)).toString(10);
 
