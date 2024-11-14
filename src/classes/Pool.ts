@@ -263,7 +263,7 @@ export class Pool extends Pair {
       this.quoteToken.id === TokenKey.USDC
     ) {
       // ETH/USDC
-      return 60;
+      return 70;
     }
     if (
       this.baseToken.id === TokenKey.STRK &&
@@ -284,14 +284,14 @@ export class Pool extends Pair {
       this.quoteToken.id === TokenKey.USDC
     ) {
       // BTC/USDC
-      return 55;
+      return 75;
     }
     if (
       this.baseToken.id === TokenKey.EKUBO &&
       this.quoteToken.id === TokenKey.USDC
     ) {
       // EKUBO/USDC
-      return 70;
+      return 90;
     }
 
     // unreachable
