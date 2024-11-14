@@ -1,3 +1,10 @@
+## [2.9.3](https://github.com/CarmineOptions/fe-app/compare/v2.9.2...v2.9.3) (2024-11-14)
+
+
+### Bug Fixes
+
+* update pool volatilities ([1ad79db](https://github.com/CarmineOptions/fe-app/commit/1ad79dbc90923dac020581cb40806b7e19a6e183))
+
 ## [2.9.2](https://github.com/CarmineOptions/fe-app/compare/v2.9.1...v2.9.2) (2024-11-12)
 
 
