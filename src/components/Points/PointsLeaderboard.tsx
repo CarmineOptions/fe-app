@@ -87,8 +87,8 @@ export const PointsLeaderboard = () => {
   const header = [
     "#",
     "User",
-    "Liquidity",
     "Trading",
+    "Liquidity",
     "Referral",
     "Vote",
     "Total",
