@@ -1,3 +1,10 @@
+## [2.9.4](https://github.com/CarmineOptions/fe-app/compare/v2.9.3...v2.9.4) (2024-11-16)
+
+
+### Bug Fixes
+
+* user points column order ([df9de50](https://github.com/CarmineOptions/fe-app/commit/df9de500512d4db502f17122fe72fc4b666ce8ad))
+
 ## [2.9.3](https://github.com/CarmineOptions/fe-app/compare/v2.9.2...v2.9.3) (2024-11-14)
 
 

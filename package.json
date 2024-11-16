@@ -1,6 +1,6 @@
 {
   "name": "carmine-finance-app",
-  "version": "2.9.3",
+  "version": "2.9.4",
   "private": true,
   "dependencies": {
     "@avnu/avnu-sdk": "^1.2.4",
