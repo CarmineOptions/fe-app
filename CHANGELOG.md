@@ -1,3 +1,10 @@
+## [2.9.5](https://github.com/CarmineOptions/fe-app/compare/v2.9.4...v2.9.5) (2024-11-18)
+
+
+### Bug Fixes
+
+* pool in query ([437117d](https://github.com/CarmineOptions/fe-app/commit/437117de7bc83ea8d80c71974fe419e6f4ad7f49))
+
 ## [2.9.4](https://github.com/CarmineOptions/fe-app/compare/v2.9.3...v2.9.4) (2024-11-16)
 
 
