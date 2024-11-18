@@ -1,3 +1,10 @@
+## [2.9.8](https://github.com/CarmineOptions/fe-app/compare/v2.9.7...v2.9.8) (2024-11-18)
+
+
+### Bug Fixes
+
+* broken https ([ee64a79](https://github.com/CarmineOptions/fe-app/commit/ee64a795df934c88b982b0b7df9074f071b81ef8))
+
 ## [2.9.7](https://github.com/CarmineOptions/fe-app/compare/v2.9.6...v2.9.7) (2024-11-18)
 
 
