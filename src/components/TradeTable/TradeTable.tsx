@@ -18,6 +18,7 @@ import { InfoIcon } from "../InfoIcon";
 
 import styles from "./tradetable.module.css";
 import { useOptions } from "../../hooks/useOptions";
+import { useSearchParams } from "react-router-dom";
 
 const getText = (type: OptionType, side: OptionSide | "all") => {
   if (side === "all") {
@@ -30,14 +31,57 @@ const getText = (type: OptionType, side: OptionSide | "all") => {
   } options.`;
 };
 
+const queryParamsToPool = (param: string | null): [PairKey, OptionType] => {
+  const defaultPool = [PairKey.STRK_USDC, OptionType.Call] as [
+    PairKey,
+    OptionType
+  ];
+  if (!param) {
+    // default pool
+    return defaultPool;
+  }
+  const [encodedPool, poolType] = param?.split("-");
+
+  if (!encodedPool || !poolType) {
+    return defaultPool;
+  }
+
+  const decodedPool = encodedPool.replace("_", " / ");
+
+  if (!Object.values(PairKey).includes(decodedPool as PairKey)) {
+    return defaultPool;
+  }
+
+  if (poolType === "call") {
+    return [decodedPool as PairKey, OptionType.Call];
+  }
+  if (poolType === "put") {
+    return [decodedPool as PairKey, OptionType.Put];
+  }
+  return defaultPool;
+};
+
+const poolToQeuryParam = (pair: PairKey, poolType: OptionType): string => {
+  return `${pair.replace(" / ", "_")}-${
+    poolType === OptionType.Call ? "call" : "put"
+  }`;
+};
+
 export const TradeTable = () => {
   const { isLoading, isError, options } = useOptions();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [side, setSide] = useState<OptionSide.Long | OptionSide.Short | "all">(
     "all"
   );
   const [maturity, setMaturity] = useState<number | undefined>();
-  const [type, setCallPut] = useState<OptionType>(OptionType.Call);
-  const [pair, setPair] = useState<PairKey>(PairKey.STRK_USDC);
+
+  const [initialPair, initialType] = queryParamsToPool(
+    searchParams?.get("pool")
+  );
+
+  const [type, setCallPut] = useState<OptionType>(initialType);
+  const [pair, setPair] = useState<PairKey>(initialPair);
+
   const tokenPair = Pair.pairByKey(pair);
 
   if (isLoading) {
@@ -76,6 +120,18 @@ export const TradeTable = () => {
 
   const handleChange = (event: SelectChangeEvent) => {
     setPair(event.target.value as PairKey);
+    setSearchParams((prev) => {
+      prev.set("pool", poolToQeuryParam(event.target.value as PairKey, type));
+      return prev;
+    });
+  };
+
+  const handleTypeChange = (newType: OptionType) => {
+    setCallPut(newType);
+    setSearchParams((prev) => {
+      prev.set("pool", poolToQeuryParam(pair, newType));
+      return prev;
+    });
   };
 
   return (
@@ -90,7 +146,6 @@ export const TradeTable = () => {
             },
             ".css-1ly9a1d-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input":
               { padding: 0 },
-            width: "288px",
           }}
         >
           <MenuItem value={PairKey.STRK_USDC}>
@@ -114,13 +169,13 @@ export const TradeTable = () => {
         <div>
           <button
             className={type === OptionType.Call ? "primary active" : ""}
-            onClick={() => setCallPut(OptionType.Call)}
+            onClick={() => handleTypeChange(OptionType.Call)}
           >
             calls
           </button>
           <button
             className={type === OptionType.Put ? "primary active" : ""}
-            onClick={() => setCallPut(OptionType.Put)}
+            onClick={() => handleTypeChange(OptionType.Put)}
           >
             puts
           </button>
