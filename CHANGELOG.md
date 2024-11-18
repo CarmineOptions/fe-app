@@ -1,3 +1,10 @@
+## [2.9.7](https://github.com/CarmineOptions/fe-app/compare/v2.9.6...v2.9.7) (2024-11-18)
+
+
+### Bug Fixes
+
+* remove strict ssl ([0d5f7af](https://github.com/CarmineOptions/fe-app/commit/0d5f7af9b6fd41bf63ea7c5c51236d7c00c0a120))
+
 ## [2.9.6](https://github.com/CarmineOptions/fe-app/compare/v2.9.5...v2.9.6) (2024-11-18)
 
 
