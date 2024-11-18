@@ -1,3 +1,10 @@
+## [2.9.6](https://github.com/CarmineOptions/fe-app/compare/v2.9.5...v2.9.6) (2024-11-18)
+
+
+### Bug Fixes
+
+* nginx security headers ([00e4b8f](https://github.com/CarmineOptions/fe-app/commit/00e4b8fcc157c19e23ba732398c32f2494103a48))
+
 ## [2.9.5](https://github.com/CarmineOptions/fe-app/compare/v2.9.4...v2.9.5) (2024-11-18)
 
 
