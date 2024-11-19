@@ -27,6 +27,9 @@ export const Pail = () => {
   const [amountText, setAmountText] = useState<string>("1");
   const tokenPair = Pair.pairByKey(pair);
 
+  const [priceAt, setPriceAt] = useState<number>(0);
+  const [priceAtCurrent, setPriceAtCurrent] = useState<boolean>(true);
+
   const handlePairChange = (event: SelectChangeEvent) => {
     setPair(event.target.value as PairKey);
   };
@@ -38,6 +41,13 @@ export const Pail = () => {
       return n;
     }
   );
+
+  const handlePriceAtChange = (e: any) => {
+    try {
+      const parsed = parseFloat(e?.target?.value);
+      setPriceAt(parsed);
+    } catch {}
+  };
 
   if (isLoading) {
     return <LoadingAnimation />;
@@ -75,12 +85,15 @@ export const Pail = () => {
   const minPut = puts.at(0);
 
   const priceRange =
-    !!maxCall && !!minPut ? minPut.strike + " - " + maxCall.strike : undefined;
+    !!maxCall && !!minPut ? [minPut.strike, maxCall.strike] : undefined;
 
   const formatTimestamp = (timestamp: number) => {
     const date = new Date(timestamp * 1000);
     return date.toLocaleDateString("en-US", { day: "numeric", month: "short" });
   };
+
+  const isPriceWithinRange =
+    priceRange && priceAt >= priceRange[0] && priceAt <= priceRange[1];
 
   return (
     <div className={styles.container}>
@@ -131,7 +144,7 @@ export const Pail = () => {
       </div>
       <div>
         <div>
-          <span>size</span>
+          <h3>Size</h3>
         </div>
         <div>
           <input
@@ -142,14 +155,64 @@ export const Pail = () => {
           />
         </div>
       </div>
-      {!!priceRange && <h4>Price range: {priceRange}</h4>}
-      {!!tokenPair && !!maturity && (
-        <Buy
-          tokenPair={Pair.pairByKey(pair)}
-          expiry={maturity}
-          notional={longInteger(amount, tokenPair.baseToken.decimals)}
-        />
-      )}
+      <div>
+        <div
+          style={{
+            display: "flex",
+            flexFlow: "column",
+            gap: "5px",
+          }}
+        >
+          <h3>Price at</h3>
+          <p>Price at which you want to protect against impermanent loss.</p>
+          <p>
+            If you check current, price at the time of execution will be used.
+          </p>
+          {!!priceRange && (
+            <h4>
+              Price range: {priceRange[0]} - {priceRange[1]}
+            </h4>
+          )}
+        </div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <input
+            type="checkbox"
+            checked={priceAtCurrent}
+            onChange={() => setPriceAtCurrent((prev) => !prev)}
+          />
+          <input
+            onChange={handlePriceAtChange}
+            type="number"
+            placeholder="price at"
+            value={priceAt}
+            style={{
+              border:
+                priceRange &&
+                (priceAt < priceRange[0] || priceAt > priceRange[1])
+                  ? "2px solid red"
+                  : "",
+            }}
+          />
+        </div>
+      </div>
+
+      {!!tokenPair &&
+        !!maturity &&
+        (priceAtCurrent || isPriceWithinRange ? (
+          <Buy
+            tokenPair={Pair.pairByKey(pair)}
+            expiry={maturity}
+            notional={longInteger(amount, tokenPair.baseToken.decimals)}
+            priceAt={priceAtCurrent ? 0 : priceAt}
+          />
+        ) : (
+          <p>Either check current price or use price withing range</p>
+        ))}
       <div className={"divider"} />
       <Owned />
     </div>

@@ -12,6 +12,7 @@ export const Owned = () => {
   if (isLoading) {
     return <LoadingAnimation />;
   }
+
   if (isError || !data) {
     console.error(error);
     return <p>Something went wrong</p>;
@@ -48,7 +49,7 @@ export const Owned = () => {
   return (
     <div style={{ display: "flex", flexFlow: "column" }}>
       <h3>Live</h3>
-      {data.live.length === 0 ? (
+      {data?.live?.length === 0 ? (
         <p>No live PAIL</p>
       ) : (
         data.live.map((id, i) => (
@@ -67,7 +68,7 @@ export const Owned = () => {
         ))
       )}
       <h3>Expired</h3>
-      {data.expired.length === 0 ? (
+      {data?.expired?.length === 0 ? (
         <p>No expired PAIL</p>
       ) : (
         data.expired.map((id, i) => (

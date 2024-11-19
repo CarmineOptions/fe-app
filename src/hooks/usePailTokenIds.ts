@@ -85,7 +85,7 @@ export const usePailTokenIds = () => {
   const { address } = useAccount();
 
   return useQuery({
-    queryKey: [QueryKeys.position, address],
+    queryKey: [QueryKeys.pail, address],
     queryFn: async () => getUserPailTokens(address!),
     enabled: !!address,
   });

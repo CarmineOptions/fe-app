@@ -6,7 +6,7 @@ import {
 import { Pair } from "../../classes/Pair";
 import { PAIL_ADDRESS } from "../../constants/amm";
 import { LoadingAnimation } from "../Loading/Loading";
-import { math64toDecimal } from "../../utils/units";
+import { decimalToMath64, math64toDecimal } from "../../utils/units";
 import { longInteger } from "../../utils/computations";
 import toast from "react-hot-toast";
 import { TokenBadge } from "../TokenBadge";
@@ -15,16 +15,17 @@ type Props = {
   tokenPair: Pair;
   expiry: number;
   notional: bigint;
+  priceAt: number;
 };
 
-export const Buy = ({ tokenPair, expiry, notional }: Props) => {
+export const Buy = ({ tokenPair, expiry, notional, priceAt }: Props) => {
   const { provider } = useProvider();
   const args = [
     notional.toString(10),
     tokenPair.quoteToken.address,
     tokenPair.baseToken.address,
     expiry.toString(10),
-    0,
+    decimalToMath64(priceAt),
     0,
   ];
   const { isLoading, isError, error, data } = useReadContract({
@@ -124,7 +125,6 @@ export const Buy = ({ tokenPair, expiry, notional }: Props) => {
       ],
     };
 
-    console.log(call);
     await sendAsync([approveQuote, approveBase, call])
       .then(({ transaction_hash }) => {
         toast.promise(provider.waitForTransaction(transaction_hash), {

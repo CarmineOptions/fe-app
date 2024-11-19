@@ -131,6 +131,13 @@ export const Navigation = () => {
                 badge={<NewBadge />}
                 isActive={current === "battlecharts"}
               />
+              <Nav
+                title="PAIL"
+                path="pail"
+                icon={ShieldPlus}
+                badge={<NewBadge />}
+                isActive={current === "pail"}
+              />
             </ul>
           </nav>
         </div>
