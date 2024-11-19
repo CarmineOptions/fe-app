@@ -9,6 +9,7 @@ import { LoadingAnimation } from "../Loading/Loading";
 import { math64toDecimal } from "../../utils/units";
 import { longInteger } from "../../utils/computations";
 import toast from "react-hot-toast";
+import { TokenBadge } from "../TokenBadge";
 
 type Props = {
   tokenPair: Pair;
@@ -68,6 +69,7 @@ export const Buy = ({ tokenPair, expiry, notional }: Props) => {
     functionName: "price_hedge",
     address: PAIL_ADDRESS as `0x${string}`,
     args,
+    refetchInterval: 5000,
   });
   const { sendAsync } = useSendTransaction({});
 
@@ -137,19 +139,49 @@ export const Buy = ({ tokenPair, expiry, notional }: Props) => {
   };
 
   return (
-    <div>
-      <p>
-        {tokenPair.quoteToken.symbol} {quotePrice.toString(10)}
-      </p>
-      <p>
-        {tokenPair.baseToken.symbol} {basePrice.toString(10)}
-      </p>
-      <p>
-        Priced at: {tokenPair.quoteToken.symbol} {pricedAt.toString(10)}
-      </p>
-      <button onClick={handleBuy} className="primary mainbutton active">
-        Buy PAIL
-      </button>
+    <div
+      style={{
+        width: "fit-content",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          flexFlow: "column",
+          alignItems: "center",
+          gap: "10px",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            gap: "10px",
+            border: "1px solid gold",
+            padding: "5px",
+            borderRadius: "5px",
+            alignItems: "center",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+            <TokenBadge token={tokenPair.quoteToken} />
+            {quotePrice.toFixed(4)}
+          </div>
+          <p>|</p>
+          <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+            <TokenBadge token={tokenPair.baseToken} />
+            {basePrice.toFixed(4)}
+          </div>
+          <p>|</p>
+          <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+            at 1
+            <TokenBadge token={tokenPair.baseToken} />~{pricedAt.toFixed(4)}{" "}
+            <TokenBadge token={tokenPair.quoteToken} />
+          </div>
+        </div>
+        <button onClick={handleBuy} className="primary mainbutton active">
+          Protect Against Impermanent Loss
+        </button>
+      </div>
     </div>
   );
 };

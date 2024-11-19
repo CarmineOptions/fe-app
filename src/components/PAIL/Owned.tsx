@@ -1,41 +1,13 @@
-import { useAccount, useReadContract } from "@starknet-react/core";
-import { PAIL_NFT_ADDRESS } from "../../constants/amm";
 import { LoadingAnimation } from "../Loading/Loading";
+import { usePailTokenIds } from "../../hooks/usePailTokenIds";
+import { useProvider, useSendTransaction } from "@starknet-react/core";
+import { PAIL_ADDRESS } from "../../constants/amm";
+import toast from "react-hot-toast";
 
 export const Owned = () => {
-  const { address } = useAccount();
-  const idsLen = 12;
-  const { isLoading, isError, error, data } = useReadContract({
-    abi: [
-      {
-        name: "balanceOfBatch",
-        type: "function",
-        inputs: [
-          {
-            name: "accounts",
-            type: "core::array::Span::<core::starknet::contract_address::ContractAddress>",
-          },
-          {
-            name: "tokenIds",
-            type: "core::array::Span::<core::integer::u256>",
-          },
-        ],
-        outputs: [
-          {
-            type: "core::array::Span::<core::integer::u256>",
-          },
-        ],
-        state_mutability: "view",
-      },
-    ] as const,
-    functionName: "balanceOfBatch",
-    address: PAIL_NFT_ADDRESS as `0x${string}`,
-    args: [
-      Array.from({ length: idsLen }, () => address),
-      Array.from({ length: idsLen }, (_, i) => i + 1),
-    ],
-    enabled: !!address,
-  });
+  const { isLoading, isError, error, data } = usePailTokenIds();
+  const { sendAsync } = useSendTransaction({});
+  const { provider } = useProvider();
 
   if (isLoading) {
     return <LoadingAnimation />;
@@ -45,28 +17,69 @@ export const Owned = () => {
     return <p>Something went wrong</p>;
   }
 
-  const userIds = [];
-
-  for (let i = 0; i < data.length; i++) {
-    const v = data[i];
-    if (v > 0n) {
-      userIds.push([i + 1, v]);
-    }
-  }
-
-  console.log(userIds);
-
-  if (userIds.length === 0) {
-    return <p>You currently do not hold any PAIL NFTs</p>;
-  }
+  const handleFinalise = async (
+    tokenId: number,
+    funcName: "hedge_close" | "hedge_settle"
+  ) => {
+    await sendAsync([
+      {
+        contractAddress: PAIL_ADDRESS,
+        entrypoint: funcName,
+        calldata: [tokenId, 0],
+      },
+    ])
+      .then(({ transaction_hash }) => {
+        toast.promise(provider.waitForTransaction(transaction_hash), {
+          loading: `Waiting for ${funcName} tx to finish...`,
+          success: `${funcName} successful!`,
+          error: `${funcName} failed!`,
+        });
+      })
+      .catch(() => {
+        toast.error(`Failed ${funcName} PAIL position`);
+      });
+  };
 
   return (
     <div style={{ display: "flex", flexFlow: "column" }}>
-      {userIds.map(([id, value], i) => (
-        <div key={i}>
-          You hold {value.toString(10)} token id {id}
-        </div>
-      ))}
+      <h3>Live</h3>
+      {data.live.length === 0 ? (
+        <p>No live PAIL</p>
+      ) : (
+        data.live.map((id, i) => (
+          <div
+            key={i}
+            style={{ display: "flex", alignItems: "center", gap: "15px" }}
+          >
+            <p>token id {id}</p>
+            <button
+              onClick={() => handleFinalise(id, "hedge_close")}
+              className="main active primary"
+            >
+              Close
+            </button>
+          </div>
+        ))
+      )}
+      <h3>Expired</h3>
+      {data.expired.length === 0 ? (
+        <p>No expired PAIL</p>
+      ) : (
+        data.expired.map((id, i) => (
+          <div
+            key={i}
+            style={{ display: "flex", alignItems: "center", gap: "15px" }}
+          >
+            <p>token id {id}</p>
+            <button
+              onClick={() => handleFinalise(id, "hedge_settle")}
+              className="main active primary"
+            >
+              Settle
+            </button>
+          </div>
+        ))
+      )}
     </div>
   );
 };

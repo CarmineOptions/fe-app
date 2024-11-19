@@ -142,32 +142,6 @@ export const Pail = () => {
           />
         </div>
       </div>
-      <div>
-        <h4>Calls</h4>
-        <div
-          style={{
-            display: "flex",
-            gap: "10px",
-          }}
-        >
-          {calls.map((o, i) => (
-            <span key={i}>{o.strike}</span>
-          ))}
-        </div>
-      </div>
-      <div>
-        <h4>Puts</h4>
-        <div
-          style={{
-            display: "flex",
-            gap: "10px",
-          }}
-        >
-          {puts.map((o, i) => (
-            <span key={i}>{o.strike}</span>
-          ))}
-        </div>
-      </div>
       {!!priceRange && <h4>Price range: {priceRange}</h4>}
       {!!tokenPair && !!maturity && (
         <Buy
