@@ -1,4 +1,5 @@
 import {
+  useAccount,
   useProvider,
   useReadContract,
   useSendTransaction,
@@ -10,6 +11,7 @@ import { decimalToMath64, math64toDecimal } from "../../utils/units";
 import { longInteger } from "../../utils/computations";
 import toast from "react-hot-toast";
 import { TokenBadge } from "../TokenBadge";
+import { OpenWalletDialogButton } from "../ConnectWallet/Button";
 
 type Props = {
   tokenPair: Pair;
@@ -19,6 +21,7 @@ type Props = {
 };
 
 export const Buy = ({ tokenPair, expiry, notional, priceAt }: Props) => {
+  const { address } = useAccount();
   const { provider } = useProvider();
   const args = [
     notional.toString(10),
@@ -178,9 +181,13 @@ export const Buy = ({ tokenPair, expiry, notional, priceAt }: Props) => {
             <TokenBadge token={tokenPair.quoteToken} />
           </div>
         </div>
-        <button onClick={handleBuy} className="primary mainbutton active">
-          Protect Against Impermanent Loss
-        </button>
+        {address ? (
+          <button onClick={handleBuy} className="primary mainbutton active">
+            Protect Against Impermanent Loss
+          </button>
+        ) : (
+          <OpenWalletDialogButton />
+        )}
       </div>
     </div>
   );
