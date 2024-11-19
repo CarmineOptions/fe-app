@@ -25,3 +25,18 @@ export const WalletButton = () => {
     </button>
   );
 };
+
+export const OpenWalletDialogButton = () => {
+  const { address } = useAccount();
+  const { openWalletConnectModal } = useConnectWallet();
+
+  if (address) {
+    return null;
+  }
+
+  return (
+    <button onClick={openWalletConnectModal} className="main primary active">
+      Connect Wallet
+    </button>
+  );
+};

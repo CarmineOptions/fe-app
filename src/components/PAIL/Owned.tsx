@@ -1,13 +1,37 @@
 import { LoadingAnimation } from "../Loading/Loading";
 import { usePailTokenIds } from "../../hooks/usePailTokenIds";
-import { useProvider, useSendTransaction } from "@starknet-react/core";
+import {
+  useAccount,
+  useProvider,
+  useSendTransaction,
+} from "@starknet-react/core";
 import { PAIL_ADDRESS, PAIL_NFT_ADDRESS } from "../../constants/amm";
 import toast from "react-hot-toast";
+import { OpenWalletDialogButton } from "../ConnectWallet/Button";
 
 export const Owned = () => {
+  const { address } = useAccount();
   const { isLoading, isError, error, data } = usePailTokenIds();
   const { sendAsync } = useSendTransaction({});
   const { provider } = useProvider();
+
+  if (!address) {
+    return (
+      <div style={{ width: "fit-content" }}>
+        <div
+          style={{
+            display: "flex",
+            flexFlow: "column",
+            alignItems: "center",
+            gap: "10px",
+          }}
+        >
+          <p>Connect wallet to see your positions</p>
+          <OpenWalletDialogButton />
+        </div>
+      </div>
+    );
+  }
 
   if (isLoading) {
     return <LoadingAnimation />;
