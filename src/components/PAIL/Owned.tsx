@@ -1,7 +1,7 @@
 import { LoadingAnimation } from "../Loading/Loading";
 import { usePailTokenIds } from "../../hooks/usePailTokenIds";
 import { useProvider, useSendTransaction } from "@starknet-react/core";
-import { PAIL_ADDRESS } from "../../constants/amm";
+import { PAIL_ADDRESS, PAIL_NFT_ADDRESS } from "../../constants/amm";
 import toast from "react-hot-toast";
 
 export const Owned = () => {
@@ -22,6 +22,11 @@ export const Owned = () => {
     funcName: "hedge_close" | "hedge_settle"
   ) => {
     await sendAsync([
+      {
+        contractAddress: PAIL_NFT_ADDRESS,
+        entrypoint: "setApprovalForAll",
+        calldata: [PAIL_ADDRESS, true],
+      },
       {
         contractAddress: PAIL_ADDRESS,
         entrypoint: funcName,
