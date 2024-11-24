@@ -1,0 +1,45 @@
+.secondary {
+    border: 2px solid #fab000;
+    color: #fab000;
+}
+
+.green {
+    border: 2px solid #1aff00;
+    color: #1aff00;
+}
+
+.fail {
+    border: 2px solid #ad1111;
+    color: #ad1111;
+}
+
+.disabled {
+    border: 2px solid rgba(160, 160, 160, .6);
+    color: rgba(160, 160, 160, .6);
+}
+
+.offset {
+    margin-right: 1rem;
+}
+
+.container button:first-child {
+    border-radius: 5px 0 0 5px;
+}
+
+.container button:last-child {
+    border-radius: 0 5px 5px 0;
+}
+
+.container.twos button:nth-child(odd) {
+    border-radius: 5px 0 0 5px;
+}
+
+.container.twos button:nth-child(2) {
+    border-radius: 0 5px 5px 0;
+    margin-right: 15px;
+}
+
+.container>button.active {
+    border-color: #1aff00;
+    color: #1aff00;
+}

@@ -1,0 +1,38 @@
+.table {
+  border: 1px solid white;
+  margin-top: 10px;
+  white-space: nowrap;
+}
+
+.table tr {
+  border-bottom: 1px solid white !important;
+}
+
+.table td {
+  border: none;
+}
+
+.table th {
+  border: none;
+}
+
+.table>thead>tr>th {
+  font-weight: 500;
+}
+
+.table>tbody>tr>td {
+  font-weight: 400;
+}
+
+.table .slippageCell {
+  display: flex;
+  justify-content: center;
+  border-left: 1px solid white !important;
+}
+
+.textcontainer {
+  display: flex;
+  flex-flow: row;
+  border: 1px solid white;
+  padding: 25px 50px;
+}

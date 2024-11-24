@@ -1,0 +1,44 @@
+.modal {
+  background: black;
+  border: 1px solid white;
+  padding: 30px;
+}
+
+.modal h3 {
+  margin-top: 0;
+}
+
+.buttongroup {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2px;
+}
+
+.singlebutton {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.inputall {
+  display: flex;
+  align-items: center;
+  padding-bottom: 20px;
+}
+
+.inputall button {
+  border-left: 0;
+}
+
+.inputall input {
+  max-width: none;
+  width: 100%;
+}
+
+@media (max-width: 800px) {
+  .buttongroup {
+    flex-flow: column;
+    gap: 15px;
+  }
+}

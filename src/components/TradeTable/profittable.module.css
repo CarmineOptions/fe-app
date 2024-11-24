@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  flex-flow: column;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.row>span:first-child {
+  color: #7c7c7c;
+  font-size: 16px;
+}
+
+.row>span:nth-child(2) {
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+}

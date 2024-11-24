@@ -1,0 +1,12 @@
+.defiapycontainer {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.defiapycontainer>img {
+  width: 30px;
+  height: 30px;
+}

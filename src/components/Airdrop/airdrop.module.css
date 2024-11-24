@@ -1,0 +1,66 @@
+.container {
+  display: flex;
+  flex-flow: row;
+}
+
+.textcontainer {
+  flex-flow: row;
+}
+
+.claim {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 50px;
+}
+
+.active {
+  padding-left: 7px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.inactive {
+  padding-left: 7px;
+  color: gray;
+}
+
+.modal {
+  background: black;
+  border: 1px solid white;
+  padding: 30px;
+  display: flex;
+  flex-flow: column;
+  gap: 20px;
+}
+
+.modal h3 {
+  margin-top: 0;
+}
+
+.buttongroup {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5px;
+}
+
+.singlebutton {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+@media (max-width: 800px) {
+  .claim {
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+  }
+
+  .buttongroup {
+    flex-flow: column;
+    gap: 15px;
+  }
+}

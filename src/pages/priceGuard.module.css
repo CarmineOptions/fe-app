@@ -1,0 +1,20 @@
+.container {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.container>div {
+  width: 50%;
+}
+
+@media only screen and (max-width: 1000px) {
+  .container {
+    flex-flow: column;
+  }
+
+  .container>div {
+    width: 100%;
+  }
+}

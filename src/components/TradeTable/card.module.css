@@ -1,0 +1,55 @@
+.container {
+  width: 765px;
+  max-height: 600px;
+}
+
+.container>div {
+  width: 100%;
+  position: relative;
+}
+
+.container>div:nth-child(2) {
+  display: flex;
+  flex-flow: row;
+}
+
+.top {
+  padding: 25px 39px;
+  border-bottom: 1px solid #7c7c7c;
+}
+
+.left {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+  padding: 30px;
+  width: 62%;
+  border-right: 1px solid #7c7c7c;
+}
+
+.right {
+  display: flex;
+  flex-flow: column;
+  padding: 30px;
+  width: 38%;
+}
+
+.graphholder {
+  height: 100%;
+}
+
+.inputholder {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.inputholder>input {
+  background: none;
+  border: 1px solid #ffb000;
+  font-size: 21px;
+  padding: 3px 15px;
+  text-align: center;
+  height: 46px;
+}

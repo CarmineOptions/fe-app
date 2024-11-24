@@ -1,0 +1,372 @@
+/* global CSS variables */
+:root {
+  --WHITE: #FFFFFF;
+  --BLACK: #0D0E0F;
+  --GREY: #727272;
+  --PRIMARY: #FAB000;
+  --SECONDARY: #727272;
+  --SUCCESS-BG: #37CB4F;
+  --SUCCESS-ACCENT: #D9FFE0;
+  --ERROR-BG: #BF1D1D;
+  --ERROR-ACCENT: #FCBABA;
+  --CARMINE-LIGHT: #FDD679;
+  --CARMINE-DARK: #B78504;
+  --DARK-BG: #111213;
+}
+
+/* Global styles */
+* {
+  color: var(--WHITE);
+  margin: 0;
+  padding: 0;
+  line-height: 1.2;
+  font-family: IBM Plex Sans;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+  text-size-adjust: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* Typography */
+
+/* Heading */
+
+/* I am using design Heading/H4 Semibold as H1, since that was the top Heading I could find */
+h1 {
+  font-family: IBM Plex Sans;
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 38.4px;
+}
+
+/* Heading/H5 Semibold */
+h2 {
+  font-family: IBM Plex Sans;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 28.8px;
+}
+
+/* Heading/H6 Semibold */
+h3 {
+  font-family: IBM Plex Sans;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+/* Paragraphs */
+
+/* Paragraph/P3 Semibold */
+p {
+  font-family: IBM Plex Sans;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 18px;
+}
+
+
+/* Paragraph/P4 */
+p.p4 {
+  font-family: IBM Plex Sans;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 14.4px;
+}
+
+/* Labels */
+
+/* Label/L1 Regular */
+span {
+  font-family: IBM Plex Sans;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14.4px;
+  letter-spacing: 0.5px;
+}
+
+/* Label/L2 Regular */
+span .l2 {
+  font-family: IBM Plex Sans;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 12px;
+  letter-spacing: 0.5px;
+}
+
+.extrabold {
+  font-weight: 800;
+}
+
+.bold {
+  font-weight: 700;
+}
+
+.regular {
+  font-weight: 400;
+}
+
+.light {
+  font-weight: 300;
+}
+
+.primary-col {
+  color: var(--PRIMARY);
+}
+
+.primary-bg {
+  background: var(--PRIMARY);
+}
+
+.secondary-col {
+  color: var(--SECONDARY);
+}
+
+.secondary-bg {
+  background: var(--SECONDARY);
+}
+
+.white-col {
+  color: var(--WHITE);
+}
+
+.white-bg {
+  background: var(--WHITE);
+}
+
+.black-col {
+  color: var(--BLACK);
+}
+
+.black-bg {
+  background: var(--BLACK);
+}
+
+.error-col {
+  color: var(--ERROR-BG);
+}
+
+.error-bg {
+  background: var(--ERROR-BG);
+}
+
+.success-col {
+  color: var(--SUCCESS-BG);
+}
+
+.success-bg {
+  background: var(--SUCCESS-BG);
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+button {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 19.5px;
+  min-width: 72px;
+  min-height: 24px;
+  padding: 2px 10px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  --bg-color: var(--GREY);
+  --text-color: var(--BLACK);
+  border: 1px solid var(--bg-color);
+  color: var(--bg-color);
+  background: none;
+}
+
+input {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 19.5px;
+  min-width: 72px;
+  min-height: 24px;
+  padding: 2px 4px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  --bg-color: var(--GREY);
+  --text-color: var(--BLACK);
+  border: 1px solid var(--bg-color);
+  color: var(--bg-color);
+  background: none;
+}
+
+/* Utility classes */
+.mainbutton {
+  width: fit-content;
+  text-transform: capitalize;
+  height: 36px;
+}
+
+.primary {
+  --bg-color: var(--PRIMARY);
+  --text-color: var(--BLACK);
+}
+
+.secondary {
+  --bg-color: var(--WHITE);
+  --text-color: var(--BLACK);
+}
+
+.green {
+  --bg-color: var(--SUCCESS-BG);
+  --text-color: var(--WHITE);
+}
+
+.red {
+  --bg-color: var(--ERROR-BG);
+  --text-color: var(--WHITE);
+}
+
+.blackandwhite {
+  --bg-color: black;
+  --text-color: var(--WHITE);
+}
+
+.greentext {
+  color: var(--SUCCESS-BG) !important;
+}
+
+.redtext {
+  color: var(--ERROR-BG) !important;
+}
+
+.greytext {
+  color: var(--GREY) !important;
+}
+
+.divider {
+  height: 1px;
+  border-top: 1px solid var(--GREY);
+}
+
+.topmargin {
+  margin-top: 28px;
+}
+
+.botmargin {
+  margin-bottom: 28px;
+}
+
+button.active {
+  color: var(--text-color);
+  background-color: var(--bg-color);
+}
+
+button.linkbutton {
+  text-transform: none;
+  color: var(--WHITE);
+  background: none;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  font: inherit;
+}
+
+button.linkbutton:focus {
+  outline: none;
+}
+
+button.linkbutton:hover {
+  text-decoration: none;
+}
+
+div.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gapcolumn {
+  display: flex;
+  flex-flow: column;
+  gap: 28px;
+}
+
+main {
+  position: relative;
+  width: calc(100% - 202px);
+  min-height: calc(100vh - 62px);
+  padding: 80px 7.5vw;
+}
+
+.tableheader {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0;
+  padding: 16px 0;
+  border-top: 1px solid var(--GREY);
+  border-bottom: 1px solid var(--GREY);
+  text-align: left;
+}
+
+.tableheader>div {
+  flex: 1;
+  box-sizing: border-box;
+  color: var(--GREY);
+  font-size: 12px;
+  text-transform: uppercase;
+  display: flex;
+  gap: 3px;
+}
+
+.tablecontent {
+  display: flex;
+  flex-flow: column;
+  gap: 8px;
+}
+
+.tableitem {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0;
+  padding: 4px 0;
+  font-size: 15px;
+  font-weight: 500;
+  text-align: left;
+}
+
+.tableitem>div {
+  flex: 1;
+  text-transform: uppercase;
+}
+
+.wrap {
+  flex-wrap: wrap;
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+@media (max-width: 700px) {
+  :root {
+    --CONTENT-PADDING: 1em;
+  }
+
+  main {
+    padding: 20px;
+    overflow: hidden;
+    width: 100%;
+  }
+}

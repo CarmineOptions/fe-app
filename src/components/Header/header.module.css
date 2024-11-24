@@ -1,0 +1,33 @@
+.header {
+  display: flex;
+  padding: 12px 20px;
+  height: 58px;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid var(--GREY);
+  background: var(--DARK-BG);
+}
+
+.mobile {
+  padding: 12px;
+}
+
+.mobilemenu {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.mobilemenu>div:last-child {
+  width: 15px;
+  height: 27px;
+}
+
+.logocontainer {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  /* Better center logo svg */
+  margin-top: 8px;
+}

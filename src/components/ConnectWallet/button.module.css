@@ -1,0 +1,26 @@
+.custom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
+  padding: 0 12px;
+}
+
+.walletinfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.walletinfo span {
+  text-transform: none;
+  color: var(--BLACK);
+  font-size: 16px;
+}
+
+.walleticon {
+  width: 21px;
+  height: 21px;
+  border-radius: 2px;
+  padding: 2px;
+}

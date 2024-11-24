@@ -1,0 +1,25 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.inputall {
+  display: flex;
+  align-items: center;
+}
+
+.inputall button {
+  border-left: 0;
+}
+
+.buttons {
+  display: flex;
+  gap: 2px;
+}
+
+@media (max-width: 800px) {
+  .container {
+    flex-flow: column;
+  }
+}

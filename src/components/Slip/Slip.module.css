@@ -1,0 +1,33 @@
+.slip {
+  background: #FAB000;
+  color: black;
+  text-align: center;
+  white-space: nowrap;
+  min-width: 1400px;
+}
+
+.wrapper {
+  display: flex;
+  flex-flow: row;
+}
+
+.scroll-container {
+  width: 100%; /* Full width of the viewport */
+  overflow: hidden; /* Hides anything outside the container */
+  position: relative;
+}
+
+.scroller {
+  display: flex;
+  white-space: nowrap;
+  animation: scroll-left 15s linear infinite;
+}
+
+@keyframes scroll-left {
+  0% {
+      transform: translateX(0);
+  }
+  100% {
+      transform: translateX(-1400px);
+  }
+}

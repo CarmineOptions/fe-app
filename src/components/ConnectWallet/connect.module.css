@@ -1,0 +1,19 @@
+.button {
+  border: 2px solid #ffb300;
+  color: #ffb300;
+}
+
+.button:focus {
+  color: rgba(255, 255, 255, 1);
+}
+
+.button:hover {
+  color: rgba(26, 255, 0, 1);
+  fill: rgba(26, 255, 0, 0.6);
+}
+
+.button:active {
+  border-color: rgba(255, 255, 255, 1);
+  color: rgba(255, 255, 255, 1);
+  fill: rgba(255, 255, 255, 0.5);
+}

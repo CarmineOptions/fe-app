@@ -1,0 +1,46 @@
+.modal {
+  width: 489px;
+  background: linear-gradient(94deg, #1A4079 -1.25%, #0F1242 101.88%);
+  color: white;
+  padding: 25px;
+  display: flex;
+  flex-flow: column;
+  gap: 12px;
+  border-radius: 15px;
+}
+
+.modal h5 {
+  margin: 15px 0 0 0;
+  font-weight: lighter;
+}
+
+.tweet {
+  font-size: 14px;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 5px;
+  background: white;
+  color: #132254;
+  padding: 3px 8px;
+  border-radius: 4px;
+  text-decoration: none;
+}
+
+.ctas {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 25px;
+}
+
+.learnmore {
+  font-size: 14px;
+  padding: 3px 12px;
+  border-radius: 4px;
+  text-decoration: none;
+  background: #243f75;
+  color: #9daee5;
+  padding: 5px;
+}

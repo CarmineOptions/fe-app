@@ -1,0 +1,36 @@
+.twovaluebox {
+  display: flex;
+  justify-content: space-between;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 19.5px;
+}
+
+.twovaluebox.small {
+  font-size: 12px;
+  line-height: 15.6px;
+}
+
+.twovaluebox>span {
+  color: var(--GREY);
+}
+
+.twovaluebox>div {
+  display: flex;
+  flex-flow: column;
+}
+
+.top {
+  color: var(--WHITE);
+}
+
+.bottom {
+  text-align: end;
+  font-size: 12px;
+  line-height: 15.6px;
+  color: var(--GREY);
+}
+
+.white {
+  color: var(--WHITE);
+}

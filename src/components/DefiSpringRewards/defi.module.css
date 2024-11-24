@@ -1,0 +1,31 @@
+.deficontainer {
+  display: flex;
+  gap: 3rem;
+  padding: 10px;
+  border: 3px solid var(--PRIMARY);
+  justify-content: space-around;
+}
+
+.deficontainer>p {
+  margin: 0;
+}
+
+.deficontainer>div>p:first-of-type {
+  color: #ccc;
+}
+
+.outer {
+  padding-top: 10px;
+}
+
+.buttoncontainer>button {
+  width: 100%;
+  border-top: none;
+}
+
+.box {
+  display: flex;
+  flex-flow: column;
+  max-width: 600px;
+  border-top: none;
+}

@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+  flex-flow: column;
+  gap: 1em;
+  padding: 1em 2em;
+}
+
+.button {
+  background: none;
+  border: 1px solid white;
+  color: white;
+  font-size: 21px;
+  padding: 3px 15px;
+  text-align: center;
+  height: 46px;
+  max-width: 150px;
+}

@@ -1,0 +1,16 @@
+version: '3.9'
+
+services:
+  mainnet:
+    build:
+      context: .
+      dockerfile: Dockerfile.mainnet
+    ports:
+      - 8080:80
+
+  testnet:
+    build:
+      context: .
+      dockerfile: Dockerfile.testnet
+    ports:
+      - 8081:80

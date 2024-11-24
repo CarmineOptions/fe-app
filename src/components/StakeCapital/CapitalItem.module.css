@@ -1,0 +1,23 @@
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-template-rows: repeat(2, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+
+.grid:nth-child(1) {
+  grid-area: 1 / 1 / 2 / 2;
+}
+
+.grid:nth-child(2) {
+  grid-area: 1 / 2 / 2 / 3;
+}
+
+.grid:nth-child(3) {
+  grid-area: 2 / 1 / 3 / 2;
+}
+
+.grid:nth-child(4) {
+  grid-area: 2 / 2 / 3 / 3;
+}

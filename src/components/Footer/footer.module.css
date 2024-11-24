@@ -1,0 +1,33 @@
+.container {
+  max-width: var(--CONTENT-WIDTH);
+  padding: 0 var(--CONTENT-PADDING);
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 40px;
+  margin-bottom: 80px;
+}
+
+.company {
+  margin-top: 80px;
+  text-decoration: overline;
+  text-decoration-thickness: 4px;
+}
+
+.table {
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+
+.table td {
+  padding-right: 30px;
+}
+
+.bottom {
+  display: flex;
+  justify-content: space-between;
+}
+
+.link {
+  text-decoration: none;
+  color: white;
+}

@@ -1,0 +1,120 @@
+.option span {
+  font-family: IBM Plex Sans;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 19.5px;
+  color: var(--GREY);
+  text-transform: uppercase;
+}
+
+.desc {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.side {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 19.5px;
+  text-transform: uppercase;
+  width: 72px;
+  height: 24px;
+  padding: 2px 4px;
+  text-align: center;
+}
+
+.short {
+  background: var(--ERROR-BG);
+}
+
+.long {
+  background: var(--SUCCESS-BG);
+}
+
+.inputcontainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.inputcontainer>div:first-child {
+  display: flex;
+  flex-flow: column;
+  gap: 2px;
+}
+
+.inputcontainer>div:first-child>span:first-child {
+  color: white;
+}
+
+.inputcontainer>div:first-child>span:last-child {
+  font-size: 12px;
+  line-height: 15.6px;
+}
+
+.inputcontainer>div:last-child {
+  border: 1px solid var(--GREY);
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+}
+
+.inputcontainer input {
+  border: none;
+  color: white;
+  width: 90px;
+}
+
+.databox {
+  display: flex;
+  justify-content: space-between;
+}
+
+.databox>div:first-child {
+  display: flex;
+}
+
+.databox>div:last-child {
+  display: flex;
+  flex-flow: column;
+  gap: 2px;
+  align-items: flex-end;
+}
+
+.databox>div:last-child>span:first-child {
+  color: white;
+}
+
+.databox>div:last-child>span:last-child {
+  font-size: 12px;
+  line-height: 15.6px;
+}
+
+.databoxloading {
+  height: 37.09px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+}
+
+.dividertext {
+  height: 16px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.dividertext span {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 15.6px;
+  white-space: nowrap;
+  color: var(--GREY);
+}
+
+.graphbox {
+  width: 320px;
+  height: 120px;
+  border-radius: 4px;
+  background: #101010;
+}

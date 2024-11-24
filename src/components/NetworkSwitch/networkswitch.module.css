@@ -1,0 +1,32 @@
+.button:focus {
+  color: rgba(255, 255, 255, 1);
+}
+
+.button:hover {
+  color: rgba(26, 255, 0, 1);
+  fill: rgba(26, 255, 0, 0.6);
+}
+
+.button:active {
+  border-color: rgba(255, 255, 255, 1);
+  color: rgba(255, 255, 255, 1);
+  fill: rgba(255, 255, 255, 0.5);
+}
+
+
+.menuitem {
+  height: 35px;
+}
+
+.itemlink {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  text-decoration: none;
+  transform: translateX(-12px);
+}

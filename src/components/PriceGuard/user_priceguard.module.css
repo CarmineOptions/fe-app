@@ -1,0 +1,158 @@
+.wrapper {
+  display: flex;
+  flex-flow: column;
+  gap: 12px;
+  font-family: "IBM Plex Sans", sans;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 23.4px;
+  margin: 50px auto;
+}
+
+.wrapper button {
+  transition: 0s;
+  border-color: var(--GREY);
+  color: var(--GREY);
+  height: 25px;
+  padding: 3px 18px;
+  min-width: 0;
+}
+
+.wrapper button.active {
+  background: var(--PRIMARY);
+  color: black;
+  border-color: var(--PRIMARY);
+}
+
+.wrapper button span {
+  border-color: var(--GREY);
+  color: var(--GREY);
+}
+
+.wrapper button.active span {
+  background: var(--PRIMARY);
+  color: black;
+}
+
+.buttons {
+  display: flex;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.buttons button {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.tableheader {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0;
+  padding: 4px 0;
+  border-top: 1px solid var(--GREY);
+  border-bottom: 1px solid var(--GREY);
+  text-align: left;
+}
+
+.tableheader>div {
+  flex: 1;
+  box-sizing: border-box;
+  color: var(--GREY);
+  font-size: 12px;
+  text-transform: uppercase;
+  display: flex;
+  gap: 3px;
+  cursor: pointer;
+}
+
+.tablecontent {
+  display: flex;
+  flex-flow: column;
+  gap: 8px;
+}
+
+.tableitem {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0;
+  padding: 4px 0;
+  font-size: 15px;
+  font-weight: 500;
+  text-align: left;
+}
+
+.tableitem>div {
+  flex: 1;
+  text-transform: uppercase;
+}
+
+.datetime>div {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  letter-spacing: -1px;
+}
+
+.datetime>div>span {
+  font-size: 11px;
+}
+
+.datetime>div>span:first-child {
+  font-size: 15px;
+}
+
+.active {
+  line-height: 18px;
+  letter-spacing: 0.04em;
+  text-align: left;
+  color: #37CB4F;
+}
+
+.claimable {
+  line-height: 18px;
+  letter-spacing: 0.04em;
+  text-align: left;
+  color: #EAC12F;
+}
+
+.expired {
+  line-height: 18px;
+  letter-spacing: 0.04em;
+  text-align: left;
+  color: #CB3737;
+}
+
+.loading {
+  width: 5ch;
+}
+
+.arrowcontainer {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  gap: 2px;
+  padding-bottom: 2.5px;
+}
+
+.arrowcontainer>svg:last-child {
+  transform: rotate(180deg);
+}
+
+.arrowcontainer.desc>svg:last-child>path {
+  fill: var(--PRIMARY);
+}
+
+.arrowcontainer.asc>svg:first-child>path {
+  fill: var(--PRIMARY);
+}
+
+.outer {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.inner {
+  min-width: 900px;
+  overflow: hidden;
+}

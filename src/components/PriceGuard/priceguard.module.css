@@ -1,0 +1,288 @@
+.container {
+  display: flex;
+  flex-flow: column;
+  gap: 18px;
+  font-family: IBM Plex Sans, sans;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 23.4px;
+  margin: 50px auto;
+}
+
+.container h4 {
+  font-size: 22px;
+  font-weight: 400;
+  color: #E8EAED;
+}
+
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cog {
+  cursor: pointer;
+}
+
+.assetamount {
+  display: flex;
+  flex-flow: column;
+}
+
+.assetamount option {
+  color: white;
+  background-color: black;
+}
+
+.assetamount>div>div {
+  display: flex;
+  flex-flow: row;
+  height: 65px;
+  background: #1A1A1A;
+  margin: 8px 0;
+}
+
+.assetamount>div>div>input {
+  width: 100%;
+  font-size: 24px;
+  border: none;
+}
+
+.assetamount>div>div>select {
+  border: none;
+}
+
+.row {
+  display: flex;
+}
+
+.row>div:first-child {
+  width: 180px;
+}
+
+.row>div:nth-child(2) {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.row>div:nth-child(2)>button {
+  white-space: nowrap;
+}
+
+.balance {
+  display: flex;
+  flex-flow: row;
+  justify-content: flex-end;
+  align-items: baseline;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.balance span {
+  font-size: 15px;
+}
+
+.balance span:first-child {
+  text-transform: uppercase;
+  font-size: 12px;
+  color: var(--GREY);
+}
+
+.balanceloading {
+  display: flex;
+  align-items: center;
+  flex-flow: row;
+  gap: 10px;
+}
+
+.datetime>div {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.datetime>div>span {
+  font-size: 15px;
+  text-transform: uppercase;
+}
+
+.datetime>div>span:first-child {
+  font-size: 18px;
+}
+
+.divider {
+  height: 1px;
+  border-top: 1px solid #414142;
+}
+
+.coverage {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.column {
+  display: flex;
+  flex-flow: column;
+}
+
+.column span {
+  font-size: 14px;
+  color: var(--GREY);
+  align-self: flex-end;
+}
+
+.buy {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.info {
+  display: flex;
+}
+
+.info svg {
+  width: 20px;
+  height: 20px;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  gap: 5px;
+}
+
+.finalprice {
+  font-size: 20px;
+}
+
+.finalprice>div {
+  display: flex;
+  flex-flow: column;
+  align-items: flex-end;
+}
+
+.finalprice>div>span:last-child {
+  color: var(--GREY);
+  font-size: 14px;
+}
+
+.container select {
+  background: none;
+  border: 2px solid var(--PRIMARY);
+  font-size: 19px;
+  padding: 5px;
+}
+
+.container select:active {
+  outline: 1px solid var(--PRIMARY);
+}
+
+.container select:focus {
+  outline: 1px solid var(--PRIMARY);
+}
+
+
+.container input {
+  background: none;
+  border: 2px solid var(--PRIMARY);
+  font-size: 19px;
+  padding: 5px 12px;
+  min-width: 100px;
+  width: auto;
+}
+
+.container input:active {
+  outline: 1px solid var(--PRIMARY);
+}
+
+.container input:focus {
+  outline: 1px solid var(--PRIMARY);
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.slippagemodal {
+  position: absolute;
+  right: 0;
+  top: 25px;
+  background: #4B4B48;
+  color: white;
+  padding: 24px;
+  border-radius: 4px;
+  display: flex;
+  flex-flow: column;
+  gap: 24px;
+  z-index: 1;
+}
+
+.slippagemodal .title {
+  margin-bottom: 5px;
+}
+
+.slippagebuttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.slippagebuttons>div {
+  position: relative;
+}
+
+.slippagebuttons>div>span {
+  position: absolute;
+  right: 24px;
+  top: 4px;
+  color: #101010;
+}
+
+.slippagebuttons>div>input {
+  background: #D2D2D2;
+  color: #101010;
+  height: 29px;
+  border: 0.75px solid #727272;
+  border-radius: 3px;
+  width: 100px;
+  padding-right: 39px;
+  text-align: right;
+  margin-left: 5px;
+}
+
+.maturitybutton {
+  display: flex;
+  gap: 4px;
+}
+
+.tokenwrapper {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 10px;
+}
+
+@media (max-width: 700px) {
+  .row {
+    flex-flow: column;
+  }
+
+  .row>div:nth-child(2) {
+    flex-flow: column;
+  }
+
+  .datetime>div {
+    justify-content: center;
+  }
+}

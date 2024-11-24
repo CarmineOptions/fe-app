@@ -1,0 +1,41 @@
+.container {
+  display: flex;
+  flex-flow: column;
+  gap: 28px;
+  justify-content: space-between;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding: 8px;
+}
+
+.buttons>div {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.maturity {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 14.4px;
+  letter-spacing: 0.04em;
+  text-align: left;
+  color: var(--GREY);
+}
+
+.divider {
+  flex-grow: 1;
+  margin: 0 10px 0 0;
+}
+
+@media (max-width: 700px) {
+  .buttons {
+    flex-flow: column;
+    align-items: normal;
+  }
+}

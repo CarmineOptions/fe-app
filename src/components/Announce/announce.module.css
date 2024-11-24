@@ -1,0 +1,12 @@
+.braavosannounce {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  max-width: min(400px, 85vw);
+  padding: 12px 25px;
+  display: flex;
+  flex-flow: column;
+  gap: 12px;
+  border-radius: 15px;
+  background: linear-gradient(94deg, #1A4079 -1.25%, #0F1242 101.88%);
+}

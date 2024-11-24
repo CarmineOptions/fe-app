@@ -1,0 +1,22 @@
+.tooltip {
+  border: solid 3px #EC796B;
+  padding: 10px;
+}
+
+.heading {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.heading>img {
+  width: 30px;
+  height: 30px;
+}
+
+.apart {
+  display: flex;
+  justify-content: space-between;
+  height: 30px;
+}
