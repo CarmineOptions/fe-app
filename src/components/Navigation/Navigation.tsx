@@ -33,7 +33,7 @@ const Nav = ({
     <li
       className={`px-[4px] py-[8px] rounded-[2px] transition duration-300 ease-in-out ${
         isActive
-          ? "bg-brand-carmineDeep text-dark-primary"
+          ? "bg-brand-deep text-dark-primary"
           : "text-dark-secondary hover:text-dark-primary"
       }`}
     >
@@ -59,22 +59,22 @@ const Nav = ({
 };
 
 const NewBadge = () => (
-  <div className="bg-brand-carmine p-[4px] flex rounded-[2px]">
-    <L2 className="font-bold text-dark-base">NEW</L2>
+  <div className="bg-brand p-[4px] flex rounded-[2px]">
+    <L2 className="font-bold text-dark">NEW</L2>
   </div>
 );
 
 const AirdropBadge = () => (
-  <div className="bg-brand-carmine p-[4px] flex items-center gap-[4px] rounded-[2px]">
+  <div className="bg-brand p-[4px] flex items-center gap-[4px] rounded-[2px]">
     <Parachute />
-    <L2 className="font-bold text-dark-base">AIRDROP</L2>
+    <L2 className="font-bold text-dark">AIRDROP</L2>
   </div>
 );
 
 const RewardsBadge = () => (
   <div className="bg-[#FF75C8] p-[4px] flex items-center gap-[4px] rounded-[2px]">
     <Stark width="10px" height="10px" />
-    <L2 className="font-bold text-dark-base">REWARDS</L2>
+    <L2 className="font-bold text-dark">REWARDS</L2>
   </div>
 );
 

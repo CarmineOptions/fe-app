@@ -9,6 +9,14 @@ import {
   STRK_ADDRESS,
   USDC_ADDRESS,
 } from "../constants/amm";
+import {
+  BtcIcon,
+  EkuboIcon,
+  EthIcon,
+  StrkIcon,
+  UsdcIcon,
+} from "../components/Icons";
+import { FunctionComponent, SVGProps } from "react";
 
 export enum TokenKey {
   ETH = "eth",
@@ -56,29 +64,49 @@ const TOKENS: [TokenKey, string, number, string, string][] = [
   ],
 ];
 
+const tokenKeyToIcon = (
+  key: TokenKey
+): FunctionComponent<SVGProps<SVGSVGElement>> => {
+  if (key === TokenKey.BTC) {
+    return BtcIcon;
+  }
+  if (key === TokenKey.ETH) {
+    return EthIcon;
+  }
+  if (key === TokenKey.STRK) {
+    return StrkIcon;
+  }
+  if (key === TokenKey.USDC) {
+    return UsdcIcon;
+  }
+  if (key === TokenKey.EKUBO) {
+    return EkuboIcon;
+  }
+  throw Error("Invalid token key");
+};
+
 export class Token {
   private _id: TokenKey;
   private _symbol: string;
   private _decimals: number;
   private _address: string;
-  private _icon: string;
+  private _icon: FunctionComponent<SVGProps<SVGSVGElement>>;
 
   static instances = TOKENS.map(
-    (args) => new Token(args[0], args[1], args[2], args[3], args[4])
+    (args) => new Token(args[0], args[1], args[2], args[3])
   );
 
   private constructor(
     id: TokenKey,
     symbol: string,
     decimals: number,
-    address: string,
-    icon: string
+    address: string
   ) {
     this._id = id;
     this._symbol = symbol;
     this._decimals = decimals;
     this._address = address;
-    this._icon = icon;
+    this._icon = tokenKeyToIcon(id);
   }
 
   static byKey(key: TokenKey): Token {
@@ -130,7 +158,7 @@ export class Token {
     return this._address;
   }
 
-  get icon(): string {
+  get icon(): FunctionComponent<SVGProps<SVGSVGElement>> {
     return this._icon;
   }
 }

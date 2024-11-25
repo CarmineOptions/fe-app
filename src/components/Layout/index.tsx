@@ -14,7 +14,7 @@ export const Layout = ({ children }: Props) => {
       <div className="flex relative">
         <Sidebar />
         <Navigation />
-        <main className="relative w-[calc(100%-202px)] min-h-[calc(100vh-62px)] pt-[80px] px-[7.5vw] bg-dark-base">
+        <main className="relative w-[calc(100%-202px)] min-h-[calc(100vh-62px)] pt-[80px] px-[7.5vw] bg-dark">
           {children}
         </main>
       </div>

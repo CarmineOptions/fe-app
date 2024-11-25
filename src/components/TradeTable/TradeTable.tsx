@@ -1,25 +1,17 @@
 import { OptionSide, OptionType } from "../../types/options";
-import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { useState } from "react";
 import OptionsTable from "./OptionsTable";
 import { isCall, isLong, uniquePrimitiveValues } from "../../utils/utils";
 import { LoadingAnimation } from "../Loading/Loading";
 import { NoContent } from "../TableNoContent";
 import { Pair, PairKey } from "../../classes/Pair";
-import { PairNamedBadge } from "../TokenBadge";
-import {
-  BtcToken,
-  EkuboToken,
-  EthToken,
-  StrkToken,
-  UsdcToken,
-} from "../../classes/Token";
 import { InfoIcon } from "../InfoIcon";
 
-import styles from "./tradetable.module.css";
 import { useOptions } from "../../hooks/useOptions";
 import { useSearchParams } from "react-router-dom";
 import { Button } from "../common/Button";
+import { TokenSelect } from "../TokenSelect";
+import { Divider } from "../common";
 
 const getText = (type: OptionType, side: OptionSide | "all") => {
   if (side === "all") {
@@ -81,9 +73,8 @@ export const TradeTable = () => {
   );
 
   const [type, setCallPut] = useState<OptionType>(initialType);
-  const [pair, setPair] = useState<PairKey>(initialPair);
 
-  const tokenPair = Pair.pairByKey(pair);
+  const [pair, setPair] = useState<Pair>(Pair.pairByKey(initialPair));
 
   if (isLoading) {
     return <LoadingAnimation />;
@@ -93,7 +84,9 @@ export const TradeTable = () => {
     return <div>Something went wrong</div>;
   }
 
-  const thisPairOptions = options.filter((option) => option.isPair(pair));
+  const thisPairOptions = options.filter((option) =>
+    option.isPair(pair.pairId)
+  );
 
   const maturities = thisPairOptions
     .map((o) => o.maturity)
@@ -119,55 +112,19 @@ export const TradeTable = () => {
     return date.toLocaleDateString("en-US", { day: "numeric", month: "short" });
   };
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setPair(event.target.value as PairKey);
-    setSearchParams((prev) => {
-      prev.set("pool", poolToQeuryParam(event.target.value as PairKey, type));
-      return prev;
-    });
-  };
-
   const handleTypeChange = (newType: OptionType) => {
     setCallPut(newType);
     setSearchParams((prev) => {
-      prev.set("pool", poolToQeuryParam(pair, newType));
+      prev.set("pool", poolToQeuryParam(pair.pairId, newType));
       return prev;
     });
   };
 
   return (
-    <div className={styles.container}>
-      <div>
-        <Select
-          value={pair}
-          onChange={handleChange}
-          sx={{
-            "& .MuiOutlinedInput-notchedOutline": {
-              border: "none",
-            },
-            ".css-1ly9a1d-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input":
-              { padding: 0 },
-          }}
-        >
-          <MenuItem value={PairKey.STRK_USDC}>
-            <PairNamedBadge tokenA={StrkToken} tokenB={UsdcToken} />
-          </MenuItem>
-          <MenuItem value={PairKey.ETH_USDC}>
-            <PairNamedBadge tokenA={EthToken} tokenB={UsdcToken} />
-          </MenuItem>
-          <MenuItem value={PairKey.ETH_STRK}>
-            <PairNamedBadge tokenA={EthToken} tokenB={StrkToken} />
-          </MenuItem>
-          <MenuItem value={PairKey.EKUBO_USDC}>
-            <PairNamedBadge tokenA={EkuboToken} tokenB={UsdcToken} />
-          </MenuItem>
-          <MenuItem value={PairKey.BTC_USDC}>
-            <PairNamedBadge tokenA={BtcToken} tokenB={UsdcToken} />
-          </MenuItem>
-        </Select>
-      </div>
-      <div className={styles.buttons}>
-        <div>
+    <div className="flex flex-col gap-[28px] justify-between">
+      <TokenSelect pair={pair} setPair={setPair} />
+      <div className="flex items-center flex-wrap gap-1 p-2">
+        <div className="flex gap-1">
           <Button
             outlined={type === OptionType.Put}
             onClick={() => handleTypeChange(OptionType.Call)}
@@ -186,8 +143,8 @@ export const TradeTable = () => {
 PUT: Right to sell at a strike price. Its value rises if the underlying asset's price goes down."
           size="18px"
         />
-        <div className={"divider " + styles.divider} />
-        <div>
+        <Divider className="grow mr-2" />
+        <div className="flex gap-1">
           <Button outlined={side !== "all"} onClick={() => setSide("all")}>
             all
           </Button>
@@ -211,9 +168,9 @@ PUT: Right to sell at a strike price. Its value rises if the underlying asset's 
 SHORT: Sell a right to buy/sell (for Call/Put) underlying asset at strike price. Shorting an option means that you are obliged to buy (put) or sell (call) the asset. When selling you receive premium."
           size="18px"
         />
-        <div className={"divider " + styles.divider} />
-        <div className="wrap">
-          <span className={styles.maturity}>MATURITY</span>
+        <Divider className="grow mr-2" />
+        <div className="flex wrap gap-1 items-center">
+          <span className="text-dark-secondary text-[12px] pr-1">MATURITY</span>
           {maturities
             .sort((a, b) => a - b)
             .map((m, i) => (
@@ -227,7 +184,7 @@ SHORT: Sell a right to buy/sell (for Call/Put) underlying asset at strike price.
             ))}
         </div>
         <InfoIcon text="The expiration date of the option." size="18px" />
-        <div className={"divider " + styles.divider} />
+        <Divider className="grow mr-2" />
       </div>
       <div>
         {isLoading && (
@@ -239,7 +196,7 @@ SHORT: Sell a right to buy/sell (for Call/Put) underlying asset at strike price.
         {!isLoading && !isError && filtered.length === 0 ? (
           <NoContent text={getText(type, side)} />
         ) : (
-          <OptionsTable options={filtered} tokenPair={tokenPair} side={side} />
+          <OptionsTable options={filtered} tokenPair={pair} side={side} />
         )}
       </div>
     </div>

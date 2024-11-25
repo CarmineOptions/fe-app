@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply bg-dark-base text-dark-primary;
+    @apply bg-dark text-dark-primary;
     @apply overflow-x-hidden;
   }
 }

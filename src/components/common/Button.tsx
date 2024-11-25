@@ -45,8 +45,8 @@ export const Button = ({
   }
   if (type === "primary") {
     const cls = outlined
-      ? `text-brand-carmine border-brand-carmine border-[0.5px] ${baseStyles}`
-      : `bg-brand-carmine text-dark-base ${baseStyles}`;
+      ? `text-brand border-brand border-[0.5px] ${baseStyles}`
+      : `bg-brand text-dark ${baseStyles}`;
     return (
       <button onClick={onClick} className={cls}>
         {children}
@@ -56,7 +56,7 @@ export const Button = ({
 
   const cls = outlined
     ? `text-dark-secondary border-dark-secondary border-[0.5px] ${baseStyles}`
-    : `bg-dark-primary text-dark-base ${baseStyles}`;
+    : `bg-dark-primary text-dark ${baseStyles}`;
   return (
     <button onClick={onClick} className={cls}>
       {children}

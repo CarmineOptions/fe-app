@@ -13,6 +13,12 @@ import VerticalDots from "./DotsThreeVertical.svg?react";
 import Wallet from "./Wallet.svg?react";
 import BlackWallet from "./blackWallet.svg?react";
 import WhiteWallet from "./whiteWallet.svg?react";
+import EthIcon from "./ETH.svg?react";
+import BtcIcon from "./BTC.svg?react";
+import StrkIcon from "./STRK.svg?react";
+import UsdcIcon from "./USDC.svg?react";
+import BraavosWithBg from "./BraavosBg.svg?react";
+import EkuboIcon from "./EKUBO.svg?react";
 
 const StarknetIcon = ({ style }: { style?: CSSProperties }) => (
   <img style={style} src="/starknet.webp" alt="Starknet Logo" />
@@ -34,4 +40,10 @@ export {
   Sword,
   VerticalDots,
   Wallet,
+  EthIcon,
+  BtcIcon,
+  StrkIcon,
+  UsdcIcon,
+  BraavosWithBg,
+  EkuboIcon,
 };

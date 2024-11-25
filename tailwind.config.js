@@ -5,7 +5,7 @@ export default {
     extend: {
       colors: {
         dark: {
-          base: "#0D0E0F",
+          DEFAULT: "#0D0E0F",
           card: "#121314",
           container: "#111213",
           primary: "#FFFFFF",
@@ -13,9 +13,9 @@ export default {
           tertiary: "#3C3C3C",
         },
         brand: {
-          carmine: "#FAB000",
-          carmineLight: "#FDD679",
-          carmineDeep: "#B78504",
+          DEFAULT: "#FAB000",
+          light: "#FDD679",
+          deep: "#B78504",
         },
         ui: {
           errorAccent: "#FCBABA",
