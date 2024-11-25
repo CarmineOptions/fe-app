@@ -23,9 +23,9 @@ export const Sidebar = () => {
     event.stopPropagation();
   };
 
-  const className = sidebarOpen
-    ? styles.sidebar
-    : `${styles.sidebar} ${styles.closed}`;
+  const className = `absolute top-0 h-full w-[360px] z-10 border-dark-tertiary border-l-[1px] bg-dark-container transition duration-500 ease-in-out ${
+    sidebarOpen ? "right-0" : "right-[-360px]"
+  }`;
 
   return (
     <>

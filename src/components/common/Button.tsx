@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 
 export interface ButtonOptions {
-  type: "primary" | "secondary" | "success" | "error" | undefined;
+  type?: "primary" | "secondary" | "success" | "error";
   className?: string;
   outlined?: boolean;
   loading?: boolean;

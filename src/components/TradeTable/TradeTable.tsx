@@ -19,6 +19,7 @@ import { InfoIcon } from "../InfoIcon";
 import styles from "./tradetable.module.css";
 import { useOptions } from "../../hooks/useOptions";
 import { useSearchParams } from "react-router-dom";
+import { Button } from "../common/Button";
 
 const getText = (type: OptionType, side: OptionSide | "all") => {
   if (side === "all") {
@@ -40,7 +41,7 @@ const queryParamsToPool = (param: string | null): [PairKey, OptionType] => {
     // default pool
     return defaultPool;
   }
-  const [encodedPool, poolType] = param?.split("-");
+  const [encodedPool, poolType] = param.split("-");
 
   if (!encodedPool || !poolType) {
     return defaultPool;
@@ -167,18 +168,18 @@ export const TradeTable = () => {
       </div>
       <div className={styles.buttons}>
         <div>
-          <button
-            className={type === OptionType.Call ? "primary active" : ""}
+          <Button
+            outlined={type === OptionType.Put}
             onClick={() => handleTypeChange(OptionType.Call)}
           >
             calls
-          </button>
-          <button
-            className={type === OptionType.Put ? "primary active" : ""}
+          </Button>
+          <Button
+            outlined={type === OptionType.Call}
             onClick={() => handleTypeChange(OptionType.Put)}
           >
             puts
-          </button>
+          </Button>
         </div>
         <InfoIcon
           text="CALL: Right to buy at a strike price. Its value rises if the underlying asset's price goes up.
@@ -187,24 +188,23 @@ PUT: Right to sell at a strike price. Its value rises if the underlying asset's 
         />
         <div className={"divider " + styles.divider} />
         <div>
-          <button
-            className={side === "all" ? "secondary active" : "secondary"}
-            onClick={() => setSide("all")}
-          >
+          <Button outlined={side !== "all"} onClick={() => setSide("all")}>
             all
-          </button>
-          <button
-            className={side === OptionSide.Long ? "green active" : "green"}
+          </Button>
+          <Button
+            type="success"
+            outlined={side !== OptionSide.Long}
             onClick={() => setSide(OptionSide.Long)}
           >
             long
-          </button>
-          <button
-            className={side === OptionSide.Short ? "red active" : "red"}
+          </Button>
+          <Button
+            type="error"
+            outlined={side !== OptionSide.Short}
             onClick={() => setSide(OptionSide.Short)}
           >
             short
-          </button>
+          </Button>
         </div>
         <InfoIcon
           text="LONG: Buy a right to buy/sell (for Call/Put) underlying asset at strike price. Buying an option means that you have the right to decide whether to buy (call) or sell (put) the asset. When buying you pay premium.
@@ -217,13 +217,13 @@ SHORT: Sell a right to buy/sell (for Call/Put) underlying asset at strike price.
           {maturities
             .sort((a, b) => a - b)
             .map((m, i) => (
-              <button
+              <Button
                 onClick={() => setMaturity(m)}
-                className={m === maturity ? "active secondary" : ""}
+                outlined={m !== maturity}
                 key={i}
               >
                 {formatTimestamp(m)}
-              </button>
+              </Button>
             ))}
         </div>
         <InfoIcon text="The expiration date of the option." size="18px" />

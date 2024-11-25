@@ -91,7 +91,7 @@ export const Navigation = () => {
   const current = window.location.pathname.split("/")[1];
 
   return (
-    <div className="w-[200px] h-full box-border bg-dark-container border-dark-tertiary border-r-[1px] px-[20px] py-[80px]">
+    <div className="w-[200px] h-inherit box-border bg-dark-container border-dark-tertiary border-r-[1px] px-[20px] py-[80px]">
       <nav className="w-[160px] flex flex-col gap-[50px]">
         <ul className="flex flex-col gap-[12px]">
           <Nav

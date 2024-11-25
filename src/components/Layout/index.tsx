@@ -1,6 +1,5 @@
 import { Header } from "../Header/Header";
 import { ReactNode } from "react";
-import styles from "./layout.module.css";
 import { Navigation } from "../Navigation";
 import { Sidebar } from "../Sidebar";
 
@@ -12,10 +11,12 @@ export const Layout = ({ children }: Props) => {
   return (
     <>
       <Header />
-      <div className={styles.container}>
+      <div className="flex relative">
         <Sidebar />
         <Navigation />
-        <main>{children}</main>
+        <main className="relative w-[calc(100%-202px)] min-h-[calc(100vh-62px)] pt-[80px] px-[7.5vw] bg-dark-base">
+          {children}
+        </main>
       </div>
     </>
   );
