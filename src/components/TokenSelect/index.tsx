@@ -29,7 +29,7 @@ export const TokenSelect = ({ pair, setPair }: TokenSelectProps) => {
     <div className="relative inline-block">
       <button
         type="button"
-        className="py-2 pl-3 pr-10 text-left bg-dark rounded-lg shadow-md focus:outline-none focus:ring-2 sm:text-sm"
+        className="py-2 pr-10 text-left bg-dark rounded-lg shadow-md focus:outline-none focus:ring-2 sm:text-sm"
         onClick={() => setIsOpen((prev) => !prev)}
       >
         <div className="flex items-center gap-2">

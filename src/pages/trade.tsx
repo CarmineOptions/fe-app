@@ -4,6 +4,7 @@ import { Layout } from "../components/Layout";
 
 import style from "./trade.module.css";
 import { TradeTable } from "../components/TradeTable";
+import { Divider } from "../components/common";
 
 const TradePage = () => {
   return (
@@ -16,7 +17,7 @@ const TradePage = () => {
         />
       </Helmet>
       <TradeTable />
-      <div className="divider" style={{ margin: "50px 0" }}></div>
+      <Divider className="my-12" />
       <h2 className="botmargin">Chart</h2>
       <div className={style.graphwidgetwrapper}>
         <div className={style.graphcontainer}>

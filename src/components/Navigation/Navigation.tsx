@@ -31,7 +31,7 @@ const Nav = ({
 }) => {
   return (
     <li
-      className={`px-[4px] py-[8px] rounded-[2px] transition duration-300 ease-in-out ${
+      className={`px-[4px] py-[8px] rounded-[2px] transition duration-300 ease-in-out cursor-pointer ${
         isActive
           ? "bg-brand-deep text-dark-primary"
           : "text-dark-secondary hover:text-dark-primary"

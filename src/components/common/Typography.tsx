@@ -36,7 +36,7 @@ export const P3: FC<TypographyProps> = ({ children, className }) => (
 );
 
 export const P4: FC<TypographyProps> = ({ children, className }) => (
-  <p className={`text-sm ${className || ""}`}>{children}</p>
+  <p className={`text-[12px] ${className || ""}`}>{children}</p>
 );
 
 // Labels

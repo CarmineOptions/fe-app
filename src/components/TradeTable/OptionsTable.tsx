@@ -2,13 +2,11 @@ import { OptionWithPremia } from "../../classes/Option";
 import { Pair } from "../../classes/Pair";
 import { useCurrency } from "../../hooks/useCurrency";
 import { OptionSide } from "../../types/options";
-
-import PlusIcon from "./plus.svg?react";
-
-import styles from "./table.module.css";
 import { openSidebar, setSidebarContent } from "../../redux/actions";
 import { OptionSidebar } from "../Sidebar";
 import { TokenKey } from "../../classes/Token";
+import { P3, P4 } from "../common";
+import { ReactNode } from "react";
 
 type Props = {
   options: OptionWithPremia[];
@@ -35,30 +33,58 @@ const OptionsTable = ({ options, tokenPair, side }: Props) => {
   const index =
     priceReady && filtered.findIndex((o) => o.strike > basePrice / quotePrice);
 
+  const PriceSlip = () => (
+    <div className="flex -my-4">
+      <div className="w-24 border-dark-secondary border-b-[1px] mb-3" />
+      <div className="h-5 px-4 g-3 content-center rounded-sm bg-dark-secondary text-dark-primary">
+        <P4>
+          {tokenPair.baseToken.symbol}/{tokenPair.quoteToken.symbol}{" "}
+          {(basePrice! / quotePrice!).toFixed(3)}
+        </P4>
+      </div>
+      <div className="w-24 grow border-dark-secondary border-b-[1px] mb-3" />
+    </div>
+  );
+
+  const Square = ({
+    className,
+  }: {
+    className: string;
+    children?: ReactNode;
+  }) => {
+    return (
+      <div
+        className={`flex text-center items-center justify-center w-4 h-4 rounded-sm mb-1 text-dark-primary ${className}`}
+      >
+        +
+      </div>
+    );
+  };
+
   return (
     <>
-      <div className="tableheader">
-        <div>
-          <span className="greytext">strike</span>
+      <div className="flex justify-between my-2 py-3 border-dark-tertiary border-y-[0.5px] text-left">
+        <div className="w-full">
+          <P4 className="text-dark-secondary">strike</P4>
         </div>
         {(side === OptionSide.Long || side === "all") && (
-          <div>
-            <div className={styles.header}>
-              <span className="greytext">ask price</span>
-              <span className="greentext">/ long</span>
+          <div className="w-full">
+            <div className="flex gap-2 text-left">
+              <P4 className="text-dark-secondary">ask price</P4>
+              <P4 className="text-ui-successBg">/ long</P4>
             </div>
           </div>
         )}
         {(side === OptionSide.Short || side === "all") && (
-          <div>
-            <div className={styles.header}>
-              <span className="greytext">bid price</span>
-              <span className="redtext">/ short</span>
+          <div className="w-full">
+            <div className="flex gap-2 text-left">
+              <P4 className="text-dark-secondary">bid price</P4>
+              <P4 className="text-ui-errorBg">/ short</P4>
             </div>
           </div>
         )}
       </div>
-      <div className="tablecontent">
+      <div className="flex flex-col gap-2">
         {filtered.map((o, i) => {
           const short = options.find(
             (other) =>
@@ -76,64 +102,54 @@ const OptionsTable = ({ options, tokenPair, side }: Props) => {
 
           return (
             <div key={i}>
-              {priceReady && index !== false && index === i && (
-                <div className={styles.price}>
-                  <div></div>
-                  <div>
-                    {tokenPair.baseToken.symbol} / {tokenPair.quoteToken.symbol}{" "}
-                    {(basePrice / quotePrice).toFixed(3)}
-                  </div>
-                  <div></div>
+              {priceReady && index !== false && index === i && <PriceSlip />}
+              <div className="flex justify-between my-1 py-3">
+                <div className="w-full">
+                  <P3 className="font-semibold">
+                    {tokenPair.quoteToken.id === TokenKey.USDC
+                      ? `$${o.strike}`
+                      : `${o.strike} ${tokenPair.quoteToken.symbol}`}
+                  </P3>
                 </div>
-              )}
-              <div className="tableitem">
-                <div>${o.strike}</div>
                 {(side === OptionSide.Long || side === "all") && (
                   <div
-                    className={`${styles.premiacontainer} ${styles.long}`}
+                    className="flex w-full gap-2 items-center text-left cursor-pointer text-ui-successBg"
                     onClick={() => handleOptionClick(o)}
                   >
-                    {o.premia.toFixed(3)} {o.symbol}{" "}
-                    {isBtc && <span className="l2">size 0.1</span>}
-                    <div className={styles.square}>
-                      <PlusIcon />
-                    </div>
+                    <P3 className="font-semibold">
+                      {o.premia.toFixed(3)} {o.symbol}{" "}
+                      {isBtc && <span className="l2">size 0.1</span>}
+                    </P3>
+                    <Square className="bg-ui-successBg"></Square>
                   </div>
                 )}
                 {side === OptionSide.Short && (
                   <div
-                    className={`${styles.premiacontainer} ${styles.short}`}
+                    className="flex w-full gap-2 items-center text-left cursor-pointer text-ui-errorBg"
                     onClick={() => handleOptionClick(o)}
                   >
-                    {o.premia.toFixed(3)} {o.symbol}{" "}
-                    {isBtc && <span className="l2">size 0.1</span>}
-                    <div className={styles.square}>
-                      <PlusIcon />
-                    </div>
+                    <P3 className="font-semibold">
+                      {o.premia.toFixed(3)} {o.symbol}{" "}
+                      {isBtc && <span className="l2">size 0.1</span>}
+                    </P3>
+                    <Square className="bg-ui-errorBg"></Square>
                   </div>
                 )}
                 {side === "all" && (
                   <div
-                    className={`${styles.premiacontainer} ${styles.short}`}
+                    className="flex w-full gap-2 items-center text-left cursor-pointer text-ui-errorBg"
                     onClick={() => handleOptionClick(short!)}
                   >
-                    {short!.premia.toFixed(3)} {o.symbol}{" "}
-                    {isBtc && <span className="l2">size 0.1</span>}
-                    <div className={styles.square}>
-                      <PlusIcon />
-                    </div>
+                    <P3 className="font-semibold">
+                      {short!.premia.toFixed(3)} {o.symbol}{" "}
+                      {isBtc && <span className="l2">size 0.1</span>}
+                    </P3>
+                    <Square className="bg-ui-errorBg"></Square>
                   </div>
                 )}
               </div>
               {priceReady && index === -1 && i === filtered.length - 1 && (
-                <div className={styles.price}>
-                  <div></div>
-                  <div>
-                    {tokenPair.baseToken.symbol} / {tokenPair.quoteToken.symbol}{" "}
-                    {(basePrice / quotePrice).toFixed(3)}
-                  </div>
-                  <div></div>
-                </div>
+                <PriceSlip />
               )}
             </div>
           );
