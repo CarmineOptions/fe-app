@@ -18,12 +18,7 @@ type Props = {
 export const TokenDisplay = ({ token }: { token: Token }) => {
   return (
     <div className={styles.tokendisplay}>
-      <img
-        width="40px"
-        height="40px"
-        src={token.icon}
-        alt={`${token.symbol} logo`}
-      />
+      <token.icon />
       {token.symbol}
     </div>
   );

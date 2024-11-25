@@ -1,38 +1,33 @@
 import { useNavigate } from "react-router-dom";
-import { useIsMobile } from "../../hooks/useIsMobile";
 import { useShowNavigation } from "../../hooks/useShowNavigation";
-import { setShowNavigation } from "../../redux/actions";
 import { WalletButton } from "../ConnectWallet/Button";
-import { LogoLong, LogoShort, VerticalDots } from "../Icons";
-
-import styles from "./header.module.css";
+import { LogoLong } from "../Icons";
+import { setShowNavigation } from "../../redux/actions";
+import MobileLogo from "./MobileLogo.svg?react";
 
 export const Header = () => {
-  const isMobile = useIsMobile();
-  const showNavigation = useShowNavigation();
+  const isOpen = useShowNavigation();
   const navigate = useNavigate();
 
   const handleMobileMenuClick = () => {
-    setShowNavigation(!showNavigation);
+    console.log("HEADER", isOpen);
+    setShowNavigation(!isOpen);
   };
 
   return (
     <header className="py-[12px] px-[28px] flex justify-between items-center bg-dark-container border-dark-tertiary border-b-[1px]">
-      {isMobile ? (
-        <div onClick={handleMobileMenuClick} className={styles.mobilemenu}>
-          <div>
-            <VerticalDots />
-          </div>
-          <div>
-            <LogoShort />
-          </div>
-        </div>
-      ) : (
-        <div className={styles.logocontainer} onClick={() => navigate("/")}>
-          <LogoLong />
-        </div>
-      )}
-
+      <div
+        onClick={handleMobileMenuClick}
+        className="md:hidden flex items-center cursor-pointer"
+      >
+        <MobileLogo />
+      </div>
+      <div
+        className="hidden md:flex items-center cursor-pointer"
+        onClick={() => navigate("/")}
+      >
+        <LogoLong />
+      </div>
       <WalletButton />
     </header>
   );

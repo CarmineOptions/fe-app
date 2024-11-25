@@ -10,11 +10,11 @@ import {
   Sword,
   Wallet,
 } from "../Icons";
-import { setShowNavigation } from "../../redux/actions";
 import Parachute from "./Parachute.svg?react";
 import Stark from "./Strk.svg?react";
-
+import { setShowNavigation } from "../../redux/actions";
 import { L2, P3 } from "../common/Typography";
+import { useShowNavigation } from "../../hooks/useShowNavigation";
 
 const Nav = ({
   title,
@@ -79,19 +79,15 @@ const RewardsBadge = () => (
 );
 
 export const Navigation = () => {
-  // const isMobile = useIsMobile();
-  // const showNavigation = useShowNavigation();
-
-  // const containerClass = !isMobile
-  //   ? styles.container
-  //   : showNavigation
-  //   ? `${styles.container} ${styles.mobile}`
-  //   : `${styles.container} ${styles.mobile} ${styles.hidden}`;
-
+  const isOpen = useShowNavigation();
   const current = window.location.pathname.split("/")[1];
 
   return (
-    <div className="w-[200px] h-inherit box-border bg-dark-container border-dark-tertiary border-r-[1px] px-[20px] py-[80px]">
+    <div
+      className={`w-[200px] h-inherit box-border bg-dark-container border-dark-tertiary border-r-[1px] px-[20px] py-[80px] md:relative md:left-0 top-0 absolute z-50 transition-transform duration-300 ease-in-out left-0 ${
+        isOpen ? "" : "-left-[200px]"
+      }`}
+    >
       <nav className="w-[160px] flex flex-col gap-[50px]">
         <ul className="flex flex-col gap-[12px]">
           <Nav

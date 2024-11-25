@@ -10,7 +10,7 @@ import { InfoIcon } from "../InfoIcon";
 import { useOptions } from "../../hooks/useOptions";
 import { useSearchParams } from "react-router-dom";
 import { Button } from "../common/Button";
-import { TokenSelect } from "../TokenSelect";
+import { TokenPairSelect } from "../TokenPairSelect";
 import { Divider } from "../common";
 
 const getText = (type: OptionType, side: OptionSide | "all") => {
@@ -122,7 +122,7 @@ export const TradeTable = () => {
 
   return (
     <div className="flex flex-col gap-[28px] justify-between">
-      <TokenSelect pair={pair} setPair={setPair} />
+      <TokenPairSelect pair={pair} setPair={setPair} />
       <div className="flex items-center flex-wrap gap-1 p-2">
         <div className="flex gap-1">
           <Button

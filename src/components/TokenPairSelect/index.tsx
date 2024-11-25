@@ -4,12 +4,12 @@ import { PairNamedBadge } from "../TokenBadge";
 
 import CaretDown from "./CaretDown.svg?react";
 
-type TokenSelectProps = {
+type TokenPairSelectProps = {
   pair: Pair;
   setPair: Dispatch<React.SetStateAction<Pair>>;
 };
 
-export const TokenSelect = ({ pair, setPair }: TokenSelectProps) => {
+export const TokenPairSelect = ({ pair, setPair }: TokenPairSelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleClick = (p: Pair) => {
