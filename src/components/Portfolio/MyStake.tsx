@@ -2,43 +2,38 @@ import { useAccount } from "@starknet-react/core";
 import { LoadingAnimation } from "../Loading/Loading";
 
 import styles from "./portfolio.module.css";
-import { PairNamedBadge, TokenBadge } from "../TokenBadge";
+import { PairNameAboveBadge } from "../TokenBadge";
 import { UserPoolInfo } from "../../classes/Pool";
-import { useCurrency } from "../../hooks/useCurrency";
 import { useStakes } from "../../hooks/useStakes";
 import { openSidebar, setSidebarContent } from "../../redux/actions";
 import { PoolSidebar } from "../Sidebar";
-import { formatNumber } from "../../utils/utils";
 import { useConnectWallet } from "../../hooks/useConnectWallet";
+import { Button, P3, P4, TokenValueStacked } from "../common";
 
 const Item = ({ stake }: { stake: UserPoolInfo }) => {
-  const price = useCurrency(stake.underlying.id);
   const handleClick = () => {
     setSidebarContent(<PoolSidebar pool={stake} initialAction="withdraw" />);
     openSidebar();
   };
 
-  const valueUsd = price === undefined ? undefined : stake.value * price;
-
   return (
-    <div className={styles.stakeitem}>
-      <div>
-        <PairNamedBadge
+    <div className="flex justify-between my-2 py-3 text-left w-[550px]">
+      <div className="w-full">
+        <PairNameAboveBadge
           tokenA={stake.baseToken}
           tokenB={stake.quoteToken}
-          size="small"
         />
       </div>
-      <div>{stake.typeAsText}</div>
-      <div className={styles.tokenvalue}>
-        {formatNumber(stake.value, 3)}
-        <TokenBadge size="small" token={stake.underlying} />
+      <div className="w-full">
+        <P3 className="font-semibold">{stake.typeAsText.toUpperCase()}</P3>
       </div>
-      <div>${valueUsd === undefined ? "--" : formatNumber(valueUsd, 2)}</div>
-      <div>
-        <button onClick={handleClick} className="primary active">
+      <div className="w-full">
+        <TokenValueStacked amount={stake.value} token={stake.underlying} />
+      </div>
+      <div className="w-full">
+        <Button type="primary" onClick={handleClick}>
           Withdraw
-        </button>
+        </Button>
       </div>
     </div>
   );
@@ -66,16 +61,26 @@ export const MyStakeWithAccount = () => {
   return (
     <div className={styles.scrollablex}>
       <div className={styles.list}>
-        <div className={`${styles.header} ${styles.stakeitem}`}>
-          <div>Pair</div>
-          <div>Type</div>
-          <div>Value</div>
-          <div>Value $</div>
-          <div></div>
+        <div className="flex justify-between my-2 py-3 border-dark-tertiary border-y-[0.5px] text-left w-[550px]">
+          <div className="w-full">
+            <P4 className="text-dark-secondary">PAIR</P4>
+          </div>
+          <div className="w-full">
+            <P4 className="text-dark-secondary">TYPE</P4>
+          </div>
+          <div className="w-full">
+            <P4 className="text-dark-secondary">VALUE</P4>
+          </div>
+          {/* Empty room for button */}
+          <div className="w-full" />
         </div>
-        {stakes.map((stake, i) => (
-          <Item key={i} stake={stake} />
-        ))}
+        {stakes.length === 0 ? (
+          <div className="my-2 py-3 max-w-[880px]">
+            <P3 className="font-semibold text-center">Nothing to show</P3>
+          </div>
+        ) : (
+          stakes.map((stake, i) => <Item key={i} stake={stake} />)
+        )}
       </div>
     </div>
   );
