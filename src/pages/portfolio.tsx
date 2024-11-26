@@ -12,8 +12,7 @@ import { PortfolioParamType } from "../redux/reducers/ui";
 import { Referral } from "../components/Referral";
 import { isMainnet } from "../constants/amm";
 import { MyPortfolio } from "../components/Portfolio";
-
-import styles from "./portfolio.module.css";
+import { H4 } from "../components/common";
 
 const Portfolio = () => {
   const portfolioParam = usePortfolioParam();
@@ -66,16 +65,20 @@ const Portfolio = () => {
           content="Your current positions and history of your activity"
         />
       </Helmet>
-      <div className={styles.header}>
+      <div className="flex gap-7 mb-8">
         {[
           PortfolioParamType.MyPortfolio,
           PortfolioParamType.AirDrop,
           PortfolioParamType.History,
           PortfolioParamType.Referral,
         ].map((subpage, i) => (
-          <h1
+          <H4
             key={i}
-            className={portfolioParam === subpage ? "" : styles.inactive}
+            className={
+              portfolioParam === subpage
+                ? ""
+                : "text-dark-tertiary cursor-pointer"
+            }
             onClick={() => {
               navigate(`/portfolio/${subpage}`);
             }}
@@ -84,7 +87,7 @@ const Portfolio = () => {
             {subpage === PortfolioParamType.AirDrop && "Airdrops"}
             {subpage === PortfolioParamType.History && "History"}
             {subpage === PortfolioParamType.Referral && "Referral"}
-          </h1>
+          </H4>
         ))}
       </div>
       {portfolioParam === PortfolioParamType.AirDrop && <Airdrop />}

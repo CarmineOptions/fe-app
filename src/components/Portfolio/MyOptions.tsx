@@ -1,75 +1,84 @@
 import { useAccount, useSendTransaction } from "@starknet-react/core";
+import toast from "react-hot-toast";
+
 import { LoadingAnimation } from "../Loading/Loading";
 import { OptionWithPosition } from "../../classes/Option";
-import { PairNamedBadge, TokenBadge } from "../TokenBadge";
-import { timestampToPriceGuardDate, formatNumber } from "../../utils/utils";
+import { PairNameAboveBadge } from "../TokenBadge";
+import { formatNumber } from "../../utils/utils";
 import { openCloseOptionDialog, setCloseOption } from "../../redux/actions";
 import { tradeSettle } from "../../calls/tradeSettle";
 import { afterTransaction } from "../../utils/blockchain";
 import { invalidatePositions } from "../../queries/client";
 import { usePositions } from "../../hooks/usePositions";
-import { useCurrency } from "../../hooks/useCurrency";
-import styles from "./portfolio.module.css";
 import { useConnectWallet } from "../../hooks/useConnectWallet";
-import toast from "react-hot-toast";
+import {
+  Button,
+  MaturityStacked,
+  P3,
+  P4,
+  SideTypeStacked,
+  TokenValueStacked,
+} from "../common";
 
-const Header = ({ state }: { state: "live" | "itm" | "otm" }) => {
+const Header = () => {
   return (
-    <div className={`${styles.header} ${styles.item} ${styles[state]}`}>
-      <div>Pair</div>
-      <div>Side</div>
-      <div>Type</div>
-      <div>Strike</div>
-      <div>Maturity</div>
-      <div>Size</div>
-      {(state === "live" || state === "itm") && <div>Value</div>}
-      {(state === "live" || state === "itm") && <div>Value $</div>}
-      <div></div>
+    <div className="flex justify-between my-2 py-3 border-dark-tertiary border-y-[0.5px] text-left w-[880px]">
+      <div className="w-full">
+        <P4 className="text-dark-secondary">PAIR</P4>
+      </div>
+      <div className="w-full">
+        <P4 className="text-dark-secondary">
+          SIDE <span className="text-dark-primary">/ TYPE</span>
+        </P4>
+      </div>
+      <div className="w-full">
+        <P4 className="text-dark-secondary">STRIKE</P4>
+      </div>
+      <div className="w-full">
+        <P4 className="text-dark-secondary">MATURITY</P4>
+      </div>
+      <div className="w-full">
+        <P4 className="text-dark-secondary">SIZE</P4>
+      </div>
+      <div className="w-full">
+        <P4 className="text-dark-secondary">VALUE</P4>
+      </div>
+      {/* Empty room for button */}
+      <div className="w-full" />
     </div>
   );
 };
 
 const LiveItem = ({ option }: { option: OptionWithPosition }) => {
-  const price = useCurrency(option.underlying.id);
-  const [date, time] = timestampToPriceGuardDate(option.maturity);
-  const className = `${styles.item} ${styles.optionitem}`;
-
   const handleClick = () => {
     setCloseOption(option);
     openCloseOptionDialog();
   };
-
-  const valueUsd =
-    price === undefined ? "--" : (option.value * price).toFixed(2);
-
   return (
-    <div className={className}>
-      <div>
-        <PairNamedBadge
+    <div className="flex justify-between my-2 py-3 text-left w-[880px]">
+      <div className="w-full">
+        <PairNameAboveBadge
           tokenA={option.baseToken}
           tokenB={option.quoteToken}
-          size="small"
         />
       </div>
-      <div>{option.sideAsText}</div>
-      <div>{option.typeAsText}</div>
-      <div>{option.strikeWithCurrency}</div>
-      <div className={styles.maturity}>
-        <span>{date}</span>
-        <span>{time}</span>
+      <div className="w-full">
+        <SideTypeStacked side={option.side} type={option.type} />
       </div>
-      <div>{formatNumber(option.size, 4)}</div>
-      <div>
-        <div className={styles.tokenvalue}>
-          {formatNumber(option.value, 3)}
-          <TokenBadge size="small" token={option.underlying} />
-        </div>
+      <div className="w-full">
+        <P3 className="font-semibold">{option.strikeWithCurrency}</P3>
       </div>
-      <div>${valueUsd}</div>
-      <div>
-        <button onClick={handleClick} className="primary active">
+      <div className="w-full">
+        <MaturityStacked timestamp={option.maturity} />
+      </div>
+      <div className="w-full">{formatNumber(option.size, 4)}</div>
+      <div className="w-full">
+        <TokenValueStacked amount={option.value} token={option.underlying} />
+      </div>
+      <div className="w-full">
+        <Button type="primary" onClick={handleClick}>
           Close
-        </button>
+        </Button>
       </div>
     </div>
   );
@@ -78,8 +87,6 @@ const LiveItem = ({ option }: { option: OptionWithPosition }) => {
 const OtmItem = ({ option }: { option: OptionWithPosition }) => {
   const { sendAsync } = useSendTransaction({});
   const { address } = useAccount();
-  const [date, time] = timestampToPriceGuardDate(option.maturity);
-  const className = `${styles.item} ${styles.otmitem}`;
 
   const handleSettle = () => {
     if (!address || !option?.size) {
@@ -96,26 +103,28 @@ const OtmItem = ({ option }: { option: OptionWithPosition }) => {
   };
 
   return (
-    <div className={className}>
-      <div>
-        <PairNamedBadge
+    <div className="flex justify-between my-2 py-3 text-left w-[880px]">
+      <div className="w-full">
+        <PairNameAboveBadge
           tokenA={option.baseToken}
           tokenB={option.quoteToken}
-          size="small"
         />
       </div>
-      <div>{option.sideAsText}</div>
-      <div>{option.typeAsText}</div>
-      <div>{option.strikeWithCurrency}</div>
-      <div className={styles.maturity}>
-        <span>{date}</span>
-        <span>{time}</span>
+      <div className="w-full">
+        <SideTypeStacked side={option.side} type={option.type} />
       </div>
-      <div>{formatNumber(option.size, 4)}</div>
-      <div>
-        <button onClick={handleSettle} className="primary active">
+      <div className="w-full">
+        <P3 className="font-semibold">{option.strikeWithCurrency}</P3>
+      </div>
+      <div className="w-full">
+        <MaturityStacked timestamp={option.maturity} />
+      </div>
+      <div className="w-full">{formatNumber(option.size, 4)}</div>
+      <div className="w-full">0</div>
+      <div className="w-full">
+        <Button type="primary" onClick={handleSettle}>
           Settle
-        </button>
+        </Button>
       </div>
     </div>
   );
@@ -124,9 +133,6 @@ const OtmItem = ({ option }: { option: OptionWithPosition }) => {
 const ItmItem = ({ option }: { option: OptionWithPosition }) => {
   const { sendAsync } = useSendTransaction({});
   const { address } = useAccount();
-  const price = useCurrency(option.underlying.id);
-  const [date, time] = timestampToPriceGuardDate(option.maturity);
-  const className = `${styles.item} ${styles.optionitem}`;
 
   const handleSettle = () => {
     if (!address || !option?.sizeHex) {
@@ -147,37 +153,31 @@ const ItmItem = ({ option }: { option: OptionWithPosition }) => {
       });
   };
 
-  const valueUsd =
-    price === undefined ? "--" : (option.value * price).toFixed(2);
-
   return (
-    <div className={className}>
-      <div>
-        <PairNamedBadge
+    <div className="flex justify-between my-2 py-3 text-left w-[880px]">
+      <div className="w-full">
+        <PairNameAboveBadge
           tokenA={option.baseToken}
           tokenB={option.quoteToken}
-          size="small"
         />
       </div>
-      <div>{option.sideAsText}</div>
-      <div>{option.typeAsText}</div>
-      <div>{option.strikeWithCurrency}</div>
-      <div className={styles.maturity}>
-        <span>{date}</span>
-        <span>{time}</span>
+      <div className="w-full">
+        <SideTypeStacked side={option.side} type={option.type} />
       </div>
-      <div>{formatNumber(option.size, 4)}</div>
-      <div>
-        <div className={styles.tokenvalue}>
-          <TokenBadge size="small" token={option.underlying} />{" "}
-          {formatNumber(option.value, 3)}
-        </div>
+      <div className="w-full">
+        <P3 className="font-semibold">{option.strikeWithCurrency}</P3>
       </div>
-      <div>${valueUsd}</div>
-      <div>
-        <button onClick={handleSettle} className="primary active">
+      <div className="w-full">
+        <MaturityStacked timestamp={option.maturity} />
+      </div>
+      <div className="w-full">{formatNumber(option.size, 4)}</div>
+      <div className="w-full">
+        <TokenValueStacked amount={option.value} token={option.underlying} />
+      </div>
+      <div className="w-full">
+        <Button type="primary" onClick={handleSettle}>
           Settle
-        </button>
+        </Button>
       </div>
     </div>
   );
@@ -216,12 +216,16 @@ export const MyOptionsWithAccount = ({
     state === "live" ? LiveItem : state === "itm" ? ItmItem : OtmItem;
 
   return (
-    <div className={styles.scrollablex}>
-      <div className={styles.list}>
-        <Header state={state} />
-        {selected.map((o, i) => (
-          <Item key={i} option={o} />
-        ))}
+    <div>
+      <div className="flex flex-col gap-3">
+        <Header />
+        {selected.length === 0 ? (
+          <div className="my-2 py-3">
+            <P3 className="font-semibold text-center">Nothing to show</P3>
+          </div>
+        ) : (
+          selected.map((o, i) => <Item key={i} option={o} />)
+        )}
       </div>
     </div>
   );

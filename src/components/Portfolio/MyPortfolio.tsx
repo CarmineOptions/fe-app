@@ -11,6 +11,7 @@ import { usePositions } from "../../hooks/usePositions";
 import { useStakes } from "../../hooks/useStakes";
 import { LoadingAnimation } from "../Loading/Loading";
 import { formatNumber } from "../../utils/utils";
+import { Button, Divider, H4, H5, P3 } from "../common";
 
 const calcPositionsValue = (
   positions: OptionWithPosition[],
@@ -85,75 +86,77 @@ export const MyPortfolio = () => {
     calcPortfolioValue(positions, stakes, prices);
 
   return (
-    <div className={styles.container}>
-      <div className={styles.info}>
+    <div className="flex flex-col gap-7">
+      <div className="flex gap-7">
         <div>
-          <p className="secondary-col">PORTFOLIO VALUE</p>
+          <P3 className="text-dark-secondary">PORTFOLIO VALUE</P3>
           {totalValueUsd === undefined ? (
             <div className={styles.loadingcontainer}>
               <LoadingAnimation size={20} />
             </div>
           ) : (
-            <h3>${formatNumber(totalValueUsd)}</h3>
+            <H5>${formatNumber(totalValueUsd)}</H5>
           )}
         </div>
         <div>
-          <p className="secondary-col">OPTIONS</p>
+          <P3 className="text-dark-secondary">OPTIONS</P3>
           {positionsValueUsd === undefined ? (
             <div className={styles.loadingcontainer}>
               <LoadingAnimation size={20} />
             </div>
           ) : (
-            <h3>${formatNumber(positionsValueUsd)}</h3>
+            <H5>${formatNumber(positionsValueUsd)}</H5>
           )}
         </div>
         <div>
-          <p className="secondary-col">STAKING</p>
+          <P3 className="text-dark-secondary">STAKING</P3>
           {stakesValueUsd === undefined ? (
             <div className={styles.loadingcontainer}>
               <LoadingAnimation size={20} />
             </div>
           ) : (
-            <h3>${formatNumber(stakesValueUsd)}</h3>
+            <H5>${formatNumber(stakesValueUsd)}</H5>
           )}
         </div>
       </div>
-      <div className="divider topmargin botmargin" />
+      <Divider className="my-6" />
       <div>
-        <div className={styles.options}>
-          <div className="botmargin">
-            <h2>Options</h2>
-            <div className={styles.buttons}>
-              <button
-                onClick={() => setOptions("live")}
-                className={options === "live" ? "active primary" : ""}
-              >
-                live
-              </button>
-              <Tooltip title="Options that expired In the Money - can be settled to claim profit.">
-                <button
-                  onClick={() => setOptions("itm")}
-                  className={options === "itm" ? "active primary" : ""}
-                >
-                  expired itm
-                </button>
-              </Tooltip>
-              <Tooltip title="Options that expired Out of the Money - can be settled, but there is no profit.">
-                <button
-                  onClick={() => setOptions("otm")}
-                  className={options === "otm" ? "active primary" : ""}
-                >
-                  expired otm
-                </button>
-              </Tooltip>
+        <div className="flex flex-col">
+          <div className="flex items-center gap-7 mb-6">
+            <H4>Options</H4>
+            <div className="flex gap-1">
+              {["live", "itm", "otm"].map((opt, i) => {
+                const isActive = options === opt;
+                const tooltipMsg =
+                  opt === "live"
+                    ? "Options that have not expired yet."
+                    : opt === "itm"
+                    ? "Options that expired In the Money - can be settled to claim profit."
+                    : "Options that expired Out of the Money - can be settled, but there is no profit.";
+                return (
+                  <Tooltip title={tooltipMsg}>
+                    <Button
+                      key={i}
+                      type={isActive ? "primary" : "secondary"}
+                      outlined={!isActive}
+                      onClick={() => setOptions(opt as "live" | "itm" | "otm")}
+                      className={options === opt ? "active primary" : ""}
+                    >
+                      {opt === "live" && "live"}
+                      {opt === "itm" && "expired itm"}
+                      {opt === "otm" && "expired otm"}
+                    </Button>
+                  </Tooltip>
+                );
+              })}
             </div>
           </div>
           <MyOptions state={options} />
         </div>
       </div>
-      <div className="divider topmargin botmargin" />
+      <Divider className="my-6" />
       <div>
-        <h2 className="botmargin">Staking</h2>
+        <H4>Staking</H4>
         <MyStake />
       </div>
     </div>
