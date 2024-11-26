@@ -21,4 +21,5 @@ export enum QueryKeys {
   userDomain = "USER_DOMAIN",
   poolData = "POOL_DATA",
   apy = "APY",
+  referral = "REFERRAL_CODE",
 }

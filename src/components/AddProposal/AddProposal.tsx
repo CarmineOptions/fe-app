@@ -4,14 +4,7 @@ import toast from "react-hot-toast";
 import styles from "./prop.module.css";
 import { IconButton, MenuItem, Select, Tooltip } from "@mui/material";
 import { Pool } from "../../classes/Pool";
-import {
-  STRK_ADDRESS,
-  USDC_ADDRESS,
-  ETH_ADDRESS,
-  BTC_ADDRESS,
-  EKUBO_ADDRESS,
-  AMM_ADDRESS,
-} from "../../constants/amm";
+import { STRK_ADDRESS, USDC_ADDRESS, AMM_ADDRESS } from "../../constants/amm";
 import { OptionType } from "../../types/options";
 import { PairNamedBadge } from "../TokenBadge";
 import { LoadingAnimation } from "../Loading/Loading";
@@ -24,24 +17,10 @@ import { proposeOptions } from "./proposeOptions";
 import { useAccount, useSendTransaction } from "@starknet-react/core";
 import { useOptions } from "../../hooks/useOptions";
 import { stringToBigint } from "../../utils/conversions";
-
-const strkUsdcCallPool = new Pool(STRK_ADDRESS, USDC_ADDRESS, OptionType.Call);
-
-export const pools = [
-  strkUsdcCallPool,
-  new Pool(STRK_ADDRESS, USDC_ADDRESS, OptionType.Put),
-  new Pool(ETH_ADDRESS, USDC_ADDRESS, OptionType.Call),
-  new Pool(ETH_ADDRESS, USDC_ADDRESS, OptionType.Put),
-  new Pool(ETH_ADDRESS, STRK_ADDRESS, OptionType.Call),
-  new Pool(ETH_ADDRESS, STRK_ADDRESS, OptionType.Put),
-  new Pool(BTC_ADDRESS, USDC_ADDRESS, OptionType.Call),
-  new Pool(BTC_ADDRESS, USDC_ADDRESS, OptionType.Put),
-  new Pool(EKUBO_ADDRESS, USDC_ADDRESS, OptionType.Call),
-  new Pool(EKUBO_ADDRESS, USDC_ADDRESS, OptionType.Put),
-];
+import { pools } from "./pools";
 
 const defaultOptionValue: ProposalOption = {
-  pool: strkUsdcCallPool.poolId,
+  pool: new Pool(STRK_ADDRESS, USDC_ADDRESS, OptionType.Call).poolId,
   maturity: 1735056000,
   strike: 0.4,
   volatility: 90,
@@ -146,7 +125,8 @@ export const AddProposal = () => {
       const parsed = JSON.parse(loadedData);
       setOptions(parsed);
       toast.success("Proposal options loaded");
-    } catch (error) {
+    } catch (e) {
+      console.error(e);
       toast.error("Failed to read saved data");
     }
   };

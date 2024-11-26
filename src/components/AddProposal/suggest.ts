@@ -2,7 +2,8 @@ import { Option } from "./../../classes/Option";
 import { fetchTokenPrices } from "../../api";
 import { Pool } from "../../classes/Pool";
 import { TokenPriceData } from "../../types/api";
-import { pools, ProposalOption } from "./AddProposal";
+import { ProposalOption } from "./AddProposal";
+import { pools } from "./pools";
 
 export const isDuplicate = (
   options: Option[],

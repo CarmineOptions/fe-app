@@ -1,8 +1,9 @@
 import toast from "react-hot-toast";
 import { timestampToReadableDateUtc } from "../../utils/utils";
-import { pools, ProposalOption } from "./AddProposal";
+import { ProposalOption } from "./AddProposal";
 
 import styles from "./prop.module.css";
+import { pools } from "./pools";
 
 export const ProposalText = ({
   proposalOptions,

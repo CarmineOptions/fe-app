@@ -1,120 +1,85 @@
-import { useReducer } from "react";
 import { useAccount } from "@starknet-react/core";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import { apiUrl } from "../../api";
-import styles from "./Referral.module.css";
 import toast from "react-hot-toast";
+import { useReferralCode } from "../../hooks/useReferralCode";
+import { Button, H5 } from "../common";
 
-enum ActionType {
-  Fetching,
-  Done,
-  Error,
-}
+import LinkIcon from "./Link.svg?react";
+import Tweety from "./TwitterBird.svg?react";
 
-type Action = {
-  type: ActionType;
-  payload?: string;
-};
-
-type ReferralState = {
-  fetching: boolean;
+type ReferralProps = {
+  message?: string;
   referralCode?: string;
-  error?: string;
 };
 
-type RefResult = { status: string; data?: string };
+const ReferralTemplate = ({ message, referralCode }: ReferralProps) => {
+  const ReferralBox = () => {
+    const link = `https://app.carmine.finance?ref_code=${referralCode}`;
 
-const initialState: ReferralState = {
-  fetching: false,
-};
+    const handleCopy = () => {
+      navigator.clipboard.writeText(link);
+      toast.success("Referral link copied");
+    };
 
-const reducer = (state: ReferralState, action: Action) => {
-  switch (action.type) {
-    case ActionType.Fetching:
-      return { fetching: true };
-    case ActionType.Done:
-      return { fetching: false, referralCode: action.payload };
-    case ActionType.Error:
-      return { fetching: false, error: action.payload };
-    default:
-      return state;
-  }
-};
+    const tweetRef = encodeURIComponent(
+      `Come trade with me to @CarmineOptionsAMM!\n\nHere's my referral link!\n${link}`
+    );
+    const linkRef = `https://x.com/intent/tweet?text=${tweetRef}`;
 
-const ReferralLink = ({ code }: { code: string }) => {
-  const link = `https://app.carmine.finance?ref_code=${code}`;
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(link);
-    toast.success("Referral link copied");
+    return (
+      <div className="flex flex-col md:flex-row gap-4 items-center">
+        <span className="font-semibold text-5 mr-4">{referralCode}</span>
+        <Button onClick={handleCopy}>
+          <div className="flex gap-1 items-center">
+            <span className="font-regular text-[12px] tracking-tighter normal-case">
+              Copy referral link
+            </span>
+            <LinkIcon width="10.88px" height="9.38px" />
+          </div>
+        </Button>
+        <a
+          className="px-[12px] py-[2px] uppercase text-base font-semibold rounded-[2px] bg-dark-primary text-dark"
+          href={linkRef}
+          target="_blank"
+          rel="noopener nofollow noreferrer"
+        >
+          <div className="flex gap-1 items-center">
+            <span className="font-regular text-[12px] tracking-tighter normal-case">
+              Tweet
+            </span>
+            <Tweety width="10.13px" height="9px" />
+          </div>
+        </a>
+      </div>
+    );
   };
 
   return (
-    <div className={styles.linkcontainer}>
-      <div className={styles.link}>{link}</div>
-      <div
-        className={`${styles.iconbutton} ${styles.link}`}
-        onClick={handleCopy}
-      >
-        <ContentCopyIcon />
+    <div className="flex flex-col gap-6 max-w-[880px] py-7 px-5 bg-dark-card border-black border-[1px]">
+      <H5 className="text-brand">Earn 10% of the points your friends make.</H5>
+      <div className="w-fit px-8 py-5 rounded-sm outline-dashed outline-2 outline-brand">
+        {message ? message : <ReferralBox />}
       </div>
     </div>
   );
 };
 
-const GetReferralLink = () => {
-  const { account } = useAccount();
-  const [state, dispatch] = useReducer(reducer, initialState);
+export const Referral = () => {
+  const { address } = useAccount();
+  const { isLoading, isError, referralCode } = useReferralCode();
 
-  const handleClick = () => {
-    if (!account) {
-      dispatch({
-        type: ActionType.Error,
-        payload: "Could not read user address",
-      });
-      return;
-    }
-    dispatch({ type: ActionType.Fetching });
-    const url = apiUrl(`get_referral?address=${account.address}`);
-    fetch(url)
-      .then((res) => res.json())
-      .then((resBody: RefResult) => {
-        if (resBody && resBody.status === "success" && resBody.data) {
-          dispatch({ type: ActionType.Done, payload: resBody.data });
-        } else {
-          dispatch({
-            type: ActionType.Error,
-            payload: "Failed getting referral link",
-          });
-        }
-      })
-      .catch((e) => {
-        console.error(e);
-        dispatch({ type: ActionType.Error, payload: e });
-      });
-  };
-
-  if (!account) {
-    return <p>Connect wallet to generate referral code</p>;
+  if (!address) {
+    return (
+      <ReferralTemplate message="Connect wallet to generate referral code" />
+    );
   }
 
-  if (state.fetching) {
-    return <p>Getting your referral link...</p>;
+  if (isLoading) {
+    return <ReferralTemplate message="Getting your referral link..." />;
   }
 
-  if (state.error) {
-    return <p>Error: {state.error}</p>;
+  if (isError || !referralCode) {
+    return <ReferralTemplate message="Something went wrong" />;
   }
 
-  if (state.referralCode) {
-    return <ReferralLink code={state.referralCode} />;
-  }
-
-  return (
-    <button className="primary active" onClick={handleClick}>
-      Generate referral link
-    </button>
-  );
+  return <ReferralTemplate referralCode={referralCode} />;
 };
-
-export const Referral = () => <GetReferralLink />;

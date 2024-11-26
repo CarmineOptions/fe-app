@@ -84,8 +84,8 @@ export const Navigation = () => {
 
   return (
     <div
-      className={`w-[200px] h-inherit box-border bg-dark-container border-dark-tertiary border-r-[1px] px-[20px] py-[80px] md:relative md:left-0 top-0 absolute z-50 transition-transform duration-300 ease-in-out left-0 ${
-        isOpen ? "" : "-left-[200px]"
+      className={`w-[200px] h-inherit box-border bg-dark-container border-dark-tertiary border-r-[1px] px-[20px] py-[80px] md:relative top-0 absolute z-50 transition-transform duration-300 ease-in-out left-0 ${
+        isOpen ? "" : "-left-[200px] md:left-0"
       }`}
     >
       <nav className="w-[160px] flex flex-col gap-[50px]">

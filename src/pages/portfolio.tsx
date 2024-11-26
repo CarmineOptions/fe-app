@@ -68,34 +68,34 @@ const Portfolio = () => {
       <div className="flex flex-col md:flex-row gap-7 mb-8">
         {[
           PortfolioParamType.MyPortfolio,
+          PortfolioParamType.Referral,
           PortfolioParamType.AirDrop,
           PortfolioParamType.History,
-          PortfolioParamType.Referral,
         ].map((subpage, i) => (
           <H4
             key={i}
-            className={
+            className={`pb-2 w-fit ${
               portfolioParam === subpage
-                ? ""
+                ? "border-dark-primary border-b-[1px]"
                 : "text-dark-tertiary cursor-pointer"
-            }
+            }`}
             onClick={() => {
               navigate(`/portfolio/${subpage}`);
             }}
           >
             {subpage === PortfolioParamType.MyPortfolio && "My Portfolio"}
+            {subpage === PortfolioParamType.Referral && "Referral"}
             {subpage === PortfolioParamType.AirDrop && "Airdrops"}
             {subpage === PortfolioParamType.History && "History"}
-            {subpage === PortfolioParamType.Referral && "Referral"}
           </H4>
         ))}
       </div>
       {portfolioParam === PortfolioParamType.AirDrop && <Airdrop />}
-      {portfolioParam === PortfolioParamType.MyPortfolio && <MyPortfolio />}
-      {portfolioParam === PortfolioParamType.History && <TradeHistory />}
       {isMainnet && portfolioParam === PortfolioParamType.Referral && (
         <Referral />
       )}
+      {portfolioParam === PortfolioParamType.MyPortfolio && <MyPortfolio />}
+      {portfolioParam === PortfolioParamType.History && <TradeHistory />}
     </Layout>
   );
 };
