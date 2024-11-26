@@ -1,4 +1,3 @@
-import { Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 
 import { QueryKeys } from "../../queries/keys";
@@ -7,31 +6,32 @@ import { fetchHistoricalData } from "./fetchHistoricalData";
 import { TransactionsTable } from "./TransactionDisplay";
 import { IStake, ITrade } from "../../types/history";
 import { useAccount } from "@starknet-react/core";
-import { useConnectWallet } from "../../hooks/useConnectWallet";
+import { SecondaryConnectWallet } from "../ConnectWallet/Button";
 
-type PropsAddress = {
-  address: string;
-};
-
-const TradeHistoryWithAddress = ({ address }: PropsAddress) => {
+export const TradeHistory = () => {
+  const { address } = useAccount();
   const { isLoading, isError, data } = useQuery({
     queryKey: [QueryKeys.tradeHistory, address],
-    queryFn: async () => fetchHistoricalData(address),
+    queryFn: async () => fetchHistoricalData(address!),
     enabled: !!address,
   });
+
+  if (!address) {
+    return (
+      <SecondaryConnectWallet msg="Connect your wallet to view your history." />
+    );
+  }
 
   if (isLoading) {
     return <LoadingAnimation />;
   }
 
   if (isError) {
-    return (
-      <Typography>Something went wrong, please try again later</Typography>
-    );
+    return <p>Something went wrong, please try again later</p>;
   }
 
   if (!data) {
-    return <Typography>We do not have any data on your past trades</Typography>;
+    return <p>We do not have any data on your past trades</p>;
   }
 
   const { tradeData, votes } = data;
@@ -42,33 +42,14 @@ const TradeHistoryWithAddress = ({ address }: PropsAddress) => {
 
   const trades = sortedTrades
     .filter((tx) => tx.option)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     .map(({ liquidity_pool, ...rest }) => rest as ITrade); // remove "liquidity_pool" in trades
   const stakes = sortedTrades
     .filter((tx) => tx.liquidity_pool)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     .map(({ option, ...rest }) => rest as IStake); // remove "option" in stakes
 
   return (
     <TransactionsTable trades={trades} stakes={stakes} votes={sortedVotes} />
   );
-};
-
-export const TradeHistory = () => {
-  const { address } = useAccount();
-  const { openWalletConnectModal } = useConnectWallet();
-
-  if (!address) {
-    return (
-      <div className="gapcolumn">
-        <p>Connect your wallet to see your trade history</p>
-        <button
-          className="mainbutton primary active"
-          onClick={openWalletConnectModal}
-        >
-          Connect Wallet
-        </button>
-      </div>
-    );
-  }
-
-  return <TradeHistoryWithAddress address={address} />;
 };

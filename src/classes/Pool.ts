@@ -6,16 +6,21 @@ import {
   AMM_ADDRESS,
   AMM_METHODS,
   BASE_DIGITS,
+  BTC_ADDRESS,
   BTC_USDC_CALL_ADDRESS,
   BTC_USDC_PUT_ADDRESS,
+  EKUBO_ADDRESS,
   EKUBO_USDC_CALL_ADDRESS,
   EKUBO_USDC_PUT_ADDRESS,
+  ETH_ADDRESS,
   ETH_STRK_CALL_ADDRESS,
   ETH_STRK_PUT_ADDRESS,
   ETH_USDC_CALL_ADDRESS,
   ETH_USDC_PUT_ADDRESS,
+  STRK_ADDRESS,
   STRK_USDC_CALL_ADDRESS,
   STRK_USDC_PUT_ADDRESS,
+  USDC_ADDRESS,
 } from "../constants/amm";
 import { getMultipleTokensValueInUsd } from "../tokens/tokenPrices";
 import { OptionType } from "../types/options";
@@ -365,3 +370,18 @@ export class UserPoolInfo extends Pool {
     this.value = shortInteger(this.valueHex, this.digits);
   }
 }
+
+export const poolNameToPoolMap: {
+  [key: string]: Pool;
+} = {
+  "STRK/USDC Call": new Pool(STRK_ADDRESS, USDC_ADDRESS, OptionType.Call),
+  "STRK/USDC Put": new Pool(STRK_ADDRESS, USDC_ADDRESS, OptionType.Put),
+  "ETH/USDC Call": new Pool(ETH_ADDRESS, USDC_ADDRESS, OptionType.Call),
+  "ETH/USDC Put": new Pool(ETH_ADDRESS, USDC_ADDRESS, OptionType.Put),
+  "ETH/STRK Call": new Pool(ETH_ADDRESS, STRK_ADDRESS, OptionType.Call),
+  "ETH/STRK Put": new Pool(ETH_ADDRESS, STRK_ADDRESS, OptionType.Put),
+  "BTC/USDC Call": new Pool(BTC_ADDRESS, USDC_ADDRESS, OptionType.Call),
+  "BTC/USDC Put": new Pool(BTC_ADDRESS, USDC_ADDRESS, OptionType.Put),
+  "EKUBO/USDC Call": new Pool(EKUBO_ADDRESS, USDC_ADDRESS, OptionType.Call),
+  "EKUBO/USDC Put": new Pool(EKUBO_ADDRESS, USDC_ADDRESS, OptionType.Put),
+};

@@ -1,19 +1,11 @@
 import { ETH_DIGITS } from "../../constants/amm";
 import { IStake, ITrade, IVote } from "../../types/history";
 import { shortInteger } from "../../utils/computations";
-import { timestampToDateAndTime } from "../../utils/utils";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Tooltip,
-} from "@mui/material";
+import { formatNumber } from "../../utils/utils";
 import { useState } from "react";
-import tableStyles from "../../style/table.module.css";
-import { borderValue } from "../../style/sx";
+import { PairNameAboveBadge } from "../TokenBadge";
+import { Button, MaturityStacked, P3, P4, SideTypeStacked } from "../common";
+import { poolNameToPoolMap } from "../../classes/Pool";
 
 type TransactionsTableProps = {
   trades: ITrade[];
@@ -53,18 +45,29 @@ const SingleTrade = ({ trade }: SingleTradeProp) => {
     option.baseToken.decimals
   );
 
-  const [date, time] = timestampToDateAndTime(timestamp * 1000);
-
   return (
-    <TableRow>
-      <TableCell>{date}</TableCell>
-      <TableCell sx={{ borderRight: borderValue }}>{time}</TableCell>
-      <TableCell>{timestampToDateAndTime(option.maturity * 1000)[0]}</TableCell>
-      <TableCell align="left">{action}</TableCell>
-      <TableCell align="left">{`${option.sideAsText} ${option.typeAsText} ${option.pairId}`}</TableCell>
-      <TableCell align="left">{`$${option.strike}`}</TableCell>
-      <TableCell align="left">{size.toFixed(4)}</TableCell>
-    </TableRow>
+    <div className="flex justify-between my-2 py-3 text-left w-[880px]">
+      <div className="w-full">
+        <PairNameAboveBadge
+          tokenA={option.baseToken}
+          tokenB={option.quoteToken}
+        />
+      </div>
+      <div className="w-full">
+        <SideTypeStacked side={option.side} type={option.type} />
+      </div>
+      <div className="w-full">
+        <P3 className="font-semibold">{option.strikeWithCurrency}</P3>
+      </div>
+      <div className="w-full">
+        <MaturityStacked timestamp={option.maturity} />
+      </div>
+      <div className="w-full">
+        <MaturityStacked timestamp={timestamp} />
+      </div>
+      <div className="w-full">{formatNumber(size, 4)}</div>
+      <div className="w-full">{action}</div>
+    </div>
   );
 };
 
@@ -80,64 +83,77 @@ export const TradesTable = ({ trades }: TradesTableProps) => {
   const size = expanded ? trades.length : COLLAPSED_LENGTH;
 
   return (
-    <TableContainer>
-      <Table className={tableStyles.table} aria-label="collapsible table">
-        <TableHead>
-          <TableRow>
-            <TableCell sx={{ width: "90px" }}>Date</TableCell>
-            <TableCell sx={{ borderRight: borderValue, width: "90px" }}>
-              Time
-            </TableCell>
-            <TableCell align="left">Maturity</TableCell>
-            <TableCell align="left">Action</TableCell>
-            <TableCell align="left">Option</TableCell>
-            <TableCell align="left">Strike Price</TableCell>
-            <Tooltip
-              placement="top"
-              title="Amount of tokens transfered divided by 10^18"
-            >
-              <TableCell align="left">Size</TableCell>
-            </Tooltip>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {trades.slice(0, size).map((trade, i) => (
-            <SingleTrade trade={trade} key={i} />
-          ))}
-          {trades.length > COLLAPSED_LENGTH && (
-            <TableRow>
-              <td
-                onClick={() => setExpanded(!expanded)}
-                colSpan={7}
-                style={{ textAlign: "center", cursor: "pointer" }}
-              >
-                {expanded ? "Show less" : "Show more"}
-              </td>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <div className="flex flex-col gap-1 overflow-x-auto">
+      <div className="flex justify-between my-2 py-3 border-dark-tertiary border-y-[0.5px] text-left w-[880px]">
+        <div className="w-full">
+          <P4 className="text-dark-secondary">PAIR</P4>
+        </div>
+        <div className="w-full">
+          <P4 className="text-dark-secondary">
+            SIDE <span className="text-dark-primary">/ TYPE</span>
+          </P4>
+        </div>
+        <div className="w-full">
+          <P4 className="text-dark-secondary">STRIKE</P4>
+        </div>
+        <div className="w-full">
+          <P4 className="text-dark-secondary">MATURITY</P4>
+        </div>
+        <div className="w-full">
+          <P4 className="text-dark-secondary">TIME OF ACTION</P4>
+        </div>
+        <div className="w-full">
+          <P4 className="text-dark-secondary">SIZE</P4>
+        </div>
+        <div className="w-full">
+          <P4 className="text-dark-secondary">ACTION</P4>
+        </div>
+      </div>
+      {trades.length === 0 ? (
+        <div className="my-2 py-3 max-w-[880px]">
+          <P3 className="font-semibold text-center">Nothing to show</P3>
+        </div>
+      ) : (
+        trades
+          .slice(0, size)
+          .map((trade, i) => <SingleTrade trade={trade} key={i} />)
+      )}
+      {trades.length > COLLAPSED_LENGTH && (
+        <div className="max-w-[880px] flex justify-center">
+          <Button type="secondary" onClick={() => setExpanded(!expanded)}>
+            {expanded ? "Show less" : "Show more"}
+          </Button>
+        </div>
+      )}
+    </div>
   );
 };
 
 const SingleStake = ({ stake }: SingleStakeProp) => {
   const { liquidity_pool, timestamp, action, tokens_minted } = stake;
 
+  const pool = poolNameToPoolMap[liquidity_pool];
+
+  if (!pool) {
+    return null;
+  }
+
   const size = shortInteger(BigInt(tokens_minted).toString(10), ETH_DIGITS);
 
-  const [date, time] = timestampToDateAndTime(timestamp * 1000);
-
   return (
-    <TableRow>
-      <TableCell>{date}</TableCell>
-      <TableCell sx={{ borderRight: borderValue }}>{time}</TableCell>
-      <TableCell align="left">{action}</TableCell>
-      <TableCell align="left">{liquidity_pool}</TableCell>
-      <Tooltip title={size}>
-        <TableCell align="left">{size.toFixed(4)}</TableCell>
-      </Tooltip>
-    </TableRow>
+    <div className="flex justify-between my-2 py-3 text-left w-[880px]">
+      <div className="w-full">
+        <PairNameAboveBadge tokenA={pool.baseToken} tokenB={pool.quoteToken} />
+      </div>
+      <div className="w-full">
+        <P3 className="font-semibold">{pool.typeAsText.toUpperCase()}</P3>{" "}
+      </div>
+      <div className="w-full">
+        <MaturityStacked timestamp={timestamp} />
+      </div>
+      <div className="w-full">{formatNumber(size, 4)}</div>
+      <div className="w-full">{action}</div>
+    </div>
   );
 };
 
@@ -153,59 +169,65 @@ export const StakesTable = ({ stakes }: StakesTableProps) => {
   const size = expanded ? stakes.length : COLLAPSED_LENGTH;
 
   return (
-    <TableContainer>
-      <Table className={tableStyles.table} aria-label="collapsible table">
-        <TableHead>
-          <TableRow>
-            <TableCell sx={{ width: "90px" }}>Date</TableCell>
-            <TableCell sx={{ borderRight: borderValue, width: "90px" }}>
-              Time
-            </TableCell>
-            <TableCell align="left">Action</TableCell>
-            <TableCell align="left">Pool</TableCell>
-            <Tooltip
-              placement="top"
-              title="Amount of tokens transfered divided by 10^18"
-            >
-              <TableCell align="left">Size</TableCell>
-            </Tooltip>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {stakes.slice(0, size).map((stake, i) => (
-            <SingleStake stake={stake} key={i} />
-          ))}
-          {stakes.length > COLLAPSED_LENGTH && (
-            <TableRow>
-              <td
-                onClick={() => setExpanded(!expanded)}
-                colSpan={7}
-                style={{ textAlign: "center", cursor: "pointer" }}
-              >
-                {expanded ? "Show less" : "Show more"}
-              </td>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <div className="flex flex-col gap-1 overflow-x-auto">
+      <div className="flex justify-between my-2 py-3 border-dark-tertiary border-y-[0.5px] text-left w-[880px]">
+        <div className="w-full">
+          <P4 className="text-dark-secondary">PAIR</P4>
+        </div>
+        <div className="w-full">
+          <P4 className="text-dark-secondary">TYPE</P4>
+        </div>
+        <div className="w-full">
+          <P4 className="text-dark-secondary">TIME OF ACTION</P4>
+        </div>
+        <div className="w-full">
+          <P4 className="text-dark-secondary">SIZE</P4>
+        </div>
+        <div className="w-full">
+          <P4 className="text-dark-secondary">ACTION</P4>
+        </div>
+      </div>
+      {stakes.length === 0 ? (
+        <div className="my-2 py-3 max-w-[880px]">
+          <P3 className="font-semibold text-center">Nothing to show</P3>
+        </div>
+      ) : (
+        stakes
+          .slice(0, size)
+          .map((stake, i) => <SingleStake stake={stake} key={i} />)
+      )}
+      {stakes.length > COLLAPSED_LENGTH && (
+        <div className="max-w-[880px] flex justify-center">
+          <Button type="secondary" onClick={() => setExpanded(!expanded)}>
+            {expanded ? "Show less" : "Show more"}
+          </Button>
+        </div>
+      )}
+    </div>
   );
 };
 
 const SingleVote = ({ vote }: SingleVoteProp) => {
   const { timestamp, opinion, prop_id } = vote;
 
-  const [date, time] = timestampToDateAndTime(timestamp * 1000);
-
-  const displayOpinion = opinion ? "Yay" : "Nay";
+  const displayOpinion = opinion ? "YAY" : "NAY";
 
   return (
-    <TableRow>
-      <TableCell>{date}</TableCell>
-      <TableCell sx={{ borderRight: borderValue }}>{time}</TableCell>
-      <TableCell align="center">{prop_id}</TableCell>
-      <TableCell align="center">{displayOpinion}</TableCell>
-    </TableRow>
+    <div className="flex justify-between my-2 py-3 text-left w-[880px]">
+      <div className="w-full">
+        <P3 className="font-semibold">{prop_id}</P3>{" "}
+      </div>
+      <div className="w-full">
+        <MaturityStacked timestamp={timestamp} />
+      </div>
+      <div
+        className={`w-full ${
+          opinion ? "text-ui-successBg" : "text-ui-errorBg"
+        }`}
+      >
+        {displayOpinion}
+      </div>
+    </div>
   );
 };
 
@@ -221,36 +243,35 @@ export const VotesTable = ({ votes }: VotesTableProps) => {
   const size = expanded ? votes.length : COLLAPSED_LENGTH;
 
   return (
-    <TableContainer>
-      <Table className={tableStyles.table} aria-label="collapsible table">
-        <TableHead>
-          <TableRow>
-            <TableCell sx={{ width: "90px" }}>Date</TableCell>
-            <TableCell sx={{ borderRight: borderValue, width: "90px" }}>
-              Time
-            </TableCell>
-            <TableCell align="center">Proposal Id</TableCell>
-            <TableCell align="center">Vote</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {votes.slice(0, size).map((vote, i) => (
-            <SingleVote vote={vote} key={i} />
-          ))}
-          {votes.length > COLLAPSED_LENGTH && (
-            <TableRow>
-              <td
-                onClick={() => setExpanded(!expanded)}
-                colSpan={7}
-                style={{ textAlign: "center", cursor: "pointer" }}
-              >
-                {expanded ? "Show less" : "Show more"}
-              </td>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <div className="flex flex-col gap-1 overflow-x-auto">
+      <div className="flex justify-between my-2 py-3 border-dark-tertiary border-y-[0.5px] text-left w-[880px]">
+        <div className="w-full">
+          <P4 className="text-dark-secondary">PROPOSAL ID</P4>
+        </div>
+        <div className="w-full">
+          <P4 className="text-dark-secondary">TIME OF VOTE</P4>
+        </div>
+        <div className="w-full">
+          <P4 className="text-dark-secondary">OPINION</P4>
+        </div>
+      </div>
+      {votes.length === 0 ? (
+        <div className="my-2 py-3 max-w-[880px]">
+          <P3 className="font-semibold text-center">Nothing to show</P3>
+        </div>
+      ) : (
+        votes
+          .slice(0, size)
+          .map((vote, i) => <SingleVote vote={vote} key={i} />)
+      )}
+      {votes.length > COLLAPSED_LENGTH && (
+        <div className="max-w-[880px] flex justify-center">
+          <Button type="secondary" onClick={() => setExpanded(!expanded)}>
+            {expanded ? "Show less" : "Show more"}
+          </Button>
+        </div>
+      )}
+    </div>
   );
 };
 
@@ -260,7 +281,7 @@ export const TransactionsTable = ({
   votes,
 }: TransactionsTableProps) => {
   return (
-    <div>
+    <div className="mb-20">
       <h1 style={{ marginTop: "40px" }}>Trade History</h1>
       <TradesTable trades={trades} />
       <h1 style={{ marginTop: "40px" }}>Liquidity History</h1>
