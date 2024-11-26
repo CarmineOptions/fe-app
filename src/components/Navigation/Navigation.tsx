@@ -31,7 +31,7 @@ const Nav = ({
 }) => {
   return (
     <li
-      className={`px-[4px] py-[8px] rounded-[2px] transition duration-300 ease-in-out cursor-pointer ${
+      className={`px-1 py-2 rounded-[2px] transition duration-300 ease-in-out cursor-pointer ${
         isActive
           ? "bg-brand-deep text-dark-primary"
           : "text-dark-secondary hover:text-dark-primary"
@@ -39,7 +39,7 @@ const Nav = ({
     >
       <NavLink to={`/${path}`} onClick={() => setShowNavigation(false)}>
         <div className="flex gap-[12px] items-center">
-          <div className="flex gap-[4px] items-center">
+          <div className="flex gap-1 items-center">
             <Icon
               style={
                 isActive
@@ -59,20 +59,20 @@ const Nav = ({
 };
 
 const NewBadge = () => (
-  <div className="bg-brand p-[4px] flex rounded-[2px]">
+  <div className="bg-brand p-1 flex rounded-[2px]">
     <L2 className="font-bold text-dark">NEW</L2>
   </div>
 );
 
 const AirdropBadge = () => (
-  <div className="bg-brand p-[4px] flex items-center gap-[4px] rounded-[2px]">
+  <div className="bg-brand p-1 flex items-center gap-1 rounded-[2px]">
     <Parachute />
     <L2 className="font-bold text-dark">AIRDROP</L2>
   </div>
 );
 
 const RewardsBadge = () => (
-  <div className="bg-[#FF75C8] p-[4px] flex items-center gap-[4px] rounded-[2px]">
+  <div className="bg-[#FF75C8] p-1 flex items-center gap-1 rounded-[2px]">
     <Stark width="10px" height="10px" />
     <L2 className="font-bold text-dark">REWARDS</L2>
   </div>
@@ -84,7 +84,7 @@ export const Navigation = () => {
 
   return (
     <div
-      className={`w-[200px] h-inherit box-border bg-dark-container border-dark-tertiary border-r-[1px] px-[20px] py-[80px] md:relative top-0 absolute z-50 transition-transform duration-300 ease-in-out ${
+      className={`w-[200px] h-inherit box-border bg-dark-container border-dark-tertiary border-r-[1px] px-5 py-20 md:relative top-0 absolute z-50 transition-transform duration-300 ease-in-out ${
         isOpen ? "left-0" : "-left-[200px] md:left-0"
       }`}
     >

@@ -31,6 +31,9 @@ export default {
           neutralAccent: "#D9D9D9",
           neutralBg: "#666666",
         },
+        misc: {
+          starknet: "#EC796B",
+        },
       },
       fontFamily: {
         sans: ["IBM Plex Sans", "sans-serif"],
@@ -61,6 +64,7 @@ export default {
       },
       spacing: {
         0: "0px",
+        big: "880px",
       },
     },
   },

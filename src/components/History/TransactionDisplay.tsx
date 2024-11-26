@@ -46,7 +46,7 @@ const SingleTrade = ({ trade }: SingleTradeProp) => {
   );
 
   return (
-    <div className="flex justify-between my-2 py-3 text-left w-[880px]">
+    <div className="flex justify-between my-2 py-3 text-left w-big">
       <div className="w-full">
         <PairNameAboveBadge
           tokenA={option.baseToken}
@@ -84,7 +84,7 @@ export const TradesTable = ({ trades }: TradesTableProps) => {
 
   return (
     <div className="flex flex-col gap-1 overflow-x-auto">
-      <div className="flex justify-between my-2 py-3 border-dark-tertiary border-y-[0.5px] text-left w-[880px]">
+      <div className="flex justify-between my-2 py-3 border-dark-tertiary border-y-[0.5px] text-left w-big">
         <div className="w-full">
           <P4 className="text-dark-secondary">PAIR</P4>
         </div>
@@ -110,7 +110,7 @@ export const TradesTable = ({ trades }: TradesTableProps) => {
         </div>
       </div>
       {trades.length === 0 ? (
-        <div className="my-2 py-3 max-w-[880px]">
+        <div className="my-2 py-3 max-w-big">
           <P3 className="font-semibold text-center">Nothing to show</P3>
         </div>
       ) : (
@@ -119,7 +119,7 @@ export const TradesTable = ({ trades }: TradesTableProps) => {
           .map((trade, i) => <SingleTrade trade={trade} key={i} />)
       )}
       {trades.length > COLLAPSED_LENGTH && (
-        <div className="max-w-[880px] flex justify-center">
+        <div className="max-w-big flex justify-center">
           <Button type="secondary" onClick={() => setExpanded(!expanded)}>
             {expanded ? "Show less" : "Show more"}
           </Button>
@@ -141,7 +141,7 @@ const SingleStake = ({ stake }: SingleStakeProp) => {
   const size = shortInteger(BigInt(tokens_minted).toString(10), ETH_DIGITS);
 
   return (
-    <div className="flex justify-between my-2 py-3 text-left w-[880px]">
+    <div className="flex justify-between my-2 py-3 text-left w-big">
       <div className="w-full">
         <PairNameAboveBadge tokenA={pool.baseToken} tokenB={pool.quoteToken} />
       </div>
@@ -170,7 +170,7 @@ export const StakesTable = ({ stakes }: StakesTableProps) => {
 
   return (
     <div className="flex flex-col gap-1 overflow-x-auto">
-      <div className="flex justify-between my-2 py-3 border-dark-tertiary border-y-[0.5px] text-left w-[880px]">
+      <div className="flex justify-between my-2 py-3 border-dark-tertiary border-y-[0.5px] text-left w-big">
         <div className="w-full">
           <P4 className="text-dark-secondary">PAIR</P4>
         </div>
@@ -188,7 +188,7 @@ export const StakesTable = ({ stakes }: StakesTableProps) => {
         </div>
       </div>
       {stakes.length === 0 ? (
-        <div className="my-2 py-3 max-w-[880px]">
+        <div className="my-2 py-3 max-w-big">
           <P3 className="font-semibold text-center">Nothing to show</P3>
         </div>
       ) : (
@@ -197,7 +197,7 @@ export const StakesTable = ({ stakes }: StakesTableProps) => {
           .map((stake, i) => <SingleStake stake={stake} key={i} />)
       )}
       {stakes.length > COLLAPSED_LENGTH && (
-        <div className="max-w-[880px] flex justify-center">
+        <div className="max-w-big flex justify-center">
           <Button type="secondary" onClick={() => setExpanded(!expanded)}>
             {expanded ? "Show less" : "Show more"}
           </Button>
@@ -213,7 +213,7 @@ const SingleVote = ({ vote }: SingleVoteProp) => {
   const displayOpinion = opinion ? "YAY" : "NAY";
 
   return (
-    <div className="flex justify-between my-2 py-3 text-left w-[880px]">
+    <div className="flex justify-between my-2 py-3 text-left w-big">
       <div className="w-full">
         <P3 className="font-semibold">{prop_id}</P3>{" "}
       </div>
@@ -244,7 +244,7 @@ export const VotesTable = ({ votes }: VotesTableProps) => {
 
   return (
     <div className="flex flex-col gap-1 overflow-x-auto">
-      <div className="flex justify-between my-2 py-3 border-dark-tertiary border-y-[0.5px] text-left w-[880px]">
+      <div className="flex justify-between my-2 py-3 border-dark-tertiary border-y-[0.5px] text-left w-big">
         <div className="w-full">
           <P4 className="text-dark-secondary">PROPOSAL ID</P4>
         </div>
@@ -256,7 +256,7 @@ export const VotesTable = ({ votes }: VotesTableProps) => {
         </div>
       </div>
       {votes.length === 0 ? (
-        <div className="my-2 py-3 max-w-[880px]">
+        <div className="my-2 py-3 max-w-big">
           <P3 className="font-semibold text-center">Nothing to show</P3>
         </div>
       ) : (
@@ -265,7 +265,7 @@ export const VotesTable = ({ votes }: VotesTableProps) => {
           .map((vote, i) => <SingleVote vote={vote} key={i} />)
       )}
       {votes.length > COLLAPSED_LENGTH && (
-        <div className="max-w-[880px] flex justify-center">
+        <div className="max-w-big flex justify-center">
           <Button type="secondary" onClick={() => setExpanded(!expanded)}>
             {expanded ? "Show less" : "Show more"}
           </Button>

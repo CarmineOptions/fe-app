@@ -1,19 +1,16 @@
-import { PairBadge } from "../TokenBadge";
+import { PairNameAboveBadge } from "../TokenBadge";
 import { Pool } from "../../classes/Pool";
 import { shortInteger } from "../../utils/computations";
-import { useCurrency } from "../../hooks/useCurrency";
 import { math64toDecimal } from "../../utils/units";
 import { openSidebar, setSidebarContent } from "../../redux/actions";
 import { PoolSidebar } from "../Sidebar";
 import { LoadingAnimation } from "../Loading/Loading";
 import { DefispringBadge } from "../Badges";
-import { formatNumber } from "../../utils/utils";
 import { useStakes } from "../../hooks/useStakes";
-import styles from "./pooltable.module.css";
-import { useIsMobile } from "../../hooks/useIsMobile";
 import { useDefispringApy } from "../../hooks/useDefyspringApy";
 import { usePoolApy } from "../../hooks/usePoolApy";
 import { usePoolState } from "../../hooks/usePoolState";
+import { Button, MajorMinorStacked, P3, TokenValueStacked } from "../common";
 
 type Props = {
   pool: Pool;
@@ -61,9 +58,7 @@ const usePoolData = (pool: Pool) => {
 export const PoolItem = ({ pool }: Props) => {
   const { data, isLoading, isError } = usePoolData(pool);
   const { defispringApy } = useDefispringApy();
-  const isWideScreen = !useIsMobile();
   const { stakes } = useStakes();
-  const price = useCurrency(pool.underlying.id);
   const handleClick = () => {
     setSidebarContent(<PoolSidebar pool={pool} />);
     openSidebar();
@@ -71,18 +66,12 @@ export const PoolItem = ({ pool }: Props) => {
 
   if (isLoading) {
     return (
-      <div className={styles.item}>
-        <div className={styles.pooldesc}>
-          <div>
-            <p>
-              {pool.baseToken.symbol}/{pool.quoteToken.symbol}
-            </p>
-            <PairBadge
-              tokenA={pool.baseToken}
-              tokenB={pool.quoteToken}
-              size="small"
-            />
-          </div>
+      <div className="flex text-left justify-between mb-8">
+        <div className="flex flex-col g-4">
+          <PairNameAboveBadge
+            tokenA={pool.baseToken}
+            tokenB={pool.quoteToken}
+          />
           {pool.isDefispringEligible && <DefispringBadge />}
         </div>
         <div>
@@ -96,18 +85,12 @@ export const PoolItem = ({ pool }: Props) => {
 
   if (isError || !data) {
     return (
-      <div className={styles.item}>
-        <div className={styles.pooldesc}>
-          <div>
-            <p>
-              {pool.baseToken.symbol}/{pool.quoteToken.symbol}
-            </p>
-            <PairBadge
-              tokenA={pool.baseToken}
-              tokenB={pool.quoteToken}
-              size="small"
-            />
-          </div>
+      <div className="flex text-left justify-between mb-8">
+        <div className="flex flex-col g-4">
+          <PairNameAboveBadge
+            tokenA={pool.baseToken}
+            tokenB={pool.quoteToken}
+          />
           {pool.isDefispringEligible && <DefispringBadge />}
         </div>
         <div>
@@ -122,8 +105,7 @@ export const PoolItem = ({ pool }: Props) => {
   const { state, apy } = data;
 
   const unlocked = shortInteger(state.unlocked_cap, pool.underlying.decimals);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const locked = shortInteger(state.locked_cap, pool.underlying.decimals);
+  // const locked = shortInteger(state.locked_cap, pool.underlying.decimals);
   const poolPosition = math64toDecimal(state.pool_position);
   const tvl = unlocked + poolPosition;
 
@@ -152,26 +134,18 @@ export const PoolItem = ({ pool }: Props) => {
       : poolData.value;
 
   return (
-    <div className={styles.item + " " + styles.itemmobilesize}>
-      <div className={styles.pooldesc}>
-        <div>
-          <p>
-            {pool.baseToken.symbol}/<wbr />
-            {pool.quoteToken.symbol}
-          </p>
-          <PairBadge
-            tokenA={pool.baseToken}
-            tokenB={pool.quoteToken}
-            size="small"
-          />
-        </div>
+    <div className="w-big py-3 flex text-left justify-between">
+      <div className="w-full flex flex-col gap-3">
+        <PairNameAboveBadge tokenA={pool.baseToken} tokenB={pool.quoteToken} />
         {pool.isDefispringEligible && <DefispringBadge />}
       </div>
-      <div>
-        <p>{pool.typeAsText} Pool</p>
-        <p className="p4 secondary-col">{pool.underlying.symbol}</p>
+      <div className="w-full">
+        <MajorMinorStacked
+          major={`${pool.typeAsText} Pool`}
+          minor={pool.underlying.symbol}
+        />
       </div>
-      <div>
+      <div className="w-full">
         {finalApy === undefined ? (
           <LoadingAnimation size={20} />
         ) : (
@@ -180,53 +154,30 @@ export const PoolItem = ({ pool }: Props) => {
           </p>
         )}
       </div>
-      {isWideScreen && (
-        <div>
-          {finalApyWeekly === undefined ? (
-            <LoadingAnimation size={20} />
-          ) : (
-            <p className={finalApyWeekly > 0 ? "greentext" : "redtext"}>
-              {finalApyWeekly.toFixed(2)}%
-            </p>
-          )}
-        </div>
-      )}
-      {isWideScreen && (
-        <div>
-          <div>
-            {price === undefined ? (
-              <LoadingAnimation size={20} />
-            ) : (
-              <p>${formatNumber(tvl * price)}</p>
-            )}
-            <p className="p4 secondary-col">
-              {formatNumber(tvl)} {pool.underlying.symbol}
-            </p>
-          </div>
-        </div>
-      )}
-      <div>
-        <div>
-          {price === undefined ||
-          userPosition === undefined ||
-          userPosition === 0 ? (
-            <p>-</p>
-          ) : (
-            <p>${formatNumber(userPosition * price)}</p>
-          )}
-          {userPosition === undefined || userPosition === 0 ? (
-            <p>- {pool.underlying.symbol}</p>
-          ) : (
-            <p className="p4 secondary-col">
-              {formatNumber(userPosition)} {pool.underlying.symbol}
-            </p>
-          )}
-        </div>
+
+      <div className="w-full">
+        {finalApyWeekly === undefined ? (
+          <LoadingAnimation size={20} />
+        ) : (
+          <P3
+            className={
+              finalApyWeekly > 0 ? "text-ui-successBg" : "text-ui-errorBg"
+            }
+          >
+            {finalApyWeekly.toFixed(2)}%
+          </P3>
+        )}
       </div>
-      <div>
-        <button onClick={handleClick} className="primary active mainbutton">
+      <div className="w-full">
+        <TokenValueStacked amount={tvl} token={pool.underlying} />
+      </div>
+      <div className="w-full">
+        <TokenValueStacked amount={userPosition} token={pool.underlying} />
+      </div>
+      <div className="w-full">
+        <Button type="primary" className="w-full" onClick={handleClick}>
           {userPosition === undefined || userPosition === 0 ? "View" : "Manage"}
-        </button>
+        </Button>
       </div>
     </div>
   );

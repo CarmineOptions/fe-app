@@ -18,11 +18,7 @@ export const WalletButton = () => {
   }
 
   return (
-    <Button
-      className="py-[8px]"
-      type="primary"
-      onClick={openWalletConnectModal}
-    >
+    <Button className="py-2" type="primary" onClick={openWalletConnectModal}>
       Connect Wallet
     </Button>
   );

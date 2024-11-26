@@ -10,7 +10,6 @@ import { tradeSettle } from "../../calls/tradeSettle";
 import { afterTransaction } from "../../utils/blockchain";
 import { invalidatePositions } from "../../queries/client";
 import { usePositions } from "../../hooks/usePositions";
-import { useConnectWallet } from "../../hooks/useConnectWallet";
 import {
   Button,
   MaturityStacked,
@@ -19,10 +18,11 @@ import {
   SideTypeStacked,
   TokenValueStacked,
 } from "../common";
+import { SecondaryConnectWallet } from "../ConnectWallet/Button";
 
 const Header = () => {
   return (
-    <div className="flex justify-between my-2 py-3 border-dark-tertiary border-y-[0.5px] text-left w-[880px]">
+    <div className="flex justify-between my-2 py-3 border-dark-tertiary border-y-[0.5px] text-left w-big">
       <div className="w-full">
         <P4 className="text-dark-secondary">PAIR</P4>
       </div>
@@ -55,7 +55,7 @@ const LiveItem = ({ option }: { option: OptionWithPosition }) => {
     openCloseOptionDialog();
   };
   return (
-    <div className="flex justify-between my-2 py-3 text-left w-[880px]">
+    <div className="flex justify-between my-2 py-3 text-left w-big">
       <div className="w-full">
         <PairNameAboveBadge
           tokenA={option.baseToken}
@@ -76,7 +76,7 @@ const LiveItem = ({ option }: { option: OptionWithPosition }) => {
         <TokenValueStacked amount={option.value} token={option.underlying} />
       </div>
       <div className="w-full">
-        <Button type="primary" onClick={handleClick}>
+        <Button className="w-full" type="primary" onClick={handleClick}>
           Close
         </Button>
       </div>
@@ -103,7 +103,7 @@ const OtmItem = ({ option }: { option: OptionWithPosition }) => {
   };
 
   return (
-    <div className="flex justify-between my-2 py-3 text-left w-[880px]">
+    <div className="flex justify-between my-2 py-3 text-left w-big">
       <div className="w-full">
         <PairNameAboveBadge
           tokenA={option.baseToken}
@@ -122,7 +122,7 @@ const OtmItem = ({ option }: { option: OptionWithPosition }) => {
       <div className="w-full">{formatNumber(option.size, 4)}</div>
       <div className="w-full">0</div>
       <div className="w-full">
-        <Button type="primary" onClick={handleSettle}>
+        <Button className="w-full" type="primary" onClick={handleSettle}>
           Settle
         </Button>
       </div>
@@ -154,7 +154,7 @@ const ItmItem = ({ option }: { option: OptionWithPosition }) => {
   };
 
   return (
-    <div className="flex justify-between my-2 py-3 text-left w-[880px]">
+    <div className="flex justify-between my-2 py-3 text-left w-big">
       <div className="w-full">
         <PairNameAboveBadge
           tokenA={option.baseToken}
@@ -175,7 +175,7 @@ const ItmItem = ({ option }: { option: OptionWithPosition }) => {
         <TokenValueStacked amount={option.value} token={option.underlying} />
       </div>
       <div className="w-full">
-        <Button type="primary" onClick={handleSettle}>
+        <Button className="w-full" type="primary" onClick={handleSettle}>
           Settle
         </Button>
       </div>
@@ -219,7 +219,7 @@ export const MyOptionsWithAccount = ({
     <div className="flex flex-col gap-3 overflow-x-auto">
       <Header />
       {selected.length === 0 ? (
-        <div className="my-2 py-3 max-w-[880px]">
+        <div className="my-2 py-3 max-w-big">
           <P3 className="font-semibold text-center">Nothing to show</P3>
         </div>
       ) : (
@@ -231,19 +231,9 @@ export const MyOptionsWithAccount = ({
 
 export const MyOptions = ({ state }: { state: "live" | "itm" | "otm" }) => {
   const { account } = useAccount();
-  const { openWalletConnectModal } = useConnectWallet();
 
   if (!account) {
-    return (
-      <div>
-        <button
-          className="mainbutton primary active"
-          onClick={openWalletConnectModal}
-        >
-          Connect Wallet
-        </button>
-      </div>
-    );
+    return <SecondaryConnectWallet msg="Connect wallet to see your options." />;
   }
 
   return <MyOptionsWithAccount state={state} />;

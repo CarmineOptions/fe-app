@@ -1,50 +1,40 @@
-import { useIsMobile } from "../../hooks/useIsMobile";
-import { Pool } from "../../classes/Pool";
-import {
-  BTC_ADDRESS,
-  EKUBO_ADDRESS,
-  ETH_ADDRESS,
-  STRK_ADDRESS,
-  USDC_ADDRESS,
-} from "../../constants/amm";
-import { OptionType } from "../../types/options";
 import { PoolItem } from "./PoolItem";
-
-import styles from "./pooltable.module.css";
+import { pools } from "../AddProposal/pools";
+import { L2, P4 } from "../common";
 
 export const PoolTable = () => {
-  const isWideScreen = !useIsMobile();
-
-  const pools = [
-    new Pool(STRK_ADDRESS, USDC_ADDRESS, OptionType.Call),
-    new Pool(STRK_ADDRESS, USDC_ADDRESS, OptionType.Put),
-    new Pool(ETH_ADDRESS, USDC_ADDRESS, OptionType.Call),
-    new Pool(ETH_ADDRESS, USDC_ADDRESS, OptionType.Put),
-    new Pool(ETH_ADDRESS, STRK_ADDRESS, OptionType.Call),
-    new Pool(ETH_ADDRESS, STRK_ADDRESS, OptionType.Put),
-    new Pool(EKUBO_ADDRESS, USDC_ADDRESS, OptionType.Call),
-    new Pool(EKUBO_ADDRESS, USDC_ADDRESS, OptionType.Put),
-    new Pool(BTC_ADDRESS, USDC_ADDRESS, OptionType.Call),
-    new Pool(BTC_ADDRESS, USDC_ADDRESS, OptionType.Put),
-  ];
-
   return (
-    <div className={styles.outer} style={{ marginTop: "20px" }}>
-      <div className={styles.inner + " " + styles.mobilewidth}>
-        <div className={"tableheader " + styles.itemmobilesize}>
-          <div>pool</div>
-          <div>type</div>
-          <div>{isWideScreen ? "apy all time" : "apy"}</div>
-          {isWideScreen && <div>apy last week</div>}
-          {isWideScreen && <div>tvl</div>}
-          <div>my deposit</div>
-          <div></div>
+    <div className="w-ful overflow-x-auto mt-5">
+      <div className="flex flex-col text-left gap-5 min-w-big overflow-hidden">
+        <div className="flex justify-between my-2 py-3 border-dark-tertiary border-y-[0.5px] text-left w-big">
+          <div className="w-full">
+            <P4 className="text-dark-secondary">POOL</P4>
+          </div>
+          <div className="w-full">
+            <P4 className="text-dark-secondary">TYPE</P4>
+          </div>
+          <div className="w-full">
+            <P4 className="text-dark-secondary">
+              APY <L2 className="text-dark-tertiary">/ ALL TIME</L2>
+            </P4>
+          </div>
+          <div className="w-full">
+            <P4 className="text-dark-secondary">
+              APY <L2 className="text-dark-tertiary">/ LAST WEEK</L2>
+            </P4>
+          </div>
+          <div className="w-full">
+            <P4 className="text-dark-secondary">TVL</P4>
+          </div>
+          <div className="w-full">
+            <P4 className="text-dark-secondary">MY DEPOSIT</P4>
+          </div>
+          {/* Empty room for button */}
+          <div className="w-full" />
         </div>
-        <div className={styles.container}>
-          {pools.map((pool, i) => (
-            <PoolItem key={i} pool={pool} />
-          ))}
-        </div>
+        {pools.map((pool, i) => (
+          <PoolItem key={i} pool={pool} />
+        ))}
       </div>
     </div>
   );

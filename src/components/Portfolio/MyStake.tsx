@@ -8,7 +8,13 @@ import { useStakes } from "../../hooks/useStakes";
 import { openSidebar, setSidebarContent } from "../../redux/actions";
 import { PoolSidebar } from "../Sidebar";
 import { useConnectWallet } from "../../hooks/useConnectWallet";
-import { Button, P3, P4, TokenValueStacked } from "../common";
+import {
+  Button,
+  MajorMinorStacked,
+  P3,
+  P4,
+  TokenValueStacked,
+} from "../common";
 
 const Item = ({ stake }: { stake: UserPoolInfo }) => {
   const handleClick = () => {
@@ -25,13 +31,16 @@ const Item = ({ stake }: { stake: UserPoolInfo }) => {
         />
       </div>
       <div className="w-full">
-        <P3 className="font-semibold">{stake.typeAsText.toUpperCase()}</P3>
+        <MajorMinorStacked
+          major={`${stake.typeAsText} Pool`}
+          minor={stake.underlying.symbol}
+        />
       </div>
       <div className="w-full">
         <TokenValueStacked amount={stake.value} token={stake.underlying} />
       </div>
       <div className="w-full">
-        <Button type="primary" onClick={handleClick}>
+        <Button type="primary" className="w-full" onClick={handleClick}>
           Withdraw
         </Button>
       </div>
@@ -75,7 +84,7 @@ export const MyStakeWithAccount = () => {
           <div className="w-full" />
         </div>
         {stakes.length === 0 ? (
-          <div className="my-2 py-3 max-w-[880px]">
+          <div className="my-2 py-3 max-w-big">
             <P3 className="font-semibold text-center">Nothing to show</P3>
           </div>
         ) : (

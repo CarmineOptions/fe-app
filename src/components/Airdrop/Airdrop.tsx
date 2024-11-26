@@ -39,7 +39,7 @@ const CarmineAirdrop = ({ data }: { data?: Eligible }) => {
     : 0;
 
   return (
-    <div className="flex justify-between max-w-[880px] text-dark-secondary bg-light-secondary rounded-md overflow-hidden">
+    <div className="flex justify-between max-w-big text-dark-secondary bg-light-secondary rounded-md overflow-hidden">
       <div className="flex flex-col grow justify-around">
         <div className="flex flex-col gap-3 p-5 border-dark-tertiary border-b-[1px]">
           <H6 className="text-brand">Carmine CRM Airdrop</H6>
@@ -147,10 +147,21 @@ export const StarknetDefispring = () => {
   });
   const [claiming, setClaiming] = useState<boolean>(false);
 
+  if (!address) {
+    return (
+      <NoWalletAirdropTemplate
+        headingClass="text-misc-starknet"
+        headingText="Starknet DeFi Spring Rewards"
+        text="40M STRK up for grabs! Provide liquidity to start earning."
+        Logo={StarknetLogo}
+      />
+    );
+  }
+
   if (isError) {
     return (
       <NoWalletAirdropTemplate
-        headingClass="text-[#EC796B]"
+        headingClass="text-misc-starknet"
         headingText="Starknet DeFi Spring Rewards"
         text="Something went wrong, please try again later."
         Logo={StarknetLogo}
@@ -161,7 +172,7 @@ export const StarknetDefispring = () => {
   if (isLoading || !data) {
     return (
       <NoWalletAirdropTemplate
-        headingClass="text-[#EC796B]"
+        headingClass="text-misc-starknet"
         headingText="Starknet DeFi Spring Rewards"
         text="Checking if you are eligible for an airdrop..."
         Logo={StarknetLogo}
@@ -209,10 +220,10 @@ export const StarknetDefispring = () => {
   const isAllClaimed = allocation === claimed;
 
   return (
-    <div className="flex justify-between max-w-[880px] text-dark-secondary bg-light-secondary rounded-md overflow-hidden">
+    <div className="flex justify-between max-w-big text-dark-secondary bg-light-secondary rounded-md overflow-hidden">
       <div className="flex flex-col grow justify-around">
         <div className="flex flex-col gap-3 p-5 border-dark-tertiary border-b-[1px]">
-          <H6 className="text-[#EC796B]">Starknet DeFi Spring Rewardp</H6>
+          <H6 className="text-misc-starknet">Starknet DeFi Spring Rewardp</H6>
           <P4 className="font-semibold">
             40M STRK up for grabs! Provide liquidity to start earning.
           </P4>
@@ -275,7 +286,7 @@ const NoWalletAirdropTemplate = ({
   Logo,
 }: NoWalletTemplateProps) => {
   return (
-    <div className="flex justify-between max-w-[880px] text-dark-secondary bg-light-secondary rounded-md overflow-hidden">
+    <div className="flex justify-between max-w-big text-dark-secondary bg-light-secondary rounded-md overflow-hidden">
       <div className="flex flex-col grow justify-around">
         <div className="flex flex-col gap-3 p-5 border-dark-tertiary border-b-[1px]">
           <H6 className={headingClass}>{headingText}</H6>
@@ -315,7 +326,7 @@ export const Airdrop = () => {
       <div className="flex flex-col gap-7">
         <SecondaryConnectWallet msg="Connect your wallet to view your airdrops." />
         <NoWalletAirdropTemplate
-          headingClass="text-[#EC796B]"
+          headingClass="text-misc-starknet"
           headingText="Starknet DeFi Spring Rewards"
           text="40M STRK up for grabs! Provide liquidity to start earning."
           Logo={StarknetLogo}

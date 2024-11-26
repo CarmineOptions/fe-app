@@ -15,7 +15,7 @@ type Maturity = {
 
 type TokenValueProps = {
   token: Token;
-  amount: number;
+  amount: number | undefined;
 };
 
 export const SideTypeStacked = ({ side, type }: SideType) => {
@@ -57,27 +57,38 @@ const tsToDateTime = (timestamp: number): [string, string] => {
   return [dateString, timeString];
 };
 
-export const MaturityStacked = ({ timestamp }: Maturity) => {
-  const [date, time] = tsToDateTime(timestamp);
+type MajorMinorStackedProps = {
+  major: string;
+  minor: string;
+};
+
+export const MajorMinorStacked = ({ major, minor }: MajorMinorStackedProps) => {
   return (
     <div>
-      <P3 className="font-semibold">{date}</P3>
-      <P4 className="text-dark-secondary">{time}</P4>
+      <P3 className="font-semibold text-dark-primary">{major}</P3>
+      <P4 className="text-dark-secondary">{minor}</P4>
     </div>
   );
+};
+
+export const MaturityStacked = ({ timestamp }: Maturity) => {
+  const [date, time] = tsToDateTime(timestamp);
+  return <MajorMinorStacked major={date} minor={time} />;
 };
 
 export const TokenValueStacked = ({ amount, token }: TokenValueProps) => {
   const price = useCurrency(token.id);
 
   return (
-    <div>
-      <P3 className="font-semibold">
-        {price ? `$${formatNumber(price * amount)}` : "--"}
-      </P3>
-      <P4 className="text-dark-secondary">
-        {formatNumber(amount)} {token.symbol}
-      </P4>
-    </div>
+    <MajorMinorStacked
+      major={
+        price !== undefined && amount !== undefined
+          ? `$${formatNumber(price * amount)}`
+          : "--"
+      }
+      minor={
+        amount !== undefined ? `${formatNumber(amount)} ${token.symbol}` : "--"
+      }
+    />
   );
 };

@@ -36,7 +36,7 @@ export const AccountInfo = () => {
   }
 
   return (
-    <Button className="py-[8px]" type="primary" onClick={handleClick}>
+    <Button className="py-2" type="primary" onClick={handleClick}>
       <div className={styles.walletinfo}>
         <WalletIcon wallet={connector} sx={sx} />
         {!username ? (

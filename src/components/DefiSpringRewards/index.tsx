@@ -16,8 +16,8 @@ import { useQuery } from "@tanstack/react-query";
 import { invalidateKey } from "../../queries/client";
 import { useAccount, useSendTransaction } from "@starknet-react/core";
 import { DEFISPRING_CONTRACT_ADDRESS } from "../../constants/amm";
-import { useConnectWallet } from "../../hooks/useConnectWallet";
 import toast from "react-hot-toast";
+import { SecondaryConnectWallet } from "../ConnectWallet/Button";
 
 export const RewardsWithAccount = ({
   account,
@@ -117,7 +117,8 @@ export const RewardsWithAccount = ({
           toast.error("Claim failed");
         }
       );
-    } catch (_) {
+    } catch (e) {
+      console.error(e);
       setClaiming(false);
     }
   };
@@ -163,16 +164,10 @@ export const RewardsWithAccount = ({
 
 export const Rewards = () => {
   const { account, address } = useAccount();
-  const { openWalletConnectModal } = useConnectWallet();
 
   if (!account || !address) {
     return (
-      <div>
-        <p>Connect wallet to access Starknet Rewards</p>
-        <button className="primary active" onClick={openWalletConnectModal}>
-          Connect Wallet
-        </button>
-      </div>
+      <SecondaryConnectWallet msg="Connect wallet to access Starknet Rewards" />
     );
   }
 

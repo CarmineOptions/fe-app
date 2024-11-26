@@ -54,7 +54,7 @@ const ReferralTemplate = ({ message, referralCode }: ReferralProps) => {
   };
 
   return (
-    <div className="flex flex-col gap-6 max-w-[880px] py-7 px-5 bg-dark-card border-black border-[1px]">
+    <div className="flex flex-col gap-6 max-w-big py-7 px-5 bg-dark-card border-black border-[1px]">
       <H5 className="text-brand">Earn 10% of the points your friends make.</H5>
       <div className="w-fit px-8 py-5 rounded-sm outline-dashed outline-2 outline-brand">
         {message ? message : <ReferralBox />}
