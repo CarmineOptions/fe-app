@@ -122,7 +122,7 @@ export const MyPortfolio = () => {
       <Divider className="my-6" />
       <div>
         <div className="flex flex-col">
-          <div className="flex items-center gap-7 mb-6">
+          <div className="flex flex-col md:flex-row items-center gap-7 mb-6">
             <H4>Options</H4>
             <div className="flex gap-1">
               {["live", "itm", "otm"].map((opt, i) => {

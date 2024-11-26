@@ -217,10 +217,10 @@ export const MyOptionsWithAccount = ({
 
   return (
     <div>
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3 overflow-x-auto">
         <Header />
         {selected.length === 0 ? (
-          <div className="my-2 py-3">
+          <div className="my-2 py-3 max-w-[880px]">
             <P3 className="font-semibold text-center">Nothing to show</P3>
           </div>
         ) : (

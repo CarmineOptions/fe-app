@@ -65,7 +65,7 @@ const Portfolio = () => {
           content="Your current positions and history of your activity"
         />
       </Helmet>
-      <div className="flex gap-7 mb-8">
+      <div className="flex flex-col md:flex-row gap-7 mb-8">
         {[
           PortfolioParamType.MyPortfolio,
           PortfolioParamType.AirDrop,
