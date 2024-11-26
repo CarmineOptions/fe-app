@@ -19,8 +19,7 @@ import { TransactionState, TxTracking } from "../../types/network";
 import { LoadingAnimation } from "../Loading/Loading";
 import { invalidateKey } from "../../queries/client";
 import { QueryKeys } from "../../queries/keys";
-
-import styles from "./airdrop.module.css";
+import { Button } from "../common";
 
 export const claim = async (
   sendAsync: (
@@ -224,16 +223,17 @@ export const AirdropModal = ({ data, open, setOpen }: Props) => {
       aria-describedby="claim-airdrop-modal"
       PaperProps={{ sx: { borderRadius: 0, background: "none" } }}
     >
-      <div className={styles.modal}>
+      <div className="bg-dark-card border-dark-primary text-dark-primary border-[1px] p-6 flex flex-col gap-4">
         <h1>Claim Airdrop</h1>
         <p>
           Congratulations! You are eligible to claim{" "}
           {shortInteger(data.claimable, 18)} <b>veCRM</b>!
         </p>
         <p>You can claim and stake for any of these periods:</p>
-        <div className={styles.buttongroup}>
+        <div className="flex flex-col sm:flex-row justify-around sm:items-center gap-2">
           <Tooltip title="Staking for 1 month gives multiplier 1.0x">
-            <button
+            <Button
+              type="primary"
               disabled={monthState !== TransactionState.Initial}
               onClick={handle1month}
               className={stateToClassName(monthState)}
@@ -244,10 +244,11 @@ export const AirdropModal = ({ data, open, setOpen }: Props) => {
               {monthState === TransactionState.Initial && "1 month"}
               {monthState === TransactionState.Success && "Done!"}
               {monthState === TransactionState.Fail && "Failed"}
-            </button>
+            </Button>
           </Tooltip>
           <Tooltip title="Staking for 6 months gives multiplier 1.6x">
-            <button
+            <Button
+              type="primary"
               disabled={sixMonthsState !== TransactionState.Initial}
               onClick={handle6months}
               className={stateToClassName(sixMonthsState)}
@@ -258,10 +259,11 @@ export const AirdropModal = ({ data, open, setOpen }: Props) => {
               {sixMonthsState === TransactionState.Initial && "6 months"}
               {sixMonthsState === TransactionState.Success && "Done!"}
               {sixMonthsState === TransactionState.Fail && "Failed"}
-            </button>
+            </Button>
           </Tooltip>
           <Tooltip title="Staking for 1 year gives multiplier 2.5x">
-            <button
+            <Button
+              type="primary"
               disabled={yearState !== TransactionState.Initial}
               onClick={handleYear}
               className={stateToClassName(yearState)}
@@ -272,12 +274,13 @@ export const AirdropModal = ({ data, open, setOpen }: Props) => {
               {yearState === TransactionState.Initial && "1 year"}
               {yearState === TransactionState.Success && "Done!"}
               {yearState === TransactionState.Fail && "Failed"}
-            </button>
+            </Button>
           </Tooltip>
         </div>
         <p>Alternatively you can claim without staking:</p>
-        <div className={styles.singlebutton}>
-          <button
+        <div className="align-middle m-auto">
+          <Button
+            type="primary"
             disabled={claimState !== TransactionState.Initial}
             onClick={handleClaim}
             className={stateToClassName(claimState)}
@@ -288,7 +291,7 @@ export const AirdropModal = ({ data, open, setOpen }: Props) => {
             {claimState === TransactionState.Initial && "Claim"}
             {claimState === TransactionState.Success && "Done!"}
             {claimState === TransactionState.Fail && "Failed"}
-          </button>
+          </Button>
         </div>
       </div>
     </Dialog>

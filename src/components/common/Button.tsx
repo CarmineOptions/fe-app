@@ -5,6 +5,8 @@ export interface ButtonOptions {
   className?: string;
   outlined?: boolean;
   loading?: boolean;
+  disabled?: boolean;
+  padding?: string;
 }
 
 export interface ButtonProps extends ButtonOptions {
@@ -18,17 +20,22 @@ export const Button = ({
   children,
   className,
   outlined = false,
+  disabled = false,
+  padding,
 }: ButtonProps) => {
-  const baseStyles = `px-[12px] py-[2px] uppercase text-base font-semibold rounded-[2px] transition${
-    className === undefined ? "" : " " + className
-  }`;
+  const baseStyles = `${className} px-[12px] py-[2px] uppercase text-base font-semibold rounded-[2px] transition`;
 
   if (type === "error") {
     const cls = outlined
       ? `text-ui-errorBg border-ui-errorBg border-[0.5px] ${baseStyles}`
       : `bg-ui-errorBg text-ui-errorAccent ${baseStyles}`;
     return (
-      <button onClick={onClick} className={cls}>
+      <button
+        disabled={disabled}
+        onClick={onClick}
+        className={cls}
+        style={padding ? { padding: padding } : {}}
+      >
         {children}
       </button>
     );
@@ -38,7 +45,12 @@ export const Button = ({
       ? `text-ui-successBg border-ui-successBg border-[0.5px] ${baseStyles}`
       : `bg-ui-successBg text-ui-successAccent ${baseStyles}`;
     return (
-      <button onClick={onClick} className={cls}>
+      <button
+        disabled={disabled}
+        onClick={onClick}
+        className={cls}
+        style={padding ? { padding: padding } : {}}
+      >
         {children}
       </button>
     );
@@ -48,7 +60,12 @@ export const Button = ({
       ? `text-brand border-brand border-[0.5px] ${baseStyles}`
       : `bg-brand text-dark ${baseStyles}`;
     return (
-      <button onClick={onClick} className={cls}>
+      <button
+        disabled={disabled}
+        onClick={onClick}
+        className={cls}
+        style={padding ? { padding: padding } : {}}
+      >
         {children}
       </button>
     );
@@ -58,7 +75,12 @@ export const Button = ({
     ? `text-dark-secondary border-dark-secondary border-[0.5px] ${baseStyles}`
     : `bg-dark-primary text-dark ${baseStyles}`;
   return (
-    <button onClick={onClick} className={cls}>
+    <button
+      disabled={disabled}
+      onClick={onClick}
+      className={cls}
+      style={padding ? { padding: padding } : {}}
+    >
       {children}
     </button>
   );

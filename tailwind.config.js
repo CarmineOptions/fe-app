@@ -12,6 +12,10 @@ export default {
           secondary: "#727272",
           tertiary: "#3C3C3C",
         },
+        light: {
+          DEFAULT: "",
+          secondary: "#262626",
+        },
         brand: {
           DEFAULT: "#FAB000",
           light: "#FDD679",
