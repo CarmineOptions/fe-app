@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
-import { PairNamedBadge } from "../TokenBadge";
+import toast from "react-hot-toast";
+import { useAccount, useSendTransaction } from "@starknet-react/core";
+import { Tooltip } from "@mui/material";
 
+import { PairNamedBadge } from "../TokenBadge";
 import { handleNumericChangeFactory } from "../../utils/inputHandling";
 import { useCurrency } from "../../hooks/useCurrency";
 import { useUserBalance } from "../../hooks/useUserBalance";
 import { shortInteger } from "../../utils/computations";
-import { useAccount, useSendTransaction } from "@starknet-react/core";
 import { TransactionState } from "../../types/network";
 import { OptionWithPremia } from "../../classes/Option";
 import {
@@ -21,12 +23,10 @@ import { setSidebarContent } from "../../redux/actions";
 import { approveAndTradeOpenNew } from "../../calls/tradeOpen";
 import { OptionSidebarSuccess } from "./OptionSidebarSuccess";
 
-import poolStyles from "./pool.module.css";
-import styles from "./option.module.css";
 import { getProfitGraphData } from "../CryptoGraph/profitGraphData";
 import { ProfitGraph } from "../CryptoGraph/ProfitGraph";
-import { useConnectWallet } from "../../hooks/useConnectWallet";
-import toast from "react-hot-toast";
+import { Button, Divider, P3, P4 } from "../common";
+import { PrimaryConnectWallet } from "../ConnectWallet/Button";
 
 type Props = {
   option: OptionWithPremia;
@@ -35,7 +35,6 @@ type Props = {
 export const OptionSidebar = ({ option }: Props) => {
   const { sendAsync } = useSendTransaction({});
   const { address } = useAccount();
-  const { openWalletConnectModal } = useConnectWallet();
   const price = useCurrency(option.underlying.id);
   const { data: balanceRaw } = useUserBalance(option.underlying.address);
   const defaultAmount =
@@ -156,7 +155,7 @@ export const OptionSidebar = ({ option }: Props) => {
       : formatNumber(premia, 4) + " " + option.underlying.symbol;
   const limitedUsd =
     premiaUsd === undefined ? "--" : "$" + formatNumber(premiaUsd, 4);
-  const unlimited = "Unlimited";
+  const unlimited = "UNLIMITED";
   const breakEven =
     sizeOnePremia === undefined || price === undefined
       ? "--"
@@ -172,184 +171,216 @@ export const OptionSidebar = ({ option }: Props) => {
         }`;
 
   return (
-    <div className={poolStyles.sidebar + " " + styles.option}>
-      <div className={styles.desc}>
+    <div className="bg-dark-card py-10 px-5 flex flex-col gap-7 h-full">
+      <div className="flex flex-col gap-2">
         <PairNamedBadge tokenA={option.baseToken} tokenB={option.quoteToken} />
         <div
-          className={
-            styles.side + " " + styles[option.sideAsText.toLowerCase()]
-          }
+          className={`rounded-sm py-[2px] px-3 w-fit uppercase ${
+            option.isLong
+              ? "bg-ui-successBg text-ui-successAccent"
+              : "bg-ui-errorBg text-ui-errorAccent"
+          }`}
         >
-          {option.sideAsText}
+          <P3 className="font-semibold">{option.sideAsText}</P3>
         </div>
       </div>
-      <div className={styles.inputcontainer}>
-        <div>
-          <span>option size</span>
-          <span>contracts</span>
+      <div className="flex flex-col gap-[18px]">
+        <div className="flex justify-between">
+          <div>
+            <P3 className="font-semibold">Option Size</P3>
+            <P4 className="text-dark-secondary">Notional vol.</P4>
+          </div>
+          <div>
+            <input
+              onChange={handleChange}
+              type="text"
+              placeholder="size"
+              className="bg-dark-card border-dark-primary border-[0.5px] w-28 h-10 p-2"
+              value={amountText}
+            />
+          </div>
         </div>
-        <div>
-          <input
-            onChange={handleChange}
-            type="text"
-            placeholder="size"
-            value={amountText}
-          />
+        <div className="flex justify-between">
+          <div>
+            <P3 className="font-semibold">Amount</P3>
+          </div>
+          <div>
+            {loading || !premia || !price ? (
+              <div className="h-[40.5px] w-[40.5px]">
+                <LoadingAnimation size={25} />
+              </div>
+            ) : (
+              <div className="flex flex-col items-end">
+                <P3 className="font-semibold">
+                  {`${formatNumber(premia, 4)} ${option.underlying.symbol}`}
+                </P3>
+                <P4 className="text-dark-secondary font-bold">{`$${formatNumber(
+                  price * premia,
+                  4
+                )}`}</P4>
+              </div>
+            )}
+          </div>
+        </div>
+        {address === undefined ? (
+          <PrimaryConnectWallet className="w-full" />
+        ) : (
+          <Button
+            disabled={txState === TransactionState.Processing}
+            onClick={handleBuy}
+            className="h-8 w-full"
+            type={
+              txState === TransactionState.Success
+                ? "success"
+                : txState === TransactionState.Fail
+                ? "error"
+                : "primary"
+            }
+          >
+            {txState === TransactionState.Success ? (
+              "Success!"
+            ) : txState === TransactionState.Fail ? (
+              "Error"
+            ) : txState === TransactionState.Processing ? (
+              <LoadingAnimation size={20} />
+            ) : (
+              "Buy"
+            )}
+          </Button>
+        )}
+      </div>
+
+      <div className="flex items-center gap-2">
+        <P4 className="font-bold text-dark-tertiary">OPTION INFO</P4>
+        <Divider className="grow" />
+      </div>
+
+      <div className="flex flex-col gap-3">
+        <div className="flex justify-between">
+          <div>
+            <P3 className="font-semibold text-dark-secondary">STRIKE PRICE</P3>
+          </div>
+          <div className="flex flex-col items-end">
+            <P3 className="font-semibold">${option.strike}</P3>
+            <P4 className="text-dark-secondary font-bold">
+              1 {option.baseToken.symbol} = ${option.strike}
+            </P4>
+          </div>
+        </div>
+        <div className="flex justify-between">
+          <div>
+            <P3 className="font-semibold text-dark-secondary">MATURITY</P3>
+          </div>
+          <div className="flex flex-col items-end">
+            <P3 className="font-semibold">{date}</P3>
+            <P4 className="text-dark-secondary font-bold">{time}</P4>
+          </div>
         </div>
       </div>
-      <div className={styles.databox}>
-        <div>
-          <span>{option.isLong ? "pay" : "receive"}</span>
+
+      <div className="flex items-center gap-2">
+        <P4 className="font-bold text-dark-tertiary">PAYOFF</P4>
+        <Divider className="grow" />
+      </div>
+
+      <div className="flex flex-col gap-3">
+        <div className="w-full h-32 bg-dark">
+          {graphData && <ProfitGraph data={graphData} />}
         </div>
-        <div>
-          {loading && (
-            <div className={styles.databoxloading}>
-              <LoadingAnimation size={25} />
-            </div>
-          )}
-          {!loading && (
-            <span>
-              {premia === undefined
-                ? "--"
-                : `${formatNumber(premia, 4)} ${option.underlying.symbol}`}
-            </span>
-          )}
-          {!loading && (
-            <span>
-              $
-              {price === undefined || premia === undefined
-                ? "--"
-                : formatNumber(price * premia, 2)}
-            </span>
-          )}
+        <div className="flex justify-between">
+          <div>
+            <P3 className="font-semibold text-dark-secondary">MAX PROFIT</P3>
+          </div>
+          <div className="flex flex-col items-end">
+            <P3 className="font-semibold">
+              {option.isLong ? unlimited : limited}
+            </P3>
+            <P4 className="text-dark-secondary font-bold">
+              {option.isLong ? "$--" : limitedUsd}
+            </P4>
+          </div>
+        </div>
+        <div className="flex justify-between">
+          <div>
+            <P3 className="font-semibold text-dark-secondary">MAX LOSS</P3>
+          </div>
+          <div className="flex flex-col items-end">
+            <P3 className="font-semibold">
+              {option.isLong ? limited : unlimited}
+            </P3>
+            <P4 className="text-dark-secondary font-bold">
+              {option.isLong ? limitedUsd : "$--"}
+            </P4>
+          </div>
+        </div>
+        <div className="flex justify-between">
+          <div>
+            <P3 className="font-semibold text-dark-secondary">BREAKEVEN</P3>
+          </div>
+          <div className="flex flex-col items-end">
+            <P3 className="font-semibold">{breakEven}</P3>
+            <P4 className="text-dark-secondary font-bold">
+              1 {option.baseToken.symbol} = {breakEven}
+            </P4>
+          </div>
         </div>
       </div>
+
       {option.isShort && (
-        <div className={styles.databox}>
-          <div>
-            <span>lock in</span>
-          </div>
-          <div>
-            <span>
-              {amount === 0
-                ? "--"
-                : `${amount * (option.isPut ? option.strike : 1)} ${
-                    option.underlying.symbol
-                  }`}
-            </span>
-            <span>
-              $
-              {price === undefined || amount === 0
-                ? "--"
-                : formatNumber(
-                    price * amount * (option.isPut ? option.strike : 1)
-                  )}
-            </span>
-          </div>
-        </div>
-      )}
-      <div className={styles.databox}>
-        <div>
-          <span>your balance</span>
-        </div>
-        <div>
-          <span>
-            {balance === undefined
-              ? "--"
-              : `${formatNumber(balance, 4)} ${option.underlying.symbol}`}
-          </span>
-          <span>
-            $
-            {price === undefined || balance === undefined
-              ? "--"
-              : formatNumber(price * balance)}
-          </span>
-        </div>
-      </div>
-      {address === undefined ? (
-        <button
-          className="mainbutton primary active"
-          onClick={openWalletConnectModal}
+        <Tooltip
+          placement="top-start"
+          title="When shorting, you are locking in the size of the option and receiving the premia."
         >
-          Connect Wallet
-        </button>
-      ) : txState === TransactionState.Initial ? (
-        <button onClick={handleBuy} className="mainbutton primary active">
-          Buy
-        </button>
-      ) : txState === TransactionState.Processing ? (
-        <button disabled className="mainbutton primary active">
-          <LoadingAnimation size={20} />
-        </button>
-      ) : txState === TransactionState.Success ? (
-        <button onClick={handleBuy} className="mainbutton green active">
-          Success
-        </button>
-      ) : (
-        <button onClick={handleBuy} className="mainbutton red active">
-          Fail
-        </button>
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center gap-2 mb-2">
+              <P4 className="font-bold text-dark-tertiary">SHORTING</P4>
+              <Divider className="grow" />
+            </div>
+            <div className="flex justify-between">
+              <div>
+                <P3 className="font-semibold text-dark-secondary">LOCK IN</P3>
+              </div>
+              <div className="flex flex-col items-end">
+                <P3 className="font-semibold">
+                  {amount === 0
+                    ? "--"
+                    : `${amount * (option.isPut ? option.strike : 1)} ${
+                        option.underlying.symbol
+                      }`}
+                </P3>
+                <P4 className="text-dark-secondary font-bold">
+                  $
+                  {price === undefined || amount === 0
+                    ? "--"
+                    : formatNumber(
+                        price * amount * (option.isPut ? option.strike : 1)
+                      )}
+                </P4>
+              </div>
+            </div>
+            <div className="flex justify-between">
+              <div>
+                <P3 className="font-semibold text-dark-secondary">
+                  YOUR BALANCE
+                </P3>
+              </div>
+              <div className="flex flex-col items-end">
+                <P3 className="font-semibold">
+                  {balance === undefined
+                    ? "--"
+                    : `${formatNumber(balance, 4)} ${option.underlying.symbol}`}
+                </P3>
+                <P4 className="text-dark-secondary font-bold">
+                  $
+                  {price === undefined || balance === undefined
+                    ? "--"
+                    : formatNumber(price * balance)}
+                </P4>
+              </div>
+            </div>
+          </div>
+        </Tooltip>
       )}
-      <div className={styles.dividertext}>
-        <span>option info</span>
-        <div className="divider"></div>
-      </div>
-      <div className={styles.databox}>
-        <div>
-          <span>strike</span>
-        </div>
-        <div>
-          <span>{option.strikeWithCurrency}</span>
-          <span>
-            1 {option.baseToken.symbol} = {option.strikeWithCurrency}
-          </span>
-        </div>
-      </div>
-      <div className={styles.databox}>
-        <div>
-          <span>maturity</span>
-        </div>
-        <div>
-          <span>{date}</span>
-          <span style={{ color: "white" }}>{time}</span>
-        </div>
-      </div>
-      <div className={styles.dividertext}>
-        <span>payoff</span>
-        <div className="divider"></div>
-      </div>
-      <div className={styles.graphbox}>
-        {graphData && <ProfitGraph data={graphData} />}
-      </div>
-      <div className={styles.databox}>
-        <div>
-          <span>max profit</span>
-        </div>
-        <div>
-          <span>{option.isLong ? unlimited : limited}</span>
-          <span>{option.isLong ? "" : limitedUsd}</span>
-        </div>
-      </div>
-      <div className={styles.databox}>
-        <div>
-          <span>max loss</span>
-        </div>
-        <div>
-          <span>{option.isLong ? limited : unlimited}</span>
-          <span>{option.isLong ? limitedUsd : ""}</span>
-        </div>
-      </div>
-      <div className={styles.databox}>
-        <div>
-          <span>breakeven</span>
-        </div>
-        <div>
-          <span>{breakEven}</span>
-          <span>
-            1 {option.baseToken.symbol} = {breakEven}
-          </span>
-        </div>
-      </div>
     </div>
   );
 };

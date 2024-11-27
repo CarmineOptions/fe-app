@@ -4,7 +4,7 @@ import { onConnect } from "../../network/hooks";
 import { useConnectWallet } from "../../hooks/useConnectWallet";
 import { Button } from "../common/Button";
 import WalletIcon from "./Wallet.svg?react";
-import { P4 } from "../common";
+import { P3, P4 } from "../common";
 import { memo } from "react";
 
 export const WalletButton = memo(() => {
@@ -27,6 +27,20 @@ export const WalletButton = memo(() => {
 
 type WalletButton = {
   msg: string;
+};
+
+export const PrimaryConnectWallet = ({ className }: { className?: string }) => {
+  const { openWalletConnectModal } = useConnectWallet();
+
+  return (
+    <Button
+      type="primary"
+      className={`h-8 ${className}`}
+      onClick={openWalletConnectModal}
+    >
+      <P3 className="font-semibold">Connect Wallet</P3>
+    </Button>
+  );
 };
 
 export const SecondaryConnectWallet = ({ msg }: WalletButton) => {

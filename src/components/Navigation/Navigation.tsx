@@ -113,7 +113,7 @@ export const Navigation = () => {
 
   return (
     <div
-      className={`w-[200px] h-inherit box-border bg-dark-container border-dark-tertiary border-r-[1px] px-5 py-20 md:relative top-0 absolute z-50 transition-transform duration-300 ease-in-out ${
+      className={`w-[200px] h-inherit box-border bg-dark-container border-dark-tertiary border-r-[1px] px-5 py-20 md:relative top-0 absolute z-20 transition-transform duration-300 ease-in-out ${
         isOpen ? "left-0" : "-left-[200px] md:left-0"
       }`}
     >

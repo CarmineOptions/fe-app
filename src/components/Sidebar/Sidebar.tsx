@@ -1,4 +1,4 @@
-import { memo, MouseEvent, useEffect, useState } from "react";
+import { memo, MouseEvent } from "react";
 import { useSelector } from "react-redux";
 
 import styles from "./sidebar.module.css";
@@ -7,33 +7,30 @@ import { closeSidebar } from "../../redux/actions";
 
 export const Sidebar = memo(() => {
   const { sidebarOpen, sidebarContent } = useSelector((s: RootState) => s.ui);
-  const [show, setShow] = useState(false);
 
-  const effect = show ? `${styles.effect} ${styles.show}` : styles.effect;
-
-  useEffect(() => {
-    if (sidebarOpen) {
-      setShow(true);
-    } else {
-      setShow(false);
-    }
-  }, [sidebarOpen]);
+  const effect = sidebarOpen
+    ? `${styles.effect} ${styles.show}`
+    : styles.effect;
 
   const handleSidebarClick = (event: MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
   };
 
-  const className = `absolute top-0 h-full w-[360px] z-10 border-dark-tertiary border-l-[1px] bg-dark-container transition duration-500 ease-in-out ${
-    sidebarOpen ? "right-0" : "right-[-360px]"
-  }`;
-
   return (
     <>
-      <div className={className} onClick={handleSidebarClick}>
+      <div
+        className={`border-brand-deep border-l-[1px] box-border absolute top-0 h-full w-[360px] z-40 bg-dark-container transition duration-500 ease-in-out ${
+          sidebarOpen ? "right-0" : "right-[-360px]"
+        }`}
+        onClick={handleSidebarClick}
+      >
         {sidebarContent}
       </div>
       {sidebarOpen && (
-        <div className={styles.overlay} onClick={closeSidebar}></div>
+        <div
+          className="fixed top-0 right-0 left-0 bottom-0 bg-dark bg-opacity-60 z-30 h-full"
+          onClick={closeSidebar}
+        ></div>
       )}
       {sidebarOpen && <div className={effect} onClick={closeSidebar}></div>}
     </>
