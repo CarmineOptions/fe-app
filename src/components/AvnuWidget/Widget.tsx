@@ -3,8 +3,9 @@ import { executeSwap, fetchQuotes, Quote } from "@avnu/avnu-sdk";
 import { formatUnits, parseUnits } from "ethers";
 import { Skeleton, Tooltip } from "@mui/material";
 import { Settings, WarningAmber } from "@mui/icons-material";
+import toast from "react-hot-toast";
 
-import { TokenDisplay, TokenSelect } from "./TokenSelect";
+import { TokenSelect } from "./TokenSelect";
 import { StrkToken, Token, UsdcToken } from "../../classes/Token";
 import { LoadingAnimation } from "../Loading/Loading";
 import { addTx, markTxAsDone, markTxAsFailed } from "../../redux/actions";
@@ -13,13 +14,13 @@ import { afterTransaction } from "../../utils/blockchain";
 import { maxDecimals } from "../../utils/utils";
 import { SlippageChange } from "./Slippage";
 
-import styles from "./widget.module.css";
 import { shortInteger } from "../../utils/computations";
 import { useUserBalance } from "../../hooks/useUserBalance";
 import { useAccount } from "@starknet-react/core";
 import { debug } from "../../utils/debugger";
-import { useConnectWallet } from "../../hooks/useConnectWallet";
-import toast from "react-hot-toast";
+import { TokenNamedBadge } from "../TokenBadge";
+import { Button, H4 } from "../common";
+import { SecondaryConnectWallet } from "../ConnectWallet/Button";
 
 const AVNU_BASE_URL = "https://starknet.api.avnu.fi";
 const CARMINE_BENEFICIARY_ADDRESS =
@@ -60,13 +61,13 @@ const QuoteBox = ({
   const priceImpact = calculatePriceImpact(quote);
 
   return (
-    <div className={styles.quotebox}>
+    <div className="flex flex-col border-dark-secondary border-2 p-4 mt-5 mb-4">
       {quote.buyTokenPriceInUsd !== undefined &&
         quote.sellTokenPriceInUsd !== undefined && (
-          <div>
-            <span>
-              Price{" "}
-              <span style={{ cursor: "pointer" }} onClick={refresh}>
+          <div className="flex justify-between">
+            <span className="flex items-center gap-2">
+              Price
+              <span className="cursor-pointer" onClick={refresh}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="12"
@@ -91,20 +92,20 @@ const QuoteBox = ({
             </span>
           </div>
         )}
-      <div>
+      <div className="flex justify-between">
         <span>Gas fee</span>
         <span>${maxDecimals(quote.gasFeesInUsd, 2)}</span>
       </div>
-      <div>
+      <div className="flex justify-between">
         <span>Service fee</span>
         <span>
           ${maxDecimals(quote.avnuFeesInUsd + quote.integratorFeesInUsd, 2)}
         </span>
       </div>
-      <div>
+      <div className="flex justify-between">
         <span>Slippage</span>
-        <span>
-          <span style={{ cursor: "pointer" }} onClick={setSlippageOpen}>
+        <span className="flex items-center gap-2">
+          <span className="cursor-pointer" onClick={setSlippageOpen}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="13"
@@ -122,10 +123,10 @@ const QuoteBox = ({
         </span>
       </div>
       {priceImpact > 1 && (
-        <div>
+        <div className="flex justify-between">
           <Tooltip title="Executing this trade will significantly affect the token price, leading to higher costs and fewer tokens received. Consider reducing the trade size.">
-            <div className={styles.priceimpact}>
-              <WarningAmber style={{ width: "24px", fill: "#E23D28" }} />
+            <div className="inline-flex border-ui-errorBg border-2 rounded-md bg-dark-container justify-start items-center gap-4 p-1 mt-1">
+              <WarningAmber className="w-8" style={{ fill: "#E23D28" }} />
               <span>Price impact is very high!</span>
             </div>
           </Tooltip>
@@ -137,7 +138,6 @@ const QuoteBox = ({
 
 export const Widget = () => {
   const { account } = useAccount();
-  const { openWalletConnectModal } = useConnectWallet();
   const abortControllerRef = useRef<AbortController | null>(null);
   const [inputValue, setInputValue] = useState("");
   const [debouncedValue, setDebouncedValue] = useState(inputValue);
@@ -281,25 +281,23 @@ export const Widget = () => {
 
   if (!account) {
     return (
-      <div className={styles.container}>
-        <div className={styles.modalheader}>
-          <h1>Swap</h1>
-          <div onClick={() => setslippageOpen(true)}>
+      <div className="relative max-w-[600px]">
+        <div className="flex justify-between items-center">
+          <H4>Swap</H4>
+          <div
+            className="cursor-pointer flex justify-center items-center p-2"
+            onClick={() => setslippageOpen(true)}
+          >
             <Settings />
           </div>
         </div>
-        <button
-          className="primary active mainbutton"
-          onClick={openWalletConnectModal}
-        >
-          Connect Wallet
-        </button>
+        <SecondaryConnectWallet msg="Connect your wallet to swap." />
       </div>
     );
   }
 
   return (
-    <div className={styles.container}>
+    <div className="relative max-w-[600px]">
       {tokenSelectOpen !== undefined && (
         <TokenSelect
           close={() => setTokenSelectOpen(undefined)}
@@ -314,24 +312,26 @@ export const Widget = () => {
           currentSlippage={slippage}
         />
       )}
-      <div className={styles.modalheader}>
-        <h1>Swap</h1>
-        <div onClick={() => setslippageOpen(true)}>
+      <div className="flex justify-between items-center">
+        <H4>Swap</H4>
+        <div
+          className="cursor-pointer flex justify-center items-center p-2"
+          onClick={() => setslippageOpen(true)}
+        >
           <Settings />
         </div>
       </div>
       <div>
         <div
-          className={
-            notEnough
-              ? `${styles.tokeninput} ${styles.redborder}`
-              : styles.tokeninput
-          }
+          className={`pl-3 flex justify-between items-center border-2 rounded-md ${
+            notEnough ? "border-ui-errorBg" : "border-dark-primary"
+          }`}
         >
-          <div className={styles.moneywrapper}>
+          <div className="flex flex-col items-start grow px-3">
             <input
               placeholder="0"
               type="text"
+              className="bg-dark-container w-full"
               value={inputValue}
               onChange={(e) => handleInputChange(e.target.value)}
             />
@@ -342,20 +342,19 @@ export const Widget = () => {
             </span>
           </div>
           <div
-            style={{ display: "flex" }}
-            className={styles.row}
+            className="flex cursor-pointer p-3"
             onClick={() => setTokenSelectOpen("sell")}
           >
-            <TokenDisplay token={sellToken} />
+            <TokenNamedBadge token={sellToken} />
             <DownAngled />
           </div>
         </div>
         {sellTokenBalance === undefined ? (
-          <div className={styles.balancecontainer}>
+          <div className="flex justify-end text-sm">
             <Skeleton />
           </div>
         ) : (
-          <div className={styles.balancecontainer}>
+          <div className="flex justify-end text-sm">
             <span>
               Max available to swap{" "}
               {shortInteger(sellTokenBalance, sellToken.decimals).toFixed(4)}{" "}
@@ -373,7 +372,7 @@ export const Widget = () => {
                   )
                 )
               }
-              className={styles.maxbalance}
+              className="cursor-pointer ml-3 font-semibold"
             >
               Max
             </span>
@@ -381,23 +380,29 @@ export const Widget = () => {
         )}
 
         {notEnough && (
-          <div className={styles.insufficient}>
-            <span>Insufficient balance!</span>
+          <div className="relative h-0">
+            <span className="text-ui-errorBg text-sm">
+              Insufficient balance!
+            </span>
           </div>
         )}
       </div>
       <div>
-        <div className={styles.switcharr} onClick={handleArrowClick}>
+        <div
+          className="cursor-pointer text-center p-4 pb-0 w-20 m-auto"
+          onClick={handleArrowClick}
+        >
           <span>&darr;&uarr;</span>
         </div>
       </div>
       <div>
-        <div className={styles.tokeninput}>
-          <div className={styles.moneywrapper}>
+        <div className="pl-3 flex justify-between items-center rounded-md border-dark-primary border-2">
+          <div className="flex flex-col items-start grow px-3">
             <input
               placeholder="0"
               readOnly
               type="text"
+              className="bg-dark-container w-full"
               id="buy-amount"
               value={
                 quotes && quotes[0]
@@ -412,20 +417,19 @@ export const Widget = () => {
             </span>
           </div>
           <div
-            style={{ display: "flex" }}
-            className={styles.row}
+            className="flex p-3 cursor-pointer"
             onClick={() => setTokenSelectOpen("buy")}
           >
-            <TokenDisplay token={buyToken} />
+            <TokenNamedBadge token={buyToken} />
             <DownAngled />
           </div>
         </div>
         {buyTokenBalance === undefined ? (
-          <div className={styles.balancecontainer}>
+          <div className="flex justify-end text-sm">
             <Skeleton />
           </div>
         ) : (
-          <div className={styles.balancecontainer}>
+          <div className="flex justify-end text-sm">
             <span>
               Balance{" "}
               {shortInteger(buyTokenBalance, buyToken.decimals).toFixed(4)}{" "}
@@ -446,30 +450,35 @@ export const Widget = () => {
       ) : (
         <Skeleton
           variant="rectangular"
-          className={styles.quotebox}
+          className="flex flex-col border-dark-secondary border-2 p-4 mt-5 mb-4"
           height={120}
         />
       )}
       {loading ? (
-        <button disabled className="mainbutton primary active">
+        <Button
+          disabled
+          type="secondary"
+          className="w-full h-8"
+          onClick={() => {}}
+        >
           <LoadingAnimation size={25} />
-        </button>
+        </Button>
       ) : (
         quotes &&
         quotes[0] && (
-          <button
+          <Button
             disabled={notEnough}
-            className={
-              notEnough ? "mainbutton disabled" : "mainbutton primary active"
-            }
+            type={notEnough ? "secondary" : "primary"}
+            className="w-full h-8"
+            outlined={notEnough}
             onClick={handleSwap}
           >
             Swap
-          </button>
+          </Button>
         )
       )}
-      {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
-      {successMessage && <p style={{ color: "green" }}>Success</p>}
+      {errorMessage && <p className="text-ui-errorBg">{errorMessage}</p>}
+      {successMessage && <p className="text-ui-successBg">Success</p>}
     </div>
   );
 };

@@ -1,7 +1,6 @@
 import { Token, TokenKey } from "../../classes/Token";
 import { Close } from "@mui/icons-material";
-
-import styles from "./widget.module.css";
+import { TokenNamedBadge } from "../TokenBadge";
 
 export type SelectableToken = {
   icon: string;
@@ -15,19 +14,10 @@ type Props = {
   other: Token;
 };
 
-export const TokenDisplay = ({ token }: { token: Token }) => {
-  return (
-    <div className={styles.tokendisplay}>
-      <token.icon />
-      {token.symbol}
-    </div>
-  );
-};
-
 export const TokenSelect = ({ close, setSelection, other }: Props) => {
   return (
-    <div className={styles.modalcontainer}>
-      <div className={styles.modalheader}>
+    <div className="absolute top-0 left-0 right-0 bg-dark-container border-white border-2 z-10 rounded-md p-5">
+      <div className="flex justify-between items-center">
         <h2>Select a token</h2>
         <div onClick={close}>
           <Close />
@@ -41,14 +31,14 @@ export const TokenSelect = ({ close, setSelection, other }: Props) => {
         }
         return (
           <div
-            className={styles.row}
+            className="cursor-pointer p-3"
             onClick={() => {
               setSelection(token);
               close();
             }}
             key={i}
           >
-            <TokenDisplay token={token} />
+            <TokenNamedBadge token={token} />
           </div>
         );
       })}

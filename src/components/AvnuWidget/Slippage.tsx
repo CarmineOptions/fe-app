@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Close } from "@mui/icons-material";
-
-import styles from "./widget.module.css";
+import { H5 } from "../common";
 
 type Props = {
   setSlippage: (n: number) => void;
@@ -37,33 +36,36 @@ export const SlippageChange = ({
   };
 
   return (
-    <div className={styles.modalcontainer}>
-      <div className={styles.modalheader}>
-        <h3>Set slippage</h3>
+    <div className="absolute top-0 left-0 right-0 bg-dark-container border-dark-primary border-2 rounded-md z-10 p-4">
+      <div className="flex justify-between items-center">
+        <H5>Set slippage</H5>
         <div onClick={close}>
           <Close />
         </div>
       </div>
-      <div className={styles.slippagecontainer}>
-        <div className={styles.slippageinput}>
+      <div className="flex items-center justify-between mt-5">
+        <div className="flex items-center border-dark-primary border-[1px]">
           <input
             type="number"
             min="0.01"
             max="1"
+            className="bg-dark-container p-1"
             value={slippageText}
             onChange={(e) => handleInputChange(e.target.value)}
             style={{ border: "none" }}
           />
-          <span>%</span>
+          <span className="mr-3">%</span>
         </div>
-        <div className={styles.slippagelist}>
+        <div className="flex gap-2">
           {slippages.map((slip, i) => (
             <div
               onClick={() => {
                 setSlippage(slip);
                 setSlippageText(slipToText(slip));
               }}
-              className={slip === currentSlippage ? styles.active : ""}
+              className={
+                slip === currentSlippage ? "text-brand" : "cursor-pointer"
+              }
               key={i}
             >
               {slip * 100}%

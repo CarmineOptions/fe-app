@@ -1,5 +1,4 @@
 import { useState } from "react";
-import styles from "./portfolio.module.css";
 import { MyOptions } from "./MyOptions";
 import { Tooltip } from "@mui/material";
 import { MyStake } from "./MyStake";
@@ -91,7 +90,7 @@ export const MyPortfolio = () => {
         <div>
           <P3 className="text-dark-secondary">PORTFOLIO VALUE</P3>
           {totalValueUsd === undefined ? (
-            <div className={styles.loadingcontainer}>
+            <div className="w-14 h-8">
               <LoadingAnimation size={20} />
             </div>
           ) : (
@@ -101,7 +100,7 @@ export const MyPortfolio = () => {
         <div>
           <P3 className="text-dark-secondary">OPTIONS</P3>
           {positionsValueUsd === undefined ? (
-            <div className={styles.loadingcontainer}>
+            <div className="w-14 h-8">
               <LoadingAnimation size={20} />
             </div>
           ) : (
@@ -111,7 +110,7 @@ export const MyPortfolio = () => {
         <div>
           <P3 className="text-dark-secondary">STAKING</P3>
           {stakesValueUsd === undefined ? (
-            <div className={styles.loadingcontainer}>
+            <div className="w-14 h-8">
               <LoadingAnimation size={20} />
             </div>
           ) : (

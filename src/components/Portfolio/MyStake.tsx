@@ -1,7 +1,6 @@
 import { useAccount } from "@starknet-react/core";
 import { LoadingAnimation } from "../Loading/Loading";
 
-import styles from "./portfolio.module.css";
 import { PairNameAboveBadge } from "../TokenBadge";
 import { UserPoolInfo } from "../../classes/Pool";
 import { useStakes } from "../../hooks/useStakes";
@@ -68,8 +67,8 @@ export const MyStakeWithAccount = () => {
   }
 
   return (
-    <div className={styles.scrollablex}>
-      <div className={styles.list}>
+    <div className="overflow-x-auto">
+      <div className="flex flex-col g-3 w-[550px]">
         <div className="flex justify-between my-2 py-3 border-dark-tertiary border-y-[0.5px] text-left w-[550px]">
           <div className="w-full">
             <P4 className="text-dark-secondary">PAIR</P4>
