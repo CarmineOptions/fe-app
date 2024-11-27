@@ -10,11 +10,14 @@ import {
   Sword,
   Wallet,
 } from "../Icons";
-import Parachute from "./Parachute.svg?react";
-import Stark from "./Strk.svg?react";
 import { setShowNavigation } from "../../redux/actions";
 import { L2, P3 } from "../common/Typography";
 import { useShowNavigation } from "../../hooks/useShowNavigation";
+
+import Parachute from "./Parachute.svg?react";
+import Stark from "./Strk.svg?react";
+import ParachuteActive from "./ParachuteActive.svg?react";
+import StarkActive from "./StrkActive.svg?react";
 
 const Nav = ({
   title,
@@ -31,13 +34,17 @@ const Nav = ({
 }) => {
   return (
     <li
-      className={`px-1 py-2 rounded-[2px] transition duration-300 ease-in-out cursor-pointer ${
+      className={`rounded-[2px] transition duration-300 ease-in-out cursor-pointer ${
         isActive
           ? "bg-brand-deep text-dark-primary"
           : "text-dark-secondary hover:text-dark-primary"
       }`}
     >
-      <NavLink to={`/${path}`} onClick={() => setShowNavigation(false)}>
+      <NavLink
+        to={`/${path}`}
+        className="block px-1 py-2"
+        onClick={() => setShowNavigation(false)}
+      >
         <div className="flex gap-[12px] items-center">
           <div className="flex gap-1 items-center">
             <Icon
@@ -58,23 +65,45 @@ const Nav = ({
   );
 };
 
-const NewBadge = () => (
-  <div className="bg-brand p-1 flex rounded-[2px]">
-    <L2 className="font-bold text-dark">NEW</L2>
+type BadgeProps = {
+  active: boolean;
+};
+
+const NewBadge = ({ active }: BadgeProps) => (
+  <div className={`${active ? "bg-dark" : "bg-brand"} p-1 flex rounded-[2px]`}>
+    <L2 className={`font-bold ${active ? "text-dark-primary" : "text-dark"}`}>
+      NEW
+    </L2>
   </div>
 );
 
-const AirdropBadge = () => (
-  <div className="bg-brand p-1 flex items-center gap-1 rounded-[2px]">
-    <Parachute />
-    <L2 className="font-bold text-dark">AIRDROP</L2>
+const AirdropBadge = ({ active }: BadgeProps) => (
+  <div
+    className={`${
+      active ? "bg-dark" : "bg-brand"
+    }  p-1 flex items-center gap-1 rounded-[2px]`}
+  >
+    {active ? <ParachuteActive /> : <Parachute />}
+    <L2 className={`font-bold ${active ? "text-dark-primary" : "text-dark"}`}>
+      AIRDROP
+    </L2>
   </div>
 );
 
-const RewardsBadge = () => (
-  <div className="bg-[#FF75C8] p-1 flex items-center gap-1 rounded-[2px]">
-    <Stark width="10px" height="10px" />
-    <L2 className="font-bold text-dark">REWARDS</L2>
+const RewardsBadge = ({ active }: BadgeProps) => (
+  <div
+    className={`${
+      active ? "bg-dark" : "bg-[#FF75C8]"
+    }  p-1 flex items-center gap-1 rounded-[2px]`}
+  >
+    {active ? (
+      <StarkActive width="10px" height="10px" />
+    ) : (
+      <Stark width="10px" height="10px" />
+    )}
+    <L2 className={`font-bold ${active ? "text-dark-primary" : "text-dark"}`}>
+      REWARDS
+    </L2>
   </div>
 );
 
@@ -95,7 +124,7 @@ export const Navigation = () => {
             path="portfolio"
             icon={Wallet}
             isActive={current === "portfolio"}
-            badge={<AirdropBadge />}
+            badge={<AirdropBadge active={current === "portfolio"} />}
           />
           <Nav
             title="Options"
@@ -107,7 +136,7 @@ export const Navigation = () => {
             title="Price Protect"
             path="priceprotect"
             icon={ShieldPlus}
-            badge={<NewBadge />}
+            badge={<NewBadge active={current === "priceprotect"} />}
             isActive={current === "priceprotect"}
           />
           <Nav
@@ -115,7 +144,7 @@ export const Navigation = () => {
             path="yield"
             icon={Subtract}
             isActive={current === "yield"}
-            badge={<RewardsBadge />}
+            badge={<RewardsBadge active={current === "yield"} />}
           />
           <Nav
             title="Swap"
@@ -139,7 +168,7 @@ export const Navigation = () => {
             title="Battlecharts"
             path="battlecharts"
             icon={Sword}
-            badge={<NewBadge />}
+            badge={<NewBadge active={current === "battlecharts"} />}
             isActive={current === "battlecharts"}
           />
         </ul>
