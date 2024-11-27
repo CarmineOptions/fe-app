@@ -124,30 +124,38 @@ export const MyPortfolio = () => {
           <div className="flex flex-col md:flex-row items-center gap-7 mb-6">
             <H4>Options</H4>
             <div className="flex gap-1">
-              {["live", "itm", "otm"].map((opt, i) => {
-                const isActive = options === opt;
-                const tooltipMsg =
-                  opt === "live"
-                    ? "Options that have not expired yet."
-                    : opt === "itm"
-                    ? "Options that expired In the Money - can be settled to claim profit."
-                    : "Options that expired Out of the Money - can be settled, but there is no profit.";
-                return (
-                  <Tooltip title={tooltipMsg}>
-                    <Button
-                      key={i}
-                      type={isActive ? "primary" : "secondary"}
-                      outlined={!isActive}
-                      onClick={() => setOptions(opt as "live" | "itm" | "otm")}
-                      className={options === opt ? "active primary" : ""}
-                    >
-                      {opt === "live" && "live"}
-                      {opt === "itm" && "expired itm"}
-                      {opt === "otm" && "expired otm"}
-                    </Button>
-                  </Tooltip>
-                );
-              })}
+              <Button
+                type={options === "live" ? "primary" : "secondary"}
+                outlined={options !== "live"}
+                onClick={() => setOptions("live")}
+                className={options === "live" ? "active primary" : ""}
+              >
+                live
+              </Button>
+              <Tooltip title="Options that expired In the Money - can be settled to claim profit.">
+                <div>
+                  <Button
+                    type={options === "itm" ? "primary" : "secondary"}
+                    outlined={options !== "itm"}
+                    onClick={() => setOptions("itm")}
+                    className={options === "itm" ? "active primary" : ""}
+                  >
+                    expired itm
+                  </Button>
+                </div>
+              </Tooltip>
+              <Tooltip title="Options that expired Out of the Money - can be settled, but there is no profit.">
+                <div>
+                  <Button
+                    type={options === "otm" ? "primary" : "secondary"}
+                    outlined={options !== "otm"}
+                    onClick={() => setOptions("otm")}
+                    className={options === "otm" ? "active primary" : ""}
+                  >
+                    expired otm
+                  </Button>
+                </div>
+              </Tooltip>
             </div>
           </div>
           <MyOptions state={options} />

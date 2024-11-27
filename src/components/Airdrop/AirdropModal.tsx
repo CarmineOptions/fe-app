@@ -140,17 +140,19 @@ type Props = {
   setOpen: (open: boolean) => void;
 };
 
-const stateToClassName = (state: TransactionState) => {
+const stateToButtonType = (
+  state: TransactionState
+): "success" | "error" | "secondary" | "primary" => {
   if (state === TransactionState.Success) {
-    return "mainbutton active green";
+    return "success";
   }
   if (state === TransactionState.Fail) {
-    return "mainbutton active red";
+    return "error";
   }
   if (state === TransactionState.Processing) {
-    return "mainbutton active disabled";
+    return "primary";
   }
-  return "mainbutton active primary";
+  return "primary";
 };
 
 export const AirdropModal = ({ data, open, setOpen }: Props) => {
@@ -233,10 +235,10 @@ export const AirdropModal = ({ data, open, setOpen }: Props) => {
         <div className="flex flex-col sm:flex-row justify-around sm:items-center gap-2">
           <Tooltip title="Staking for 1 month gives multiplier 1.0x">
             <Button
-              type="primary"
+              type={stateToButtonType(monthState)}
               disabled={monthState !== TransactionState.Initial}
               onClick={handle1month}
-              className={stateToClassName(monthState)}
+              className="w-full h-8"
             >
               {monthState === TransactionState.Processing && (
                 <LoadingAnimation size={20} />
@@ -248,10 +250,10 @@ export const AirdropModal = ({ data, open, setOpen }: Props) => {
           </Tooltip>
           <Tooltip title="Staking for 6 months gives multiplier 1.6x">
             <Button
-              type="primary"
+              type={stateToButtonType(sixMonthsState)}
               disabled={sixMonthsState !== TransactionState.Initial}
               onClick={handle6months}
-              className={stateToClassName(sixMonthsState)}
+              className="w-full h-8"
             >
               {sixMonthsState === TransactionState.Processing && (
                 <LoadingAnimation size={20} />
@@ -263,10 +265,10 @@ export const AirdropModal = ({ data, open, setOpen }: Props) => {
           </Tooltip>
           <Tooltip title="Staking for 1 year gives multiplier 2.5x">
             <Button
-              type="primary"
+              type={stateToButtonType(yearState)}
               disabled={yearState !== TransactionState.Initial}
               onClick={handleYear}
-              className={stateToClassName(yearState)}
+              className="w-full h-8"
             >
               {yearState === TransactionState.Processing && (
                 <LoadingAnimation size={20} />
@@ -280,10 +282,10 @@ export const AirdropModal = ({ data, open, setOpen }: Props) => {
         <p>Alternatively you can claim without staking:</p>
         <div className="align-middle m-auto">
           <Button
-            type="primary"
+            type={stateToButtonType(claimState)}
             disabled={claimState !== TransactionState.Initial}
             onClick={handleClaim}
-            className={stateToClassName(claimState)}
+            className="w-40 h-8"
           >
             {claimState === TransactionState.Processing && (
               <LoadingAnimation size={20} />

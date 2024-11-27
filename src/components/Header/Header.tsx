@@ -4,8 +4,9 @@ import { WalletButton } from "../ConnectWallet/Button";
 import { LogoLong } from "../Icons";
 import { setShowNavigation } from "../../redux/actions";
 import MobileLogo from "./MobileLogo.svg?react";
+import { memo } from "react";
 
-export const Header = () => {
+export const Header = memo(() => {
   const isOpen = useShowNavigation();
   const navigate = useNavigate();
 
@@ -30,4 +31,4 @@ export const Header = () => {
       <WalletButton />
     </header>
   );
-};
+});

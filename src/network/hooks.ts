@@ -8,7 +8,6 @@ import {
 } from "../redux/actions";
 import { store } from "../redux/store";
 import { debug } from "../utils/debugger";
-import { AccountInterface } from "starknet";
 
 const reportReferral = (referredAddress: string) => {
   const urlParams = new URLSearchParams(window.location.search);
@@ -65,7 +64,7 @@ const transferLps = (address: string) => {
 /**
  * Gets executed when a wallet is connected
  */
-export const onConnect = (account: AccountInterface, address: string) => {
+export const onConnect = (address: string) => {
   if (isMainnet) {
     // report user came with referral
     reportReferral(address);

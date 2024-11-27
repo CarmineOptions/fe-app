@@ -5,13 +5,14 @@ import { useConnectWallet } from "../../hooks/useConnectWallet";
 import { Button } from "../common/Button";
 import WalletIcon from "./Wallet.svg?react";
 import { P4 } from "../common";
+import { memo } from "react";
 
-export const WalletButton = () => {
-  const { account, address } = useAccount();
+export const WalletButton = memo(() => {
+  const { address } = useAccount();
   const { openWalletConnectModal } = useConnectWallet();
 
-  if (account && address) {
-    onConnect(account, address);
+  if (address) {
+    onConnect(address);
 
     // wallet connected
     return <AccountInfo />;
@@ -22,7 +23,7 @@ export const WalletButton = () => {
       Connect Wallet
     </Button>
   );
-};
+});
 
 type WalletButton = {
   msg: string;
