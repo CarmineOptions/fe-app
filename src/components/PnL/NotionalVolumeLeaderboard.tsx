@@ -8,7 +8,7 @@ import { formatNumber, standardiseAddress } from "../../utils/utils";
 import { useDomain } from "../../hooks/useDomain";
 
 export const NotionalVolumeLeaderboard = () => {
-  const { account, address } = useAccount();
+  const { address } = useAccount();
   const { isLoading, isError, data } = useQuery({
     queryKey: ["notional-volume-leaderboard", address],
     queryFn: async () => tradeLeaderboardDataQuery(address!),
@@ -60,7 +60,7 @@ export const NotionalVolumeLeaderboard = () => {
 
   const user = currentUser && {
     position: currentUser.position,
-    address: account!.address,
+    address: address!,
     username: username ? username : undefined,
     data: parseData(currentUser.pnl, currentUser.notionalVolume),
   };

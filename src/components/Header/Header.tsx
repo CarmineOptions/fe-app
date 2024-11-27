@@ -10,12 +10,11 @@ export const Header = () => {
   const navigate = useNavigate();
 
   const handleMobileMenuClick = () => {
-    console.log("HEADER", isOpen);
     setShowNavigation(!isOpen);
   };
 
   return (
-    <header className="py-[12px] px-[28px] flex justify-between items-center bg-dark-container border-dark-tertiary border-b-[1px]">
+    <header className="py-3 px-7 flex justify-between items-center bg-dark-container border-dark-tertiary border-b-[1px]">
       <div
         onClick={handleMobileMenuClick}
         className="md:hidden flex items-center cursor-pointer"
@@ -23,7 +22,7 @@ export const Header = () => {
         <MobileLogo />
       </div>
       <div
-        className="hidden md:flex items-center cursor-pointer"
+        className="hidden md:flex items-center cursor-pointer pt-1"
         onClick={() => navigate("/")}
       >
         <LogoLong />

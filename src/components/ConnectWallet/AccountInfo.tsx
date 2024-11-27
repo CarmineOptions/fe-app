@@ -1,13 +1,10 @@
+import { CSSProperties } from "react";
+import { useAccount } from "@starknet-react/core";
 import { WalletIcon } from "../assets";
 import { openAccountDialog } from "../../redux/actions";
 import { addressElision } from "../../utils/utils";
-
 import { SupportedWalletIds } from "../../types/wallet";
-import { CSSProperties } from "react";
-import { useAccount } from "@starknet-react/core";
 import { useDomain } from "../../hooks/useDomain";
-
-import styles from "./button.module.css";
 import { Button } from "../common/Button";
 
 const truncateUsername = (username: string, maxLength = 15) => {
@@ -36,9 +33,13 @@ export const AccountInfo = () => {
   }
 
   return (
-    <Button className="py-2" type="primary" onClick={handleClick}>
-      <div className={styles.walletinfo}>
-        <WalletIcon wallet={connector} sx={sx} />
+    <Button className="h-8" type="primary" onClick={handleClick}>
+      <div className="flex items-center gap-3 normal-case">
+        {connector.id === SupportedWalletIds.Braavos ? (
+          <div className="w-4 h-4 rounded-full bg-[url('/BraavosLogo.png')] bg-contain" />
+        ) : (
+          <WalletIcon wallet={connector} sx={sx} />
+        )}
         {!username ? (
           <span>{addressElision(address)}</span>
         ) : (
