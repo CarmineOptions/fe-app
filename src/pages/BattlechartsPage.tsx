@@ -1,6 +1,7 @@
 import { Layout } from "../components/Layout";
 import { Helmet } from "react-helmet";
 import { NotionalVolumeLeaderboard } from "../components/PnL";
+import { H4 } from "../components/common";
 
 const BattlechartsPage = () => {
   return (
@@ -9,7 +10,7 @@ const BattlechartsPage = () => {
         <title>Battlecharts | Carmine Options AMM</title>
         <meta name="description" content="Trading leaderboard" />
       </Helmet>
-      <h1>Trading Leaderboard</h1>
+      <H4>Trading Leaderboard</H4>
       <NotionalVolumeLeaderboard />
     </Layout>
   );

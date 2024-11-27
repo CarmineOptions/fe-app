@@ -4,13 +4,13 @@ import { Layout } from "../components/Layout";
 import { Rewards } from "../components/DefiSpringRewards";
 import { StarknetIcon } from "../components/Icons";
 
-const StarknetRewards = () => (
+const StarknetRewardsPage = () => (
   <Layout>
     <Helmet>
       <title>Starknet Rewards | Carmine Options AMM</title>
       <meta name="description" content="Claim STRK rewards" />
     </Helmet>
-    <div className="gapcolumn">
+    <div className="flex flex-col gap-7">
       <h1>Starknet DeFi Spring</h1>
       <h2 style={{ display: "flex", alignItems: "center", gap: "10px" }}>
         40M
@@ -34,4 +34,4 @@ const StarknetRewards = () => (
   </Layout>
 );
 
-export default StarknetRewards;
+export default StarknetRewardsPage;

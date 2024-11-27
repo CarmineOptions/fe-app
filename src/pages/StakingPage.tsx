@@ -7,7 +7,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { Layout } from "../components/Layout";
 import StakeCapital from "../components/StakeCapital";
 import WithdrawCapital from "../components/WithdrawCapital";
-import { CrmBanner } from "../components/Banner";
+import { H5 } from "../components/common";
 
 const StakePage = () => {
   return (
@@ -19,20 +19,15 @@ const StakePage = () => {
           content="Provide liquidity to liquidity pools and earn share of the fees"
         />
       </Helmet>
-      <CrmBanner />
-
       <Tooltip title="Click to learn more">
-        <RouterLink
-          style={{ textDecoration: "none", color: "inherit" }}
-          to="/staking-explained"
-        >
-          <h3 style={{ display: "inline" }}>
+        <RouterLink className="no-underline" to="/staking-explained">
+          <H5 className="inline-block">
             Stake Capital <Info />
-          </h3>
+          </H5>
         </RouterLink>
       </Tooltip>
       <StakeCapital />
-      <h3>Withdraw Capital</h3>
+      <H5>Withdraw Capital</H5>
       <WithdrawCapital />
     </Layout>
   );

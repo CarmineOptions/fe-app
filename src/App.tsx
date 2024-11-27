@@ -7,31 +7,31 @@ import {
 } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { QueryClientProvider } from "@tanstack/react-query";
+import { Provider } from "react-redux";
 
 import { BraavosAnnounce } from "./components/Announce";
 import { MultiDialog } from "./components/MultiDialog/MultiDialog";
-import TermsAndConditions from "./pages/termsAndConditions";
 import { isCookieSet } from "./utils/cookies";
-import TradePage from "./pages/trade";
-import APYInfoPage from "./pages/apyInfo";
-import TradeDashboardPage from "./pages/dashboard";
-import Governance from "./pages/governance";
-import NotFound from "./pages/notFound";
-import Portfolio from "./pages/portfolio";
-import Settings from "./pages/settings";
-import StakePage from "./pages/stake";
-import StakingExplainedPage from "./pages/stakeInfo";
-import LeaderboardPage from "./pages/leaderboard";
-import StarknetRewards from "./pages/starknetRewards";
-import BattlechartsPage from "./pages/battlecharts";
-import PriceGuardPage from "./pages/priceGuard";
-import YieldPage from "./pages/yield";
-import SwapPage from "./pages/swap";
-import PriceProtectVideoPage from "./pages/priceProtectVideo";
 import { StarknetProvider } from "./components/StarknetProvider";
 import { queryClient } from "./queries/client";
 import { store } from "./redux/store";
-import { Provider } from "react-redux";
+import {
+  APYInfoPage,
+  BattlechartsPage,
+  GovernancePage,
+  NotFoundPage,
+  PointsPage,
+  PortfolioPage,
+  PriceProtectPage,
+  PriceProtectVideoPage,
+  SettingsPage,
+  StakingExplainedPage,
+  SwapPage,
+  TermsAndConditionsPage,
+  TradePage,
+  TradeDashboardPage,
+  YieldPage,
+} from "./pages";
 
 const App = () => {
   const [check, rerender] = useState(false);
@@ -39,6 +39,8 @@ const App = () => {
   const oldPathRedirects = [
     ["/position", "/portfolio"],
     ["/history", "/portfolio#history"],
+    ["/staking", "/yield"],
+    ["/rewards", "/portfolio/airdrops"],
   ];
 
   return (
@@ -58,28 +60,31 @@ const App = () => {
                   ))}
                   <Route path="/" element={<TradePage />} />
                   <Route path="/trade" element={<TradePage />} />
-                  {/* <Route path="/priceGuard" element={<PriceGuard />} /> */}
-                  <Route path="/portfolio/:target?" element={<Portfolio />} />
-                  <Route path="/staking" element={<StakePage />} />
+                  <Route
+                    path="/portfolio/:target?"
+                    element={<PortfolioPage />}
+                  />
                   <Route path="/swap" element={<SwapPage />} />
                   <Route
                     path="/staking-explained"
                     element={<StakingExplainedPage />}
                   />
                   <Route path="/apy-info" element={<APYInfoPage />} />
-                  <Route path="/settings" element={<Settings />} />
+                  <Route path="/settings" element={<SettingsPage />} />
                   <Route path="/dashboard" element={<TradeDashboardPage />} />
-                  <Route path="/governance/:target?" element={<Governance />} />
-                  <Route path="/leaderboard" element={<LeaderboardPage />} />
-                  <Route path="/rewards" element={<StarknetRewards />} />
+                  <Route
+                    path="/governance/:target?"
+                    element={<GovernancePage />}
+                  />
+                  <Route path="/leaderboard" element={<PointsPage />} />
                   <Route path="/battlecharts" element={<BattlechartsPage />} />
-                  <Route path="/priceprotect" element={<PriceGuardPage />} />
+                  <Route path="/priceprotect" element={<PriceProtectPage />} />
                   <Route path="/yield" element={<YieldPage />} />
                   <Route
                     path="/price-protect-video"
                     element={<PriceProtectVideoPage />}
                   />
-                  <Route path="*" element={<NotFound />} />
+                  <Route path="*" element={<NotFoundPage />} />
                 </Routes>
               </Router>
               <MultiDialog />
@@ -93,7 +98,7 @@ const App = () => {
               <BraavosAnnounce />
             </>
           ) : (
-            <TermsAndConditions check={check} rerender={rerender} />
+            <TermsAndConditionsPage check={check} rerender={rerender} />
           )}
         </QueryClientProvider>
       </StarknetProvider>

@@ -124,12 +124,6 @@ export const Navigation = () => {
             isActive={current === "swap"}
           />
           <Nav
-            title="Rewards"
-            path="rewards"
-            icon={Sword}
-            isActive={current === "rewards"}
-          />
-          <Nav
             title="Points"
             path="leaderboard"
             icon={Medal}

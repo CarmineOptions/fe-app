@@ -1,9 +1,8 @@
-/* eslint-disable no-unreachable */
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import { Helmet } from "react-helmet";
 import { Layout } from "../components/Layout";
 import { UserPriceGuard, PriceGuard } from "../components/PriceGuard";
 import { openPopupWindow, PopupConfig } from "../components/Popup";
+import { H4, P3 } from "../components/common";
 
 const getVideoPopupConfig = (): PopupConfig => {
   const url = "/price-protect-video";
@@ -41,7 +40,7 @@ const getVideoPopupConfig = (): PopupConfig => {
   };
 };
 
-const PriceGuardPage = () => {
+const PriceProtectPage = () => {
   return (
     <Layout>
       <Helmet>
@@ -51,24 +50,24 @@ const PriceGuardPage = () => {
           content="Protect the price of your crypto assets"
         />
       </Helmet>
-      <h1>Price Protect</h1>
-      <p>
+      <H4>Price Protect</H4>
+      <P3>
         Safeguard your holdings from major price movement.{" "}
-        <button
-          className="linkbutton"
+        <a
+          className="cursor-pointer underline"
           onClick={() => {
             const cfg = getVideoPopupConfig();
             openPopupWindow(cfg);
           }}
         >
           Learn more
-        </button>
+        </a>
         .
-      </p>
+      </P3>
       <PriceGuard />
       <UserPriceGuard />
     </Layout>
   );
 };
 
-export default PriceGuardPage;
+export default PriceProtectPage;

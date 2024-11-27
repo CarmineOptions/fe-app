@@ -14,7 +14,7 @@ import { isMainnet } from "../constants/amm";
 import { MyPortfolio } from "../components/Portfolio";
 import { H4 } from "../components/common";
 
-const Portfolio = () => {
+const PortfolioPage = () => {
   const portfolioParam = usePortfolioParam();
   const navigate = useNavigate();
   const { target } = useParams();
@@ -100,4 +100,4 @@ const Portfolio = () => {
   );
 };
 
-export default Portfolio;
+export default PortfolioPage;

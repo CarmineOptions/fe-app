@@ -1,4 +1,6 @@
 import { Helmet } from "react-helmet";
+import { useAccount } from "@starknet-react/core";
+import { useEffect } from "react";
 
 import { Layout } from "../components/Layout";
 import { Proposals } from "../components/Proposal";
@@ -6,16 +8,12 @@ import { CarmineStaking } from "../components/CarmineStaking";
 import { useGovernanceSubpage } from "../hooks/useGovernanceSubpage";
 import { GovernanceSubpage } from "../redux/reducers/ui";
 import { useNavigate } from "react-router-dom";
-import buttonStyles from "../style/button.module.css";
 import { setGovernanceSubpage } from "../redux/actions";
 import { Airdrop } from "../components/Airdrop/Airdrop";
-import { useEffect } from "react";
 import { AddProposal } from "../components/AddProposal";
 import { coreTeamAddresses } from "../constants/amm";
-
-import styles from "./governance.module.css";
-import { useAccount } from "@starknet-react/core";
 import { standardiseAddress } from "../utils/utils";
+import { H4, H6 } from "../components/common";
 
 const VotingSubpage = () => {
   return (
@@ -69,7 +67,7 @@ const ProposeOptionsSubpage = () => {
   );
 };
 
-const Governance = () => {
+const GovernancePage = () => {
   const { address } = useAccount();
   const subpage = useGovernanceSubpage();
   const navigate = useNavigate();
@@ -102,62 +100,56 @@ const Governance = () => {
           content="Vote on proposals and take part in governing Carmine Options AMM"
         />
       </Helmet>
-      <h1 className="botmargin">Governance</h1>
-      <div className={styles.buttoncontainer + " botmargin"}>
-        <div>
-          <button
-            className={`${
-              subpage === GovernanceSubpage.AirDrop && "primary active"
-            } ${buttonStyles.offset}`}
-            onClick={() => {
-              handleNavigateClick(GovernanceSubpage.AirDrop);
-            }}
-          >
-            Airdrop
-          </button>
-          <button
-            className={`${
-              subpage === GovernanceSubpage.Voting && "primary active"
-            } ${buttonStyles.offset}`}
-            onClick={() => {
-              handleNavigateClick(GovernanceSubpage.Voting);
-            }}
-          >
-            Voting
-          </button>
-          <button
-            className={`${
-              subpage === GovernanceSubpage.Staking && "primary active"
-            } ${buttonStyles.offset}`}
-            onClick={() => {
-              handleNavigateClick(GovernanceSubpage.Staking);
-            }}
-          >
-            Staking
-          </button>
-          {/* CURRENTLY ONLY SHOW TO THE CORE TEAM MEMBERS */}
-          {address &&
-            coreTeamAddresses.includes(standardiseAddress(address)) && (
-              <button
-                className={`${
-                  subpage === GovernanceSubpage.Propose && "primary active"
-                } ${buttonStyles.offset}`}
-                onClick={() => {
-                  handleNavigateClick(GovernanceSubpage.Propose);
-                }}
+      <div className="flex flex-col gap-5">
+        <H4>Governance</H4>
+        <a
+          href="https://discord.com/channels/969228248552706078/1124013480123584622" // carmine proposals URL
+          target="_blank"
+          rel="noopener nofollow noreferrer"
+          className="px-6 py-3 rounded-md bg-gradient-to-r from-[#FFB60A] to-[#EEB735]"
+        >
+          <H6 className="text-dark">
+            Discuss upcoming proposals on the Carmine Discord →
+          </H6>
+        </a>
+
+        <div className="flex flex-col md:flex-row gap-7 mb-8">
+          {[
+            GovernanceSubpage.Voting,
+            GovernanceSubpage.Staking,
+            GovernanceSubpage.Propose,
+          ].map((subpageCurrent, i) => {
+            if (
+              subpageCurrent === GovernanceSubpage.Propose &&
+              (!address ||
+                !coreTeamAddresses.includes(standardiseAddress(address)))
+            ) {
+              return null;
+            }
+            return (
+              <H4
+                key={i}
+                className={`pb-2 w-fit ${
+                  subpage === subpageCurrent
+                    ? "border-dark-primary border-b-[1px]"
+                    : "text-dark-tertiary cursor-pointer"
+                }`}
+                onClick={() => handleNavigateClick(subpageCurrent)}
               >
-                Propose
-              </button>
-            )}
+                {subpageCurrent === GovernanceSubpage.Voting && "Voting"}
+                {subpageCurrent === GovernanceSubpage.Staking && "Staking"}
+                {subpageCurrent === GovernanceSubpage.Propose && "Propose"}
+              </H4>
+            );
+          })}
         </div>
-        <div className="divider" />
+        {subpage === GovernanceSubpage.Voting && <VotingSubpage />}
+        {subpage === GovernanceSubpage.Staking && <StakingSubpage />}
+        {subpage === GovernanceSubpage.AirDrop && <AirdropSubpage />}
+        {subpage === GovernanceSubpage.Propose && <ProposeOptionsSubpage />}
       </div>
-      {subpage === GovernanceSubpage.Voting && <VotingSubpage />}
-      {subpage === GovernanceSubpage.Staking && <StakingSubpage />}
-      {subpage === GovernanceSubpage.AirDrop && <AirdropSubpage />}
-      {subpage === GovernanceSubpage.Propose && <ProposeOptionsSubpage />}
     </Layout>
   );
 };
 
-export default Governance;
+export default GovernancePage;

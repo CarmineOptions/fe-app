@@ -1,8 +1,0 @@
-.buttoncontainer {
-  display: flex;
-  align-items: center;
-}
-
-.buttoncontainer>div:nth-child(2) {
-  flex-grow: 1;
-}

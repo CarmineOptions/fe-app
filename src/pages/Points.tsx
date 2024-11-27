@@ -1,29 +1,24 @@
-import { useEffect } from "react";
-
 import { Layout } from "../components/Layout";
 import { PointsLeaderboard } from "../components/Points";
 import { Helmet } from "react-helmet";
+import { H4, H5, P3 } from "../components/common";
 
-const LeaderboardPage = () => {
-  useEffect(() => {
-    document.title = "Points | Carmine Finance";
-  });
-
+const PointsPage = () => {
   return (
     <Layout>
       <Helmet>
         <title>Leaderboard | Carmine Options AMM</title>
         <meta name="description" content="Earn points to move up the ladder!" />
       </Helmet>
-      <div className="gapcolumn">
-        <h1>Carmine Points Program</h1>
-        <p>Elevate Your Status, Enhance Your Rewards</p>
-        <p>Season 2 is now live!</p>
-        <h2>Leaderboard</h2>
+      <div className="flex flex-col gap-7">
+        <H4>Carmine Points Program</H4>
+        <P3>Elevate Your Status, Enhance Your Rewards</P3>
+        <P3>Season 2 is now live!</P3>
+        <H5>Leaderboard</H5>
         <PointsLeaderboard />
       </div>
     </Layout>
   );
 };
 
-export default LeaderboardPage;
+export default PointsPage;

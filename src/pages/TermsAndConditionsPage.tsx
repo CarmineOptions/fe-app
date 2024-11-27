@@ -1,8 +1,6 @@
 import { Helmet } from "react-helmet";
-import { Link } from "@mui/material";
 import { setCookieWithExpiry } from "../utils/cookies";
-
-import styles from "./t&c.module.css";
+import { Button, H4, P3 } from "../components/common";
 
 const HIDE_TIME_MS = 12 * 60 * 60 * 1000; // 12 hours in ms
 
@@ -19,33 +17,38 @@ type Props = {
   check: boolean;
 };
 
-const TermsAndConditions = ({ check, rerender }: Props) => {
+const TermsAndConditionsPage = ({ check, rerender }: Props) => {
   const termsUrl =
     "https://github.com/CarmineOptions/fe-app/blob/development/TermsOfUse.md";
 
   return (
-    <div className={styles.container}>
+    <div className="flex flex-col items-center justify-center h-dvh gap-2 px-8">
       <Helmet>
         <title>Terms & Conditions | Carmine Options AMM</title>
       </Helmet>
-      <h1 className="botmargin">Terms & Conditions</h1>
-      <p className="botmargin">
+      <H4>Terms & Conditions</H4>
+      <P3 className="max-w-[700px]">
         Please take a moment to review our terms and conditions, which govern
         the use of our service. You can access the{" "}
-        <Link color="inherit" href={termsUrl}>
+        <a
+          className="underline"
+          target="_blank"
+          rel="noopener nofollow noreferrer"
+          href={termsUrl}
+        >
           document here
-        </Link>
+        </a>
         . It's important to read and understand these terms before using our
         service.
-      </p>
-      <button
-        className="primary active"
+      </P3>
+      <Button
+        type="primary"
         onClick={() => storeTermsAndConditions(check, rerender)}
       >
         Accept Terms and Conditions
-      </button>
+      </Button>
     </div>
   );
 };
 
-export default TermsAndConditions;
+export default TermsAndConditionsPage;

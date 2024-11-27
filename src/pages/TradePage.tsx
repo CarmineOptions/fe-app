@@ -2,9 +2,8 @@ import { Helmet } from "react-helmet";
 import { AlternativeTradingView } from "../components/CryptoGraph/AlternativeTradingView";
 import { Layout } from "../components/Layout";
 
-import style from "./trade.module.css";
 import { TradeTable } from "../components/TradeTable";
-import { Divider } from "../components/common";
+import { Divider, H4 } from "../components/common";
 
 const TradePage = () => {
   return (
@@ -18,9 +17,9 @@ const TradePage = () => {
       </Helmet>
       <TradeTable />
       <Divider className="my-12" />
-      <h2 className="botmargin">Chart</h2>
-      <div className={style.graphwidgetwrapper}>
-        <div className={style.graphcontainer}>
+      <H4 className="mb-7">Chart</H4>
+      <div className="flex justify-evenly gap-10">
+        <div className="w-full min-w-[45%] h-[500px]">
           <AlternativeTradingView />
         </div>
       </div>
