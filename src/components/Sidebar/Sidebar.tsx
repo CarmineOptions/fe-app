@@ -21,7 +21,7 @@ export const Sidebar = memo(() => {
   return (
     <>
       <div
-        className={`border-brand-deep border-l-[1px] w-${sidebarWidth} box-border absolute top-0 h-full z-40 bg-dark-container transition-all duration-1500 ease-in-out ${
+        className={`border-brand-deep border-l-[1px] w-${sidebarWidth} box-border absolute top-0 overflow-hidden h-full z-40 bg-dark-container transition-all duration-1500 ease-in-out ${
           sidebarOpen ? "right-0" : "w-[360px] right-[-360px]"
         }`}
         onClick={handleSidebarClick}

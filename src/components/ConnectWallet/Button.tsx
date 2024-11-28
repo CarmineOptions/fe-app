@@ -44,7 +44,12 @@ export const PrimaryConnectWallet = ({ className }: { className?: string }) => {
 };
 
 export const SecondaryConnectWallet = ({ msg }: WalletButton) => {
+  const { address } = useAccount();
   const { openWalletConnectModal } = useConnectWallet();
+
+  if (address) {
+    return null;
+  }
 
   return (
     <button

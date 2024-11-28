@@ -14,8 +14,11 @@ import Wallet from "./Wallet.svg?react";
 import BlackWallet from "./blackWallet.svg?react";
 import WhiteWallet from "./whiteWallet.svg?react";
 import EthIcon from "./ETH.svg?react";
+import EthBlackIcon from "./ETH-black.svg?react";
 import BtcIcon from "./BTC.svg?react";
+import BtcBlackIcon from "./BTC-black.svg?react";
 import StrkIcon from "./STRK.svg?react";
+import StrkBlackIcon from "./STRK-black.svg?react";
 import UsdcIcon from "./USDC.svg?react";
 import BraavosWithBg from "./BraavosBg.svg?react";
 import EkuboIcon from "./EKUBO.svg?react";
@@ -41,8 +44,11 @@ export {
   VerticalDots,
   Wallet,
   EthIcon,
+  EthBlackIcon,
   BtcIcon,
+  BtcBlackIcon,
   StrkIcon,
+  StrkBlackIcon,
   UsdcIcon,
   BraavosWithBg,
   EkuboIcon,

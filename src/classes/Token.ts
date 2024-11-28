@@ -168,3 +168,10 @@ export const StrkToken = Token.byKey(TokenKey.STRK);
 export const UsdcToken = Token.byKey(TokenKey.USDC);
 export const BtcToken = Token.byKey(TokenKey.BTC);
 export const EkuboToken = Token.byKey(TokenKey.EKUBO);
+export const allSupportedTokens = [
+  EthToken,
+  StrkToken,
+  UsdcToken,
+  BtcToken,
+  EkuboToken,
+];

@@ -2,7 +2,8 @@ import { Helmet } from "react-helmet";
 import { Layout } from "../components/Layout";
 import { UserPriceGuard, PriceGuard } from "../components/PriceGuard";
 import { openPopupWindow, PopupConfig } from "../components/Popup";
-import { H4, P3 } from "../components/common";
+import { H4 } from "../components/common";
+import { SecondaryConnectWallet } from "../components/ConnectWallet/Button";
 
 const getVideoPopupConfig = (): PopupConfig => {
   const url = "/price-protect-video";
@@ -50,21 +51,19 @@ const PriceProtectPage = () => {
           content="Protect the price of your crypto assets"
         />
       </Helmet>
-      <H4>Price Protect</H4>
-      <P3>
-        Safeguard your holdings from major price movement.{" "}
-        <a
-          className="cursor-pointer underline"
+      <div className="mb-10">
+        <H4
+          className="cursor-pointer mb-6"
           onClick={() => {
             const cfg = getVideoPopupConfig();
             openPopupWindow(cfg);
           }}
         >
-          Learn more
-        </a>
-        .
-      </P3>
-      <PriceGuard />
+          Price Protect
+        </H4>
+        <PriceGuard />
+      </div>
+      <SecondaryConnectWallet msg="Your purchased protections will be visible here" />
       <UserPriceGuard />
     </Layout>
   );

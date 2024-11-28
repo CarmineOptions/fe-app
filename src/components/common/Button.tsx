@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 
 export interface ButtonOptions {
-  type?: "primary" | "secondary" | "success" | "error";
+  type?: "primary" | "secondary" | "success" | "error" | "disabled";
   className?: string;
   outlined?: boolean;
   loading?: boolean;
@@ -10,7 +10,7 @@ export interface ButtonOptions {
 }
 
 export interface ButtonProps extends ButtonOptions {
-  onClick: () => void;
+  onClick?: () => void;
   children: ReactNode;
 }
 
@@ -59,6 +59,22 @@ export const Button = ({
     const cls = outlined
       ? `text-brand border-brand border-[0.5px] ${baseStyles}`
       : `bg-brand text-dark ${baseStyles}`;
+    return (
+      <button
+        disabled={disabled}
+        onClick={onClick}
+        className={cls}
+        style={padding ? { padding: padding } : {}}
+      >
+        {children}
+      </button>
+    );
+  }
+
+  if (type === "disabled") {
+    const cls = outlined
+      ? `text-dark-secondary border-dark-secondary border-[0.5px] ${baseStyles}`
+      : `bg-dark-secondary text-dark ${baseStyles}`;
     return (
       <button
         disabled={disabled}
