@@ -6,7 +6,6 @@ import { TransactionAction } from "../../redux/reducers/transactions";
 import styles from "./user_priceguard.module.css";
 import { ReactNode, useState } from "react";
 import { TokenKey } from "../../classes/Token";
-import { timestampToPriceGuardDate } from "../../utils/utils";
 import { afterTransaction } from "../../utils/blockchain";
 import { invalidatePositions } from "../../queries/client";
 import ArrowIcon from "./arrow.svg?react";
@@ -14,6 +13,7 @@ import { TokenNamedBadge } from "../TokenBadge/Badge";
 import { usePositions } from "../../hooks/usePositions";
 import { useConnectWallet } from "../../hooks/useConnectWallet";
 import toast from "react-hot-toast";
+import { Button, MaturityStacked, P3, P4 } from "../common";
 
 const PriceGuardDisplay = ({ option }: { option: OptionWithPosition }) => {
   const { sendAsync } = useSendTransaction({});
@@ -23,12 +23,6 @@ const PriceGuardDisplay = ({ option }: { option: OptionWithPosition }) => {
   );
   const [_settling, setSettling] = useState(false);
   const token = option.baseToken;
-  const [date, time] = timestampToPriceGuardDate(option.maturity);
-  const status = option.isFresh
-    ? "active"
-    : option.isInTheMoney
-    ? "claimable"
-    : "expired";
 
   const settling = txPending || _settling;
 
@@ -49,37 +43,48 @@ const PriceGuardDisplay = ({ option }: { option: OptionWithPosition }) => {
         setSettling(false);
       });
   };
+
   return (
-    <div className="tableitem">
-      <div>
-        <TokenNamedBadge token={token} size="small" />
+    <div className="flex justify-between my-2 py-3 text-left w-big">
+      <div className="w-full">
+        <TokenNamedBadge token={option.baseToken} size="small" />
       </div>
-      <div>
-        {option.size} {token.symbol}
+      <div className="w-full">
+        <P3>
+          {option.size} {token.symbol}
+        </P3>
       </div>
-      <div>${option.strike}</div>
-      <div className={styles.datetime}>
-        <div>
-          <span>{date}</span>
-          <span>{time}</span>
-        </div>
+      <div className="w-full">
+        <P3>${option.strike}</P3>
       </div>
-      <div className={styles[status]}>{status}</div>
-      <div>
-        {status === "claimable" && (
-          <button
-            disabled={settling}
-            className={styles.active}
-            onClick={handleButtonClick}
-          >
-            {settling ? (
-              <div className={styles.loading}>
-                <LoadingAnimation size={13} />
-              </div>
-            ) : (
-              "Claim"
-            )}
-          </button>
+      <div className="w-full">
+        <MaturityStacked timestamp={option.maturity} />
+      </div>
+      <div className="w-full">
+        {option.isFresh && (
+          <P3 className="font-semibold text-ui-successBg">ACTIVE</P3>
+        )}
+        {option.isInTheMoney && (
+          <P3 className="font-semibold text-brand">CLAIMABLE</P3>
+        )}
+        {option.isOutOfTheMoney && (
+          <P3 className="font-semibold text-ui-neutralBg">EXPIRED</P3>
+        )}
+      </div>
+      <div className="w-full">
+        {settling ? (
+          <LoadingAnimation size={13} />
+        ) : (
+          (option.isInTheMoney || option.isOutOfTheMoney) && (
+            <Button
+              disabled={settling}
+              type="primary"
+              className="w-full h-8"
+              onClick={handleButtonClick}
+            >
+              {option.isInTheMoney ? "Claim" : "Remove"}
+            </Button>
+          )
         )}
       </div>
     </div>
@@ -158,124 +163,162 @@ const WithAccount = () => {
 
   const Header = ({ children }: { children: ReactNode }) => {
     return (
-      <div className={styles.wrapper}>
-        <h1>My Price Protect</h1>
+      <div>
         <div className={styles.buttons}>
-          <button
-            className={asset === "all" ? "secondary active" : "secondary"}
+          <Button
+            type="secondary"
+            outlined={asset !== "all"}
             onClick={() => setAsset("all")}
           >
             All
-          </button>
-          <button
-            className={
-              asset === TokenKey.STRK ? "secondary active" : "secondary"
-            }
+          </Button>
+          <Button
+            type="secondary"
+            outlined={asset !== TokenKey.STRK}
             onClick={() => setAsset(TokenKey.STRK)}
           >
             STRK
-          </button>
-          <button
-            className={
-              asset === TokenKey.ETH ? "secondary active" : "secondary"
-            }
+          </Button>
+          <Button
+            type="secondary"
+            outlined={asset !== TokenKey.ETH}
             onClick={() => setAsset(TokenKey.ETH)}
           >
             ETH
-          </button>
-          <button
-            className={
-              asset === TokenKey.BTC ? "secondary active" : "secondary"
-            }
+          </Button>
+          <Button
+            type="secondary"
+            outlined={asset !== TokenKey.BTC}
             onClick={() => setAsset(TokenKey.BTC)}
           >
             wBTC
-          </button>
+          </Button>
         </div>
-        <div className={styles.outer}>
-          <div className={styles.inner}>
-            <div className="tableheader">
-              <div
-                onClick={() => handleSortClick("asset")}
-                style={{ cursor: "pointer" }}
-              >
-                asset{" "}
-                <div
-                  className={
-                    sortBy === "asset"
-                      ? `${styles.arrowcontainer} ${styles[order]}`
-                      : styles.arrowcontainer
-                  }
+        <div className="w-ful overflow-x-auto mt-5">
+          <div className="flex flex-col text-left gap-5 min-w-big overflow-hidden">
+            <div className="flex justify-between my-2 py-3 border-dark-tertiary border-y-[0.5px] text-left w-big">
+              <div className="w-full">
+                <P4
+                  onClick={() => handleSortClick("asset")}
+                  className="text-dark-secondary cursor-pointer flex gap-2 w-fit pr-2"
                 >
-                  <ArrowIcon />
-                  <ArrowIcon />
-                </div>
+                  ASSET{" "}
+                  <div className="flex flex-col justify-center gap-1 pb-1">
+                    <ArrowIcon
+                      className={
+                        sortBy === "asset" && order === "asc"
+                          ? "fill-brand"
+                          : "fill-dark-secondary"
+                      }
+                    />
+                    <ArrowIcon
+                      className={`rotate-180 ${
+                        sortBy === "asset" && order === "desc"
+                          ? "fill-brand"
+                          : "fill-dark-secondary"
+                      }`}
+                    />
+                  </div>
+                </P4>
               </div>
-              <div
-                onClick={() => handleSortClick("amount")}
-                style={{ cursor: "pointer" }}
-              >
-                amount{" "}
-                <div
-                  className={
-                    sortBy === "amount"
-                      ? `${styles.arrowcontainer} ${styles[order]}`
-                      : styles.arrowcontainer
-                  }
+              <div className="w-full">
+                <P4
+                  onClick={() => handleSortClick("amount")}
+                  className="text-dark-secondary cursor-pointer flex gap-2 w-fit pr-2"
                 >
-                  <ArrowIcon />
-                  <ArrowIcon />
-                </div>
+                  AMOUNT SECURED{" "}
+                  <div className="flex flex-col justify-center gap-1 pb-1">
+                    <ArrowIcon
+                      className={
+                        sortBy === "amount" && order === "asc"
+                          ? "fill-brand"
+                          : "fill-dark-secondary"
+                      }
+                    />
+                    <ArrowIcon
+                      className={`rotate-180 ${
+                        sortBy === "amount" && order === "desc"
+                          ? "fill-brand"
+                          : "fill-dark-secondary"
+                      }`}
+                    />
+                  </div>
+                </P4>
               </div>
-              <div
-                onClick={() => handleSortClick("price")}
-                style={{ cursor: "pointer" }}
-              >
-                price secured{" "}
-                <div
-                  className={
-                    sortBy === "price"
-                      ? `${styles.arrowcontainer} ${styles[order]}`
-                      : styles.arrowcontainer
-                  }
+              <div className="w-full">
+                <P4
+                  onClick={() => handleSortClick("price")}
+                  className="text-dark-secondary cursor-pointer flex gap-2 w-fit pr-2"
                 >
-                  <ArrowIcon />
-                  <ArrowIcon />
-                </div>
+                  PRICE SECURED{" "}
+                  <div className="flex flex-col justify-center gap-1 pb-1">
+                    <ArrowIcon
+                      className={
+                        sortBy === "price" && order === "asc"
+                          ? "fill-brand"
+                          : "fill-dark-secondary"
+                      }
+                    />
+                    <ArrowIcon
+                      className={`rotate-180 ${
+                        sortBy === "price" && order === "desc"
+                          ? "fill-brand"
+                          : "fill-dark-secondary"
+                      }`}
+                    />
+                  </div>
+                </P4>
               </div>
-              <div
-                onClick={() => handleSortClick("duration")}
-                style={{ cursor: "pointer" }}
-              >
-                duration{" "}
-                <div
-                  className={
-                    sortBy === "duration"
-                      ? `${styles.arrowcontainer} ${styles[order]}`
-                      : styles.arrowcontainer
-                  }
+              <div className="w-full">
+                <P4
+                  onClick={() => handleSortClick("duration")}
+                  className="text-dark-secondary cursor-pointer flex gap-2 w-fit pr-2"
                 >
-                  <ArrowIcon />
-                  <ArrowIcon />
-                </div>
+                  DURATION{" "}
+                  <div className="flex flex-col justify-center gap-1 pb-1">
+                    <ArrowIcon
+                      className={
+                        sortBy === "duration" && order === "asc"
+                          ? "fill-brand"
+                          : "fill-dark-secondary"
+                      }
+                    />
+                    <ArrowIcon
+                      className={`rotate-180 ${
+                        sortBy === "duration" && order === "desc"
+                          ? "fill-brand"
+                          : "fill-dark-secondary"
+                      }`}
+                    />
+                  </div>
+                </P4>
               </div>
-              <div
-                onClick={() => handleSortClick("status")}
-                style={{ cursor: "pointer" }}
-              >
-                status{" "}
-                <div
-                  className={
-                    sortBy === "status"
-                      ? `${styles.arrowcontainer} ${styles[order]}`
-                      : styles.arrowcontainer
-                  }
+              <div className="w-full">
+                <P4
+                  onClick={() => handleSortClick("status")}
+                  className="text-dark-secondary cursor-pointer flex gap-2 w-fit pr-2"
                 >
-                  <ArrowIcon />
-                  <ArrowIcon />
-                </div>
+                  STATUS{" "}
+                  <div className="flex flex-col justify-center gap-1 pb-1">
+                    <ArrowIcon
+                      className={
+                        sortBy === "status" && order === "asc"
+                          ? "fill-brand"
+                          : "fill-dark-secondary"
+                      }
+                    />
+                    <ArrowIcon
+                      className={`rotate-180 ${
+                        sortBy === "status" && order === "desc"
+                          ? "fill-brand"
+                          : "fill-dark-secondary"
+                      }`}
+                    />
+                  </div>
+                </P4>
               </div>
-              <div></div>
+              {/* Empty room for button */}
+              <div className="w-full" />
             </div>
             {children}
           </div>
@@ -313,11 +356,13 @@ const WithAccount = () => {
 
   return (
     <Header>
-      <div className="tablecontent">
-        {sorted.map((o, i) => (
-          <PriceGuardDisplay option={o} key={i} />
-        ))}
-      </div>
+      {sorted.length === 0 ? (
+        <div className="my-2 py-3 max-w-big">
+          <P3 className="font-semibold text-center">Nothing to show</P3>
+        </div>
+      ) : (
+        sorted.map((o, i) => <PriceGuardDisplay option={o} key={i} />)
+      )}
     </Header>
   );
 };
