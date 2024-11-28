@@ -6,7 +6,9 @@ import { RootState } from "../../redux/store";
 import { closeSidebar } from "../../redux/actions";
 
 export const Sidebar = memo(() => {
-  const { sidebarOpen, sidebarContent } = useSelector((s: RootState) => s.ui);
+  const { sidebarOpen, sidebarContent, sidebarWidth } = useSelector(
+    (s: RootState) => s.ui
+  );
 
   const effect = sidebarOpen
     ? `${styles.effect} ${styles.show}`
@@ -19,8 +21,8 @@ export const Sidebar = memo(() => {
   return (
     <>
       <div
-        className={`border-brand-deep border-l-[1px] box-border absolute top-0 h-full w-[360px] z-40 bg-dark-container transition duration-500 ease-in-out ${
-          sidebarOpen ? "right-0" : "right-[-360px]"
+        className={`border-brand-deep border-l-[1px] w-${sidebarWidth} box-border absolute top-0 h-full z-40 bg-dark-container transition-all duration-1500 ease-in-out ${
+          sidebarOpen ? "right-0" : "w-[360px] right-[-360px]"
         }`}
         onClick={handleSidebarClick}
       >

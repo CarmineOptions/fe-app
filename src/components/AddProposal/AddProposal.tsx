@@ -1,6 +1,6 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
-
+import { Close } from "@mui/icons-material";
 import styles from "./prop.module.css";
 import { IconButton, MenuItem, Select, Tooltip } from "@mui/material";
 import { Pool } from "../../classes/Pool";
@@ -11,7 +11,7 @@ import { LoadingAnimation } from "../Loading/Loading";
 import { handleDuplicates, suggestOptions } from "./suggest";
 import { timestampToDateAndTime } from "../../utils/utils";
 import { decimalToMath64 } from "../../utils/units";
-import { Close } from "@mui/icons-material";
+
 import { ProposalText } from "./ProposalText";
 import { proposeOptions } from "./proposeOptions";
 import { useAccount, useSendTransaction } from "@starknet-react/core";

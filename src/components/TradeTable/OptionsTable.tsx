@@ -2,11 +2,16 @@ import { OptionWithPremia } from "../../classes/Option";
 import { Pair } from "../../classes/Pair";
 import { useCurrency } from "../../hooks/useCurrency";
 import { OptionSide } from "../../types/options";
-import { openSidebar, setSidebarContent } from "../../redux/actions";
+import {
+  openSidebar,
+  setSidebarContent,
+  setSidebarWidth,
+} from "../../redux/actions";
 import { OptionSidebar } from "../Sidebar";
 import { TokenKey } from "../../classes/Token";
 import { P3, P4 } from "../common";
 import { ReactNode } from "react";
+import { SidebarWidth } from "../../redux/reducers/ui";
 
 type Props = {
   options: OptionWithPremia[];
@@ -22,6 +27,7 @@ const OptionsTable = ({ options, tokenPair, side }: Props) => {
 
   const handleOptionClick = (o: OptionWithPremia) => {
     setSidebarContent(<OptionSidebar option={o} />);
+    setSidebarWidth(SidebarWidth.Base);
     openSidebar();
     o.sendViewEvent();
   };

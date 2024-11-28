@@ -9,11 +9,10 @@ import { useGovernanceSubpage } from "../hooks/useGovernanceSubpage";
 import { GovernanceSubpage } from "../redux/reducers/ui";
 import { useNavigate } from "react-router-dom";
 import { setGovernanceSubpage } from "../redux/actions";
-import { Airdrop } from "../components/Airdrop/Airdrop";
 import { AddProposal } from "../components/AddProposal";
 import { coreTeamAddresses } from "../constants/amm";
 import { standardiseAddress } from "../utils/utils";
-import { H4, H6 } from "../components/common";
+import { Divider, H4, H5, H6 } from "../components/common";
 
 const VotingSubpage = () => {
   return (
@@ -40,19 +39,9 @@ const VotingSubpage = () => {
 const StakingSubpage = () => {
   return (
     <div>
-      <h2>CRM Staking</h2>
-      <div className="divider botmargin topmargin" />
+      <H5>CRM Staking</H5>
+      <Divider className="my-8" />
       <CarmineStaking />
-    </div>
-  );
-};
-
-const AirdropSubpage = () => {
-  return (
-    <div>
-      <h2>Airdrop</h2>
-      <div className="divider botmargin topmargin" />
-      <Airdrop />
     </div>
   );
 };
@@ -60,8 +49,8 @@ const AirdropSubpage = () => {
 const ProposeOptionsSubpage = () => {
   return (
     <div>
-      <h2>Propose</h2>
-      <div className="divider botmargin topmargin" />
+      <H5>Propose New Options</H5>
+      <Divider className="my-8" />
       <AddProposal />
     </div>
   );
@@ -145,7 +134,6 @@ const GovernancePage = () => {
         </div>
         {subpage === GovernanceSubpage.Voting && <VotingSubpage />}
         {subpage === GovernanceSubpage.Staking && <StakingSubpage />}
-        {subpage === GovernanceSubpage.AirDrop && <AirdropSubpage />}
         {subpage === GovernanceSubpage.Propose && <ProposeOptionsSubpage />}
       </div>
     </Layout>

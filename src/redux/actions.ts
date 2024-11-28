@@ -13,8 +13,10 @@ import {
   setShowNavigationState,
   setSidebarContentState,
   setSidebarOpenState,
+  setSidebarWidthState,
   setTransferDataModalState,
   setTransferDialogShown,
+  SidebarWidth,
   toggleDialog,
 } from "./reducers/ui";
 import { store } from "./store";
@@ -131,6 +133,9 @@ export const closeSidebar = () => store.dispatch(setSidebarOpenState(false));
 
 export const setSidebarContent = (node: ReactNode | null) =>
   store.dispatch(setSidebarContentState(node));
+
+export const setSidebarWidth = (width: SidebarWidth) =>
+  store.dispatch(setSidebarWidthState(width));
 
 export const setIsMobile = (isMobile: boolean) =>
   store.dispatch(setIsMobileState(isMobile));

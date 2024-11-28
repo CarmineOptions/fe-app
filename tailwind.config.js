@@ -65,6 +65,8 @@ export default {
       spacing: {
         0: "0px",
         big: "880px",
+        sidebar: "360px",
+        priceprotect: "958px",
       },
     },
   },

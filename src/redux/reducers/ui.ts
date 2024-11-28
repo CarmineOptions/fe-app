@@ -4,6 +4,11 @@ import { OptionWithPosition } from "../../classes/Option";
 import { TransferData } from "../../components/Transfer/transfer";
 import { ReactNode } from "react";
 
+export enum SidebarWidth {
+  Base = "sidebar",
+  PriceProtect = "priceprotect",
+}
+
 export enum DialogContentElem {
   Wallet = "Wallet",
   Account = "Account",
@@ -46,6 +51,7 @@ export interface UiState {
   referralsSent: ReferralSent[];
   sidebarOpen: boolean;
   sidebarContent: ReactNode | null;
+  sidebarWidth: SidebarWidth;
   isMobile: boolean;
   showNavigation: boolean;
 }
@@ -61,6 +67,7 @@ export const ui = createSlice({
     referralsSent: [],
     sidebarOpen: false,
     sidebarContent: null,
+    sidebarWidth: SidebarWidth.Base,
     isMobile: window.innerWidth < 700,
     showNavigation: false,
   } as UiState,
@@ -73,7 +80,7 @@ export const ui = createSlice({
       return state;
     },
     setCloseOptionState: (state, action: { payload: OptionWithPosition }) => {
-      // @ts-ignore
+      // @ts-expect-error setting option is not infinite
       state.activeCloseOption = action.payload;
       return state;
     },
@@ -110,6 +117,10 @@ export const ui = createSlice({
       state.sidebarContent = action.payload;
       return state;
     },
+    setSidebarWidthState: (state, action: { payload: SidebarWidth }) => {
+      state.sidebarWidth = action.payload;
+      return state;
+    },
     setIsMobileState: (state, action: { payload: boolean }) => {
       state.isMobile = action.payload;
       return state;
@@ -131,6 +142,7 @@ export const {
   addReferredPairState,
   setSidebarOpenState,
   setSidebarContentState,
+  setSidebarWidthState,
   setIsMobileState,
   setShowNavigationState,
 } = ui.actions;
