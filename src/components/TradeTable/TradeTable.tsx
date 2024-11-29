@@ -1,9 +1,8 @@
 import { OptionSide, OptionType } from "../../types/options";
 import { useState } from "react";
 import OptionsTable from "./OptionsTable";
-import { isCall, isLong, uniquePrimitiveValues } from "../../utils/utils";
+import { uniquePrimitiveValues } from "../../utils/utils";
 import { LoadingAnimation } from "../Loading/Loading";
-import { NoContent } from "../TableNoContent";
 import { Pair, PairKey } from "../../classes/Pair";
 import { InfoIcon } from "../InfoIcon";
 
@@ -11,18 +10,7 @@ import { useOptions } from "../../hooks/useOptions";
 import { useSearchParams } from "react-router-dom";
 import { Button } from "../common/Button";
 import { TokenPairSelect } from "../TokenPairSelect";
-import { Divider } from "../common";
-
-const getText = (type: OptionType, side: OptionSide | "all") => {
-  if (side === "all") {
-    return `We currently do not have any ${
-      isCall(type) ? "call" : "put"
-    } options.`;
-  }
-  return `We currently do not have any ${isLong(side) ? "long" : "short"} ${
-    isCall(type) ? "call" : "put"
-  } options.`;
-};
+import { Divider, P3 } from "../common";
 
 const queryParamsToPool = (param: string | null): [PairKey, OptionType] => {
   const defaultPool = [PairKey.STRK_USDC, OptionType.Call] as [
@@ -120,9 +108,17 @@ export const TradeTable = () => {
     });
   };
 
+  const handlePairChange = (newPair: Pair) => {
+    setPair(newPair);
+    setSearchParams((prev) => {
+      prev.set("pool", poolToQeuryParam(newPair.pairId, type));
+      return prev;
+    });
+  };
+
   return (
     <div className="flex flex-col gap-[28px] justify-between">
-      <TokenPairSelect pair={pair} setPair={setPair} />
+      <TokenPairSelect pair={pair} setPair={handlePairChange} />
       <div className="flex items-center flex-wrap gap-1 p-2">
         <div className="flex gap-1">
           <Button
@@ -192,9 +188,10 @@ SHORT: Sell a right to buy/sell (for Call/Put) underlying asset at strike price.
             <LoadingAnimation size={40} />
           </div>
         )}
-        {isError && <NoContent text="Option not available at the moment" />}
-        {!isLoading && !isError && filtered.length === 0 ? (
-          <NoContent text={getText(type, side)} />
+        {isError || filtered?.length === 0 ? (
+          <P3 className="font-semibold pb-6">
+            There are currently no options for this selection.
+          </P3>
         ) : (
           <OptionsTable options={filtered} tokenPair={pair} side={side} />
         )}

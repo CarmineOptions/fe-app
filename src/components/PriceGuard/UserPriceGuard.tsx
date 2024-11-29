@@ -208,7 +208,7 @@ export const UserPriceGuard = () => {
                   className="text-dark-secondary cursor-pointer flex gap-2 w-fit pr-2"
                 >
                   ASSET{" "}
-                  <div className="flex flex-col justify-center gap-1 pb-1">
+                  <span className="flex flex-col justify-center gap-1 pb-1">
                     <ArrowIcon
                       className={
                         sortBy === "asset" && order === "asc"
@@ -223,7 +223,7 @@ export const UserPriceGuard = () => {
                           : "fill-dark-secondary"
                       }`}
                     />
-                  </div>
+                  </span>
                 </P4>
               </div>
               <div className="w-full">
@@ -232,7 +232,7 @@ export const UserPriceGuard = () => {
                   className="text-dark-secondary cursor-pointer flex gap-2 w-fit pr-2"
                 >
                   AMOUNT SECURED{" "}
-                  <div className="flex flex-col justify-center gap-1 pb-1">
+                  <span className="flex flex-col justify-center gap-1 pb-1">
                     <ArrowIcon
                       className={
                         sortBy === "amount" && order === "asc"
@@ -247,7 +247,7 @@ export const UserPriceGuard = () => {
                           : "fill-dark-secondary"
                       }`}
                     />
-                  </div>
+                  </span>
                 </P4>
               </div>
               <div className="w-full">
@@ -256,7 +256,7 @@ export const UserPriceGuard = () => {
                   className="text-dark-secondary cursor-pointer flex gap-2 w-fit pr-2"
                 >
                   PRICE SECURED{" "}
-                  <div className="flex flex-col justify-center gap-1 pb-1">
+                  <span className="flex flex-col justify-center gap-1 pb-1">
                     <ArrowIcon
                       className={
                         sortBy === "price" && order === "asc"
@@ -271,7 +271,7 @@ export const UserPriceGuard = () => {
                           : "fill-dark-secondary"
                       }`}
                     />
-                  </div>
+                  </span>
                 </P4>
               </div>
               <div className="w-full">
@@ -280,7 +280,7 @@ export const UserPriceGuard = () => {
                   className="text-dark-secondary cursor-pointer flex gap-2 w-fit pr-2"
                 >
                   DURATION{" "}
-                  <div className="flex flex-col justify-center gap-1 pb-1">
+                  <span className="flex flex-col justify-center gap-1 pb-1">
                     <ArrowIcon
                       className={
                         sortBy === "duration" && order === "asc"
@@ -295,7 +295,7 @@ export const UserPriceGuard = () => {
                           : "fill-dark-secondary"
                       }`}
                     />
-                  </div>
+                  </span>
                 </P4>
               </div>
               <div className="w-full">
@@ -304,7 +304,7 @@ export const UserPriceGuard = () => {
                   className="text-dark-secondary cursor-pointer flex gap-2 w-fit pr-2"
                 >
                   STATUS{" "}
-                  <div className="flex flex-col justify-center gap-1 pb-1">
+                  <span className="flex flex-col justify-center gap-1 pb-1">
                     <ArrowIcon
                       className={
                         sortBy === "status" && order === "asc"
@@ -319,7 +319,7 @@ export const UserPriceGuard = () => {
                           : "fill-dark-secondary"
                       }`}
                     />
-                  </div>
+                  </span>
                 </P4>
               </div>
               {/* Empty room for button */}

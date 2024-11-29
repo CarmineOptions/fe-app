@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { NoContent } from "../TableNoContent";
 import { fetchLiveProposals } from "../../calls/liveProposals";
 import { LoadingAnimation } from "../Loading/Loading";
 import { useAccount } from "@starknet-react/core";
@@ -7,7 +6,7 @@ import { useUserBalance } from "../../hooks/useUserBalance";
 import { VE_CRM_ADDRESS } from "../../constants/amm";
 import { Proposal } from "./Proposal";
 import { SecondaryConnectWallet } from "../ConnectWallet/Button";
-import { P3 } from "../common";
+import { H5, P3 } from "../common";
 
 export const Voting = () => {
   const { address } = useAccount();
@@ -35,7 +34,7 @@ export const Voting = () => {
   const validProposals = proposals.filter((p) => !brokenProposals.includes(p));
 
   if (validProposals.length === 0) {
-    return <NoContent text="No proposals are currently live" />;
+    return <H5>No proposals are currently live</H5>;
   }
 
   return (

@@ -1,4 +1,4 @@
-import { Dispatch, useState } from "react";
+import { useState } from "react";
 import { Pair, PairKey } from "../../classes/Pair";
 import { PairBadge, PairNamedBadge, TokenNamedBadge } from "../TokenBadge";
 
@@ -10,7 +10,7 @@ import { P3 } from "../common";
 
 type TokenPairSelectProps = {
   pair: Pair;
-  setPair: Dispatch<React.SetStateAction<Pair>>;
+  setPair: (p: Pair) => void;
 };
 
 export const TokenPairSelect = ({ pair, setPair }: TokenPairSelectProps) => {
