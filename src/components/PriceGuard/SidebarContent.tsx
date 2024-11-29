@@ -35,6 +35,8 @@ import { PrimaryConnectWallet } from "../ConnectWallet/Button";
 import Warning from "./WarningOctagon.svg?react";
 import { USDC_ADDRESS } from "../../constants/amm";
 import { closeSidebar } from "../../redux/actions";
+import { getProfitGraphData } from "../CryptoGraph/profitGraphData";
+import { ProfitGraph } from "../CryptoGraph/ProfitGraph";
 
 type Props = {
   initialTokenKey: TokenKey;
@@ -270,6 +272,11 @@ export const SidebarContent = ({ initialTokenKey }: Props) => {
     ? timestampToPriceGuardDate(expiry)
     : ["--", "--"];
 
+  const graphData =
+    price === undefined || size === 0
+      ? undefined
+      : getProfitGraphData(pickedOption, price, size);
+
   return (
     <div className="px-4 py-5">
       <div className="flex justify-between items-center mb-8">
@@ -302,7 +309,11 @@ export const SidebarContent = ({ initialTokenKey }: Props) => {
               <Divider className="grow" />
             </div>
             <div className="max-w-[536px] h-[180px]">
-              <SingleTokenGraph token={token.id} />
+              {graphData ? (
+                <ProfitGraph data={graphData} />
+              ) : (
+                <LoadingAnimation />
+              )}
             </div>
             <div>
               <P4 className="text-dark-secondary">

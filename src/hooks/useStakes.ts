@@ -18,7 +18,7 @@ export const useStakes = () => {
   const { address } = useAccount();
 
   const { data: stakes, ...rest } = useQuery({
-    queryKey: [QueryKeys.stake],
+    queryKey: [QueryKeys.stake, address],
     queryFn: async () => fetchCapital(address!),
     enabled: !!address,
   });

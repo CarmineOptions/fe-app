@@ -1,5 +1,4 @@
 import { Option } from "../../classes/Option";
-import { TokenKey } from "../../classes/Token";
 import { OptionSide, OptionType } from "../../types/options";
 
 export type CurrencyData = { usd: number; market: number };
@@ -10,17 +9,23 @@ export type GraphData = {
   currency: string;
 };
 
-const getStep = (option: Option): number => {
-  if (option.baseToken.id === TokenKey.STRK) {
-    return 0.001;
+const getStep = (spread: [number, number]): number => {
+  const initial = Math.abs(spread[0] - spread[1]) / 500;
+  console.log("INITIAL", initial, spread);
+
+  const breakpoints = [1, 0.5, 0.1, 0.05, 0.01];
+
+  for (let i = 0; i < breakpoints.length; i++) {
+    if (initial * 2 > breakpoints[i]) {
+      return breakpoints[i];
+    }
   }
-  if (option.baseToken.id === TokenKey.BTC) {
-    return 0.5;
-  }
-  return 0.1;
+
+  return 0.005;
 };
 
-const round = (n: number): number => Number(n.toFixed(4));
+const round = (n: number, step: number): number =>
+  parseFloat((n - (n % (step / 5))).toFixed(6));
 
 export const getProfitGraphData = (
   option: Option,
@@ -29,17 +34,22 @@ export const getProfitGraphData = (
 ): GraphData => {
   const { strike: strikePrice, type, side } = option;
 
-  const step = getStep(option);
+  const spread = [
+    Math.max(strikePrice - 10 * premia, 0),
+    Math.min(strikePrice + 10 * premia, 2 * strikePrice),
+  ];
+  const step = getStep(spread as [number, number]);
   const granuality = 1 / step;
-  const spread = [0.85 * strikePrice, 1.15 * strikePrice];
+
   const plot = [];
   const currency = option.strikeCurrency;
 
   if (side === OptionSide.Long && type === OptionType.Call) {
     for (let i = spread[0] * granuality; i <= spread[1] * granuality; i++) {
-      const x = round(i * step);
+      const x = round(i * step, step);
       const y = round(
-        x < strikePrice ? -premia : (x - strikePrice) * size - premia
+        x < strikePrice ? -premia : (x - strikePrice) * size - premia,
+        step
       );
       plot.push({ market: x, usd: y });
     }
@@ -52,9 +62,10 @@ export const getProfitGraphData = (
 
   if (side === OptionSide.Short && type === OptionType.Call) {
     for (let i = spread[0] * granuality; i <= spread[1] * granuality; i++) {
-      const x = round(i * step);
+      const x = round(i * step, step);
       const y = round(
-        x < strikePrice ? premia : (strikePrice - x) * size + premia
+        x < strikePrice ? premia : (strikePrice - x) * size + premia,
+        step
       );
       plot.push({ market: x, usd: y });
     }
@@ -67,9 +78,10 @@ export const getProfitGraphData = (
 
   if (side === OptionSide.Long && type === OptionType.Put) {
     for (let i = spread[0] * granuality; i <= spread[1] * granuality; i++) {
-      const x = round(i * step);
+      const x = round(i * step, step);
       const y = round(
-        x < strikePrice ? (strikePrice - x) * size - premia : -premia
+        x < strikePrice ? (strikePrice - x) * size - premia : -premia,
+        step
       );
       plot.push({ market: x, usd: y });
     }
@@ -82,9 +94,10 @@ export const getProfitGraphData = (
 
   if (side === OptionSide.Short && type === OptionType.Put) {
     for (let i = spread[0] * granuality; i <= spread[1] * granuality; i++) {
-      const x = round(i * step);
+      const x = round(i * step, step);
       const y = round(
-        x < strikePrice ? (x - strikePrice) * size + premia : premia
+        x < strikePrice ? (x - strikePrice) * size + premia : premia,
+        step
       );
       plot.push({ market: x, usd: y });
     }

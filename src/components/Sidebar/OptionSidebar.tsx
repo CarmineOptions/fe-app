@@ -285,7 +285,7 @@ export const OptionSidebar = ({ option }: Props) => {
 
       <div className="flex flex-col gap-3">
         <div className="w-full h-32 bg-dark">
-          {graphData && <ProfitGraph data={graphData} />}
+          {graphData ? <ProfitGraph data={graphData} /> : <LoadingAnimation />}
         </div>
         <div className="flex justify-between">
           <div>
