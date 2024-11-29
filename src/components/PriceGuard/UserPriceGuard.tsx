@@ -3,7 +3,6 @@ import { useAccount, useSendTransaction } from "@starknet-react/core";
 import { OptionWithPosition } from "../../classes/Option";
 import { useTxPending } from "../../hooks/useRecentTxs";
 import { TransactionAction } from "../../redux/reducers/transactions";
-import styles from "./user_priceguard.module.css";
 import { ReactNode, useState } from "react";
 import { TokenKey } from "../../classes/Token";
 import { afterTransaction } from "../../utils/blockchain";
@@ -11,9 +10,9 @@ import { invalidatePositions } from "../../queries/client";
 import ArrowIcon from "./arrow.svg?react";
 import { TokenNamedBadge } from "../TokenBadge/Badge";
 import { usePositions } from "../../hooks/usePositions";
-import { useConnectWallet } from "../../hooks/useConnectWallet";
 import toast from "react-hot-toast";
 import { Button, MaturityStacked, P3, P4 } from "../common";
+import { SecondaryConnectWallet } from "../ConnectWallet/Button";
 
 const PriceGuardDisplay = ({ option }: { option: OptionWithPosition }) => {
   const { sendAsync } = useSendTransaction({});
@@ -95,8 +94,9 @@ const PriceGuardDisplay = ({ option }: { option: OptionWithPosition }) => {
 
 type Sorter = "asset" | "amount" | "price" | "duration" | "status";
 
-const WithAccount = () => {
+export const UserPriceGuard = () => {
   const { data, isLoading, isError } = usePositions();
+  const { address } = useAccount();
   const [asset, setAsset] = useState<TokenKey | "all">("all");
   const [order, setOrder] = useState<"asc" | "desc">("asc");
   const [sortBy, setSortBy] = useState<Sorter | undefined>();
@@ -165,8 +165,11 @@ const WithAccount = () => {
 
   const Header = ({ children }: { children: ReactNode }) => {
     return (
-      <div>
-        <div className={styles.buttons}>
+      <div className="flex flex-col gap-3">
+        {!address && (
+          <SecondaryConnectWallet msg="Your purchased protections will be visible here." />
+        )}
+        <div className="flex gap-1">
           <Button
             type="secondary"
             outlined={asset !== "all"}
@@ -196,9 +199,9 @@ const WithAccount = () => {
             wBTC
           </Button>
         </div>
-        <div className="w-ful overflow-x-auto mt-5">
+        <div className="w-ful overflow-x-auto">
           <div className="flex flex-col text-left gap-5 min-w-big overflow-hidden">
-            <div className="flex justify-between my-2 py-3 border-dark-tertiary border-y-[0.5px] text-left w-big">
+            <div className="flex justify-between py-3 border-dark-tertiary border-y-[0.5px] text-left w-big">
               <div className="w-full">
                 <P4
                   onClick={() => handleSortClick("asset")}
@@ -329,6 +332,10 @@ const WithAccount = () => {
     );
   };
 
+  if (!address) {
+    return <Header>{null}</Header>;
+  }
+
   if (isLoading) {
     return (
       <Header>
@@ -367,21 +374,4 @@ const WithAccount = () => {
       )}
     </Header>
   );
-};
-
-export const UserPriceGuard = () => {
-  const { account } = useAccount();
-  const { openWalletConnectModal } = useConnectWallet();
-
-  if (!account) {
-    return (
-      <div className={styles.wrapper}>
-        <h1>My Price Protect</h1>
-        <p>Connect your wallet to view active & claimable Price Protections</p>
-        <button onClick={openWalletConnectModal}>Connect Wallet</button>
-      </div>
-    );
-  }
-
-  return <WithAccount />;
 };

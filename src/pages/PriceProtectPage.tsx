@@ -3,7 +3,6 @@ import { Layout } from "../components/Layout";
 import { UserPriceGuard, PriceGuard } from "../components/PriceGuard";
 import { openPopupWindow, PopupConfig } from "../components/Popup";
 import { H4 } from "../components/common";
-import { SecondaryConnectWallet } from "../components/ConnectWallet/Button";
 
 const getVideoPopupConfig = (): PopupConfig => {
   const url = "/price-protect-video";
@@ -51,9 +50,9 @@ const PriceProtectPage = () => {
           content="Protect the price of your crypto assets"
         />
       </Helmet>
-      <div className="mb-10">
+      <div className="flex flex-col gap-10">
         <H4
-          className="cursor-pointer mb-6"
+          className="cursor-pointer"
           onClick={() => {
             const cfg = getVideoPopupConfig();
             openPopupWindow(cfg);
@@ -62,9 +61,8 @@ const PriceProtectPage = () => {
           Price Protect
         </H4>
         <PriceGuard />
+        <UserPriceGuard />
       </div>
-      <SecondaryConnectWallet msg="Your purchased protections will be visible here" />
-      <UserPriceGuard />
     </Layout>
   );
 };
