@@ -1,15 +1,12 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { Close } from "@mui/icons-material";
-import styles from "./prop.module.css";
-import { IconButton, MenuItem, Select, Tooltip } from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
 import { Pool } from "../../classes/Pool";
 import { STRK_ADDRESS, USDC_ADDRESS, AMM_ADDRESS } from "../../constants/amm";
 import { OptionType } from "../../types/options";
-import { PairBadge, PairNamedBadge } from "../TokenBadge";
 import { LoadingAnimation } from "../Loading/Loading";
 import { handleDuplicates, suggestOptions } from "./suggest";
-import { timestampToDateAndTime } from "../../utils/utils";
 import { decimalToMath64 } from "../../utils/units";
 
 import { ProposalText } from "./ProposalText";
@@ -18,7 +15,8 @@ import { useAccount, useSendTransaction } from "@starknet-react/core";
 import { useOptions } from "../../hooks/useOptions";
 import { stringToBigint } from "../../utils/conversions";
 import { pools } from "./pools";
-import { Button, MaturityStacked, P3 } from "../common";
+import { Button, P3 } from "../common";
+import { MaturitySelect, PoolSelect } from "../TokenPairSelect";
 
 const defaultOptionValue: ProposalOption = {
   pool: new Pool(STRK_ADDRESS, USDC_ADDRESS, OptionType.Call).poolId,
@@ -58,9 +56,6 @@ export const AddProposal = () => {
   const { sendAsync } = useSendTransaction({});
   const { isLoading, isError, options: data } = useOptions();
   const [options, setOptions] = useState<ProposalOption[]>([]);
-  const [isMaturitySelectOpen, setMaturitySelectOpen] =
-    useState<boolean>(false);
-
   const maturities = getRelevantMaturities();
 
   const [selectedMaturity, setSelectedMaturity] = useState<number>(
@@ -207,43 +202,18 @@ export const AddProposal = () => {
 
   return (
     <div>
-      <div className={styles.buttonscontainer}>
+      <div className="flex flex-col gap-4">
         <div className="flex gap-3">
-          <div className="relative inline-block">
-            <button
-              type="button"
-              className="rounded-sm p-3 w-full text-left bg-dark text-dark-primary shadow-md focus:outline-none focus:ring-2 sm:text-sm"
-              onClick={() => setMaturitySelectOpen((prev) => !prev)}
-            >
-              <div className="flex items-center justify-between">
-                <MaturityStacked timestamp={selectedMaturity} />
-              </div>
-            </button>
-            {isMaturitySelectOpen && (
-              <ul className="absolute z-10 mt-1 w-full text-dark-primary bg-dark-container rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
-                {maturities.map((maturity, i) => {
-                  return (
-                    <li
-                      key={i}
-                      className="cursor-pointer py-1 px-2"
-                      onClick={() => {
-                        setSelectedMaturity(maturity);
-                        setMaturitySelectOpen(false);
-                      }}
-                    >
-                      <MaturityStacked timestamp={maturity} />
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
-          </div>
-
+          <MaturitySelect
+            maturities={maturities}
+            maturity={selectedMaturity}
+            setMaturity={setSelectedMaturity}
+          />
           <Button type="secondary" onClick={handleSuggest}>
             Suggest
           </Button>
         </div>
-        <div className={styles.buttons}>
+        <div className="flex gap-3">
           <Button type="secondary" onClick={handleAddOption}>
             Add option
           </Button>
@@ -254,7 +224,7 @@ export const AddProposal = () => {
             Download
           </Button>
         </div>
-        <div className={styles.buttons}>
+        <div className="flex gap-3">
           <Button type="secondary" onClick={handleLoad}>
             Load
           </Button>
@@ -270,24 +240,25 @@ export const AddProposal = () => {
         {options.map((option, index) => (
           <div
             key={index}
-            className="flex flex-col gap-3 border-brand border-2 text-dark-primary w-[280px] p-3"
+            className="flex flex-col gap-3 border-dark-tertiary border-2 rounded-md text-dark-primary w-[280px] p-3"
           >
-            <div className="flex justify-between">
+            <div className="flex justify-between items-center">
               <div>
                 {option.active === false && (
                   <Tooltip title="Duplicates are not included in the final payload">
-                    <div className="w-fit p-1 bg-ui-errorBg">
-                      <p className="text-ui-errorAccent">
+                    <div className="w-fit bg-ui-errorBg px-2 py-1 rounded-md h-full">
+                      <P3 className="text-ui-errorAccent">
                         This option is a duplicate
-                      </p>
+                      </P3>
                     </div>
                   </Tooltip>
                 )}
               </div>
               <Tooltip title="Remove this option">
-                <div className="bg-dark-tertiary rounded-md">
+                <div className="w-5 h-5 text-dark-primary rounded-md flex justify-center items-center">
                   <IconButton
-                    sx={{ minWidth: 0 }}
+                    className="w-full h-full"
+                    sx={{ color: "white" }}
                     onClick={() => handleRemove(index)}
                   >
                     <Close />
@@ -298,60 +269,23 @@ export const AddProposal = () => {
 
             <div className="w-full flex justify-between items-center">
               <p>Pool</p>
-              <Select
-                className="bg-dark-secondary"
-                value={option.pool}
-                onChange={(e) => handleChange(index, "pool", e.target.value)}
-                sx={{
-                  ".css-1ly9a1d-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input":
-                    { padding: "5px", display: "flex" },
-                }}
-              >
-                {pools.map((pool, i) => (
-                  <MenuItem key={i} value={pool.poolId}>
-                    <div className={styles.poolselect}>
-                      <PairBadge
-                        tokenA={pool.baseToken}
-                        tokenB={pool.quoteToken}
-                        size="small"
-                      />
-                      <P3>{pool.typeAsText}</P3>
-                    </div>
-                  </MenuItem>
-                ))}
-              </Select>
+              <PoolSelect
+                pool={pools.find((p) => p.poolId === options[index].pool)!}
+                setPool={(poolId) => handleChange(index, "pool", poolId)}
+              />
             </div>
             <div className="w-full flex justify-between items-center">
               <p>Maturity</p>
-              <Select
-                value={option.maturity}
-                className="bg-dark-secondary"
-                onChange={(e) =>
-                  handleChange(index, "maturity", e.target.value)
-                }
-                sx={{
-                  ".css-1ly9a1d-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input":
-                    {
-                      padding: "0",
-                      display: "flex",
-                      alignItems: "center",
-                    },
-                }}
-              >
-                {maturities.map((maturity, i) => {
-                  const [date] = timestampToDateAndTime(maturity * 1000);
-                  return (
-                    <MenuItem key={i} value={maturity}>
-                      <p>{date}</p>
-                    </MenuItem>
-                  );
-                })}
-              </Select>
+              <MaturitySelect
+                maturity={option.maturity}
+                setMaturity={(m) => handleChange(index, "maturity", m)}
+                maturities={maturities}
+              />
             </div>
             <div className="w-full flex justify-between items-center">
               <p>Strike Price</p>
               <input
-                className="bg-dark w-10"
+                className="bg-dark w-20 text-center"
                 type="number"
                 placeholder="Strike Price"
                 value={option.strike}
@@ -363,7 +297,7 @@ export const AddProposal = () => {
             <div className="w-full flex justify-between items-center">
               <p>Volatility</p>
               <input
-                className="bg-dark w-10"
+                className="bg-dark w-20 text-center"
                 type="number"
                 placeholder="Volatility"
                 value={option.volatility}

@@ -1,9 +1,12 @@
 import { Dispatch, useState } from "react";
 import { Pair, PairKey } from "../../classes/Pair";
-import { PairNamedBadge, TokenNamedBadge } from "../TokenBadge";
+import { PairBadge, PairNamedBadge, TokenNamedBadge } from "../TokenBadge";
 
 import CaretDown from "./CaretDown.svg?react";
 import { allSupportedTokens, Token } from "../../classes/Token";
+import { Pool } from "../../classes/Pool";
+import { pools } from "../AddProposal/pools";
+import { P3 } from "../common";
 
 type TokenPairSelectProps = {
   pair: Pair;
@@ -40,15 +43,17 @@ export const TokenPairSelect = ({ pair, setPair }: TokenPairSelectProps) => {
       </button>
       {isOpen && (
         <ul className="absolute mt-1 w-full rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
-          {options.map((p, i) => (
-            <li
-              key={i}
-              className="bg-dark-container cursor-pointer py-1"
-              onClick={() => handleClick(p)}
-            >
-              <PairNamedBadge tokenA={p.baseToken} tokenB={p.quoteToken} />
-            </li>
-          ))}
+          {options
+            .filter((v) => v.pairId !== pair.pairId)
+            .map((p, i) => (
+              <li
+                key={i}
+                className="bg-dark-container cursor-pointer py-1"
+                onClick={() => handleClick(p)}
+              >
+                <PairNamedBadge tokenA={p.baseToken} tokenB={p.quoteToken} />
+              </li>
+            ))}
         </ul>
       )}
     </div>
@@ -85,15 +90,130 @@ export const TokenSelect = ({ token, setToken, tokens }: TokenSelectProps) => {
       </button>
       {isOpen && (
         <ul className="z-20 absolute mt-1 w-full rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
-          {list.map((t, i) => (
-            <li
-              key={i}
-              className="bg-dark-container cursor-pointer py-1"
-              onClick={() => handleClick(t)}
-            >
-              <TokenNamedBadge token={t} size="small" />
-            </li>
-          ))}
+          {list
+            .filter((v) => v.id !== token.id)
+            .map((t, i) => (
+              <li
+                key={i}
+                className="bg-dark-container cursor-pointer py-1"
+                onClick={() => handleClick(t)}
+              >
+                <TokenNamedBadge token={t} size="small" />
+              </li>
+            ))}
+        </ul>
+      )}
+    </div>
+  );
+};
+
+type PoolSelectProps = {
+  pool: Pool;
+  setPool: (poolId: string) => void;
+};
+
+export const PoolSelect = ({ pool, setPool }: PoolSelectProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleClick = (p: Pool) => {
+    setPool(p.poolId);
+    setIsOpen(false);
+  };
+
+  return (
+    <div className="relative inline-block">
+      <button
+        type="button"
+        className="py-2 text-left bg-dark rounded-lg shadow-md focus:outline-none focus:ring-2 sm:text-sm"
+        onClick={() => setIsOpen((prev) => !prev)}
+      >
+        <div className="flex items-center justify-between gap-2">
+          <PairBadge tokenA={pool.baseToken} tokenB={pool.quoteToken} />
+          <P3 className="font-semibold">{pool.typeAsText}</P3>
+          <CaretDown />
+        </div>
+      </button>
+      {isOpen && (
+        <ul className="absolute z-50 bg-dark mt-1 w-full rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
+          {pools
+            .filter((v) => v.poolId !== pool.poolId)
+            .map((p, i) => (
+              <li
+                key={i}
+                className="bg-dark-container cursor-pointer py-1"
+                onClick={() => handleClick(p)}
+              >
+                <div className="flex items-center gap-2">
+                  <PairBadge tokenA={p.baseToken} tokenB={p.quoteToken} />
+                  <P3 className="font-semibold">{p.typeAsText}</P3>
+                </div>
+              </li>
+            ))}
+        </ul>
+      )}
+    </div>
+  );
+};
+
+type MaturitySelectProps = {
+  maturity: number;
+  maturities: number[];
+  setMaturity: (n: number) => void;
+};
+
+export const MaturitySelect = ({
+  maturity,
+  maturities,
+  setMaturity,
+}: MaturitySelectProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const tsToDate = (timestamp: number): string => {
+    const dateObj = new Date(timestamp * 1000);
+
+    const dateOptions: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    };
+
+    const dateString = dateObj.toLocaleDateString("en-US", dateOptions);
+
+    return dateString;
+  };
+
+  const handleClick = (m: number) => {
+    setMaturity(m);
+    setIsOpen(false);
+  };
+
+  return (
+    <div className="relative inline-block">
+      <button
+        type="button"
+        className="py-2 text-left bg-dark rounded-lg shadow-md focus:outline-none focus:ring-2 sm:text-sm"
+        onClick={() => setIsOpen((prev) => !prev)}
+      >
+        <div className="flex items-center justify-between gap-2">
+          <P3 className="font-semibold">{tsToDate(maturity)}</P3>
+          <CaretDown />
+        </div>
+      </button>
+      {isOpen && (
+        <ul className="absolute z-50 bg-dark mt-1 w-full rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
+          {maturities
+            .filter((v) => v !== maturity)
+            .map((m, i) => (
+              <li
+                key={i}
+                className="bg-dark-container cursor-pointer py-1"
+                onClick={() => handleClick(m)}
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <P3 className="font-semibold">{tsToDate(m)}</P3>
+                </div>
+              </li>
+            ))}
         </ul>
       )}
     </div>

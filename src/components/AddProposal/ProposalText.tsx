@@ -4,6 +4,7 @@ import { ProposalOption } from "./AddProposal";
 
 import styles from "./prop.module.css";
 import { pools } from "./pools";
+import { Button } from "../common";
 
 export const ProposalText = ({
   proposalOptions,
@@ -68,9 +69,9 @@ export const ProposalText = ({
       })}
       <div className="divider topmargin botmargin" />
       <div className="center">
-        <button onClick={handleCopy} className="secondary active">
+        <Button type="primary" onClick={handleCopy}>
           Copy
-        </button>
+        </Button>
       </div>
     </div>
   );
