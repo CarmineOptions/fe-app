@@ -18,8 +18,10 @@ import { TransactionState, TxTracking } from "../../types/network";
 import { LoadingAnimation } from "../Loading/Loading";
 import { unstakeAirdrop } from "../../calls/carmineStake";
 
-import styles from "./modal.module.css";
+import { Button, H5, P3 } from "../common";
+import { stateToButtonType } from "../../utils/utils";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const unstakeAndStake = async (
   sendAsync: (
     args?: Call[]
@@ -77,19 +79,6 @@ type Props = {
   amount: bigint;
   open: boolean;
   setOpen: (open: boolean) => void;
-};
-
-export const stateToClassName = (state: TransactionState) => {
-  if (state === TransactionState.Success) {
-    return "active green";
-  }
-  if (state === TransactionState.Fail) {
-    return "active red";
-  }
-  if (state === TransactionState.Processing) {
-    return "disabled";
-  }
-  return "active primary";
 };
 
 export const StakingModal = ({ amount, open, setOpen }: Props) => {
@@ -180,79 +169,87 @@ export const StakingModal = ({ amount, open, setOpen }: Props) => {
     <Dialog
       open={open}
       onClose={handleClose}
-      aria-labelledby="claim-airdrop"
-      aria-describedby="claim-airdrop-modal"
+      aria-labelledby="stake-crm"
+      aria-describedby="stake-crm-modal"
       PaperProps={{ sx: { borderRadius: 0, background: "none" } }}
     >
-      <div className={styles.modal}>
-        <h1>Restake & Unstake</h1>
-        <p>
-          Your stake of {shortInteger(amount, 18)} <b>CRM</b> has expired.
-        </p>
-        <p>You can stake again for a period:</p>
-        <div>
-          <div className={styles.inputall}>
-            <input
-              placeholder="0"
-              type="text"
-              value={inputValue}
-              onChange={(e) => handleInputChange(e.target.value)}
-            />
-            <button onClick={handleAll}>All</button>
-          </div>
-          <div className={styles.buttongroup}>
-            <Tooltip title="Staking for 1 month gives multiplier 1.0x">
-              <button
-                disabled={monthState !== TransactionState.Initial}
-                onClick={handle1month}
-                className={stateToClassName(monthState)}
-              >
-                {monthState === TransactionState.Processing && (
-                  <LoadingAnimation size={20} />
-                )}
-                {monthState === TransactionState.Initial && "1 month"}
-                {monthState === TransactionState.Success && "Done!"}
-                {monthState === TransactionState.Fail && "Failed"}
-              </button>
-            </Tooltip>
-            <Tooltip title="Staking for 6 months gives multiplier 1.6x">
-              <button
-                disabled={sixMonthsState !== TransactionState.Initial}
-                onClick={handle6months}
-                className={stateToClassName(sixMonthsState)}
-              >
-                {sixMonthsState === TransactionState.Processing && (
-                  <LoadingAnimation size={20} />
-                )}
-                {sixMonthsState === TransactionState.Initial && "6 months"}
-                {sixMonthsState === TransactionState.Success && "Done!"}
-                {sixMonthsState === TransactionState.Fail && "Failed"}
-              </button>
-            </Tooltip>
-            <Tooltip title="Staking for 1 year gives multiplier 2.5x">
-              <button
-                disabled={yearState !== TransactionState.Initial}
-                onClick={handleYear}
-                className={stateToClassName(yearState)}
-              >
-                {yearState === TransactionState.Processing && (
-                  <LoadingAnimation size={20} />
-                )}
-                {yearState === TransactionState.Initial && "1 year"}
-                {yearState === TransactionState.Success && "Done!"}
-                {yearState === TransactionState.Fail && "Failed"}
-              </button>
-            </Tooltip>
-          </div>
+      <div className="w-64 sm:w-[500px] bg-dark-card border-dark-primary text-dark-primary border-[1px] p-6 flex flex-col gap-4">
+        <H5>Restake & Unstake</H5>
+        <P3>
+          Your stake of {shortInteger(amount, 18)}
+          <span className="font-bold">CRM</span> has expired.
+        </P3>
+        <P3>You can stake again for a period:</P3>
+        <div className="flex items-center border-dark-primary border-[1px]">
+          <input
+            placeholder="0"
+            type="text"
+            value={inputValue}
+            className="bg-dark text-dark-primary h-8 pl-2 w-2/3"
+            onChange={(e) => handleInputChange(e.target.value)}
+          />
+          <Button className="w-1/3 h-8" onClick={handleAll}>
+            All
+          </Button>
         </div>
-        <p>
-          Alternatively, you can unstake your <b>veCRM</b> to <b>CRM</b>:
-        </p>
-        <div className={styles.singlebutton}>
-          <button
+        <div className="flex flex-col sm:flex-row justify-around sm:items-center gap-2">
+          <Tooltip title="Staking for 1 month gives multiplier 1.0x">
+            <Button
+              type={stateToButtonType(monthState)}
+              disabled={monthState !== TransactionState.Initial}
+              onClick={handle1month}
+              className="w-full h-8"
+            >
+              {monthState === TransactionState.Processing && (
+                <LoadingAnimation size={20} />
+              )}
+              {monthState === TransactionState.Initial && "1 month"}
+              {monthState === TransactionState.Success && "Done!"}
+              {monthState === TransactionState.Fail && "Failed"}
+            </Button>
+          </Tooltip>
+          <Tooltip title="Staking for 6 months gives multiplier 1.6x">
+            <Button
+              type={stateToButtonType(sixMonthsState)}
+              disabled={sixMonthsState !== TransactionState.Initial}
+              onClick={handle6months}
+              className="w-full h-8"
+            >
+              {sixMonthsState === TransactionState.Processing && (
+                <LoadingAnimation size={20} />
+              )}
+              {sixMonthsState === TransactionState.Initial && "6 months"}
+              {sixMonthsState === TransactionState.Success && "Done!"}
+              {sixMonthsState === TransactionState.Fail && "Failed"}
+            </Button>
+          </Tooltip>
+          <Tooltip title="Staking for 1 year gives multiplier 2.5x">
+            <Button
+              type={stateToButtonType(yearState)}
+              disabled={yearState !== TransactionState.Initial}
+              onClick={handleYear}
+              className="w-full h-8"
+            >
+              {yearState === TransactionState.Processing && (
+                <LoadingAnimation size={20} />
+              )}
+              {yearState === TransactionState.Initial && "1 year"}
+              {yearState === TransactionState.Success && "Done!"}
+              {yearState === TransactionState.Fail && "Failed"}
+            </Button>
+          </Tooltip>
+        </div>
+        <P3>
+          Alternatively, you can unstake your{" "}
+          <span className="font-bold">veCRM</span> to{" "}
+          <span className="font-bold">CRM</span>.
+        </P3>
+        <div className="align-middle m-auto">
+          <Button
+            type={stateToButtonType(unstakeState)}
             disabled={unstakeState !== TransactionState.Initial}
             onClick={handleUnstake}
-            className={stateToClassName(unstakeState)}
+            className="w-40 h-8"
           >
             {unstakeState === TransactionState.Processing && (
               <LoadingAnimation size={20} />
@@ -260,7 +257,7 @@ export const StakingModal = ({ amount, open, setOpen }: Props) => {
             {unstakeState === TransactionState.Initial && "Unstake"}
             {unstakeState === TransactionState.Success && "Done!"}
             {unstakeState === TransactionState.Fail && "Failed"}
-          </button>
+          </Button>
         </div>
       </div>
     </Dialog>

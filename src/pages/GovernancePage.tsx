@@ -15,21 +15,11 @@ import { Divider, H4, H5, H6 } from "../components/common";
 import { Voting } from "../components/Governance";
 
 const VotingSubpage = () => {
-  return (
-    <div>
-      <Voting />
-    </div>
-  );
+  return <Voting />;
 };
 
 const StakingSubpage = () => {
-  return (
-    <div>
-      <H5>CRM Staking</H5>
-      <Divider className="my-8" />
-      <CarmineStaking />
-    </div>
-  );
+  return <CarmineStaking />;
 };
 
 const ProposeOptionsSubpage = () => {

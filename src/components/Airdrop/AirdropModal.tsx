@@ -20,6 +20,7 @@ import { LoadingAnimation } from "../Loading/Loading";
 import { invalidateKey } from "../../queries/client";
 import { QueryKeys } from "../../queries/keys";
 import { Button } from "../common";
+import { stateToButtonType } from "../../utils/utils";
 
 export const claim = async (
   sendAsync: (
@@ -138,21 +139,6 @@ type Props = {
   data: Eligible;
   open: boolean;
   setOpen: (open: boolean) => void;
-};
-
-const stateToButtonType = (
-  state: TransactionState
-): "success" | "error" | "secondary" | "primary" => {
-  if (state === TransactionState.Success) {
-    return "success";
-  }
-  if (state === TransactionState.Fail) {
-    return "error";
-  }
-  if (state === TransactionState.Processing) {
-    return "primary";
-  }
-  return "primary";
 };
 
 export const AirdropModal = ({ data, open, setOpen }: Props) => {

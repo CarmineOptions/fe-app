@@ -8,6 +8,7 @@ import {
 } from "../constants/amm";
 import { TESTNET_CHAINID } from "../constants/starknet";
 import { OptionSide, OptionType } from "../types/options";
+import { TransactionState } from "../types/network";
 
 export const isNonEmptyArray = (v: unknown): v is Array<any> =>
   !!(v && Array.isArray(v) && v.length > 0);
@@ -227,4 +228,19 @@ export const formatNumber = (num: number, maxDecimals = 2): string => {
   })
     .format(num)
     .replace(",", ".");
+};
+
+export const stateToButtonType = (
+  state: TransactionState
+): "success" | "error" | "secondary" | "primary" => {
+  if (state === TransactionState.Success) {
+    return "success";
+  }
+  if (state === TransactionState.Fail) {
+    return "error";
+  }
+  if (state === TransactionState.Processing) {
+    return "primary";
+  }
+  return "primary";
 };

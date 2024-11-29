@@ -8,18 +8,28 @@ import { StakeCrm } from "./StakeCRM";
 import { LoadingAnimation } from "../Loading/Loading";
 import { formatNumber } from "../../utils/utils";
 import { useAccount } from "@starknet-react/core";
-import { useConnectWallet } from "../../hooks/useConnectWallet";
+import { SecondaryConnectWallet } from "../ConnectWallet/Button";
+import { P3 } from "../common";
 
-export const StakeWithAccount = ({ address }: { address: string }) => {
+export const CarmineStaking = () => {
+  const { address } = useAccount();
   const { isLoading, isError, data } = useQuery({
     queryKey: [QueryKeys.carmineStakes, address],
-    queryFn: async () => fetchStakingData(address),
+    queryFn: async () => fetchStakingData(address!),
+    enabled: !!address,
   });
-  if (isLoading || !data) {
+
+  if (!address) {
+    return (
+      <SecondaryConnectWallet msg="Connect wallet to manage your stakes." />
+    );
+  }
+
+  if (isLoading) {
     return <LoadingAnimation size={70} />;
   }
 
-  if (isError) {
+  if (isError || !data) {
     return <div>Something went wrong, please try again later</div>;
   }
 
@@ -35,36 +45,25 @@ export const StakeWithAccount = ({ address }: { address: string }) => {
 
   return (
     <div>
-      <p>
-        Want to know more about <b>CRM</b> staking and <b>veCRM</b>?{" "}
-        <a
-          href="https://x.com/CarmineOptions/status/1806276899972202520"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Find out here!
-        </a>
-        .
-      </p>
-
-      <p>
-        You have {humanReadableCarmBalance} <b>CRM</b> and{" "}
-        {humanReadableVeCarmBalance} <b>veCRM</b>
-      </p>
-      {carmBalance > 0n && <StakeCrm carmBalance={carmBalance} />}
-
-      <Stakes stakes={stakes} veBalance={veCarmBalance} />
+      <div className="flex flex-col gap-4">
+        <P3>
+          Want to know more about <b>CRM</b> staking and <b>veCRM</b>?{" "}
+          <a
+            href="https://x.com/CarmineOptions/status/1806276899972202520"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Find out here!
+          </a>
+          .
+        </P3>
+        <P3>
+          You have {humanReadableCarmBalance} <b>CRM</b> and{" "}
+          {humanReadableVeCarmBalance} <b>veCRM</b>
+        </P3>
+        {carmBalance > 0n && <StakeCrm carmBalance={carmBalance} />}
+        <Stakes stakes={stakes} veBalance={veCarmBalance} />
+      </div>
     </div>
   );
-};
-
-export const CarmineStaking = () => {
-  const { address } = useAccount();
-  const { openWalletConnectModal } = useConnectWallet();
-
-  if (!address) {
-    return <button onClick={openWalletConnectModal}>Connect wallet</button>;
-  }
-
-  return <StakeWithAccount address={address} />;
 };

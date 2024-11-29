@@ -1,77 +1,11 @@
-import {
-  TableContainer,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-} from "@mui/material";
 import { useState } from "react";
 
 import { CarmineStake } from "../../classes/CarmineStake";
 import { shortInteger } from "../../utils/computations";
 import { StakingModal } from "./StakingModal";
-
-import tableStyles from "../../style/table.module.css";
-import buttonStyles from "../../style/button.module.css";
 import { UnstakeModal } from "./UnstakeModal";
-
-const Item = ({ stake }: { stake: CarmineStake }) => {
-  return (
-    <TableRow>
-      <TableCell>{stake.startDate}</TableCell>
-      <TableCell>{stake.endDate}</TableCell>
-      <TableCell>{stake.period}</TableCell>
-      <TableCell>{stake.amountStakedHumanReadable}</TableCell>
-      <TableCell>{stake.amountVotingTokenHumanReadable}</TableCell>
-    </TableRow>
-  );
-};
-
-const InitialVeCarmItem = ({ amount }: { amount: bigint }) => {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <TableRow>
-      <TableCell>--</TableCell>
-      <TableCell>--</TableCell>
-      <TableCell>--</TableCell>
-      <TableCell>{shortInteger(amount, 18)}</TableCell>
-      <TableCell>0</TableCell>
-      <TableCell>
-        <button
-          className={buttonStyles.secondary}
-          onClick={() => setOpen(true)}
-        >
-          Restake & Unstake
-        </button>
-        <StakingModal amount={amount} open={open} setOpen={setOpen} />
-      </TableCell>
-    </TableRow>
-  );
-};
-
-const ExpiredItem = ({ stake }: { stake: CarmineStake }) => {
-  const [open, setOpen] = useState(false);
-  return (
-    <TableRow>
-      <TableCell>{stake.startDate}</TableCell>
-      <TableCell>{stake.endDate}</TableCell>
-      <TableCell>{stake.period}</TableCell>
-      <TableCell>{stake.amountStakedHumanReadable}</TableCell>
-      <TableCell>0</TableCell>
-      <TableCell>
-        <button
-          onClick={() => setOpen(true)}
-          className={buttonStyles.secondary}
-        >
-          Restake & Unstake
-        </button>
-        <UnstakeModal stake={stake} open={open} setOpen={setOpen} />
-      </TableCell>
-    </TableRow>
-  );
-};
+import { Button, H5, MaturityStacked, P3, P4 } from "../common";
+import { formatNumber } from "../../utils/utils";
 
 type Props = {
   stakes: CarmineStake[];
@@ -79,6 +13,8 @@ type Props = {
 };
 
 export const Stakes = ({ stakes, veBalance }: Props) => {
+  const [open, setOpen] = useState(false);
+  const [unstakeOpen, setUnstakeOpen] = useState(false);
   const balanceInStakes = stakes.reduce((acc, cur) => {
     if (cur.isNotWithdrawn) {
       return acc + cur.amountVotingToken;
@@ -91,62 +27,149 @@ export const Stakes = ({ stakes, veBalance }: Props) => {
 
   const initialVeCarm = veBalance - balanceInStakes;
 
+  const Header = ({ isActive }: { isActive: boolean }) => {
+    return (
+      <div className="flex justify-between my-2 py-3 border-dark-tertiary border-y-[0.5px] text-left w-big">
+        <div className="w-full">
+          <P4 className="text-dark-secondary">START</P4>
+        </div>
+        <div className="w-full">
+          <P4 className="text-dark-secondary">END</P4>
+        </div>
+        <div className="w-full">
+          <P4 className="text-dark-secondary">PERIOD</P4>
+        </div>
+        <div className="w-full">
+          <P4 className="text-dark-secondary">AMOUNT</P4>
+        </div>
+        <div className="w-full">
+          <P4 className="text-dark-secondary">VOTING POWER</P4>
+        </div>
+        {!isActive && <div className="w-full" />}
+      </div>
+    );
+  };
+
+  const InitialVeCarmItem = ({
+    amount,
+    amountHumanReadable,
+  }: {
+    amount: bigint;
+    amountHumanReadable: number;
+  }) => {
+    return (
+      <div className="flex justify-between my-2 py-3 text-left w-big">
+        <div className="w-full">
+          <P3 className="font-semibold">--</P3>
+        </div>
+        <div className="w-full">
+          <P3 className="font-semibold">--</P3>
+        </div>
+        <div className="w-full">
+          <P3 className="font-semibold">--</P3>
+        </div>
+        <div className="w-full">
+          <P3 className="font-semibold">
+            {formatNumber(amountHumanReadable, amountHumanReadable < 0 ? 5 : 2)}
+          </P3>
+        </div>
+        <div className="w-full">
+          <P3 className="font-semibold">0</P3>
+        </div>
+        <div className="w-full">
+          <Button type="primary" className="h-8" onClick={() => setOpen(true)}>
+            Unstake
+          </Button>
+        </div>
+        <StakingModal amount={amount} open={open} setOpen={setOpen} />
+      </div>
+    );
+  };
+
+  const Item = ({
+    stake,
+    isActive,
+  }: {
+    stake: CarmineStake;
+    isActive: boolean;
+  }) => {
+    return (
+      <div className="flex justify-between my-2 py-3 text-left w-big">
+        <div className="w-full">
+          <MaturityStacked timestamp={stake.start} />
+        </div>
+        <div className="w-full">
+          <MaturityStacked timestamp={stake.end} />
+        </div>
+        <div className="w-full">
+          <P3 className="font-semibold">{stake.period}</P3>
+        </div>
+        <div className="w-full">
+          <P3 className="font-semibold">
+            {formatNumber(
+              stake.amountStakedHumanReadable,
+              stake.amountStakedHumanReadable < 0 ? 5 : 2
+            )}
+          </P3>
+        </div>
+        <div className="w-full">
+          <P3 className="font-semibold">
+            {formatNumber(
+              stake.amountVotingTokenHumanReadable,
+              stake.amountVotingTokenHumanReadable < 0 ? 5 : 2
+            )}
+          </P3>
+        </div>
+        {!isActive && (
+          <div className="w-full">
+            <Button
+              type="primary"
+              className="h-8"
+              onClick={() => setOpen(true)}
+            >
+              Restake & Unstake
+            </Button>
+            <UnstakeModal
+              stake={stake}
+              open={unstakeOpen}
+              setOpen={setUnstakeOpen}
+            />
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const showExpired = expired.length > 0 || initialVeCarm > 0n;
+
   return (
-    <div>
-      <div className="divider topmargin botmargin" />
-      <h2 className="botmargin">Expired stakes</h2>
-      {expired.length > 0 || initialVeCarm > 0n ? (
-        <TableContainer>
-          <Table className={tableStyles.table}>
-            <TableHead>
-              <TableRow>
-                <TableCell>Start</TableCell>
-                <TableCell>End</TableCell>
-                <TableCell>Period</TableCell>
-                <TableCell>Amount</TableCell>
-                <TableCell>Voting power</TableCell>
-                <TableCell></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {initialVeCarm > 0n && (
-                <InitialVeCarmItem amount={initialVeCarm} />
-              )}
-              {expired.map((stake, i) => (
-                <ExpiredItem stake={stake} key={i} />
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      ) : (
-        <p>No expired stakes</p>
+    <div className="flex flex-col gap-8">
+      {showExpired && <H5>Expired stakes</H5>}
+      {showExpired && (
+        <div className="flex flex-col gap-3 overflow-x-auto">
+          <Header isActive={false} />
+          {initialVeCarm > 0n && (
+            <InitialVeCarmItem
+              amount={initialVeCarm}
+              amountHumanReadable={shortInteger(initialVeCarm, 18)}
+            />
+          )}
+          {expired.map((stake, i) => (
+            <Item isActive={false} stake={stake} key={i} />
+          ))}
+        </div>
       )}
-      <div className="divider topmargin botmargin" />
-      <h2 className="botmargin">Active stakes</h2>
-      {active.length > 0 ? (
-        <TableContainer>
-          <Table className={tableStyles.table}>
-            <TableHead>
-              <TableRow>
-                <TableCell>Start</TableCell>
-                <TableCell>End</TableCell>
-                <TableCell>Period</TableCell>
-                <TableCell>Amount</TableCell>
-                <TableCell>Voting power</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {active
-                .sort((a, b) => b.start - a.start)
-                .map((stake, i) => (
-                  <Item stake={stake} key={i} />
-                ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      ) : (
-        <p>No active stakes</p>
-      )}
+      <H5>Active stakes</H5>
+      <div className="flex flex-col gap-3 overflow-x-auto">
+        <Header isActive />
+        {active.length === 0 ? (
+          <div className="my-2 py-3 max-w-big">
+            <P3 className="font-semibold text-center">Nothing to show</P3>
+          </div>
+        ) : (
+          active.map((stake, i) => <Item isActive stake={stake} key={i} />)
+        )}
+      </div>
     </div>
   );
 };

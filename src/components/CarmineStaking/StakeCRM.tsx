@@ -1,6 +1,8 @@
 import { Call } from "starknet";
 import { useState } from "react";
 import { Tooltip } from "@mui/material";
+import { RequestResult, useSendTransaction } from "@starknet-react/core";
+import toast from "react-hot-toast";
 
 import { longInteger, shortInteger } from "../../utils/computations";
 import {
@@ -10,17 +12,14 @@ import {
   GOVERNANCE_ADDRESS,
 } from "../../constants/amm";
 import { TransactionState, TxTracking } from "../../types/network";
-import { stateToClassName } from "./StakingModal";
 import { LoadingAnimation } from "../Loading/Loading";
 import { TransactionAction } from "../../redux/reducers/transactions";
 import { addTx, markTxAsDone, markTxAsFailed } from "../../redux/actions";
 import { afterTransaction } from "../../utils/blockchain";
 import { invalidateKey } from "../../queries/client";
 import { QueryKeys } from "../../queries/keys";
-
-import styles from "./vest.module.css";
-import { RequestResult, useSendTransaction } from "@starknet-react/core";
-import toast from "react-hot-toast";
+import { Button, P3 } from "../common";
+import { stateToButtonType } from "../../utils/utils";
 
 type Props = {
   carmBalance: bigint;
@@ -138,64 +137,68 @@ export const StakeCrm = ({ carmBalance }: Props) => {
   };
 
   return (
-    <div>
-      <p>
-        Stake your <b>CRM</b> for a period
-      </p>
-      <div className={styles.container + " topmargin botmargin"}>
-        <div className={styles.inputall}>
-          <input
-            placeholder="0"
-            type="text"
-            value={inputValue}
-            onChange={(e) => handleInputChange(e.target.value)}
-          />
-          <button onClick={handleAll}>All</button>
-        </div>
-        <div className={styles.buttons}>
-          <Tooltip title="Staking for 1 month gives multiplier 1.0x">
-            <button
-              disabled={monthState !== TransactionState.Initial}
-              onClick={handle1month}
-              className={stateToClassName(monthState)}
-            >
-              {monthState === TransactionState.Processing && (
-                <LoadingAnimation size={20} />
-              )}
-              {monthState === TransactionState.Initial && "1 month"}
-              {monthState === TransactionState.Success && "Done!"}
-              {monthState === TransactionState.Fail && "Failed"}
-            </button>
-          </Tooltip>
-          <Tooltip title="Staking for 6 months gives multiplier 1.6x">
-            <button
-              disabled={sixMonthsState !== TransactionState.Initial}
-              onClick={handle6months}
-              className={stateToClassName(sixMonthsState)}
-            >
-              {sixMonthsState === TransactionState.Processing && (
-                <LoadingAnimation size={20} />
-              )}
-              {sixMonthsState === TransactionState.Initial && "6 months"}
-              {sixMonthsState === TransactionState.Success && "Done!"}
-              {sixMonthsState === TransactionState.Fail && "Failed"}
-            </button>
-          </Tooltip>
-          <Tooltip title="Staking for 1 year gives multiplier 2.5x">
-            <button
-              disabled={yearState !== TransactionState.Initial}
-              onClick={handleYear}
-              className={stateToClassName(yearState)}
-            >
-              {yearState === TransactionState.Processing && (
-                <LoadingAnimation size={20} />
-              )}
-              {yearState === TransactionState.Initial && "1 year"}
-              {yearState === TransactionState.Success && "Done!"}
-              {yearState === TransactionState.Fail && "Failed"}
-            </button>
-          </Tooltip>
-        </div>
+    <div className="flex flex-col max-w-[500px] gap-4">
+      <P3>
+        Stake your <span className="font-bold">CRM</span> for a period
+      </P3>
+      <div className="flex items-center border-dark-primary border-[1px] rounded-md">
+        <input
+          placeholder="0"
+          type="text"
+          value={inputValue}
+          className="bg-dark text-dark-primary h-8 pl-2 w-2/3 rounded-md"
+          onChange={(e) => handleInputChange(e.target.value)}
+        />
+        <Button className="w-1/3 h-8" onClick={handleAll}>
+          All
+        </Button>
+      </div>
+      <div className="flex flex-col sm:flex-row justify-around sm:items-center gap-2">
+        <Tooltip title="Staking for 1 month gives multiplier 1.0x">
+          <Button
+            type={stateToButtonType(monthState)}
+            disabled={monthState !== TransactionState.Initial}
+            onClick={handle1month}
+            className="w-full h-8"
+          >
+            {monthState === TransactionState.Processing && (
+              <LoadingAnimation size={20} />
+            )}
+            {monthState === TransactionState.Initial && "1 month"}
+            {monthState === TransactionState.Success && "Done!"}
+            {monthState === TransactionState.Fail && "Failed"}
+          </Button>
+        </Tooltip>
+        <Tooltip title="Staking for 6 months gives multiplier 1.6x">
+          <Button
+            type={stateToButtonType(sixMonthsState)}
+            disabled={sixMonthsState !== TransactionState.Initial}
+            onClick={handle6months}
+            className="w-full h-8"
+          >
+            {sixMonthsState === TransactionState.Processing && (
+              <LoadingAnimation size={20} />
+            )}
+            {sixMonthsState === TransactionState.Initial && "6 months"}
+            {sixMonthsState === TransactionState.Success && "Done!"}
+            {sixMonthsState === TransactionState.Fail && "Failed"}
+          </Button>
+        </Tooltip>
+        <Tooltip title="Staking for 1 year gives multiplier 2.5x">
+          <Button
+            type={stateToButtonType(yearState)}
+            disabled={yearState !== TransactionState.Initial}
+            onClick={handleYear}
+            className="w-full h-8"
+          >
+            {yearState === TransactionState.Processing && (
+              <LoadingAnimation size={20} />
+            )}
+            {yearState === TransactionState.Initial && "1 year"}
+            {yearState === TransactionState.Success && "Done!"}
+            {yearState === TransactionState.Fail && "Failed"}
+          </Button>
+        </Tooltip>
       </div>
     </div>
   );
