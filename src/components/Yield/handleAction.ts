@@ -73,7 +73,7 @@ export const handleDeposit = async (
     approveCalldata,
     depositLiquidityCalldata,
   ]).catch((e: Error) => {
-    debug('"Stake capital" user rejected or failed');
+    debug('"Stake capital" user rejected or failed', e);
     setTxState(TransactionState.Fail);
   });
 

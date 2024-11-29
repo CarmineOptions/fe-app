@@ -1,5 +1,3 @@
-import { MetaMaskInpageProvider } from "@metamask/providers";
-
 import { TokenKey } from "../classes/Token";
 
 export enum SupportedWalletIds {
@@ -16,6 +14,6 @@ export type UserBalance = {
 
 declare global {
   interface Window {
-    ethereum?: MetaMaskInpageProvider;
+    ethereum?: unknown;
   }
 }

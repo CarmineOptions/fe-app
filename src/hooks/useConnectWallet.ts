@@ -1,7 +1,7 @@
 import ReactDOM from "react-dom";
 import { SupportedWalletIds } from "../types/wallet";
 import { BraavosBanner } from "../components/Banner/BraavosBanner";
-import { useConnect } from "@starknet-react/core";
+import { Connector, useConnect } from "@starknet-react/core";
 import { InjectedConnector } from "starknetkit/injected";
 import { connect } from "starknetkit";
 import { isMainnet } from "../constants/amm";
@@ -148,9 +148,11 @@ export const useConnectWallet = () => {
       customConnectorIds.reduce(
         (acc, id) => {
           const windowPropertyName = `starknet_${id}`;
-          window[windowPropertyName] === undefined
-            ? acc.missingCustomConnectors.push(id)
-            : acc.injectedCustomConnectors.push(id);
+          if (window[windowPropertyName] === undefined) {
+            acc.missingCustomConnectors.push(id);
+          } else {
+            acc.injectedCustomConnectors.push(id);
+          }
           return acc;
         },
         {
@@ -183,10 +185,10 @@ export const useConnectWallet = () => {
       .then((modalResult) => {
         const { connector } = modalResult;
         if (connector) {
-          connectAsync({ connector });
+          connectAsync({ connector: connector as Connector });
         }
       })
-      .catch((error: any) => {
+      .catch((error: unknown) => {
         debug("Failed connecting wallet", error);
       });
 

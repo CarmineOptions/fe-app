@@ -31,7 +31,7 @@ export const depositLiquidity = async (
     approveCalldata,
     depositLiquidityCalldata,
   ]).catch((e: Error) => {
-    debug('"Stake capital" user rejected or failed');
+    debug('"Stake capital" user rejected or failed', e);
   });
 
   pool.sendStakePurchaseEvent(sizeNum);

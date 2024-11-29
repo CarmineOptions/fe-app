@@ -1,6 +1,6 @@
 import { OptionType } from "./options";
 import { Address, AddressBN, Decimal, Int, Math64, Math64BN } from "./units";
-import { Uint256, uint256 } from "starknet";
+import { Uint256 } from "starknet";
 
 export interface ParsedPool {
   quoteToken: string;

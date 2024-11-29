@@ -29,6 +29,7 @@ const getMultipleCoinsInUsd = async (ids: TokenKey[]): Promise<number[]> =>
       return ids.map((id) => res.data[id]);
     })
     .catch((e) => {
+      console.error(e);
       throw Error("Failed getting multiple coins in usd");
     });
 

@@ -4,8 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const MIN_WIDTH = 1200;
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const LegacyAppMessage = () => (
+export const LegacyAppMessage = () => (
   <div className={styles.slip}>
     This App uses new Carmine Protocol with C2 contracts. Old App can be
     accessed at{" "}

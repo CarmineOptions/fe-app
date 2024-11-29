@@ -51,8 +51,8 @@ export const retrieveSettings = (): Settings => {
       return v;
     }
     return DEFAULT_SETTINGS;
-  } catch (e: any) {
-    debug("Failed to retrieve settings", e?.message);
+  } catch (e) {
+    debug("Failed to retrieve settings", e);
     return DEFAULT_SETTINGS;
   }
 };

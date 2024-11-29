@@ -9,8 +9,6 @@ import {
 import { Color } from "./Graph";
 import { CurrencyData, GraphData } from "./profitGraphData";
 
-import styles from "./graph.module.css";
-
 type ProfitGraphProps = {
   data: GraphData;
 };
@@ -45,7 +43,7 @@ export const ProfitGraph = ({ data }: ProfitGraphProps) => {
       return null;
     }
     return (
-      <div className={styles.tooltip}>
+      <div className="flex flex-col gap-2">
         <span>
           {currency}
           {market}
@@ -57,6 +55,7 @@ export const ProfitGraph = ({ data }: ProfitGraphProps) => {
     );
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleMouseMove = (data: any) => {
     if (!data?.activePayload?.length) {
       return;

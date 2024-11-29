@@ -18,33 +18,6 @@ import { formatNumber } from "../../utils/utils";
 
 import buttonStyles from "../../style/button.module.css";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const premiaToDisplayValue = (
-  premia: number,
-  base: number,
-  quote: number,
-  option: OptionWithPosition
-) => {
-  // Long Call
-  if (option.isCall && option.isLong) {
-    return `${(premia * base).toFixed(2)}`;
-  }
-  // Long Put
-  if (option.isPut && option.isLong) {
-    return `${(premia * quote).toFixed(2)}`;
-  }
-  // Short Call
-  if (option.isCall && option.isShort) {
-    return `${((option.size * quote - premia) * base).toFixed(2)}`;
-  }
-  // Short Put
-  if (option.isPut && option.isShort) {
-    return `${((option.size * base - premia) * quote).toFixed(2)}`;
-  }
-  // unreachable
-  throw Error('Could not get "premiaToDisplayValue"');
-};
-
 type TemplateProps = {
   handleChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

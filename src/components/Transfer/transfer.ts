@@ -173,6 +173,7 @@ export const transferLpCapital = async (
   }
 
   const res = await sendAsync(actions).catch((e) => {
+    console.error(e);
     setState(TransferState.Fail);
   });
 

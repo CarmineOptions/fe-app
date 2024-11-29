@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 export const CheckBox = () => {
   const { autoconnect } = useSelector((s: RootState) => s.settings);
 
-  const handleAutoconnect = (e: ChangeEvent, checked: boolean) => {
+  const handleAutoconnect = (_e: ChangeEvent, checked: boolean) => {
     updateSettings({ autoconnect: checked });
   };
 
