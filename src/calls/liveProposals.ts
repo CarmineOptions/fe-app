@@ -51,3 +51,15 @@ export const fetchProposalsWithOpinions = async (
   const proposals = await fetchLiveProposals();
   return fetchUserVotes(proposals, address);
 };
+
+export const getUserOpinion = async (address: string, id: number) => {
+  const res = await GovernanceContract.call("get_user_voted", [address, id]);
+
+  if (res === 1n) {
+    return UserVote.Yay;
+  }
+  if (res === 0n) {
+    return UserVote.NotVoted;
+  }
+  return UserVote.Nay;
+};

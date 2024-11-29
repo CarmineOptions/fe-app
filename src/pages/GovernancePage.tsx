@@ -3,7 +3,6 @@ import { useAccount } from "@starknet-react/core";
 import { useEffect } from "react";
 
 import { Layout } from "../components/Layout";
-import { Proposals } from "../components/Proposal";
 import { CarmineStaking } from "../components/CarmineStaking";
 import { useGovernanceSubpage } from "../hooks/useGovernanceSubpage";
 import { GovernanceSubpage } from "../redux/reducers/ui";
@@ -13,25 +12,12 @@ import { AddProposal } from "../components/AddProposal";
 import { coreTeamAddresses } from "../constants/amm";
 import { standardiseAddress } from "../utils/utils";
 import { Divider, H4, H5, H6 } from "../components/common";
+import { Voting } from "../components/Governance";
 
 const VotingSubpage = () => {
   return (
     <div>
-      <h2>Proposals</h2>
-      <div className="divider botmargin topmargin" />
-      <p>Vote on AMM defining proposals.</p>
-      <p className="botmargin">
-        To find out more about the proposals and discuss, go to{" "}
-        <a
-          href="https://discord.com/channels/969228248552706078/1124013480123584622"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Proposals channel on Carmine Options AMM Discord
-        </a>
-        .
-      </p>
-      <Proposals />
+      <Voting />
     </div>
   );
 };
