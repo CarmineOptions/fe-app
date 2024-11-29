@@ -1,10 +1,8 @@
 import toast from "react-hot-toast";
 import { timestampToReadableDateUtc } from "../../utils/utils";
 import { ProposalOption } from "./AddProposal";
-
-import styles from "./prop.module.css";
 import { pools } from "./pools";
-import { Button } from "../common";
+import { Button, H5 } from "../common";
 
 export const ProposalText = ({
   proposalOptions,
@@ -26,7 +24,7 @@ export const ProposalText = ({
     {}
   );
   const poolIds = Object.keys(groupedByPool);
-  const texts: string[] = [];
+  const texts: string[] = ["This proposal adds the following options:", ""];
 
   poolIds.forEach((poolId) => {
     const pool = pools.find((p) => p.poolId === poolId);
@@ -60,18 +58,18 @@ export const ProposalText = ({
   };
 
   return (
-    <div className={styles.proposaltext}>
-      {texts.map((t) => {
-        if (t === "") {
-          return <br />;
-        }
-        return <p>{t}</p>;
-      })}
-      <div className="divider topmargin botmargin" />
-      <div className="center">
-        <Button type="primary" onClick={handleCopy}>
-          Copy
-        </Button>
+    <div className="mt-5 flex flex-col gap-5">
+      <H5>Proposal text</H5>
+      <Button type="secondary" className="h-8 w-fit" onClick={handleCopy}>
+        Copy
+      </Button>
+      <div className="w-fit p-2 border-dark-primary border-2 rounded-md">
+        {texts.map((t) => {
+          if (t === "") {
+            return <br />;
+          }
+          return <p>{t}</p>;
+        })}
       </div>
     </div>
   );
