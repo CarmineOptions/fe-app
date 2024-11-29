@@ -34,6 +34,7 @@ import LightBulb from "./LightBulb.svg?react";
 import { PrimaryConnectWallet } from "../ConnectWallet/Button";
 import Warning from "./WarningOctagon.svg?react";
 import { USDC_ADDRESS } from "../../constants/amm";
+import { closeSidebar } from "../../redux/actions";
 
 type Props = {
   initialTokenKey: TokenKey;
@@ -497,7 +498,11 @@ export const SidebarContent = ({ initialTokenKey }: Props) => {
                     )}{" "}
                     USDC more to open this position.
                   </P4>
-                  <NavLink to={`/swap`} className="underline">
+                  <NavLink
+                    to={`/swap`}
+                    onClick={closeSidebar}
+                    className="underline"
+                  >
                     <P4 className="text-ui-errorAccent">Get USDC on AVNU →</P4>
                   </NavLink>
                 </div>

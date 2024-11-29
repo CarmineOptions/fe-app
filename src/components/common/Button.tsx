@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 
 export interface ButtonOptions {
-  type?: "primary" | "secondary" | "success" | "error" | "disabled";
+  type?: "primary" | "secondary" | "success" | "error" | "disabled" | "dark";
   className?: string;
   outlined?: boolean;
   loading?: boolean;
@@ -75,6 +75,22 @@ export const Button = ({
     const cls = outlined
       ? `text-dark-secondary border-dark-secondary border-[0.5px] ${baseStyles}`
       : `bg-dark-secondary text-dark ${baseStyles}`;
+    return (
+      <button
+        disabled={disabled}
+        onClick={onClick}
+        className={cls}
+        style={padding ? { padding: padding } : {}}
+      >
+        {children}
+      </button>
+    );
+  }
+
+  if (type === "dark") {
+    const cls = outlined
+      ? `text-light-secondary border-light-secondary border-[0.5px] ${baseStyles}`
+      : `bg-light-secondary text-dark-primary ${baseStyles}`;
     return (
       <button
         disabled={disabled}

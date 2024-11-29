@@ -67,6 +67,8 @@ export const coreTeamAddresses = [
   "0x3c032b19003bdd6f4155a30fffa0bda3a9cae45feb994a721299d7e5096568c",
   // my Testnet wallet
   "0x29af9cf62c9d871453f3b033e514dc790ce578e0e07241d6a5fedf19ceeaf08",
+  // my wallet without hardware signer
+  "0x4073fe20a735d12179d6bb64298d7b460b218c0d7e9c6841404f89f499680e5",
 ];
 
 export const SLIPPAGE = 0.1;

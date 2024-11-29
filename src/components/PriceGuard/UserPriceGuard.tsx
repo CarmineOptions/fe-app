@@ -73,13 +73,15 @@ const PriceGuardDisplay = ({ option }: { option: OptionWithPosition }) => {
       </div>
       <div className="w-full">
         {settling ? (
-          <LoadingAnimation size={13} />
+          <Button disabled type="dark" className="w-full h-8">
+            <LoadingAnimation size={13} />
+          </Button>
         ) : (
           (option.isInTheMoney || option.isOutOfTheMoney) && (
             <Button
               disabled={settling}
-              type="primary"
-              className="w-full h-8"
+              type={option.isInTheMoney ? "primary" : "dark"}
+              className="w-full h-8 normal-case"
               onClick={handleButtonClick}
             >
               {option.isInTheMoney ? "Claim" : "Remove"}
