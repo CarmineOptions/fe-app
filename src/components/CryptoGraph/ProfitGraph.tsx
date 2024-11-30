@@ -5,13 +5,19 @@ import {
   Tooltip,
   Line,
   ReferenceLine,
+  YAxis,
 } from "recharts";
-import { Color } from "./Graph";
 import { CurrencyData, GraphData } from "./profitGraphData";
+import { P3 } from "../common";
 
 type ProfitGraphProps = {
   data: GraphData;
 };
+
+enum Color {
+  Green = "#37CB4F",
+  Red = "#BF1D1D",
+}
 
 type CustomTooltipProps = {
   active: boolean;
@@ -22,7 +28,8 @@ type CustomTooltipProps = {
 };
 
 export const ProfitGraph = ({ data }: ProfitGraphProps) => {
-  const { currency, plot } = data;
+  const { currency, plot, domain } = data;
+  console.log("GRAPH DATA", data);
   const defaultTooltipData = {
     active: false,
     color: Color.Green,
@@ -39,18 +46,24 @@ export const ProfitGraph = ({ data }: ProfitGraphProps) => {
     color,
     currency,
   }: CustomTooltipProps) => {
-    if (!active || !usd) {
+    if (!active || usd === undefined) {
       return null;
     }
     return (
-      <div className="flex flex-col gap-2">
-        <span>
+      <div className="flex flex-col">
+        <P3 className="font-semibold">
           {currency}
           {market}
-        </span>
-        <span style={{ color }}>
-          {usd < 0 ? "loss" : "profit"} ${usd.toFixed(2)}
-        </span>
+        </P3>
+        <P3
+          className={`font-semibold ${
+            color === Color.Green
+              ? "text-ui-successAccent"
+              : "text-ui-errorAccent"
+          }`}
+        >
+          {usd < 0 ? "Loss" : "Profit"} ${usd.toFixed(2)}
+        </P3>
       </div>
     );
   };
@@ -89,6 +102,7 @@ export const ProfitGraph = ({ data }: ProfitGraphProps) => {
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
       >
+        <YAxis domain={domain} hide />
         <Tooltip
           content={
             <CustomTooltip

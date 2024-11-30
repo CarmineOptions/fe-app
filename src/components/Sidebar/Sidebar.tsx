@@ -1,11 +1,11 @@
-import { memo, MouseEvent } from "react";
+import { MouseEvent } from "react";
 import { useSelector } from "react-redux";
 
 import styles from "./sidebar.module.css";
 import { RootState } from "../../redux/store";
 import { closeSidebar } from "../../redux/actions";
 
-export const Sidebar = memo(() => {
+export const Sidebar = () => {
   const { sidebarOpen, sidebarContent, sidebarWidth } = useSelector(
     (s: RootState) => s.ui
   );
@@ -37,4 +37,4 @@ export const Sidebar = memo(() => {
       {sidebarOpen && <div className={effect} onClick={closeSidebar}></div>}
     </>
   );
-});
+};

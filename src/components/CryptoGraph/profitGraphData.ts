@@ -13,7 +13,7 @@ const getStep = (spread: [number, number]): number => {
   const initial = Math.abs(spread[0] - spread[1]) / 500;
   console.log("INITIAL", initial, spread);
 
-  const breakpoints = [1, 0.5, 0.1, 0.05, 0.01];
+  const breakpoints = [5, 1, 0.5, 0.1, 0.05, 0.01];
 
   for (let i = 0; i < breakpoints.length; i++) {
     if (initial * 2 > breakpoints[i]) {
@@ -22,6 +22,14 @@ const getStep = (spread: [number, number]): number => {
   }
 
   return 0.005;
+};
+
+const getDomain = (a: number, b: number): [number, number] => {
+  const min = Math.min(a, b);
+  const max = Math.max(a, b);
+  const abs = Math.abs(max - min);
+  const change = 0.25 * abs;
+  return [min - change, max + change];
 };
 
 const round = (n: number, step: number): number =>
@@ -34,12 +42,17 @@ export const getProfitGraphData = (
 ): GraphData => {
   const { strike: strikePrice, type, side } = option;
 
+  // if premia is nearing 0, use 2% of strike price to calculate X axis
+  const spreadPremia = Math.max(premia, strikePrice / 50);
+
   const spread = [
-    Math.max(strikePrice - 10 * premia, 0),
-    Math.min(strikePrice + 10 * premia, 2 * strikePrice),
+    Math.max(strikePrice - 10 * spreadPremia, 0),
+    Math.min(strikePrice + 10 * spreadPremia, 2 * strikePrice),
   ];
   const step = getStep(spread as [number, number]);
   const granuality = 1 / step;
+
+  console.log({ spread, step, granuality, strikePrice, premia });
 
   const plot = [];
   const currency = option.strikeCurrency;
@@ -55,7 +68,7 @@ export const getProfitGraphData = (
     }
 
     const [first, last] = [plot[0].usd, plot[plot.length - 1].usd];
-    const domain = [first - 0.2 * last, last];
+    const domain = getDomain(first, last);
 
     return { plot, domain, currency };
   }
@@ -71,8 +84,7 @@ export const getProfitGraphData = (
     }
 
     const [first, last] = [plot[0].usd, plot[plot.length - 1].usd];
-    const domain = [last, first - 0.3 * last];
-
+    const domain = getDomain(first, last);
     return { plot, domain, currency };
   }
 
@@ -87,8 +99,7 @@ export const getProfitGraphData = (
     }
 
     const [first, last] = [plot[0].usd, plot[plot.length - 1].usd];
-    const domain = [last - 0.3 * first, first];
-
+    const domain = getDomain(first, last);
     return { plot, domain, currency };
   }
 
@@ -103,8 +114,7 @@ export const getProfitGraphData = (
     }
 
     const [first, last] = [plot[0].usd, plot[plot.length - 1].usd];
-    const domain = [first, last - 0.3 * first];
-
+    const domain = getDomain(first, last);
     return { plot, domain, currency };
   }
 

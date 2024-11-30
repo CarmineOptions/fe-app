@@ -1,5 +1,4 @@
 import { memo, useEffect, useState } from "react";
-import { Box, Typography } from "@mui/material";
 import {
   LineChart,
   Line,
@@ -17,33 +16,39 @@ import {
 } from "./utils";
 import { isNonEmptyArray } from "../../utils/utils";
 import { LoadingAnimation } from "../Loading/Loading";
+import { P3 } from "../common";
 
 export type IHistoricData = Array<number[]>;
 
-export const enum Color {
-  Green = "#008000",
-  Red = "#B22222",
-}
+type CustomTooltipProps = {
+  active?: boolean;
+  payload?: Array<{
+    value: number;
+    name: string;
+  }>;
+  firstValue: number;
+  color: "text-ui-successBg" | "text-ui-errorBg";
+  setColor: (v: "text-ui-successBg" | "text-ui-errorBg") => void;
+};
 
 const CustomTooltip = memo(
-  ({ active, payload, firstValue, color, setColor }: any) => {
+  ({ active, payload, firstValue, color, setColor }: CustomTooltipProps) => {
     if (!active || !isNonEmptyArray(payload) || !payload[0].value) {
       return null;
     }
     const currentValue = payload[0].value;
-    const newColor = currentValue < firstValue ? Color.Red : Color.Green;
+    const newColor =
+      currentValue < firstValue ? "text-ui-errorBg" : "text-ui-successBg";
     if (color !== newColor) {
       setColor(newColor);
     }
     return (
-      <Box>
-        <Typography sx={{ color, fontWeight: "800" }}>
-          ${currentValue}
-        </Typography>
-        <Typography sx={{ color }}>
+      <div className="flex flex-col">
+        <P3 className="font-bold p-0 m-0">${currentValue}</P3>
+        <P3 className="font-bold p-0 m-0">
           {getPercentage(firstValue, currentValue)}
-        </Typography>
-      </Box>
+        </P3>
+      </div>
     );
   },
   (prev, next) => prev === next
@@ -57,7 +62,9 @@ const Graph = ({ days }: Props) => {
   const [historicData, setHistoricData] = useState<IHistoricData | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [color, setColor] = useState<Color>(Color.Green);
+  const [color, setColor] = useState<"text-ui-successBg" | "text-ui-errorBg">(
+    "text-ui-errorBg"
+  );
 
   useEffect(() => {
     setLoading(true);
@@ -76,7 +83,6 @@ const Graph = ({ days }: Props) => {
       })
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [days]);
 
   if (!historicData || loading) {
