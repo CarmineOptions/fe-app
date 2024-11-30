@@ -32,11 +32,11 @@ import { TokenSelect } from "../TokenPairSelect";
 import CaretDown from "./CaretDown.svg?react";
 import LightBulb from "./LightBulb.svg?react";
 import { PrimaryConnectWallet } from "../ConnectWallet/Button";
-import Warning from "./WarningOctagon.svg?react";
 import { USDC_ADDRESS } from "../../constants/amm";
 import { closeSidebar } from "../../redux/actions";
 import { getProfitGraphData } from "../CryptoGraph/profitGraphData";
 import { ProfitGraph } from "../CryptoGraph/ProfitGraph";
+import { Warning } from "../Icons";
 
 type Props = {
   initialTokenKey: TokenKey;

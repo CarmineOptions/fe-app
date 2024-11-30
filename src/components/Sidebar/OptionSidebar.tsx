@@ -19,7 +19,7 @@ import { fetchModalData } from "../TradeTable/fetchModalData";
 import { debug, LogTypes } from "../../utils/debugger";
 import { LoadingAnimation } from "../Loading/Loading";
 import { TokenKey } from "../../classes/Token";
-import { setSidebarContent } from "../../redux/actions";
+import { closeSidebar, setSidebarContent } from "../../redux/actions";
 import { approveAndTradeOpenNew } from "../../calls/tradeOpen";
 import { OptionSidebarSuccess } from "./OptionSidebarSuccess";
 
@@ -27,6 +27,8 @@ import { getProfitGraphData } from "../CryptoGraph/profitGraphData";
 import { ProfitGraph } from "../CryptoGraph/ProfitGraph";
 import { Button, Divider, P3, P4 } from "../common";
 import { PrimaryConnectWallet } from "../ConnectWallet/Button";
+import { NavLink } from "react-router-dom";
+import { Warning } from "../Icons";
 
 type Props = {
   option: OptionWithPremia;
@@ -170,6 +172,29 @@ export const OptionSidebar = ({ option }: Props) => {
           option.quoteToken.id === TokenKey.USDC ? "" : option.quoteToken.symbol
         }`;
 
+  const getRequired = (): number | undefined => {
+    if (premia === undefined || amount === 0) {
+      return;
+    }
+    if (option.isLong) {
+      return premia;
+    }
+    const value = option.isPut ? amount * option.strike : amount;
+    return value - premia;
+  };
+
+  const required = getRequired();
+
+  const getNotEnoughFunds = (): boolean => {
+    if (balance === undefined || required === undefined) {
+      return false;
+    }
+
+    return required > balance;
+  };
+
+  const notEnoughFunds = getNotEnoughFunds();
+
   return (
     <div className="bg-dark-card py-10 px-5 flex flex-col gap-7 h-full">
       <div className="flex flex-col gap-2">
@@ -226,7 +251,7 @@ export const OptionSidebar = ({ option }: Props) => {
           <PrimaryConnectWallet className="w-full" />
         ) : (
           <Button
-            disabled={txState === TransactionState.Processing}
+            disabled={txState === TransactionState.Processing || notEnoughFunds}
             onClick={handleBuy}
             className="h-8 w-full"
             type={
@@ -234,6 +259,8 @@ export const OptionSidebar = ({ option }: Props) => {
                 ? "success"
                 : txState === TransactionState.Fail
                 ? "error"
+                : notEnoughFunds
+                ? "disabled"
                 : "primary"
             }
           >
@@ -247,6 +274,32 @@ export const OptionSidebar = ({ option }: Props) => {
               "Buy"
             )}
           </Button>
+        )}
+        {notEnoughFunds && (
+          <div className="bg-ui-errorBg rounded-sm p-2 gap-2 flex">
+            <div className="pt-2">
+              <Warning />
+            </div>
+            <div>
+              <P4 className="text-ui-errorAccent">
+                You need{" "}
+                {formatNumber(
+                  required! - balance!,
+                  required! - balance! < 0 ? 5 : 2
+                )}{" "}
+                {option.underlying.symbol} more to open this position.
+              </P4>
+              <NavLink
+                to={`/swap`}
+                onClick={closeSidebar}
+                className="underline"
+              >
+                <P4 className="text-ui-errorAccent">
+                  Get {option.underlying.symbol} on AVNU →
+                </P4>
+              </NavLink>
+            </div>
+          </div>
         )}
       </div>
 

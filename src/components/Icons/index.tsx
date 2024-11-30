@@ -22,6 +22,7 @@ import StrkBlackIcon from "./STRK-black.svg?react";
 import UsdcIcon from "./USDC.svg?react";
 import BraavosWithBg from "./BraavosBg.svg?react";
 import EkuboIcon from "./EKUBO.svg?react";
+import Warning from "./WarningOctagon.svg?react";
 
 const StarknetIcon = ({ style }: { style?: CSSProperties }) => (
   <img style={style} src="/starknet.webp" alt="Starknet Logo" />
@@ -52,4 +53,5 @@ export {
   UsdcIcon,
   BraavosWithBg,
   EkuboIcon,
+  Warning,
 };
