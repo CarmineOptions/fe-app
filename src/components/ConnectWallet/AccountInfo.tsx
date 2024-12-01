@@ -1,11 +1,17 @@
 import { CSSProperties } from "react";
 import { useAccount } from "@starknet-react/core";
 import { WalletIcon } from "../assets";
-import { openAccountDialog } from "../../redux/actions";
+import {
+  openSidebar,
+  setSidebarContent,
+  setSidebarWidth,
+} from "../../redux/actions";
 import { addressElision } from "../../utils/utils";
 import { SupportedWalletIds } from "../../types/wallet";
 import { useDomain } from "../../hooks/useDomain";
 import { Button } from "../common/Button";
+import { WalletInfo } from "../WalletInfo";
+import { SidebarWidth } from "../../redux/reducers/ui";
 
 const truncateUsername = (username: string, maxLength = 15) => {
   if (username.length > maxLength) {
@@ -23,7 +29,9 @@ export const AccountInfo = () => {
   }
 
   const handleClick = () => {
-    openAccountDialog();
+    setSidebarContent(<WalletInfo />);
+    setSidebarWidth(SidebarWidth.Base);
+    openSidebar();
   };
 
   const sx: CSSProperties = {};

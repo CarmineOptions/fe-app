@@ -1,14 +1,14 @@
 import { ContentCopy, Info, PowerSettingsNew } from "@mui/icons-material";
-import { IconButton, Link, Skeleton, Tooltip, Typography } from "@mui/material";
+import { IconButton, Link, Tooltip } from "@mui/material";
 
 import { closeDialog, transferDialogEnable } from "../../redux/actions";
 import { addressElision, getStarkscanUrl } from "../../utils/utils";
 import { WalletIcon } from "../assets";
 import { RecentTransaction } from "./RecentTransactions";
-import styles from "./walletinfo.module.css";
 import { useAccount, useDisconnect } from "@starknet-react/core";
 import { useDomain } from "../../hooks/useDomain";
 import toast from "react-hot-toast";
+import { H4, H5, P3 } from "../common";
 
 const handleCopy = (msg: string) => {
   navigator.clipboard
@@ -22,19 +22,13 @@ const iconStyle = {
   marginRight: 1,
 };
 
-const buttonStyle = {
-  opacity: "70%",
-  scale: "80%",
-  minWidth: 0,
-};
-
 export const WalletInfo = () => {
   const { account, address, connector } = useAccount();
   const { disconnect } = useDisconnect();
   const { username } = useDomain(address);
 
   if (!account || !address || !connector) {
-    return <Skeleton width={256} height={88} />;
+    return null;
   }
 
   const explorerUrl = getStarkscanUrl({ contractHash: address });
@@ -46,40 +40,45 @@ export const WalletInfo = () => {
   };
 
   return (
-    <div>
-      <div className={styles.header}>
-        <Tooltip title={address}>
-          <div className={styles.account} onClick={() => handleCopy(address)}>
-            <WalletIcon sx={iconStyle} wallet={connector} />
-            <Typography sx={{ opacity: "70%" }}>
-              {username === undefined ? addressElision(address) : username}
-            </Typography>
+    <div className="bg-dark-card py-10 px-5 flex flex-col gap-7 h-full">
+      <div className="flex flex-col gap-1">
+        <H4 className="font-semibold text-dark-primary flex items-center gap-3">
+          <WalletIcon sx={iconStyle} wallet={connector} />
+          {addressElision(address)}
+        </H4>
+        {!!username && (
+          <div className="p-2 rounded-sm bg-ui-neutralBg w-fit">
+            <P3 className="font-semibold text-dark-primary">{username}</P3>
+          </div>
+        )}
+      </div>
+
+      <div className="flex justify-around">
+        <Tooltip title="Copy account address">
+          <div className="text-dark-primary">
+            <IconButton
+              sx={{ color: "white" }}
+              onClick={() => handleCopy(address)}
+            >
+              <ContentCopy color="inherit" />
+            </IconButton>
           </div>
         </Tooltip>
-
-        <Tooltip title="Copy address">
-          <IconButton sx={buttonStyle} onClick={() => handleCopy(address)}>
-            <ContentCopy />
-          </IconButton>
-        </Tooltip>
-
-        <Tooltip title="Explore">
+        <Tooltip title="Show account on Starkscan">
           <Link target="_blank" href={explorerUrl} rel="noreferrer">
-            <IconButton sx={buttonStyle}>
+            <IconButton sx={{ color: "white" }}>
               <Info />
             </IconButton>
           </Link>
         </Tooltip>
-
         <Tooltip title="Disconnect">
-          <IconButton sx={buttonStyle} onClick={handleDisconnect}>
+          <IconButton sx={{ color: "white" }} onClick={handleDisconnect}>
             <PowerSettingsNew />
           </IconButton>
         </Tooltip>
       </div>
-      <div>
-        <h4 className={styles.title}>Recent transactions</h4>
-      </div>
+
+      <H5>Recent transactions</H5>
       <RecentTransaction />
     </div>
   );

@@ -1,4 +1,6 @@
-import { Link, Stack, Tooltip, useTheme } from "@mui/material";
+import { Tooltip } from "@mui/material";
+import { memo } from "react";
+
 import { useRecentTxs } from "../../hooks/useRecentTxs";
 import {
   Transaction,
@@ -7,60 +9,60 @@ import {
 import { debug } from "../../utils/debugger";
 import { addressElision, getStarkscanUrl } from "../../utils/utils";
 import { useCurrentChainId } from "../../hooks/useCurrentChainId";
-import styles from "./walletinfo.module.css";
+import { MaturityStacked, P3 } from "../common";
 
 const Tx = ({ tx }: { tx: Transaction }) => {
-  const theme = useTheme();
-
   const { hash, timestamp, action, status, chainId } = tx;
   const exploreUrl = getStarkscanUrl({
     chainId: chainId,
     txHash: hash,
   });
 
-  const shade = theme.palette.mode;
-
-  const color =
+  const iconClass = `p-2 h-4 w-4 rounded-full inline-block ${
     status === TransactionStatus.Pending
-      ? theme.palette.warning[shade]
+      ? "bg-brand-deep"
       : status === TransactionStatus.Success
-      ? theme.palette.success[shade]
-      : theme.palette.error[shade];
-
-  const d = new Date(timestamp);
-  const dateOptions = {
-    day: "numeric",
-    month: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-  } as const;
-  const date = new Intl.DateTimeFormat("default", dateOptions).format(d);
+      ? "bg-ui-successBg"
+      : "bg-ui-errorBg"
+  }`;
 
   return (
-    <div className={`${styles.grid} ${styles.container}`}>
-      <div className={styles.div1}>
-        <Tooltip title={hash}>
-          <Link
-            sx={{ color: theme.palette.text.primary }}
-            target="_blank"
-            href={exploreUrl}
-            rel="noreferrer"
-          >
-            {addressElision(hash).toUpperCase()}
-          </Link>
+    <div className="flex gap-3 justify-between items-center">
+      <div className="w-full">
+        <Tooltip title="Show transaction on Starkscan">
+          <a href={exploreUrl} target="_blank" rel="noreferrer">
+            <P3 className="tracking-tighter">{addressElision(hash)}</P3>
+          </a>
         </Tooltip>
       </div>
-      <div className={styles.div2}>{action}</div>
-      <div className={styles.div3}>
-        <div style={{ background: color }} className={styles.bead}></div>
+      <div className="w-full">
+        <P3 className="font-bold">{action}</P3>
       </div>
-      <div className={styles.div4}></div>
-      <div className={styles.div5}>{date}</div>
-      <div className={styles.div6}></div>
+      <div className="w-full">
+        <MaturityStacked timestamp={timestamp} />
+      </div>
+      <div className={iconClass}></div>
     </div>
   );
 };
+
+type TxsProps = {
+  txs: Transaction[];
+};
+
+export const Txs = memo(({ txs }: TxsProps) => {
+  if (txs.length === 0) {
+    return <P3>No recent transactions</P3>;
+  }
+
+  return (
+    <div className="flex flex-col gap-4">
+      {txs.map((tx, i) => (
+        <Tx tx={tx} key={i} />
+      ))}
+    </div>
+  );
+});
 
 export const RecentTransaction = () => {
   const chainId = useCurrentChainId();
@@ -71,21 +73,8 @@ export const RecentTransaction = () => {
   debug("txs", { chainId, txs, currentNetworkTxs });
 
   if (txs.length === 0) {
-    return <div className={styles.title}>No recent transactions</div>;
+    return <P3>No recent transactions</P3>;
   }
 
-  return (
-    <div>
-      <Stack
-        sx={{
-          maxHeight: "60vh",
-          overflowY: "auto",
-        }}
-      >
-        {txs.map((tx, i) => (
-          <Tx tx={tx} key={i} />
-        ))}
-      </Stack>
-    </div>
-  );
+  return <Txs txs={txs} />;
 };
