@@ -1,279 +1,188 @@
-import { Box, Typography } from "@mui/material";
-import { ReactNode, useState } from "react";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useAccount, useSendTransaction } from "@starknet-react/core";
 
-import { useCloseOption } from "../../hooks/useCloseOption";
-import { usePremiaQuery } from "../../hooks/usePremiaQuery";
-import { debug } from "../../utils/debugger";
-import { CustomDialogTitle } from "../MultiDialog/MultiDialog";
+import { PairNamedBadge } from "../TokenBadge";
 import { handleNumericChangeFactory } from "../../utils/inputHandling";
-import { useDebounce } from "../../hooks/useDebounce";
-import { math64toDecimal, math64ToInt } from "../../utils/units";
-import { getPremiaWithSlippage, shortInteger } from "../../utils/computations";
-import { tradeClose } from "../../calls/tradeClose";
-import { store } from "../../redux/store";
 import { useCurrency } from "../../hooks/useCurrency";
+import { TransactionState } from "../../types/network";
 import { OptionWithPosition } from "../../classes/Option";
-import { formatNumber } from "../../utils/utils";
-
-import buttonStyles from "../../style/button.module.css";
-
-type TemplateProps = {
-  handleChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => void;
-  handleClick: (n: number) => void;
-  inputText: string;
-  max: number;
-  children: ReactNode;
-};
-
-const Template = ({
-  handleChange,
-  handleClick,
-  inputText,
-  max,
-  children,
-}: TemplateProps) => {
-  return (
-    <div style={{ padding: "0 16px 16px 16px" }}>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        <input
-          style={{
-            marginRight: "8px",
-            minWidth: "200px",
-          }}
-          type="text"
-          value={inputText}
-          onChange={handleChange}
-        />
-        <button
-          className={buttonStyles.secondary}
-          onClick={() => handleClick(max)}
-        >
-          Max
-        </button>
-      </Box>
-      {children}
-    </div>
-  );
-};
+import { formatNumber, timestampToPriceGuardDate } from "../../utils/utils";
+import { LoadingAnimation } from "../Loading/Loading";
+import { Button, Divider, P3, P4 } from "../common";
+import { PrimaryConnectWallet } from "../ConnectWallet/Button";
+import { useDebounce } from "../../hooks/useDebounce";
+import { usePremiaQuery } from "../../hooks/usePremiaQuery";
+import { tradeClose } from "../../calls/tradeClose";
+import { math64toDecimal } from "../../utils/units";
 
 type Props = {
   option: OptionWithPosition;
 };
 
-const WithOption = ({ option }: Props) => {
-  const { account } = useAccount();
+export const ClosePosition = ({ option }: Props) => {
   const { sendAsync } = useSendTransaction({});
-  const base = useCurrency(option.baseToken.id);
-  const quote = useCurrency(option.quoteToken.id);
-
-  const { size: max, side } = option;
-  const [size, setSize] = useState<number>(max);
-  const [inputText, setInputText] = useState<string>(String(max));
-  const debouncedSize = useDebounce<number>(size);
+  const { address } = useAccount();
+  const price = useCurrency(option.underlying.id);
+  const [shouldReset, setShouldReset] = useState<boolean>(false);
+  const [amount, setAmount] = useState<number>(option.size);
+  const [amountText, setAmountText] = useState<string>(
+    option.size.toString(10)
+  );
+  const [txState, setTxState] = useState<TransactionState>(
+    TransactionState.Initial
+  );
+  const debouncedAmount = useDebounce<number>(amount);
 
   const {
     data: premiaMath64,
-    error,
+    isLoading,
     isFetching,
-  } = usePremiaQuery(option, size, true);
+  } = usePremiaQuery(option, debouncedAmount, true);
 
-  const cb = (n: number) => (n > max ? max : n);
-  const handleChange = handleNumericChangeFactory(setInputText, setSize, cb);
-  const handleClick = (n: number) => {
-    setSize(n);
-    setInputText(String(n));
-  };
+  if (shouldReset) {
+    setAmount(option.size);
+    setAmountText(option.size.toString(10));
+    setShouldReset(false);
+  }
 
-  const close = (premia: bigint) => {
-    if (!account || !size) {
-      debug("Could not trade close", {
-        account,
-        option,
-        size,
-      });
+  const premia =
+    premiaMath64 === undefined ? undefined : math64toDecimal(premiaMath64);
+
+  const handleChange = handleNumericChangeFactory(
+    setAmountText,
+    setAmount,
+    (n) => {
+      if (n > option.size) {
+        return option.size;
+      }
+      return n;
+    }
+  );
+
+  const handleClose = () => {
+    if (!address || !premiaMath64) {
+      toast.error("Cannot close size 0");
       return;
     }
 
-    tradeClose(sendAsync, option, premia, size, true);
+    tradeClose(sendAsync, option, premiaMath64, amount, true);
   };
 
-  if (debouncedSize === 0) {
-    return (
-      <Template
-        handleChange={handleChange}
-        handleClick={handleClick}
-        inputText={inputText}
-        max={max}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            flexFlow: "column",
-          }}
-        >
-          <Box
-            sx={{
-              my: 3,
-            }}
-          >
-            <Box>
-              <Typography>Cannot close size 0</Typography>
-            </Box>
-          </Box>
-          <button disabled>Close selected</button>
-        </Box>
-      </Template>
-    );
-  }
+  useEffect(() => {
+    setShouldReset(true);
+    setTxState(TransactionState.Initial);
+  }, [option.optionId]);
 
-  if (isFetching || !base || !quote) {
-    // loading...
-    return (
-      <Template
-        handleChange={handleChange}
-        handleClick={handleClick}
-        inputText={inputText}
-        max={max}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            flexFlow: "column",
-          }}
-        >
-          <Box
-            sx={{
-              my: 3,
-            }}
-          >
-            <Box>
-              <Typography>Loading...</Typography>
-            </Box>
-          </Box>
-          <button disabled>Loading...</button>
-        </Box>
-      </Template>
-    );
-  }
-
-  if (typeof premiaMath64 === "undefined" || error) {
-    // no data
-    return (
-      <Template
-        handleChange={handleChange}
-        handleClick={handleClick}
-        inputText={inputText}
-        max={max}
-      >
-        <div>Did not receive any data</div>
-      </Template>
-    );
-  }
-
-  const premiaNumber = math64toDecimal(premiaMath64);
-
-  debug({ premiaMath64, premiaNumber });
-
-  const premiaWithSlippage = shortInteger(
-    getPremiaWithSlippage(
-      BigInt(math64ToInt(premiaMath64, option.digits)),
-      side,
-      true
-    ).toString(10),
-    option.digits
-  );
-
-  const slippage = store.getState().settings.slippage;
-
-  const displayPremia = formatNumber(
-    option.isShort ? size - premiaNumber : premiaNumber
-  );
-  const displayPremiaWithSlippage = formatNumber(
-    option.isShort ? size - premiaWithSlippage : premiaWithSlippage
-  );
+  const [date, time] = timestampToPriceGuardDate(option.maturity);
 
   return (
-    <Template
-      handleChange={handleChange}
-      handleClick={handleClick}
-      inputText={inputText}
-      max={max}
-    >
-      <Box
-        sx={{
-          display: "flex",
-          flexFlow: "column",
-        }}
-      >
-        <Box
-          sx={{
-            my: 3,
-          }}
+    <div className="bg-dark-card py-10 px-5 flex flex-col gap-7 h-full">
+      <div className="flex flex-col gap-2">
+        <PairNamedBadge tokenA={option.baseToken} tokenB={option.quoteToken} />
+        <div
+          className={`rounded-sm py-[2px] px-3 w-fit uppercase ${
+            option.isLong
+              ? "bg-ui-successBg text-ui-successAccent"
+              : "bg-ui-errorBg text-ui-errorAccent"
+          }`}
         >
-          <Box
-            sx={{
-              display: "flex",
-              flexFlow: "row",
-              justifyContent: "space-between",
-            }}
+          <P3 className="font-semibold">{option.sideAsText}</P3>
+        </div>
+      </div>
+      <div className="flex flex-col gap-[18px]">
+        <div className="flex justify-between">
+          <div>
+            <P3 className="font-semibold">Option Size</P3>
+            <P4 className="text-dark-secondary">Notional vol.</P4>
+          </div>
+          <div>
+            <input
+              onChange={handleChange}
+              type="text"
+              placeholder="size"
+              className="bg-dark-card border-dark-primary border-[0.5px] w-28 h-10 p-2"
+              value={amountText}
+            />
+          </div>
+        </div>
+        <div className="flex justify-between">
+          <div>
+            <P3 className="font-semibold">Amount</P3>
+          </div>
+          <div>
+            {isLoading || isFetching || !premia || !price ? (
+              <div className="h-[40.5px] w-[40.5px]">
+                <LoadingAnimation size={25} />
+              </div>
+            ) : (
+              <div className="flex flex-col items-end">
+                <P3 className="font-semibold">
+                  {`${formatNumber(premia, 4)} ${option.underlying.symbol}`}
+                </P3>
+                <P4 className="text-dark-secondary font-bold">{`$${formatNumber(
+                  price * premia,
+                  4
+                )}`}</P4>
+              </div>
+            )}
+          </div>
+        </div>
+        {address === undefined ? (
+          <PrimaryConnectWallet className="w-full" />
+        ) : (
+          <Button
+            disabled={txState === TransactionState.Processing}
+            onClick={handleClose}
+            className="h-8 w-full"
+            type={
+              txState === TransactionState.Success
+                ? "success"
+                : txState === TransactionState.Fail
+                ? "error"
+                : "primary"
+            }
           >
-            <Typography sx={{ fontSize: "1.2rem" }}>Total Received</Typography>
-            <Typography sx={{ fontSize: "1.2rem" }}>
-              {displayPremia} {option.underlying.symbol}
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexFlow: "row",
-              justifyContent: "space-between",
-            }}
-          >
-            <Typography sx={{ fontSize: "1rem" }} variant="caption">
-              Slippage {slippage}% limit
-            </Typography>
-            <Typography sx={{ fontSize: "1rem" }} variant="caption">
-              {displayPremiaWithSlippage} {option.underlying.symbol}
-            </Typography>
-          </Box>
-        </Box>
-        <button
-          className={buttonStyles.green}
-          onClick={() => close(premiaMath64)}
-        >
-          Close selected
-        </button>
-      </Box>
-    </Template>
-  );
-};
+            {txState === TransactionState.Success ? (
+              "Success!"
+            ) : txState === TransactionState.Fail ? (
+              "Error"
+            ) : txState === TransactionState.Processing ? (
+              <LoadingAnimation size={20} />
+            ) : (
+              "Close"
+            )}
+          </Button>
+        )}
+      </div>
 
-export const ClosePosition = () => {
-  const option = useCloseOption();
+      <div className="flex items-center gap-2">
+        <P4 className="font-bold text-dark-tertiary">OPTION INFO</P4>
+        <Divider className="grow" />
+      </div>
 
-  if (!option) {
-    return (
-      <>
-        <CustomDialogTitle title="Close Position" />
-        Something went wrong
-      </>
-    );
-  }
-
-  const title = `${option.strikeCurrency} ${option.strike} ${option.typeAsText}`;
-
-  return (
-    <>
-      <CustomDialogTitle title={title} />
-      <WithOption option={option} />
-    </>
+      <div className="flex flex-col gap-3">
+        <div className="flex justify-between">
+          <div>
+            <P3 className="font-semibold text-dark-secondary">STRIKE PRICE</P3>
+          </div>
+          <div className="flex flex-col items-end">
+            <P3 className="font-semibold">${option.strike}</P3>
+            <P4 className="text-dark-secondary font-bold">
+              1 {option.baseToken.symbol} = ${option.strike}
+            </P4>
+          </div>
+        </div>
+        <div className="flex justify-between">
+          <div>
+            <P3 className="font-semibold text-dark-secondary">MATURITY</P3>
+          </div>
+          <div className="flex flex-col items-end">
+            <P3 className="font-semibold">{date}</P3>
+            <P4 className="text-dark-secondary font-bold">{time}</P4>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };

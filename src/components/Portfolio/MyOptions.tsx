@@ -5,7 +5,11 @@ import { LoadingAnimation } from "../Loading/Loading";
 import { OptionWithPosition } from "../../classes/Option";
 import { PairNameAboveBadge } from "../TokenBadge";
 import { formatNumber } from "../../utils/utils";
-import { openCloseOptionDialog, setCloseOption } from "../../redux/actions";
+import {
+  openSidebar,
+  setSidebarContent,
+  setSidebarWidth,
+} from "../../redux/actions";
 import { tradeSettle } from "../../calls/tradeSettle";
 import { afterTransaction } from "../../utils/blockchain";
 import { invalidatePositions } from "../../queries/client";
@@ -19,6 +23,8 @@ import {
   TokenValueStacked,
 } from "../common";
 import { SecondaryConnectWallet } from "../ConnectWallet/Button";
+import { ClosePosition } from "../ClosePosition";
+import { SidebarWidth } from "../../redux/reducers/ui";
 
 const Header = () => {
   return (
@@ -51,8 +57,9 @@ const Header = () => {
 
 const LiveItem = ({ option }: { option: OptionWithPosition }) => {
   const handleClick = () => {
-    setCloseOption(option);
-    openCloseOptionDialog();
+    setSidebarContent(<ClosePosition option={option} />);
+    setSidebarWidth(SidebarWidth.Base);
+    openSidebar();
   };
   return (
     <div className="flex justify-between my-2 py-3 text-left w-big">

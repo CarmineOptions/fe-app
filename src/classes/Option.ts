@@ -356,11 +356,11 @@ export class OptionWithPosition extends Option {
     return this.sizeHex;
   }
 
-  get isInTheMoney(): Boolean {
+  get isInTheMoney(): boolean {
     return !!this.value && this.isExpired;
   }
 
-  get isOutOfTheMoney(): Boolean {
+  get isOutOfTheMoney(): boolean {
     return !this.value && this.isExpired;
   }
 }
