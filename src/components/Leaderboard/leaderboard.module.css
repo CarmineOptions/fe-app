@@ -31,33 +31,6 @@
   border-radius: 2px;
 }
 
-.wallet {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.user {
-  border: solid 1px var(--GREY);
-}
-
-.badgecontainer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.badge {
-  background: #FAB000;
-  color: black;
-  font-size: 12px;
-  padding: 0 5px;
-  border-radius: 3px;
-  position: absolute;
-  top: -10px;
-  left: 9px;
-}
-
 .first {
   background: #FFC640;
 }
@@ -66,7 +39,7 @@
   color: black;
 }
 
-.first td p {
+.first td>p {
   color: black;
 }
 
@@ -83,7 +56,7 @@
   color: black;
 }
 
-.second td p {
+.second td>p {
   color: black;
 }
 

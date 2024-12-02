@@ -1,7 +1,7 @@
 import { BraavosBonus } from "./fetch";
 import { BraavosIcon } from "../Icons";
-import styles from "./points.module.css";
 import { openBraavosBonusDialog } from "../../redux/actions";
+import { P4 } from "../common";
 
 export const BraavosBadge = ({ data }: { data: BraavosBonus }) => {
   let bonus = 0;
@@ -16,11 +16,16 @@ export const BraavosBadge = ({ data }: { data: BraavosBonus }) => {
     return null;
   }
   return (
-    <div className={styles.braavosbadge} onClick={openBraavosBonusDialog}>
-      <div>
-        <BraavosIcon style={{ width: "20px", height: "20px" }} />
+    <div
+      className="flex items-center flex-nowrap px-2 py-1 gap-1 rounded-md cursor-pointer bg-gradient-to-r from-[#1A4079] to-[#0F1242]"
+      onClick={openBraavosBonusDialog}
+    >
+      <div className="flex items-center justify-center w-6 h-6">
+        <BraavosIcon className="w-5 h-5" />
       </div>
-      <span>+{bonus}% bonus</span>
+      <P4 className="text-dark-primary text-nowrap overflow-hidden">
+        +{bonus}% bonus
+      </P4>
     </div>
   );
 };
