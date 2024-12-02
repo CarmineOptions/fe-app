@@ -149,7 +149,7 @@ export const PoolItem = ({ pool }: Props) => {
         {finalApy === undefined ? (
           <LoadingAnimation size={20} />
         ) : (
-          <p className={finalApy > 0 ? "greentext" : "redtext"}>
+          <p className={finalApy > 0 ? "text-ui-successBg" : "text-ui-errorBg"}>
             {finalApy.toFixed(2)}%
           </p>
         )}
