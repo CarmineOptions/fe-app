@@ -4,6 +4,29 @@
 
 @layer base {
   body {
-    @apply bg-dark text-dark-primary overflow-x-hidden;
+    /* Always show scrollbar to prevent content jumping */
+    @apply bg-dark text-dark-primary overflow-x-hidden overflow-y-scroll;
+  }
+}
+
+@layer utilities {
+  /* Custom scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 12px; /* Width of the scrollbar */
+    background: #0d0e0f;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #3c3c3c; /* Background of the scrollbar track */
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #0d0e0f;
+    border-radius: 0;
+    border: #3c3c3c solid 2px;
+  }
+
+  * {
+    scrollbar-color: #0d0e0f #3c3c3c;
   }
 }
