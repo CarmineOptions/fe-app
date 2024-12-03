@@ -13,7 +13,6 @@ import { closeDialog } from "../../redux/actions";
 import { DialogContentElem } from "../../redux/reducers/ui";
 import { SlippageContent } from "../Slippage/SlippageContent";
 import { Close } from "@mui/icons-material";
-import { ClosePosition } from "../ClosePosition/ClosePosition";
 import { WalletInfo } from "../WalletInfo/WalletInfo";
 import { ReactNode } from "react";
 import { TransferDialog } from "../Transfer";
@@ -158,11 +157,6 @@ export const MultiDialog = () => {
       {dialogContent === DialogContentElem.Slippage && (
         <Border>
           <SlippageContent />
-        </Border>
-      )}
-      {dialogContent === DialogContentElem.CloseOption && (
-        <Border>
-          <ClosePosition />
         </Border>
       )}
       {dialogContent === DialogContentElem.Account && (
