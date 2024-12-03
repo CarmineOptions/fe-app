@@ -1,20 +1,24 @@
 import { Pool } from "../../classes/Pool";
-import { PairNamedBadge, TokenBadge } from "../TokenBadge";
-
-import styles from "./pool.module.css";
+import { PairNamedBadgeDark } from "../TokenBadge";
 import { useCurrency } from "../../hooks/useCurrency";
 import { useNavigate } from "react-router-dom";
 import { closeSidebar } from "../../redux/actions";
 import { useStakes } from "../../hooks/useStakes";
 import { formatNumber } from "../../utils/utils";
+import { Button, H4, P3, P4 } from "../common";
+import { LoadingAnimation } from "../Loading/Loading";
 
-type Props = {
+interface PoolSucessSidebarProps {
   pool: Pool;
-  amount: number;
+  deposited: number;
   tx: string;
-};
+}
 
-export const PoolSidebarSuccess = ({ pool, amount, tx }: Props) => {
+export const PoolSidebarSuccess = ({
+  pool,
+  deposited,
+  tx,
+}: PoolSucessSidebarProps) => {
   const { stakes } = useStakes();
   const price = useCurrency(pool.underlying.id);
   const navigate = useNavigate();
@@ -29,76 +33,125 @@ export const PoolSidebarSuccess = ({ pool, amount, tx }: Props) => {
       ? undefined
       : stakes.find((p) => p.lpAddress === pool.lpAddress);
 
-  const userPosition =
+  const depositedUsd = price === undefined ? undefined : price * deposited;
+
+  const currentPosition =
     stakes === undefined
       ? undefined
       : poolData === undefined // got data and found nothing about this pool
       ? 0
       : poolData.value;
 
-  const grey = "#444444";
+  const currentPositionUsd =
+    currentPosition !== undefined && price !== undefined
+      ? currentPosition * price
+      : undefined;
 
   return (
-    <div className={`${styles.sidebar} ${styles.success}`}>
-      <div className={styles.successmessage}>
-        <span>SUCCESSFUL!</span>
+    <PoolSidebarSuccessView
+      deposited={deposited}
+      depositedUsd={depositedUsd}
+      currentPosition={currentPosition}
+      currentPositionUsd={currentPositionUsd}
+      handlePortfolioClick={handlePortfolioClick}
+      pool={pool}
+      tx={tx}
+    />
+  );
+};
+
+interface PoolSucessSidebarViewProps extends PoolSucessSidebarProps {
+  deposited: number;
+  depositedUsd?: number;
+  currentPosition?: number;
+  currentPositionUsd?: number;
+  handlePortfolioClick: () => void;
+}
+
+export const PoolSidebarSuccessView = ({
+  pool,
+  deposited,
+  depositedUsd,
+  currentPosition,
+  currentPositionUsd,
+  tx,
+  handlePortfolioClick,
+}: PoolSucessSidebarViewProps) => {
+  return (
+    <div className="flex flex-col bg-brand text-dark py-20 px-5 gap-6 h-full">
+      <h3 className="text-[48px] text-black font-bold">SUCCESSFUL</h3>
+      <div className="flex flex-col gap-1">
+        <PairNamedBadgeDark tokenA={pool.baseToken} tokenB={pool.quoteToken} />
+        <H4>{pool.typeAsText} Pool</H4>
       </div>
-      <div className={`${styles.desc} ${styles.success}`}>
-        <PairNamedBadge tokenA={pool.baseToken} tokenB={pool.quoteToken} />
-        <div className={styles.poolid}>
-          <TokenBadge token={pool.underlying} size="small" />{" "}
-          {pool.typeAsText.toUpperCase()} POOL
+
+      <div className="flex justify-between">
+        <div>
+          <P3 className="font-semibold">Deposited</P3>
+        </div>
+        <div>
+          {depositedUsd === undefined ? (
+            <div className="h-[40.5px] w-[40.5px]">
+              <LoadingAnimation size={25} />
+            </div>
+          ) : (
+            <div className="flex flex-col items-end">
+              <P3 className="font-semibold">
+                {`${formatNumber(deposited, 4)} ${pool.underlying.symbol}`}
+              </P3>
+              <P4 className="text-dark-tertiary font-bold">{`$${formatNumber(
+                depositedUsd,
+                4
+              )}`}</P4>
+            </div>
+          )}
         </div>
       </div>
-      <div className={styles.userpos}>
+
+      <div className="flex justify-between">
         <div>
-          <span style={{ color: grey }}>DEPOSITED</span>
+          <P3 className="font-semibold">Deposited</P3>
         </div>
         <div>
-          <span>{formatNumber(amount, 4)}</span>
-          <span>{pool.underlying.symbol}</span>
-        </div>
-        <div>
-          <span className={styles.tiny} style={{ color: grey }}>
-            {price === undefined ? "--" : `$${formatNumber(amount * price)}`}
-          </span>
-        </div>
-      </div>
-      <div className={styles.userpos}>
-        <div>
-          <span style={{ color: grey }}>MY POSITION</span>
-        </div>
-        <div>
-          <span>
-            {userPosition === undefined ? "--" : formatNumber(userPosition, 4)}
-          </span>
-          <span>{pool.underlying.symbol}</span>
-        </div>
-        <div>
-          <span className={styles.tiny} style={{ color: grey }}>
-            {userPosition === undefined || price === undefined
-              ? "--"
-              : `$${formatNumber(userPosition * price)}`}
-          </span>
+          {currentPositionUsd === undefined || currentPosition === undefined ? (
+            <div className="h-[40.5px] w-[40.5px]">
+              <LoadingAnimation size={25} />
+            </div>
+          ) : (
+            <div className="flex flex-col items-end">
+              <P3 className="font-semibold">
+                {`${formatNumber(currentPosition, 4)} ${
+                  pool.underlying.symbol
+                }`}
+              </P3>
+              <P4 className="text-dark-tertiary font-bold">{`$${formatNumber(
+                currentPositionUsd,
+                4
+              )}`}</P4>
+            </div>
+          )}
         </div>
       </div>
+
       <div>
-        <button
-          className={"blackandwhite active mainbutton"}
+        <Button
+          type="dark"
+          className="w-full h-8 normal-case"
           onClick={handlePortfolioClick}
         >
           View Portfolio
-        </button>
+        </Button>
       </div>
-      <div className="center">
-        <a
-          href={`https://starkscan.co/tx/${tx}`}
-          target="_blank"
-          rel="noreferrer"
-          className={styles.txlink}
-        >
-          View Transaction ↗
-        </a>
+      <div className="text-center">
+        <P4>
+          <a
+            href={`https://starkscan.co/tx/${tx}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            View Transaction ↗
+          </a>
+        </P4>
       </div>
     </div>
   );

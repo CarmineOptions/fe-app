@@ -125,7 +125,7 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
     if (action === "deposit" && address) {
       const done = (tx: string) => {
         setSidebarContent(
-          <PoolSidebarSuccess pool={pool} amount={amount} tx={tx} />
+          <PoolSidebarSuccess pool={pool} deposited={amount} tx={tx} />
         );
       };
       handleDeposit(sendAsync, address, amount, pool, setTxState, done);

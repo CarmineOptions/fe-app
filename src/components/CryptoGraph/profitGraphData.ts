@@ -11,7 +11,6 @@ export type GraphData = {
 
 const getStep = (spread: [number, number]): number => {
   const initial = Math.abs(spread[0] - spread[1]) / 500;
-  console.log("INITIAL", initial, spread);
 
   const breakpoints = [5, 1, 0.5, 0.1, 0.05, 0.01];
 
@@ -60,10 +59,8 @@ export const getProfitGraphData = (
   if (side === OptionSide.Long && type === OptionType.Call) {
     for (let i = spread[0] * granuality; i <= spread[1] * granuality; i++) {
       const x = round(i * step, step);
-      const y = round(
-        x < strikePrice ? -premia : (x - strikePrice) * size - premia,
-        step
-      );
+      const y = x < strikePrice ? -premia : (x - strikePrice) * size - premia;
+
       plot.push({ market: x, usd: y });
     }
 
@@ -76,10 +73,7 @@ export const getProfitGraphData = (
   if (side === OptionSide.Short && type === OptionType.Call) {
     for (let i = spread[0] * granuality; i <= spread[1] * granuality; i++) {
       const x = round(i * step, step);
-      const y = round(
-        x < strikePrice ? premia : (strikePrice - x) * size + premia,
-        step
-      );
+      const y = x < strikePrice ? premia : (strikePrice - x) * size + premia;
       plot.push({ market: x, usd: y });
     }
 
@@ -91,10 +85,7 @@ export const getProfitGraphData = (
   if (side === OptionSide.Long && type === OptionType.Put) {
     for (let i = spread[0] * granuality; i <= spread[1] * granuality; i++) {
       const x = round(i * step, step);
-      const y = round(
-        x < strikePrice ? (strikePrice - x) * size - premia : -premia,
-        step
-      );
+      const y = x < strikePrice ? (strikePrice - x) * size - premia : -premia;
       plot.push({ market: x, usd: y });
     }
 
@@ -106,10 +97,7 @@ export const getProfitGraphData = (
   if (side === OptionSide.Short && type === OptionType.Put) {
     for (let i = spread[0] * granuality; i <= spread[1] * granuality; i++) {
       const x = round(i * step, step);
-      const y = round(
-        x < strikePrice ? (x - strikePrice) * size + premia : premia,
-        step
-      );
+      const y = x < strikePrice ? (x - strikePrice) * size + premia : premia;
       plot.push({ market: x, usd: y });
     }
 

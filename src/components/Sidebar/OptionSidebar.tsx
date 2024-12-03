@@ -83,7 +83,7 @@ export const OptionSidebar = ({ option }: Props) => {
 
     const callback = (tx: string) => {
       setSidebarContent(
-        <OptionSidebarSuccess option={option} tx={tx} amount={amount} />
+        <OptionSidebarSuccess option={option} tx={tx} size={amount} />
       );
     };
 

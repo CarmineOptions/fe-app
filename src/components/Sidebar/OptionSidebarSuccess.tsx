@@ -1,72 +1,127 @@
-import { PairNamedBadge } from "../TokenBadge";
 import { useNavigate } from "react-router-dom";
 import { closeSidebar } from "../../redux/actions";
 import { OptionWithPremia } from "../../classes/Option";
-import poolStyles from "./pool.module.css";
-import styles from "./option.module.css";
+import { Button, H6, P3, P4 } from "../common";
+import { PairNamedBadgeDark } from "../TokenBadge";
+import { useCurrency } from "../../hooks/useCurrency";
+import { LoadingAnimation } from "../Loading/Loading";
+import { formatNumber } from "../../utils/utils";
 
-type Props = {
+interface OptionSidebarSuccessProps {
   option: OptionWithPremia;
-  amount: number;
+  size: number;
   tx: string;
-};
+}
 
-export const OptionSidebarSuccess = ({ option, amount, tx }: Props) => {
+export const OptionSidebarSuccess = ({
+  option,
+  size,
+  tx,
+}: OptionSidebarSuccessProps) => {
   const navigate = useNavigate();
+  const price = useCurrency(option.underlying.id);
 
   const handlePortfolioClick = () => {
     navigate("/portfolio");
     closeSidebar();
   };
 
-  const grey = "#444444";
-
   return (
-    <div className={`${poolStyles.sidebar} ${poolStyles.success}`}>
-      <div className={poolStyles.successmessage}>
-        <span>SUCCESSFUL</span>
-      </div>
-      <div className={`${poolStyles.desc} ${poolStyles.success}`}>
-        <div className={styles.desc}>
-          <PairNamedBadge
-            tokenA={option.baseToken}
-            tokenB={option.quoteToken}
-          />
-          <div
-            className={
-              styles.side + " " + styles[option.sideAsText.toLowerCase()]
-            }
-          >
-            {option.sideAsText}
-          </div>
+    <OptionSidebarSuccessView
+      option={option}
+      size={size}
+      amount={option.premia}
+      amountUsd={price === undefined ? undefined : option.premia * price}
+      tx={tx}
+      handlePortfolioClick={handlePortfolioClick}
+    />
+  );
+};
+
+interface OptionSidebarSuccessViewProps extends OptionSidebarSuccessProps {
+  handlePortfolioClick: () => void;
+  amount: number;
+  amountUsd: number | undefined;
+}
+
+export const OptionSidebarSuccessView = ({
+  option,
+  size,
+  amount,
+  amountUsd,
+  tx,
+  handlePortfolioClick,
+}: OptionSidebarSuccessViewProps) => {
+  return (
+    <div className="flex flex-col bg-brand text-dark py-20 px-5 gap-6 h-full">
+      <h3 className="text-[48px] text-black font-bold">SUCCESSFUL</h3>
+      <div className="flex flex-col gap-1">
+        <PairNamedBadgeDark
+          tokenA={option.baseToken}
+          tokenB={option.quoteToken}
+        />
+        <div
+          className={`${
+            option.isLong
+              ? "text-ui-successAccent bg-ui-successBg"
+              : "text-ui-errorAccent bg-ui-errorBg"
+          } rounded-sm w-fit uppercase px-3 py-[2px]`}
+        >
+          <P3 className="font-semibold">{option.sideAsText}</P3>
         </div>
       </div>
-      <div className={styles.databox}>
+      <div className="flex justify-between">
         <div>
-          <p>OPTION SIZE</p>
+          <P3 className="font-semibold">Option Size</P3>
+          <P4 className="text-dark-tertiary">Notional vol.</P4>
         </div>
         <div>
-          <p style={{ color: grey }}>{amount}</p>
-          <p></p>
+          <H6>{size}</H6>
         </div>
       </div>
+
+      <div className="flex justify-between">
+        <div>
+          <P3 className="font-semibold">Amount</P3>
+        </div>
+        <div>
+          {amountUsd === undefined ? (
+            <div className="h-[40.5px] w-[40.5px]">
+              <LoadingAnimation size={25} />
+            </div>
+          ) : (
+            <div className="flex flex-col items-end">
+              <P3 className="font-semibold">
+                {`${formatNumber(amount, 4)} ${option.underlying.symbol}`}
+              </P3>
+              <P4 className="text-dark-tertiary font-bold">{`$${formatNumber(
+                amountUsd,
+                4
+              )}`}</P4>
+            </div>
+          )}
+        </div>
+      </div>
+
       <div>
-        <button
-          className="blackandwhite active mainbutton"
+        <Button
+          type="dark"
+          className="w-full h-8 normal-case"
           onClick={handlePortfolioClick}
         >
           View Portfolio
-        </button>
+        </Button>
       </div>
-      <div className="center">
-        <a
-          href={`https://starkscan.co/tx/${tx}`}
-          target="_blank"
-          rel="noreferrer"
-          className={poolStyles.txlink}
-        >
-          View Transaction ↗
-        </a>
+      <div className="text-center">
+        <P4>
+          <a
+            href={`https://starkscan.co/tx/${tx}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            View Transaction ↗
+          </a>
+        </P4>
       </div>
     </div>
   );
