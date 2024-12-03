@@ -289,7 +289,7 @@ export const SidebarContent = ({ initialTokenKey }: Props) => {
         </div>
       </div>
       <div className="flex gap-8">
-        <div className="w-[536px] flex flex-col gap-8">
+        <div className="hidden lg:flex w-[536px] flex-col gap-8">
           <div className="flex flex-col gap-3">
             <div className="flex items-center gap-2">
               <P4 className="font-bold text-dark-tertiary">OPTION INFO</P4>

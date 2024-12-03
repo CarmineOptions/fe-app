@@ -36,11 +36,16 @@ export const SidebarView = memo(
       event.stopPropagation();
     };
 
+    const width =
+      sidebarWidth === SidebarWidth.PriceProtect
+        ? "w-sidebar lg:w-priceprotect"
+        : "w-sidebar";
+
     return (
       <>
         <div
-          className={`border-brand-deep border-l-[1px] w-${sidebarWidth} box-border absolute top-0 overflow-hidden h-full z-40 bg-dark-container transition-all duration-1500 ease-in-out ${
-            sidebarOpen ? "right-0" : "w-[360px] right-[-360px]"
+          className={`border-brand-deep border-l-[1px] ${width} box-border absolute top-0 overflow-hidden h-full z-40 bg-dark-container transition-all duration-1500 ease-in-out ${
+            sidebarOpen ? "right-0" : "w-[360px] lg:w-[360px] right-[-360px]"
           }`}
           onClick={handleSidebarClick}
         >
