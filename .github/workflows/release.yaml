@@ -1,0 +1,108 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - master
+      - development
+
+env:
+  DOCKER_REGISTRY_HOST: europe-west1-docker.pkg.dev
+  GCP_PROJECT: carmine-api-381920
+
+jobs:
+  release:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm i -f
+
+      - name: Run semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.DAVID_NPM_TOKEN }}
+        run: npx semantic-release
+
+      - name: Auth Google Cloud SDK
+        uses: google-github-actions/auth@v2
+        with:
+          project_id: carmine-api-381920
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: carmine-api-381920
+
+      - name: Configure Docker to use gcloud as a credential helper
+        run: |
+          gcloud auth configure-docker $DOCKER_REGISTRY_HOST
+
+      - name: Build Docker image
+        id: build
+        run: |
+          VERSION=$(npx -c 'echo $npm_package_version')
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          docker build -t $DOCKER_REGISTRY_HOST/$GCP_PROJECT/docker-repository/app-mainnet:$VERSION -f Dockerfile.mainnet .
+          docker build -t $DOCKER_REGISTRY_HOST/$GCP_PROJECT/docker-repository/app-testnet:$VERSION -f Dockerfile.testnet .
+
+      - name: Push Docker image
+        run: |
+          docker push $DOCKER_REGISTRY_HOST/$GCP_PROJECT/docker-repository/app-mainnet:${{ env.VERSION }}
+          docker push $DOCKER_REGISTRY_HOST/$GCP_PROJECT/docker-repository/app-testnet:${{ env.VERSION }}
+
+  devdeploy:
+    if: github.ref == 'refs/heads/development'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm i -f
+
+      - name: Auth Google Cloud SDK
+        uses: google-github-actions/auth@v2
+        with:
+          project_id: carmine-api-381920
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: carmine-api-381920
+
+      - name: Configure Docker to use gcloud as a credential helper
+        run: |
+          gcloud auth configure-docker $DOCKER_REGISTRY_HOST
+
+      - name: Build Docker image
+        id: build
+        run: |
+          IMAGE_ID=$(LC_ALL=C tr -dc A-Za-z0-9 </dev/urandom | head -c 10)
+          echo "IMAGE_ID=$IMAGE_ID" >> $GITHUB_ENV
+          docker build -t $DOCKER_REGISTRY_HOST/$GCP_PROJECT/docker-repository/app-mainnet:$IMAGE_ID -f Dockerfile.mainnet .
+          docker build -t $DOCKER_REGISTRY_HOST/$GCP_PROJECT/docker-repository/app-testnet:$IMAGE_ID -f Dockerfile.testnet .
+
+      - name: Push Docker image
+        run: |
+          docker push $DOCKER_REGISTRY_HOST/$GCP_PROJECT/docker-repository/app-mainnet:${{ env.IMAGE_ID }}
+          docker push $DOCKER_REGISTRY_HOST/$GCP_PROJECT/docker-repository/app-testnet:${{ env.IMAGE_ID }}
