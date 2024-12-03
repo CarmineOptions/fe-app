@@ -1,7 +1,8 @@
-import { useState } from "react";
-import { Pool } from "../../classes/Pool";
-import { PairNamedBadge, TokenBadge, TokenNamedBadge } from "../TokenBadge";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
+import { Pool } from "../../classes/Pool";
+import { PairBadge, TokenNamedBadge } from "../TokenBadge";
 import { handleNumericChangeFactory } from "../../utils/inputHandling";
 import { useCurrency } from "../../hooks/useCurrency";
 import { useUserBalance } from "../../hooks/useUserBalance";
@@ -17,12 +18,10 @@ import { usePoolInfo } from "../../hooks/usePoolInfo";
 import { formatNumber } from "../../utils/utils";
 import { TokenKey } from "../../classes/Token";
 import { LoadingAnimation } from "../Loading/Loading";
-import { BoxTwoValues } from "./Utils";
 import { useDefispringApy } from "../../hooks/useDefyspringApy";
-import { useConnectWallet } from "../../hooks/useConnectWallet";
-
-import styles from "./pool.module.css";
-import toast from "react-hot-toast";
+import { Button, Divider, H5, P3, P4 } from "../common";
+import { PrimaryConnectWallet } from "../ConnectWallet/Button";
+import { StarknetIcon } from "../Icons";
 
 type Props = {
   pool: Pool;
@@ -32,7 +31,6 @@ type Props = {
 export const PoolSidebar = ({ pool, initialAction }: Props) => {
   const { address } = useAccount();
   const { sendAsync } = useSendTransaction({});
-  const { openWalletConnectModal } = useConnectWallet();
   const { poolInfo } = usePoolInfo(pool);
   const { stakes } = useStakes();
   const price = useCurrency(pool.underlying.id);
@@ -46,6 +44,13 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
     TransactionState.Initial
   );
   const { defispringApy } = useDefispringApy();
+
+  useEffect(() => {
+    // sets default amounts when option changes
+    setAmount(0);
+    setAmountText("0");
+    setTxState(TransactionState.Initial);
+  }, [pool.poolId]);
 
   const state = poolInfo?.state;
   const apy = poolInfo?.apy;
@@ -143,176 +148,247 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
       handleWithdraw(sendAsync, amount, poolData, setTxState);
     }
   };
+
   return (
-    <div className={styles.sidebar}>
-      <div className={styles.desc}>
-        <PairNamedBadge tokenA={pool.baseToken} tokenB={pool.quoteToken} />
-        <div className={styles.poolid}>
-          <TokenBadge token={pool.underlying} size="small" />{" "}
-          {pool.typeAsText.toUpperCase()} POOL
-        </div>
+    <div className="bg-dark-card py-10 px-5 flex flex-col gap-7 h-full">
+      <div className="flex items-center gap-2">
+        <PairBadge tokenA={pool.baseToken} tokenB={pool.quoteToken} />
+        <H5>
+          {pool.baseToken.symbol}/{pool.quoteToken.symbol} {pool.typeAsText}{" "}
+          Pool
+        </H5>
       </div>
-      <div className={styles.action}>
-        <div className={styles.actionbuttons}>
-          <button
+      <div className="flex flex-col p-3 gap-6">
+        <div className="flex gap-1">
+          <Button
+            outlined={action !== "deposit"}
             onClick={() => setAction("deposit")}
-            className={action === "deposit" ? styles.active : ""}
+            className="normal-case"
           >
-            deposit
-          </button>
-          <button
+            Deposit
+          </Button>
+          <Button
+            outlined={action !== "withdraw"}
             onClick={() => setAction("withdraw")}
-            className={action === "withdraw" ? styles.active : ""}
+            className="normal-case"
           >
-            withdraw
-          </button>
+            Withdraw
+          </Button>
         </div>
         <div>
-          <div className={styles.tokeninput}>
-            <div className={styles.under}>
+          <div className="flex border-dark-secondary border-[0.5px]">
+            <div className="w-full flex flex-col justify-around p-3">
               <input
-                onChange={handleChange}
-                type="text"
-                placeholder="amount"
+                placeholder="Enter amount"
                 value={amountText}
+                onChange={handleChange}
+                className="w-full bg-[#1A1C1E]"
               />
-              <span className={styles.tiny} style={{ alignSelf: "flex-start" }}>
-                ${price === undefined ? "--" : formatNumber(price * amount)}
-              </span>
+              <P4 className="font-bold text-dark-secondary">
+                {price === undefined
+                  ? "$--"
+                  : `$${formatNumber(price * amount)}`}
+              </P4>
             </div>
-            <div>
+            <div className="bg-light-secondary flex items-center justify-center px-2">
               <TokenNamedBadge token={pool.underlying} size="small" />
             </div>
           </div>
-          <div className={styles.balance}>
-            <span className="greytext">balance</span>
-            <span>
-              {balance === undefined ? (
-                <LoadingAnimation size={12} />
-              ) : (
-                formatNumber(balance)
-              )}
-            </span>
-            <button onClick={handleMax}>max</button>
-          </div>
-        </div>
-        <div>
-          <div>
-            {address === undefined ? (
-              <button
-                onClick={openWalletConnectModal}
-                className={"primary active mainbutton"}
-              >
-                Connect Wallet
-              </button>
-            ) : txState === TransactionState.Initial ? (
-              <button
-                onClick={handleActionClick}
-                className={"primary active mainbutton"}
-              >
-                {action}
-              </button>
-            ) : txState === TransactionState.Processing ? (
-              <button
-                onClick={handleActionClick}
-                className={"primary active mainbutton"}
-                disabled
-              >
-                Processing...
-              </button>
-            ) : txState === TransactionState.Success ? (
-              <button
-                onClick={handleActionClick}
-                className={"green active mainbutton"}
-              >
-                Success
-              </button>
+          <div className="flex justify-end gap-1 items-center mt-1">
+            <P4 className="text-dark-secondary">balance</P4>
+            {action === "deposit" ? (
+              <P4 className="text-dark-primary">
+                {balance === undefined ? (
+                  <LoadingAnimation size={12} />
+                ) : (
+                  formatNumber(balance)
+                )}
+              </P4>
             ) : (
-              <button
-                onClick={handleActionClick}
-                className={"red active mainbutton"}
-              >
-                Fail
-              </button>
+              <P4 className="text-dark-primary">
+                {userPosition === undefined ? (
+                  <LoadingAnimation size={12} />
+                ) : (
+                  formatNumber(userPosition)
+                )}
+              </P4>
             )}
+            <button
+              className="text-[9px] text-dark bg-dark-primary rounded-sm px-1"
+              onClick={handleMax}
+            >
+              MAX
+            </button>
           </div>
         </div>
+
+        {address === undefined ? (
+          <PrimaryConnectWallet className="w-full" />
+        ) : (
+          <Button
+            disabled={txState === TransactionState.Processing}
+            onClick={handleActionClick}
+            className="h-8 w-full"
+            type={
+              txState === TransactionState.Success
+                ? "success"
+                : txState === TransactionState.Fail
+                ? "error"
+                : "primary"
+            }
+          >
+            {txState === TransactionState.Success ? (
+              "Success!"
+            ) : txState === TransactionState.Fail ? (
+              "Error"
+            ) : txState === TransactionState.Processing ? (
+              <LoadingAnimation size={20} />
+            ) : (
+              action
+            )}
+          </Button>
+        )}
       </div>
-      <div className={styles.userpos}>
-        <div>
-          <span className="greytext">MY POSITION</span>
+      <div className="flex flex-col gap-3">
+        <div className="flex items-center gap-2">
+          <P4 className="font-bold text-dark-tertiary">MY POSITION</P4>
+          <Divider className="grow" />
         </div>
-        <div>
-          <span>
+
+        <div className="flex flex-col items-start">
+          <P3 className="font-semibold">
             {userPosition === undefined ? "--" : formatNumber(userPosition, 4)}
-          </span>
-          <span>{pool.underlying.symbol}</span>
-        </div>
-        <div>
-          <span className={styles.tiny}>
+            {pool.underlying.symbol}
+          </P3>
+          <P4 className="text-dark-secondary">
             {userPosition === undefined || price === undefined
               ? "--"
               : `$${formatNumber(userPosition * price, 2)}`}
-          </span>
+          </P4>
         </div>
       </div>
-      <div className={styles.content}>
-        <div className={`${styles.big} ${styles.apart}`}>
-          <span className="greytext">APY</span>{" "}
-          <span
-            className={
-              finalApy === undefined
-                ? ""
-                : finalApy > 0
-                ? "greentext"
-                : "redtext"
-            }
-          >
-            {finalApy === undefined ? "--" : finalApy.toFixed(2)}%
-          </span>
+      <div className="flex items-center gap-2">
+        <P4 className="font-bold text-dark-tertiary">POOL INFO</P4>
+        <Divider className="grow" />
+      </div>
+      <div className="flex flex-col gap-4">
+        <div className="flex justify-between">
+          <P4 className="font-semibold text-dark-secondary">APY</P4>
+          {finalApy === undefined ? (
+            <P3 className="font-semibold">--</P3>
+          ) : (
+            <P3
+              className={`font-semibold ${
+                finalApy < 0 ? "text-ui-errorBg" : "text-ui-successBg"
+              }`}
+            >
+              {finalApy.toFixed(2)}%
+            </P3>
+          )}
         </div>
-        <BoxTwoValues
-          title="TVL"
-          topValue={
-            tvl === undefined
-              ? "--"
-              : formatNumber(tvl, 2) + " " + pool.underlying.symbol
-          }
-          bottomValue={
-            price === undefined || tvl === undefined
-              ? "---"
-              : `$${formatNumber(price * tvl, 2)}`
-          }
-        />
-        <div className="divider" style={{ margin: "5px 0" }}></div>
-        <BoxTwoValues
-          title="UNLOCKED"
-          topValue={
-            unlocked === undefined
-              ? "--"
-              : formatNumber(unlocked, 2) + " " + pool.underlying.symbol
-          }
-          bottomValue={
-            price === undefined || unlocked === undefined
-              ? "---"
-              : `$${formatNumber(price * unlocked, 2)}`
-          }
-          conf={{ size: "small" }}
-        />
-        <BoxTwoValues
-          title="LOCKED"
-          topValue={
-            locked === undefined
-              ? "--"
-              : formatNumber(locked, 2) + " " + pool.underlying.symbol
-          }
-          bottomValue={
-            price === undefined || locked === undefined
-              ? "---"
-              : `$${formatNumber(price * locked, 2)}`
-          }
-          conf={{ size: "small" }}
-        />
+
+        <div className="flex justify-between">
+          <div>
+            <P4 className="font-semibold text-dark-secondary">TVL</P4>
+          </div>
+          <div className="flex flex-col items-end">
+            <P3 className="font-semibold">
+              {tvl === undefined
+                ? "--"
+                : `${formatNumber(tvl, 0)} ${pool.underlying.symbol}`}
+            </P3>
+            <P4 className="text-dark-secondary">
+              $
+              {price === undefined || tvl === undefined
+                ? "--"
+                : formatNumber(price * tvl)}
+            </P4>
+          </div>
+        </div>
+
+        <div className="flex justify-between">
+          <div>
+            <P4 className="font-semibold text-dark-secondary">UNLOCKED</P4>
+          </div>
+          <div className="flex flex-col items-end">
+            <P3 className="font-semibold">
+              {unlocked === undefined
+                ? "--"
+                : `${formatNumber(unlocked, 0)} ${pool.underlying.symbol}`}
+            </P3>
+            <P4 className="text-dark-secondary">
+              $
+              {price === undefined || unlocked === undefined
+                ? "--"
+                : formatNumber(price * unlocked)}
+            </P4>
+          </div>
+        </div>
+
+        <div className="flex justify-between">
+          <div>
+            <P4 className="font-semibold text-dark-secondary">LOCKED</P4>
+          </div>
+          <div className="flex flex-col items-end">
+            <P3 className="font-semibold">
+              {locked === undefined
+                ? "--"
+                : `${formatNumber(locked, 0)} ${pool.underlying.symbol}`}
+            </P3>
+            <P4 className="text-dark-secondary">
+              $
+              {price === undefined || locked === undefined
+                ? "--"
+                : formatNumber(price * locked)}
+            </P4>
+          </div>
+        </div>
+
+        <div className="flex flex-col bg-light-secondary p-4 rounded-sm gap-4">
+          <div className="flex justify-between">
+            <div className="text-misc-starknet">
+              <P3 className="font-semibold">Starknet DeFi</P3>
+              <P3 className="font-semibold">Spring Incentive</P3>
+            </div>
+            <div className="flex items-center justify-center">
+              <div className="w-9 h-9">
+                <StarknetIcon />
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col gap-2">
+            <div className="flex justify-between">
+              <P4 className="text-dark-secondary">Supply APY</P4>
+              <P4 className="text-dark-primary">
+                {apy === undefined
+                  ? "--"
+                  : formatNumber(apy.launch_annualized) + "%"}
+              </P4>
+            </div>
+            <div className="flex justify-between">
+              <P4 className="text-dark-secondary">STRK Incentive</P4>
+              <P4 className="text-dark-primary">
+                {defispringApy === undefined
+                  ? "--"
+                  : formatNumber(defispringApy) + "%"}
+              </P4>
+            </div>
+            <div className="flex justify-between">
+              <P4 className="text-dark-secondary">Total APY</P4>
+              <P4
+                className={`font-semibold ${
+                  !finalApy
+                    ? "text-ui-primary"
+                    : finalApy < 0
+                    ? "text-ui-errorBg"
+                    : "text-ui-successBg"
+                }`}
+              >
+                {finalApy === undefined ? "--" : formatNumber(finalApy) + "%"}
+              </P4>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
