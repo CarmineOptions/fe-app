@@ -6,7 +6,6 @@ import { UserPoolInfo } from "../../classes/Pool";
 import { useStakes } from "../../hooks/useStakes";
 import { openSidebar, setSidebarContent } from "../../redux/actions";
 import { PoolSidebar } from "../Sidebar";
-import { useConnectWallet } from "../../hooks/useConnectWallet";
 import {
   Button,
   MajorMinorStacked,
@@ -14,6 +13,7 @@ import {
   P4,
   TokenValueStacked,
 } from "../common";
+import { SecondaryConnectWallet } from "../ConnectWallet/Button";
 
 const Item = ({ stake }: { stake: UserPoolInfo }) => {
   const handleClick = () => {
@@ -95,20 +95,10 @@ export const MyStakeWithAccount = () => {
 };
 
 export const MyStake = () => {
-  const { account } = useAccount();
-  const { openWalletConnectModal } = useConnectWallet();
+  const { address } = useAccount();
 
-  if (!account) {
-    return (
-      <div>
-        <button
-          className="mainbutton primary active"
-          onClick={openWalletConnectModal}
-        >
-          Connect Wallet
-        </button>
-      </div>
-    );
+  if (!address) {
+    return <SecondaryConnectWallet msg="Connect wallet to see your stakes." />;
   }
 
   return <MyStakeWithAccount />;
