@@ -44,8 +44,10 @@ export const SidebarView = memo(
     return (
       <>
         <div
-          className={`border-brand-deep border-l-[1px] ${width} box-border absolute top-0 overflow-hidden h-full z-40 bg-dark-container transition-all duration-1500 ease-in-out ${
-            sidebarOpen ? "right-0" : "w-[360px] lg:w-[360px] right-[-360px]"
+          className={`border-brand-deep border-l-[1px] box-border absolute top-0 overflow-hidden h-full z-40 bg-dark-container transition-all duration-1500 ease-in-out ${
+            sidebarOpen
+              ? `block right-0 ${width}`
+              : "w-sidebar right-[-360px] invisible"
           }`}
           onClick={handleSidebarClick}
         >
