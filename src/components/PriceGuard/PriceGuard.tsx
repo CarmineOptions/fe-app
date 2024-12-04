@@ -32,7 +32,7 @@ export const PriceGuard = () => {
       <H6 className="font-semibold">
         Safeguard your holdings from major price movement
       </H6>
-      <div className="flex gap-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
         <Button
           type="primary"
           className="h-11 normal-case"
