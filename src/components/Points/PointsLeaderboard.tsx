@@ -100,6 +100,7 @@ export const PointsLeaderboard = () => {
       items={items}
       user={user}
       braavos={braavosData}
+      name="points"
     />
   );
 };

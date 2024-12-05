@@ -124,21 +124,21 @@ export const MyPortfolio = () => {
           <div className="flex flex-col md:flex-row items-center gap-7 mb-6">
             <H4>Options</H4>
             <div className="flex gap-1">
-              <Button
-                type={options === "live" ? "primary" : "secondary"}
-                outlined={options !== "live"}
-                onClick={() => setOptions("live")}
-                className={options === "live" ? "active primary" : ""}
-              >
-                live
-              </Button>
+              <div>
+                <Button
+                  type={options === "live" ? "primary" : "secondary"}
+                  outlined={options !== "live"}
+                  onClick={() => setOptions("live")}
+                >
+                  live
+                </Button>
+              </div>
               <Tooltip title="Options that expired In the Money - can be settled to claim profit.">
                 <div>
                   <Button
                     type={options === "itm" ? "primary" : "secondary"}
                     outlined={options !== "itm"}
                     onClick={() => setOptions("itm")}
-                    className={options === "itm" ? "active primary" : ""}
                   >
                     expired itm
                   </Button>
@@ -150,7 +150,6 @@ export const MyPortfolio = () => {
                     type={options === "otm" ? "primary" : "secondary"}
                     outlined={options !== "otm"}
                     onClick={() => setOptions("otm")}
-                    className={options === "otm" ? "active primary" : ""}
                   >
                     expired otm
                   </Button>

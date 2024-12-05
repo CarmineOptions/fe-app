@@ -92,7 +92,7 @@ const GovernancePage = () => {
               return null;
             }
             return (
-              <H4
+              <H5
                 key={i}
                 className={`pb-2 w-fit ${
                   subpage === subpageCurrent
@@ -104,7 +104,7 @@ const GovernancePage = () => {
                 {subpageCurrent === GovernanceSubpage.Voting && "Voting"}
                 {subpageCurrent === GovernanceSubpage.Staking && "Staking"}
                 {subpageCurrent === GovernanceSubpage.Propose && "Propose"}
-              </H4>
+              </H5>
             );
           })}
         </div>
