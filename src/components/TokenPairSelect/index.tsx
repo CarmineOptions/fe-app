@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Pair, PairKey } from "../../classes/Pair";
-import { PairBadge, PairNamedBadge, TokenNamedBadge } from "../TokenBadge";
+import { PairNamedBadge, TokenNamedBadge } from "../TokenBadge";
 
 import CaretDown from "./CaretDown.svg?react";
 import { allSupportedTokens, Token } from "../../classes/Token";
@@ -128,8 +128,9 @@ export const PoolSelect = ({ pool, setPool }: PoolSelectProps) => {
         onClick={() => setIsOpen((prev) => !prev)}
       >
         <div className="flex items-center justify-between gap-2">
-          <PairBadge tokenA={pool.baseToken} tokenB={pool.quoteToken} />
-          <P3 className="font-semibold">{pool.typeAsText}</P3>
+          <P3 className="font-semibold">
+            {pool.baseToken.symbol}/{pool.quoteToken.symbol} {pool.typeAsText}
+          </P3>
           <CaretDown />
         </div>
       </button>
@@ -144,8 +145,9 @@ export const PoolSelect = ({ pool, setPool }: PoolSelectProps) => {
                 onClick={() => handleClick(p)}
               >
                 <div className="flex items-center gap-2">
-                  <PairBadge tokenA={p.baseToken} tokenB={p.quoteToken} />
-                  <P3 className="font-semibold">{p.typeAsText}</P3>
+                  <P3 className="font-semibold">
+                    {p.baseToken.symbol}/{p.quoteToken.symbol} {p.typeAsText}
+                  </P3>
                 </div>
               </li>
             ))}
