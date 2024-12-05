@@ -19,6 +19,7 @@ export type ItemProps = {
 type Props = {
   header: string[];
   items: ItemProps[];
+  name: string;
   user?: ItemProps;
   braavos?: {
     [key: string]: BraavosBonus;
@@ -65,7 +66,7 @@ const LeaderboardItem = ({
 }: ItemProps) => {
   console.log(address, isCurrentUser);
   return (
-    <tr className={`relative ${className}`}>
+    <tr className={`relative ${className ? className : ""}`}>
       <td>{position}</td>
       <td>
         <ClickableUser
@@ -87,7 +88,7 @@ const LeaderboardItem = ({
   );
 };
 
-export const Leaderboard = ({ header, items, user, braavos }: Props) => {
+export const Leaderboard = ({ header, items, user, braavos, name }: Props) => {
   const { address: currentUserAddress } = useAccount();
 
   const positionToClassName = (position: number) => {
@@ -108,8 +109,8 @@ export const Leaderboard = ({ header, items, user, braavos }: Props) => {
   };
 
   return (
-    <div className="min-w-big overflow-x-auto">
-      <table className={styles.leaderboard}>
+    <div className="overflow-x-auto">
+      <table className={`${styles.leaderboard} ${styles[name]}`}>
         <thead>
           <tr>
             {header.map((h, i) => (

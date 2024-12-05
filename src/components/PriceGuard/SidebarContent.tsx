@@ -443,7 +443,7 @@ export const SidebarContent = ({ initialTokenKey }: Props) => {
                   Price for protecting 1{" "}
                   <span className="font-bold">{token.symbol}</span> if it{" "}
                   <span className="font-bold">
-                    drops below ${formatNumber(price, price < 1 ? 5 : 2)}
+                    drops below ${currentStrike}
                   </span>{" "}
                   till{" "}
                   <span className="font-bold">

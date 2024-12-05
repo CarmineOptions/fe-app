@@ -65,5 +65,7 @@ export const NotionalVolumeLeaderboard = () => {
     data: parseData(currentUser.pnl, currentUser.notionalVolume),
   };
 
-  return <Leaderboard header={header} items={items} user={user} />;
+  return (
+    <Leaderboard header={header} items={items} user={user} name="battle" />
+  );
 };
