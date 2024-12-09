@@ -6,7 +6,7 @@ import { useTotalSupply } from "../../hooks/useTotalSupply";
 import { VE_CRM_ADDRESS } from "../../constants/amm";
 import { shortInteger } from "../../utils/computations";
 import { formatNumber } from "../../utils/utils";
-import { H5, P3 } from "../common";
+import { H5, P3, P4 } from "../common";
 import { VoteButtons } from "./Vote";
 
 type Props = {
@@ -72,6 +72,35 @@ const VoteScore = ({
   );
 };
 
+const VoteBadges = ({
+  votes,
+  totalSupply,
+}: {
+  votes?: ProposalVotes;
+  totalSupply?: number;
+}) => {
+  if (votes === undefined || totalSupply === undefined) {
+    return null;
+  }
+
+  if (votes.yay + votes.nay < totalSupply / 10) {
+    return (
+      <Tooltip title="Not enough votes for the proposal to pass. Even if most people votes Yay, the proposal will still fail because quorum have not been reached. Vote to fix this!">
+        <div className="rounded-md bg-ui-errorAccent px-2 py-1">
+          <P4 className="font-semibold text-dark">🚫 quorum</P4>
+        </div>
+      </Tooltip>
+    );
+  }
+  return (
+    <Tooltip title="Quorum has been reached, if Yay has more votes than Nay the proposal will pass.">
+      <div className="rounded-md bg-ui-successAccent px-2 py-1">
+        <P4 className="font-semibold text-dark">✅ quorum</P4>
+      </div>
+    </Tooltip>
+  );
+};
+
 export const Proposal = ({ id, balance }: Props) => {
   const { data: votes } = useProposalVotes(id);
   const { data: totalSupplyRaw } = useTotalSupply(VE_CRM_ADDRESS);
@@ -82,7 +111,12 @@ export const Proposal = ({ id, balance }: Props) => {
 
   return (
     <div className="rounded-md bg-dark-card w-80 p-4 flex flex-col gap-6">
-      <H5>#{id}</H5>
+      <div className="flex justify-between items-center">
+        <H5>#{id}</H5>
+        <div>
+          <VoteBadges votes={votes} totalSupply={totalSupply} />
+        </div>
+      </div>
       {votes !== undefined && totalSupply !== undefined && (
         <VoteScore proposalVotes={votes} totalSupply={totalSupply} />
       )}
