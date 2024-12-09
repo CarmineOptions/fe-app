@@ -92,6 +92,10 @@ export const VoteButtons = ({ id, balance }: VoteButtonsProps) => {
   const handleClick = (opinion: Opinion) =>
     vote(sendAsync, address, id, opinion, setProcessing);
 
+  if (!address || !balance) {
+    return null;
+  }
+
   if (processing || isLoading) {
     return (
       <div className="flex justify-center items-center h-8">
@@ -108,10 +112,6 @@ export const VoteButtons = ({ id, balance }: VoteButtonsProps) => {
         </div>
       </div>
     );
-  }
-
-  if (!address || !balance) {
-    return null;
   }
 
   if (opinion === UserVote.NotVoted) {

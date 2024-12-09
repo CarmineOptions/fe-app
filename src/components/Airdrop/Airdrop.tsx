@@ -223,7 +223,7 @@ export const StarknetDefispring = () => {
     <div className="flex justify-between max-w-big text-dark-secondary bg-light-secondary rounded-md overflow-hidden">
       <div className="flex flex-col grow justify-around">
         <div className="flex flex-col gap-3 p-5 border-dark-tertiary border-b-[1px]">
-          <H6 className="text-misc-starknet">Starknet DeFi Spring Rewardp</H6>
+          <H6 className="text-misc-starknet">Starknet DeFi Spring Rewards</H6>
           <P4 className="font-semibold">
             40M STRK up for grabs! Provide liquidity to start earning.
           </P4>
