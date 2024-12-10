@@ -171,6 +171,13 @@ export const Navigation = () => {
             badge={<NewBadge active={current === "battlecharts"} />}
             isActive={current === "battlecharts"}
           />
+          <Nav
+            title="Pail"
+            path="pail"
+            icon={Sword}
+            badge={<NewBadge active={current === "pail"} />}
+            isActive={current === "pail"}
+          />
         </ul>
         <ul className="flex flex-col gap-[12px] border-dark-tertiary border-t-[1px] pt-[12px]">
           <li>

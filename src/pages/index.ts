@@ -3,6 +3,7 @@ import BattlechartsPage from "./BattlechartsPage";
 import TradeDashboardPage from "./DashboardPage";
 import GovernancePage from "./GovernancePage";
 import NotFoundPage from "./NotFoundPage";
+import PailPage from "./PailPage";
 import PointsPage from "./Points";
 import PortfolioPage from "./PortfolioPage";
 import PriceProtectPage from "./PriceProtectPage";
@@ -20,6 +21,7 @@ export {
   BattlechartsPage,
   GovernancePage,
   NotFoundPage,
+  PailPage,
   PointsPage,
   PortfolioPage,
   PriceProtectPage,

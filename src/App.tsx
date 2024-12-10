@@ -31,6 +31,7 @@ import {
   TradePage,
   TradeDashboardPage,
   YieldPage,
+  PailPage,
 } from "./pages";
 
 const App = () => {
@@ -84,6 +85,7 @@ const App = () => {
                     path="/price-protect-video"
                     element={<PriceProtectVideoPage />}
                   />
+                  <Route path="/pail" element={<PailPage />} />
                   <Route path="*" element={<NotFoundPage />} />
                 </Routes>
               </Router>

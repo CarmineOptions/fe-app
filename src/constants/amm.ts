@@ -4,6 +4,7 @@ export const NETWORK = config.NETWORK as "mainnet" | "testnet";
 export const API_URL = config.API_URL;
 export const AMM_ADDRESS = config.AMM_ADDRESS;
 export const GOVERNANCE_ADDRESS = config.GOVERNANCE_ADDRESS;
+export const PAIL_ADDRESS = config.PAIL_ADDRESS;
 export const ETH_ADDRESS = config.ETH_ADDRESS;
 export const USDC_ADDRESS = config.USDC_ADDRESS;
 export const BTC_ADDRESS = config.BTC_ADDRESS;
@@ -33,6 +34,8 @@ export const LEGACY_PUT_LP =
   "0x18a6abca394bd5f822cfa5f88783c01b13e593d1603e7b41b00d31d2ea4827a";
 export const DEFISPRING_CONTRACT_ADDRESS =
   "0x07838fe8cdd61eb445f7773d9648476b571f17242058859ed7fba9074ee915d1";
+export const PAIL_NFT_ADDRESS =
+  "0x04b4b1ba9ca9057c4dd8762d427955fc8c6081192f1f99aafe440ff5cd33aa1f";
 
 export const AMM_SWITCH_TIMESTAMP = 1704841200;
 
