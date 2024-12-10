@@ -8,6 +8,7 @@ import {
 import { PAIL_ADDRESS, PAIL_NFT_ADDRESS } from "../../constants/amm";
 import toast from "react-hot-toast";
 import { SecondaryConnectWallet } from "../ConnectWallet/Button";
+import { Button, H5 } from "../common";
 
 export const Owned = () => {
   const { address } = useAccount();
@@ -59,42 +60,36 @@ export const Owned = () => {
   };
 
   return (
-    <div style={{ display: "flex", flexFlow: "column" }}>
-      <h3>Live</h3>
+    <div className="flex flex-col">
+      <H5>Live</H5>
       {data?.live?.length === 0 ? (
         <p>No live PAIL</p>
       ) : (
         data.live.map((id, i) => (
-          <div
-            key={i}
-            style={{ display: "flex", alignItems: "center", gap: "15px" }}
-          >
+          <div key={i} className="flex items-center gap-4">
             <p>token id {id}</p>
-            <button
+            <Button
+              type="primary"
               onClick={() => handleFinalise(id, "hedge_close")}
-              className="main active primary"
             >
               Close
-            </button>
+            </Button>
           </div>
         ))
       )}
-      <h3>Expired</h3>
+      <H5>Expired</H5>
       {data?.expired?.length === 0 ? (
         <p>No expired PAIL</p>
       ) : (
         data.expired.map((id, i) => (
-          <div
-            key={i}
-            style={{ display: "flex", alignItems: "center", gap: "15px" }}
-          >
+          <div key={i} className="flex items-center gap-4">
             <p>token id {id}</p>
-            <button
+            <Button
               onClick={() => handleFinalise(id, "hedge_settle")}
-              className="main active primary"
+              type="primary"
             >
               Settle
-            </button>
+            </Button>
           </div>
         ))
       )}

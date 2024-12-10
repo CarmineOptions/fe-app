@@ -12,6 +12,7 @@ import { longInteger } from "../../utils/computations";
 import toast from "react-hot-toast";
 import { TokenBadge } from "../TokenBadge";
 import { PrimaryConnectWallet } from "../ConnectWallet/Button";
+import { Button } from "../common";
 
 type Props = {
   tokenPair: Pair;
@@ -142,49 +143,29 @@ export const Buy = ({ tokenPair, expiry, notional, priceAt }: Props) => {
   };
 
   return (
-    <div
-      style={{
-        width: "fit-content",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          flexFlow: "column",
-          alignItems: "center",
-          gap: "10px",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            gap: "10px",
-            border: "1px solid gold",
-            padding: "5px",
-            borderRadius: "5px",
-            alignItems: "center",
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+    <div className="w-fit">
+      <div className="flex flex-col items-center gap-2">
+        <div className="flex gap-2 border-brand border-[1px] rounded-md items-center p-2">
+          <div className="flex items-center gap-1">
             <TokenBadge token={tokenPair.quoteToken} />
             {quotePrice.toFixed(4)}
           </div>
           <p>|</p>
-          <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+          <div className="flex items-center gap-1">
             <TokenBadge token={tokenPair.baseToken} />
             {basePrice.toFixed(4)}
           </div>
           <p>|</p>
-          <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+          <div className="flex items-center gap-1">
             at 1
             <TokenBadge token={tokenPair.baseToken} />~{pricedAt.toFixed(4)}{" "}
             <TokenBadge token={tokenPair.quoteToken} />
           </div>
         </div>
         {address ? (
-          <button onClick={handleBuy} className="primary mainbutton active">
+          <Button onClick={handleBuy} type="primary">
             Protect Against Impermanent Loss
-          </button>
+          </Button>
         ) : (
           <PrimaryConnectWallet />
         )}

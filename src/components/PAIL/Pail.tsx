@@ -1,38 +1,24 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { Pair, PairKey } from "../../classes/Pair";
-import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
-import {
-  StrkToken,
-  UsdcToken,
-  EthToken,
-  EkuboToken,
-  BtcToken,
-} from "../../classes/Token";
-import { PairNamedBadge } from "../TokenBadge";
 import { useOptions } from "../../hooks/useOptions";
 import { uniquePrimitiveValues } from "../../utils/utils";
 import { LoadingAnimation } from "../Loading/Loading";
-
-import styles from "./styles.module.css";
 import { Buy } from "./Buy";
 import { handleNumericChangeFactory } from "../../utils/inputHandling";
 import { longInteger } from "../../utils/computations";
 import { Owned } from "./Owned";
+import { TokenPairSelect } from "../TokenPairSelect";
+import { Button, Divider, H6, P3, P4 } from "../common";
 
 export const Pail = () => {
   const { isLoading, isError, options } = useOptions();
-  const [pair, setPair] = useState<PairKey>(PairKey.STRK_USDC);
+  const [pair, setPair] = useState<Pair>(Pair.pairByKey(PairKey.STRK_USDC));
   const [maturity, setMaturity] = useState<number | undefined>();
   const [amount, setAmount] = useState<number>(1);
   const [amountText, setAmountText] = useState<string>("1");
-  const tokenPair = Pair.pairByKey(pair);
 
   const [priceAt, setPriceAt] = useState<number>(0);
   const [priceAtCurrent, setPriceAtCurrent] = useState<boolean>(true);
-
-  const handlePairChange = (event: SelectChangeEvent) => {
-    setPair(event.target.value as PairKey);
-  };
 
   const handleChange = handleNumericChangeFactory(
     setAmountText,
@@ -42,11 +28,13 @@ export const Pail = () => {
     }
   );
 
-  const handlePriceAtChange = (e: any) => {
+  const handlePriceAtChange = (e: ChangeEvent<HTMLInputElement>) => {
     try {
       const parsed = parseFloat(e?.target?.value);
       setPriceAt(parsed);
-    } catch {}
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   if (isLoading) {
@@ -57,7 +45,9 @@ export const Pail = () => {
     return <div>Something went wrong</div>;
   }
 
-  const thisPairOptions = options.filter((option) => option.isPair(pair));
+  const thisPairOptions = options.filter((option) =>
+    option.isPair(pair.pairId)
+  );
 
   const maturities = thisPairOptions
     .map((o) => o.maturity)
@@ -96,50 +86,24 @@ export const Pail = () => {
     priceRange && priceAt >= priceRange[0] && priceAt <= priceRange[1];
 
   return (
-    <div className={styles.container}>
-      <div>
-        <Select
-          value={pair}
-          onChange={handlePairChange}
-          sx={{
-            "& .MuiOutlinedInput-notchedOutline": {
-              border: "none",
-            },
-            ".css-1ly9a1d-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input":
-              { padding: 0 },
-            width: "288px",
-          }}
-        >
-          <MenuItem value={PairKey.STRK_USDC}>
-            <PairNamedBadge tokenA={StrkToken} tokenB={UsdcToken} />
-          </MenuItem>
-          <MenuItem value={PairKey.ETH_USDC}>
-            <PairNamedBadge tokenA={EthToken} tokenB={UsdcToken} />
-          </MenuItem>
-          <MenuItem value={PairKey.ETH_STRK}>
-            <PairNamedBadge tokenA={EthToken} tokenB={StrkToken} />
-          </MenuItem>
-          <MenuItem value={PairKey.EKUBO_USDC}>
-            <PairNamedBadge tokenA={EkuboToken} tokenB={UsdcToken} />
-          </MenuItem>
-          <MenuItem value={PairKey.BTC_USDC}>
-            <PairNamedBadge tokenA={BtcToken} tokenB={UsdcToken} />
-          </MenuItem>
-        </Select>
+    <div className="flex flex-col gap-5 justify-between">
+      <div className="w-fit">
+        <TokenPairSelect pair={pair} setPair={setPair} />
       </div>
-      <div className={"divider"} />
-      <div className={styles.maturitybuttons}>
-        <span className={styles.maturity}>MATURITY</span>
+      <Divider />
+      <div className="flex gap-2 items-center">
+        <P4 className="text-dark-secondary font-semibold">MATURITY</P4>
         {maturities
           .sort((a, b) => a - b)
           .map((m, i) => (
-            <button
+            <Button
+              type="secondary"
+              outlined={m !== maturity}
               onClick={() => setMaturity(m)}
-              className={m === maturity ? "active secondary" : ""}
               key={i}
             >
               {formatTimestamp(m)}
-            </button>
+            </Button>
           ))}
       </div>
       <div>
@@ -152,34 +116,24 @@ export const Pail = () => {
             type="text"
             placeholder="size"
             value={amountText}
+            className="bg-dark-card border-dark-primary border-[0.5px] w-28 h-10 p-2"
           />
         </div>
       </div>
       <div>
-        <div
-          style={{
-            display: "flex",
-            flexFlow: "column",
-            gap: "5px",
-          }}
-        >
-          <h3>Price at</h3>
-          <p>Price at which you want to protect against impermanent loss.</p>
-          <p>
+        <div className="flex flex-col gap-1">
+          <H6>Price at</H6>
+          <P3>Price at which you want to protect against impermanent loss.</P3>
+          <P3>
             If you check current, price at the time of execution will be used.
-          </p>
+          </P3>
           {!!priceRange && (
-            <h4>
+            <H6>
               Price range: {priceRange[0]} - {priceRange[1]}
-            </h4>
+            </H6>
           )}
         </div>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
+        <div className="flex items-center">
           <input
             type="checkbox"
             checked={priceAtCurrent}
@@ -190,28 +144,26 @@ export const Pail = () => {
             type="number"
             placeholder="price at"
             value={priceAt}
-            style={{
-              border:
-                priceRange &&
-                (priceAt < priceRange[0] || priceAt > priceRange[1])
-                  ? "2px solid red"
-                  : "",
-            }}
+            className={`bg-dark-card border-dark-primary border-[0.5px] w-28 h-10 p-2${
+              priceRange && (priceAt < priceRange[0] || priceAt > priceRange[1])
+                ? " border-ui-errorBg border-[2px]"
+                : ""
+            }`}
           />
         </div>
       </div>
 
-      {!!tokenPair &&
+      {!!pair &&
         !!maturity &&
         (priceAtCurrent || isPriceWithinRange ? (
           <Buy
-            tokenPair={Pair.pairByKey(pair)}
+            tokenPair={pair}
             expiry={maturity}
-            notional={longInteger(amount, tokenPair.baseToken.decimals)}
+            notional={longInteger(amount, pair.baseToken.decimals)}
             priceAt={priceAtCurrent ? 0 : priceAt}
           />
         ) : (
-          <p>Either check current price or use price withing range</p>
+          <P3>Either check current price or use price withing range</P3>
         ))}
       <div className={"divider"} />
       <Owned />
