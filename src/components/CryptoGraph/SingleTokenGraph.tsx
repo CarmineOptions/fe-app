@@ -2,21 +2,10 @@ import { memo, useEffect, useRef } from "react";
 import { TokenKey } from "../../classes/Token";
 
 type Props = {
-  token: TokenKey;
+  ticker: string;
 };
 
-const tokenKeyTickerMap: {
-  [key in TokenKey]: string;
-} = {
-  [TokenKey.ETH]: "BINANCE:ETHUSD",
-  [TokenKey.BTC]: "BINANCE:wBTCUSD",
-  [TokenKey.STRK]: "BINANCE:STRKUSD",
-  [TokenKey.USDC]: "",
-  [TokenKey.EKUBO]: "",
-};
-
-export const SingleTokenGraph = memo(({ token }: Props) => {
-  const ticker = tokenKeyTickerMap[token];
+export const SingleTokenGraph = memo(({ ticker }: Props) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -41,7 +30,7 @@ export const SingleTokenGraph = memo(({ token }: Props) => {
       containerRef.current.appendChild(script);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token]);
+  }, []);
 
   return (
     <div className="tradingview-widget-container" ref={containerRef}>
@@ -58,3 +47,26 @@ export const SingleTokenGraph = memo(({ token }: Props) => {
     </div>
   );
 });
+
+type SingleTokenMultichartProps = {
+  token: TokenKey;
+};
+
+export const SingleTokenMultichart = ({
+  token,
+}: SingleTokenMultichartProps) => {
+  const show = token === TokenKey.STRK ? 1 : token === TokenKey.BTC ? 2 : 3;
+  return (
+    <div className="h-full">
+      <div className={`h-full${show === 1 ? "" : " hidden"}`}>
+        <SingleTokenGraph ticker="BINANCE:STRKUSD" />
+      </div>
+      <div className={`h-full${show === 2 ? "" : " hidden"}`}>
+        <SingleTokenGraph ticker="BINANCE:wBTCUSD" />
+      </div>
+      <div className={`h-full${show === 3 ? "" : " hidden"}`}>
+        <SingleTokenGraph ticker="BINANCE:ETHUSD" />
+      </div>
+    </div>
+  );
+};

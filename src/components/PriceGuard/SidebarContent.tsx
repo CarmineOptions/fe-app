@@ -27,7 +27,7 @@ import CogIcon from "./cog.svg?react";
 import { TransactionState } from "../../types/network";
 import { useOptions } from "../../hooks/useOptions";
 import { Button, Divider, H5, H6, P3, P4 } from "../common";
-import { SingleTokenGraph } from "../CryptoGraph/SingleTokenGraph";
+import { SingleTokenMultichart } from "../CryptoGraph/SingleTokenGraph";
 import { TokenSelect } from "../TokenPairSelect";
 import CaretDown from "./CaretDown.svg?react";
 import LightBulb from "./LightBulb.svg?react";
@@ -186,7 +186,7 @@ export const SidebarContent = ({ initialTokenKey }: Props) => {
     .filter((o) => o.maturity === expiry)
     .map((o) => o.strike)
     .filter(uniquePrimitiveValues)
-    .sort();
+    .sort((a, b) => a - b);
 
   if (
     longPuts.length > 0 &&
@@ -273,7 +273,7 @@ export const SidebarContent = ({ initialTokenKey }: Props) => {
     : ["--", "--"];
 
   const graphData =
-    price === undefined || size === 0
+    price === undefined || size === 0 || !pickedOption
       ? undefined
       : getProfitGraphData(pickedOption, price, size);
 
@@ -299,7 +299,7 @@ export const SidebarContent = ({ initialTokenKey }: Props) => {
               <Divider className="grow" />
             </div>
             <div className="max-w-[536px] h-[245px]">
-              <SingleTokenGraph token={token.id} />
+              <SingleTokenMultichart token={token.id} />
             </div>
           </div>
           <div className="flex flex-col gap-3">
