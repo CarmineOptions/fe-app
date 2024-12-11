@@ -1,6 +1,7 @@
 import { Button, ButtonGroup, Paper } from "@mui/material";
 import { useState } from "react";
 import Graph from "./Graph";
+import { TradingViewChart, TradingViewMultichart } from "./TradingView";
 
 const enum Dates {
   Day = 1,
@@ -45,3 +46,5 @@ const CryptoGraph = () => {
 };
 
 export default CryptoGraph;
+
+export { TradingViewChart, TradingViewMultichart };

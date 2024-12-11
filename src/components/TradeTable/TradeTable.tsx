@@ -10,7 +10,8 @@ import { useOptions } from "../../hooks/useOptions";
 import { useSearchParams } from "react-router-dom";
 import { Button } from "../common/Button";
 import { TokenPairSelect } from "../TokenPairSelect";
-import { Divider, P3 } from "../common";
+import { Divider, H4, P3 } from "../common";
+import { TradingViewMultichart } from "../CryptoGraph";
 
 const queryParamsToPool = (param: string | null): [PairKey, OptionType] => {
   const defaultPool = [PairKey.STRK_USDC, OptionType.Call] as [
@@ -195,6 +196,13 @@ SHORT: Sell a right to buy/sell (for Call/Put) underlying asset at strike price.
         ) : (
           <OptionsTable options={filtered} tokenPair={pair} side={side} />
         )}
+      </div>
+      <Divider className="my-4" />
+      <H4>Chart</H4>
+      <div className="flex justify-evenly gap-10">
+        <div className="w-full min-w-[45%] h-[500px]">
+          <TradingViewMultichart pair={pair.pairId} />
+        </div>
       </div>
     </div>
   );
