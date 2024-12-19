@@ -306,9 +306,7 @@ export class Pool extends Pair {
   get isDefispringEligible(): boolean {
     if (
       this.baseToken.id === TokenKey.BTC ||
-      this.baseToken.id === TokenKey.EKUBO ||
-      this.quoteToken.id === TokenKey.BTC ||
-      this.quoteToken.id === TokenKey.EKUBO
+      this.quoteToken.id === TokenKey.BTC
     ) {
       return false;
     }
