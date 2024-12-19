@@ -16,6 +16,10 @@ export const Pail = () => {
   const [maturity, setMaturity] = useState<number | undefined>();
   const [amount, setAmount] = useState<number>(1);
   const [amountText, setAmountText] = useState<string>("1");
+
+  const [rangeLeft, setRangeLeft] = useState<number>(0);
+  const [rangeRight, setRangeRight] = useState<number>(0);
+
   const [isCAMM, setIsCAMM] = useState(false);
   const price = useCurrency(pair.baseToken.id);
 
@@ -148,34 +152,53 @@ export const Pail = () => {
         <H6>Concentrated liquidity AMM price range</H6>
         <div className="flex items-center gap-3">
           <input
+            onChange={(e) => setRangeLeft(Number(e.target.value))}
+            value={rangeLeft}
             type="number"
             placeholder="range left"
             className={`bg-dark-card border-dark-primary border-[0.5px] w-28 h-10 p-2`}
           />
           <Divider className="w-10" />
           <input
+            onChange={(e) => setRangeRight(Number(e.target.value))}
+            value={rangeRight}
             type="number"
             placeholder="range right"
             className={`bg-dark-card border-dark-primary border-[0.5px] w-28 h-10 p-2`}
           />
         </div>
       </div>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-5">
         <H6>Price at</H6>
-        <P3>Price at which you want to protect against impermanent loss.</P3>
-        <P3>
-          If you check current, price at the time of execution will be used.
-        </P3>
-        <div className="flex items-center gap-5">
-          <H6>Use current price</H6>
-          <input
-            type="checkbox"
-            checked={priceAtCurrent}
-            onChange={() => setPriceAtCurrent((prev) => !prev)}
-          />
-        </div>
         <div>
-          <H6>Choose price</H6>
+          <P3>Price at which you want to protect against impermanent loss.</P3>
+          <P3>
+            If you check current, price at the time of execution will be used.
+          </P3>
+        </div>
+        <div className="p-1 flex items-center gap-2">
+          <Button
+            type="secondary"
+            outlined={!priceAtCurrent}
+            onClick={() => setPriceAtCurrent(true)}
+          >
+            Current Price
+          </Button>
+          <Divider className="w-10" />
+          <Button
+            type="secondary"
+            outlined={priceAtCurrent}
+            onClick={() => setPriceAtCurrent(false)}
+          >
+            Choose Price
+          </Button>
+        </div>
+        <div
+          className={`overflow-hidden transition-height ${
+            priceAtCurrent ? "max-h-0" : "max-h-10"
+          }`}
+          style={{ transition: "max-height 0.3s ease-in-out" }}
+        >
           <div className="flex items-center gap-5">
             {!!priceRange && (
               <P3>
@@ -200,7 +223,6 @@ export const Pail = () => {
           </div>
         </div>
       </div>
-
       {!!pair &&
         !!maturity &&
         (!priceAtCurrent || price !== undefined) && // either price is set or current price is fetched
@@ -210,11 +232,13 @@ export const Pail = () => {
             expiry={maturity}
             notional={amount}
             priceAt={priceAtCurrent ? price! : priceAt}
+            rangeLeft={rangeLeft}
+            rangeRight={rangeRight}
           />
         ) : (
           <P3>Either check current price or use price withing range</P3>
         ))}
-      <Divider />
+      <Divider className="my-8" />
       <Owned />
     </div>
   );

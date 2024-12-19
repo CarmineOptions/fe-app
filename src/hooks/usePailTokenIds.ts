@@ -76,8 +76,6 @@ const getUserPailTokens = async (address: string) => {
     { live: new Set<number>(), expired: new Set<number>() }
   );
 
-  console.log(res, finalResult);
-
   return {
     live: Array.from(finalResult.live),
     expired: Array.from(finalResult.expired),

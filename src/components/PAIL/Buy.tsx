@@ -22,9 +22,18 @@ type Props = {
   expiry: number;
   notional: number;
   priceAt: number;
+  rangeLeft: number;
+  rangeRight: number;
 };
 
-export const Buy = ({ tokenPair, expiry, notional, priceAt }: Props) => {
+export const Buy = ({
+  tokenPair,
+  expiry,
+  notional,
+  priceAt,
+  rangeLeft,
+  rangeRight,
+}: Props) => {
   const { address } = useAccount();
   const { provider } = useProvider();
   const { isLoading, isError, error, pailQuoteAmm } = usePailQuoteAMM({
@@ -74,6 +83,7 @@ export const Buy = ({ tokenPair, expiry, notional, priceAt }: Props) => {
         "0",
       ],
     };
+
     const call = {
       contractAddress: PAIL_ADDRESS,
       entrypoint: "hedge_open",
@@ -91,9 +101,34 @@ export const Buy = ({ tokenPair, expiry, notional, priceAt }: Props) => {
       ],
     };
 
-    debug("PAIL buy", { approveBase, approveQuote, call });
+    const cammCall = {
+      contractAddress: PAIL_ADDRESS,
+      entrypoint: "clmm_hedge_open",
+      calldata: [
+        longInteger(notional, tokenPair.baseToken.decimals).toString(10),
+        tokenPair.quoteToken.address,
+        tokenPair.baseToken.address,
+        expiry,
+        ((quotePriceRaw * 105n) / 100n).toString(10),
+        0,
+        ((basePriceRaw * 105n) / 100n).toString(10),
+        0,
+        (rangeLeft * 2 ** 64).toString(10),
+        0,
+        (rangeRight * 2 ** 64).toString(10),
+        0,
+        pricedAtRaw.toString(10),
+        0,
+      ],
+    };
 
-    await sendAsync([approveQuote, approveBase, call])
+    debug("PAIL buy", { approveBase, approveQuote, call, rangeRight });
+
+    await sendAsync([
+      approveQuote,
+      approveBase,
+      rangeRight > 0 ? cammCall : call,
+    ])
       .then(({ transaction_hash }) => {
         toast.promise(provider.waitForTransaction(transaction_hash), {
           loading: "Waiting for PAIL tx to finish...",

@@ -6,7 +6,6 @@ export const usePailTokenInfo = (id: number) => {
     data: maturity,
     isLoading: maturityLoading,
     isError: maturityError,
-    error: matError,
   } = useReadContract({
     abi: [
       {
@@ -35,7 +34,6 @@ export const usePailTokenInfo = (id: number) => {
     data: base,
     isLoading: baseLoading,
     isError: baseError,
-    error: baError,
   } = useReadContract({
     abi: [
       {
@@ -64,7 +62,6 @@ export const usePailTokenInfo = (id: number) => {
     data: quote,
     isLoading: quoteLoading,
     isError: quoteError,
-    error: qoError,
   } = useReadContract({
     abi: [
       {
@@ -88,8 +85,6 @@ export const usePailTokenInfo = (id: number) => {
     address: PAIL_NFT_ADDRESS as `0x${string}`,
     args: [id],
   });
-
-  console.log({ matError, baError, qoError });
 
   const isError = maturityError || baseError || quoteError;
   const isLoading =
