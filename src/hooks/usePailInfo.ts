@@ -112,8 +112,8 @@ export const usePailTokenInfo = (id: number): PailTokenInfoResult => {
   }
 
   const numMaturity = Number(maturity as bigint);
-  const baseToken = Token.byAddress(base as bigint);
-  const quoteToken = Token.byAddress(quote as bigint);
+  const baseToken = Token.byAddress(base as string);
+  const quoteToken = Token.byAddress(quote as string);
 
   if (!numMaturity || !baseToken || !quoteToken) {
     return { data: undefined, isError, isLoading };
