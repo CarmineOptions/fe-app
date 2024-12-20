@@ -54,9 +54,9 @@ export const Buy = ({
     return <div>Something went wrong</div>;
   }
 
-  const quotePriceRaw = pailQuoteAmm[0];
-  const basePriceRaw = pailQuoteAmm[2];
-  const pricedAtRaw = pailQuoteAmm[4];
+  const quotePriceRaw = pailQuoteAmm[0] as bigint;
+  const basePriceRaw = pailQuoteAmm[2] as bigint;
+  const pricedAtRaw = pailQuoteAmm[4] as bigint;
   const quotePrice = math64toDecimal(quotePriceRaw);
   const basePrice = math64toDecimal(basePriceRaw);
 
