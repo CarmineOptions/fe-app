@@ -10,7 +10,6 @@ import toast from "react-hot-toast";
 import { SecondaryConnectWallet } from "../ConnectWallet/Button";
 import { Button, Divider, H5, MaturityStacked, P3, P4 } from "../common";
 import { usePailTokenInfo } from "../../hooks/usePailInfo";
-import { Token } from "../../classes/Token";
 import { PairNameAboveBadge } from "../TokenBadge";
 
 const PailItem = ({
@@ -32,9 +31,7 @@ const PailItem = ({
     return <P4>Error</P4>;
   }
 
-  const base = Token.byAddress(data.base);
-  const quote = Token.byAddress(data.quote);
-  const maturity = Number(data.maturity);
+  const { base, quote, maturity } = data;
 
   const isExpired = maturity * 1000 < Date.now();
   const funcName = isExpired ? "hedge_settle" : "hedge_close";

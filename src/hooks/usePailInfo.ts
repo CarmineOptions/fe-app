@@ -1,7 +1,20 @@
 import { useReadContract } from "@starknet-react/core";
 import { PAIL_NFT_ADDRESS } from "../constants/amm";
+import { Token } from "../classes/Token";
 
-export const usePailTokenInfo = (id: number) => {
+type PailTokenInfoData = {
+  base: Token;
+  quote: Token;
+  maturity: number;
+};
+
+type PailTokenInfoResult = {
+  data?: PailTokenInfoData;
+  isLoading: boolean;
+  isError: boolean;
+};
+
+export const usePailTokenInfo = (id: number): PailTokenInfoResult => {
   const {
     data: maturity,
     isLoading: maturityLoading,
@@ -94,8 +107,16 @@ export const usePailTokenInfo = (id: number) => {
     return { data: undefined, isError, isLoading };
   }
 
+  const numMaturity = Number(maturity);
+  const baseToken = Token.byAddress(base);
+  const quoteToken = Token.byAddress(quote);
+
+  if (!numMaturity || !baseToken || !quoteToken) {
+    return { data: undefined, isError, isLoading };
+  }
+
   return {
-    data: { quote, base, maturity },
+    data: { quote: quoteToken, base: baseToken, maturity: numMaturity },
     isLoading,
     isError,
   };
