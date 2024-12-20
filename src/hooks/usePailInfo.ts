@@ -107,9 +107,13 @@ export const usePailTokenInfo = (id: number): PailTokenInfoResult => {
     return { data: undefined, isError, isLoading };
   }
 
-  const numMaturity = Number(maturity);
-  const baseToken = Token.byAddress(base);
-  const quoteToken = Token.byAddress(quote);
+  if (!maturity || !base || !quote) {
+    return { data: undefined, isError, isLoading };
+  }
+
+  const numMaturity = Number(maturity as bigint);
+  const baseToken = Token.byAddress(base as bigint);
+  const quoteToken = Token.byAddress(quote as bigint);
 
   if (!numMaturity || !baseToken || !quoteToken) {
     return { data: undefined, isError, isLoading };
