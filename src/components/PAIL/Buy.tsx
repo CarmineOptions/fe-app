@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import { Pair } from "../../classes/Pair";
 import { PAIL_ADDRESS } from "../../constants/amm";
 import { LoadingAnimation } from "../Loading/Loading";
-import { math64toDecimal } from "../../utils/units";
+import { decimalToMath64, math64toDecimal } from "../../utils/units";
 import { longInteger } from "../../utils/computations";
 import { TokenBadge } from "../TokenBadge";
 import { PrimaryConnectWallet } from "../ConnectWallet/Button";
@@ -113,9 +113,9 @@ export const Buy = ({
         0,
         ((basePriceRaw * 105n) / 100n).toString(10),
         0,
-        (rangeLeft * 2 ** 64).toString(10),
+        decimalToMath64(rangeLeft),
         0,
-        (rangeRight * 2 ** 64).toString(10),
+        decimalToMath64(rangeRight),
         0,
         pricedAtRaw.toString(10),
         0,
