@@ -62,8 +62,8 @@ export const usePailQuoteAMM = ({
     address: PAIL_ADDRESS as `0x${string}`,
     args: [
       longInteger(notional, baseToken.decimals),
-      BigInt(quoteToken.address),
-      BigInt(baseToken.address),
+      quoteToken.address,
+      baseToken.address,
       maturity,
       BigInt(decimalToMath64(pricedAt)),
       0,
