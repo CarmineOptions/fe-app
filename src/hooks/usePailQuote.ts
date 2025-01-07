@@ -61,11 +61,13 @@ export const usePailQuoteAMM = ({
     functionName: "price_hedge",
     address: PAIL_ADDRESS as `0x${string}`,
     args: [
-      longInteger(notional, baseToken.decimals).toString(10),
+      longInteger(notional, baseToken.decimals).toString(
+        10
+      ) as unknown as bigint, // this is necessary because bigint fails on some browsers and app will fail building if string is passed as value
       quoteToken.address,
       baseToken.address,
       maturity,
-      BigInt(decimalToMath64(pricedAt)).toString(10),
+      decimalToMath64(pricedAt) as unknown as bigint, // same as above
       0,
     ],
     refetchInterval: 5000,
