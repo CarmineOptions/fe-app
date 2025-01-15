@@ -61,14 +61,16 @@ export const Buy = ({
   const basePrice = math64toDecimal(basePriceRaw);
 
   const handleBuy = async () => {
+    const slippage = 20; // currently 20% slipapge for testing
     const approveQuote = {
       contractAddress: tokenPair.quoteToken.address,
       entrypoint: "approve",
       calldata: [
         PAIL_ADDRESS,
-        longInteger(quotePrice * 1.05, tokenPair.quoteToken.decimals).toString(
-          10
-        ),
+        longInteger(
+          (quotePrice * (100 + slippage)) / 100,
+          tokenPair.quoteToken.decimals
+        ).toString(10),
         "0",
       ],
     };
@@ -77,9 +79,10 @@ export const Buy = ({
       entrypoint: "approve",
       calldata: [
         PAIL_ADDRESS,
-        longInteger(basePrice * 1.05, tokenPair.baseToken.decimals).toString(
-          10
-        ),
+        longInteger(
+          (basePrice * (100 + slippage)) / 100,
+          tokenPair.baseToken.decimals
+        ).toString(10),
         "0",
       ],
     };
@@ -109,9 +112,9 @@ export const Buy = ({
         tokenPair.quoteToken.address,
         tokenPair.baseToken.address,
         expiry,
-        ((quotePriceRaw * 105n) / 100n).toString(10),
+        ((quotePriceRaw * BigInt(100 + slippage)) / 100n).toString(10),
         0,
-        ((basePriceRaw * 105n) / 100n).toString(10),
+        ((basePriceRaw * BigInt(100 + slippage)) / 100n).toString(10),
         0,
         decimalToMath64(rangeLeft),
         0,
