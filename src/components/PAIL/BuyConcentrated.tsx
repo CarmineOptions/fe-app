@@ -8,14 +8,15 @@ import toast from "react-hot-toast";
 import { Pair } from "../../classes/Pair";
 import { PAIL_ADDRESS } from "../../constants/amm";
 import { LoadingAnimation } from "../Loading/Loading";
-import { decimalToMath64, math64toDecimal } from "../../utils/units";
-import { longInteger } from "../../utils/computations";
+import { decimalToMath64, math64ToInt } from "../../utils/units";
+import { longInteger, shortInteger } from "../../utils/computations";
 import { TokenBadge } from "../TokenBadge";
 import { PrimaryConnectWallet } from "../ConnectWallet/Button";
 import { Button } from "../common";
 import { Token } from "../../classes/Token";
-import { usePailQuoteAMM } from "../../hooks/usePailQuote";
+import { usePailQuoteConcentrated } from "../../hooks/usePailQuote";
 import { debug } from "../../utils/debugger";
+import { cubit } from "../../types/units";
 
 type Props = {
   tokenPair: Pair;
@@ -26,7 +27,7 @@ type Props = {
   rangeRight: number;
 };
 
-export const Buy = ({
+export const BuyConcentrated = ({
   tokenPair,
   expiry,
   notional,
@@ -36,12 +37,14 @@ export const Buy = ({
 }: Props) => {
   const { address } = useAccount();
   const { provider } = useProvider();
-  const { isLoading, isError, error, pailQuoteAmm } = usePailQuoteAMM({
+  const { isLoading, isError, error, pailQuoteAmm } = usePailQuoteConcentrated({
     notional,
     baseToken: tokenPair.baseToken,
     quoteToken: tokenPair.quoteToken,
     maturity: expiry,
     pricedAt: priceAt,
+    rangeLeft,
+    rangeRight,
   });
   const { sendAsync } = useSendTransaction({});
 
@@ -54,57 +57,34 @@ export const Buy = ({
     return <div>Something went wrong</div>;
   }
 
-  const quotePriceRaw = pailQuoteAmm[0] as bigint;
-  const basePriceRaw = pailQuoteAmm[2] as bigint;
-  const pricedAtRaw = pailQuoteAmm[4] as bigint;
-  const quotePrice = math64toDecimal(quotePriceRaw);
-  const basePrice = math64toDecimal(basePriceRaw);
+  const quotePriceMath64 = (pailQuoteAmm[0] as cubit).mag;
+  const basePriceMath64 = (pailQuoteAmm[1] as cubit).mag;
+  const pricedAtMath64 = (pailQuoteAmm[2] as cubit).mag;
+  const quotePrice = math64ToInt(
+    quotePriceMath64,
+    tokenPair.quoteToken.decimals
+  );
+  const basePrice = math64ToInt(basePriceMath64, tokenPair.baseToken.decimals);
 
   const handleBuy = async () => {
     const slippage = 20; // currently 20% slipapge for testing
+
+    const applySlippage = (n: bigint) => {
+      return ((n * BigInt(100 + slippage)) / 100n).toString(10);
+    };
+
     const approveQuote = {
       contractAddress: tokenPair.quoteToken.address,
       entrypoint: "approve",
-      calldata: [
-        PAIL_ADDRESS,
-        longInteger(
-          (quotePrice * (100 + slippage)) / 100,
-          tokenPair.quoteToken.decimals
-        ).toString(10),
-        "0",
-      ],
+      calldata: [PAIL_ADDRESS, applySlippage(BigInt(quotePrice) + 1n), "0"],
     };
     const approveBase = {
       contractAddress: tokenPair.baseToken.address,
       entrypoint: "approve",
-      calldata: [
-        PAIL_ADDRESS,
-        longInteger(
-          (basePrice * (100 + slippage)) / 100,
-          tokenPair.baseToken.decimals
-        ).toString(10),
-        "0",
-      ],
+      calldata: [PAIL_ADDRESS, applySlippage(BigInt(basePrice) + 1n), "0"],
     };
 
     const call = {
-      contractAddress: PAIL_ADDRESS,
-      entrypoint: "hedge_open",
-      calldata: [
-        longInteger(notional, tokenPair.baseToken.decimals).toString(10),
-        tokenPair.quoteToken.address,
-        tokenPair.baseToken.address,
-        expiry,
-        ((quotePriceRaw * BigInt(100 + slippage)) / 100n).toString(10),
-        0,
-        ((basePriceRaw * BigInt(100 + slippage)) / 100n).toString(10),
-        0,
-        pricedAtRaw,
-        0,
-      ],
-    };
-
-    const cammCall = {
       contractAddress: PAIL_ADDRESS,
       entrypoint: "clmm_hedge_open",
       calldata: [
@@ -112,26 +92,22 @@ export const Buy = ({
         tokenPair.quoteToken.address,
         tokenPair.baseToken.address,
         expiry,
-        ((quotePriceRaw * BigInt(100 + slippage)) / 100n).toString(10),
+        applySlippage(quotePriceMath64),
         0,
-        ((basePriceRaw * BigInt(100 + slippage)) / 100n).toString(10),
+        applySlippage(basePriceMath64),
         0,
         decimalToMath64(rangeLeft),
         0,
         decimalToMath64(rangeRight),
         0,
-        pricedAtRaw.toString(10),
+        pricedAtMath64,
         0,
       ],
     };
 
     debug("PAIL buy", { approveBase, approveQuote, call, rangeRight });
 
-    await sendAsync([
-      approveQuote,
-      approveBase,
-      rangeRight > 0 ? cammCall : call,
-    ])
+    await sendAsync([approveQuote, approveBase, call])
       .then(({ transaction_hash }) => {
         toast.promise(provider.waitForTransaction(transaction_hash), {
           loading: "Waiting for PAIL tx to finish...",
@@ -148,8 +124,8 @@ export const Buy = ({
     <BuyView
       baseToken={tokenPair.baseToken}
       quoteToken={tokenPair.quoteToken}
-      basePrice={basePrice}
-      quotePrice={quotePrice}
+      basePrice={shortInteger(basePrice, tokenPair.baseToken.decimals)}
+      quotePrice={shortInteger(quotePrice, tokenPair.quoteToken.decimals)}
       pricedAt={priceAt}
       address={address}
       handleBuy={handleBuy}
