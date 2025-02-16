@@ -100,7 +100,7 @@ export const BuyConcentrated = ({
         0,
         decimalToMath64(rangeRight),
         0,
-        pricedAtMath64,
+        pricedAtMath64.toString(10),
         0,
       ],
     };
