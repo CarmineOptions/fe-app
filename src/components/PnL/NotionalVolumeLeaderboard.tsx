@@ -12,7 +12,6 @@ export const NotionalVolumeLeaderboard = () => {
   const { isLoading, isError, data } = useQuery({
     queryKey: ["notional-volume-leaderboard", address],
     queryFn: async () => tradeLeaderboardDataQuery(address!),
-    enabled: !!address,
   });
   const addresses = data ? data[0].map((t) => t.address) : undefined;
   const { domains } = useDomains(addresses);
