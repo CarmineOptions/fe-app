@@ -87,7 +87,7 @@ const calculatePnL = (trades: TradeWithPrices[]): PnL[] => {
       if (trade.option_side === 1) {
         const key = trade.pool_id + trade.strike_price + trade.maturity;
         const tokens = trade.premia * (1 - fees) + trade.capital_transfered;
-        if (openShorts.hasOwnProperty(key)) {
+        if (openShorts[key] !== undefined) {
           openShorts[key] += tokens;
         } else {
           openShorts[key] = tokens;
@@ -236,21 +236,33 @@ const calculateLeaderboardData = (
     {} as { [key: string]: TradeWithPrices[] }
   );
 
-  const result = Object.keys(userMap).reduce((acc, key) => {
-    acc[key] = calculateNotionalVolumeSingleUser(userMap[key]);
+  const richData = Object.keys(userMap).reduce((acc, address) => {
+    const trades = userMap[address];
+    const notionalVolume = calculateNotionalVolumeSingleUser(trades);
+    const pnl = calculatePnL(trades).at(-1)?.usd || 0;
+    acc[address] = {
+      address: standardiseAddress(address),
+      notionalVolume,
+      pnl,
+      position: 0,
+    };
     return acc;
-  }, {} as { [key: string]: number });
+  }, {} as { [key: string]: TradeLeaderboardData });
 
-  const sortedCallers = Object.entries(result).sort(([, a], [, b]) => b - a);
+  const sortedCallers = Object.values(richData).sort(
+    ({ pnl: a }, { pnl: b }) => b - a
+  );
 
   const topUsers = sortedCallers.slice(0, 20); // Extract the top 20 callers
 
-  const tradeLeaderboardData = topUsers.map(([address, notionalVolume], i) => ({
-    address,
-    notionalVolume,
-    position: i + 1,
-    pnl: calculatePnL(userMap[address]).at(-1)?.usd || 0,
-  }));
+  const tradeLeaderboardData = topUsers.map(
+    ({ address, notionalVolume, pnl }, i) => ({
+      address,
+      notionalVolume,
+      position: i + 1,
+      pnl,
+    })
+  );
 
   if (!address) {
     return [tradeLeaderboardData, undefined];
@@ -258,7 +270,9 @@ const calculateLeaderboardData = (
 
   const stdAddress = standardiseAddress(address);
 
-  const index = sortedCallers.findIndex(([a, _]) => a === stdAddress);
+  const index = sortedCallers.findIndex(
+    ({ address }) => address === stdAddress
+  );
 
   const user = {
     address: stdAddress,
