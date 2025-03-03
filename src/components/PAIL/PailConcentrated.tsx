@@ -2,7 +2,6 @@ import { ChangeEvent, useState } from "react";
 import { Pair } from "../../classes/Pair";
 import { uniquePrimitiveValues } from "../../utils/utils";
 import { handleNumericChangeFactory } from "../../utils/inputHandling";
-import { Owned } from "./Owned";
 import { Button, Divider, H6, P3, P4 } from "../common";
 import { useCurrency } from "../../hooks/useCurrency";
 import { OptionWithPremia } from "../../classes/Option";
@@ -204,8 +203,6 @@ export const PailConcentrated = ({ options, pair }: Props) => {
         ) : (
           <P3>Either check current price or use price withing range</P3>
         ))}
-      <Divider className="my-8" />
-      <Owned />
     </div>
   );
 };

@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Pair, PairKey } from "../../classes/Pair";
 import { useOptions } from "../../hooks/useOptions";
 import { LoadingAnimation } from "../Loading/Loading";
-import { Owned } from "./Owned";
 import { TokenPairSelect } from "../TokenPairSelect";
 import { Button, Divider } from "../common";
 import { PailConcentrated } from "./PailConcentrated";
@@ -52,8 +51,6 @@ export const Pail = () => {
           <PailNonConcentrated pair={pair} options={options} />
         )}
       </div>
-      <Divider className="my-8" />
-      <Owned />
     </div>
   );
 };

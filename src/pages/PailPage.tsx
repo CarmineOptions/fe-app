@@ -2,6 +2,7 @@ import { Helmet } from "react-helmet";
 import { Layout } from "../components/Layout";
 import { Pail } from "../components/PAIL";
 import { H4 } from "../components/common";
+import { Owned } from "../components/PAIL/Owned";
 
 const PailPage = () => {
   return (
@@ -16,6 +17,7 @@ const PailPage = () => {
       <div className="flex flex-col gap-10">
         <H4>Protection Against Impermanent Loss</H4>
         <Pail />
+        <Owned />
       </div>
     </Layout>
   );
