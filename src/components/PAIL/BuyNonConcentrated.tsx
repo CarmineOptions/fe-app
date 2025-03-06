@@ -1,9 +1,5 @@
 import { memo } from "react";
-import {
-  useAccount,
-  useProvider,
-  useSendTransaction,
-} from "@starknet-react/core";
+import { RequestResult } from "@starknet-react/core";
 import toast from "react-hot-toast";
 import { Pair } from "../../classes/Pair";
 import { PAIL_ADDRESS } from "../../constants/amm";
@@ -12,26 +8,39 @@ import { math64toDecimal } from "../../utils/units";
 import { longInteger } from "../../utils/computations";
 import { TokenBadge } from "../TokenBadge";
 import { PrimaryConnectWallet } from "../ConnectWallet/Button";
-import { Button } from "../common";
-import { Token } from "../../classes/Token";
+import { Button, P3 } from "../common";
 import { usePailQuoteAMM } from "../../hooks/usePailQuote";
 import { debug } from "../../utils/debugger";
+import { ProviderInterface, Call } from "starknet";
+import { BalanceDisplay } from "./BalanceDisplay";
 
 type Props = {
   tokenPair: Pair;
+  tokenPrice: number;
   expiry: number;
   notional: number;
   priceAt: number;
+  address?: string;
+  baseBalance?: number;
+  quoteBalance?: number;
+  provider: ProviderInterface;
+  sendAsync: (
+    args?: Call[]
+  ) => Promise<RequestResult<"wallet_addInvokeTransaction">>;
 };
 
 export const BuyNonConcentrated = ({
   tokenPair,
+  tokenPrice,
   expiry,
   notional,
   priceAt,
+  address,
+  baseBalance,
+  quoteBalance,
+  provider,
+  sendAsync,
 }: Props) => {
-  const { address } = useAccount();
-  const { provider } = useProvider();
   const { isLoading, isError, error, pailQuoteAmm } = usePailQuoteAMM({
     notional,
     baseToken: tokenPair.baseToken,
@@ -39,7 +48,6 @@ export const BuyNonConcentrated = ({
     maturity: expiry,
     pricedAt: priceAt,
   });
-  const { sendAsync } = useSendTransaction({});
 
   if (isLoading) {
     return <LoadingAnimation />;
@@ -117,10 +125,12 @@ export const BuyNonConcentrated = ({
 
   return (
     <BuyView
-      baseToken={tokenPair.baseToken}
-      quoteToken={tokenPair.quoteToken}
+      pair={tokenPair}
+      tokenPrice={tokenPrice}
       basePrice={basePrice}
       quotePrice={quotePrice}
+      baseBalance={baseBalance}
+      quoteBalance={quoteBalance}
       pricedAt={priceAt}
       address={address}
       handleBuy={handleBuy}
@@ -129,51 +139,81 @@ export const BuyNonConcentrated = ({
 };
 
 type BuyViewProps = {
-  baseToken: Token;
-  quoteToken: Token;
+  pair: Pair;
+  tokenPrice: number;
   basePrice: number;
   quotePrice: number;
   pricedAt: number;
   address?: string;
+  baseBalance?: number;
+  quoteBalance?: number;
   handleBuy: () => void;
 };
 
 const BuyView = memo(
   ({
-    baseToken,
-    quoteToken,
+    pair,
+    tokenPrice,
     basePrice,
     quotePrice,
     pricedAt,
     address,
+    baseBalance,
+    quoteBalance,
     handleBuy,
   }: BuyViewProps) => {
+    const isNotEnoughFunds = !!(
+      (baseBalance && basePrice > baseBalance) ||
+      (quoteBalance && quotePrice > quoteBalance)
+    );
+
     return (
       <div className="w-fit">
         <div className="flex flex-col items-center gap-2">
           <div className="flex gap-2 border-brand border-[1px] rounded-md items-center p-2">
             <div className="flex items-center gap-1">
-              <TokenBadge token={quoteToken} />
+              <TokenBadge token={pair.quoteToken} />
               {quotePrice.toFixed(4)}
             </div>
             <p>|</p>
             <div className="flex items-center gap-1">
-              <TokenBadge token={baseToken} />
+              <TokenBadge token={pair.baseToken} />
               {basePrice.toFixed(4)}
             </div>
             <p>|</p>
             <div className="flex items-center gap-1">
               at 1
-              <TokenBadge token={baseToken} />~{pricedAt.toFixed(4)}{" "}
-              <TokenBadge token={quoteToken} />
+              <TokenBadge token={pair.baseToken} />
+              {pricedAt === 0
+                ? `~${tokenPrice.toFixed(4)} `
+                : `~${pricedAt.toFixed(4)} `}
+              <TokenBadge token={pair.quoteToken} />
             </div>
           </div>
-          {address ? (
-            <Button onClick={handleBuy} type="primary">
+          <BalanceDisplay pair={pair} base={baseBalance} quote={quoteBalance} />
+          {!address && <PrimaryConnectWallet />}
+          {isNotEnoughFunds && (
+            <div className="w-full">
+              {baseBalance && baseBalance < basePrice && (
+                <P3 className="text-ui-errorBg">
+                  Not enought {pair.baseToken.symbol}
+                </P3>
+              )}
+              {quoteBalance && quoteBalance < quotePrice && (
+                <P3 className="text-ui-errorBg">
+                  Not enought {pair.quoteToken.symbol}
+                </P3>
+              )}
+            </div>
+          )}
+          {address && (
+            <Button
+              onClick={handleBuy}
+              disabled={isNotEnoughFunds}
+              type="primary"
+            >
               Protect Against Impermanent Loss
             </Button>
-          ) : (
-            <PrimaryConnectWallet />
           )}
         </div>
       </div>
