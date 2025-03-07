@@ -32,6 +32,8 @@ export const PailNonConcentrated = ({
 }: Props) => {
   return (
     <div className="flex flex-col gap-5 justify-between">
+      <div className="h-8"></div>
+
       <BuyNonConcentrated
         tokenPair={pair}
         tokenPrice={tokenPrice}

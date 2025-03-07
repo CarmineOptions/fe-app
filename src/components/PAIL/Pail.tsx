@@ -1,4 +1,10 @@
-import { useState } from "react";
+import { ReactNode, useState } from "react";
+import {
+  useAccount,
+  useProvider,
+  useSendTransaction,
+} from "@starknet-react/core";
+
 import { Pair, PairKey } from "../../classes/Pair";
 import { useOptions } from "../../hooks/useOptions";
 import { LoadingAnimation } from "../Loading/Loading";
@@ -6,18 +12,27 @@ import { TokenPairSelect } from "../TokenPairSelect";
 import { PailConcentrated } from "./PailConcentrated";
 import { PailNonConcentrated } from "./PailNonConcentrated";
 import { AmmClammSwitch } from "./AmmClammSwitch";
-import {
-  useAccount,
-  useProvider,
-  useSendTransaction,
-} from "@starknet-react/core";
-import { Button, H6, P3, P4 } from "../common";
-import { handleNumericChangeFactory } from "../../utils/inputHandling";
+import { Button, H5, P3, P4 } from "../common";
 import { useCurrency } from "../../hooks/useCurrency";
 import { uniquePrimitiveValues } from "../../utils/utils";
 import { PriceAt } from "./PriceAt";
 import { useUserBalance } from "../../hooks/useUserBalance";
 import { shortInteger } from "../../utils/computations";
+import { SizeInput } from "./SizeInput";
+
+type ItemProps = {
+  title?: string;
+  description?: string;
+  children: ReactNode;
+};
+
+const Item = ({ title, description, children }: ItemProps) => (
+  <div className="flex flex-col gap-2">
+    {title && <H5>{title}</H5>}
+    {description && <P3>{description}</P3>}
+    {children}
+  </div>
+);
 
 export const Pail = () => {
   const { address } = useAccount();
@@ -28,7 +43,6 @@ export const Pail = () => {
   const [variant, setVariant] = useState<"amm" | "clamm">("amm");
   const [maturity, setMaturity] = useState<number | undefined>();
   const [amount, setAmount] = useState<number>(1);
-  const [amountText, setAmountText] = useState<string>("1");
   const [priceAt, setPriceAt] = useState<number>(0);
   const price = useCurrency(pair.baseToken.id);
   const { data: baseBalanceRaw } = useUserBalance(pair.baseToken.address);
@@ -49,14 +63,6 @@ export const Pail = () => {
   if (isError || !options) {
     return <div>Something went wrong</div>;
   }
-
-  const handleChange = handleNumericChangeFactory(
-    setAmountText,
-    setAmount,
-    (n) => {
-      return n;
-    }
-  );
 
   const thisPairOptions = options.filter((option) =>
     option.isPair(pair.pairId)
@@ -97,48 +103,71 @@ export const Pail = () => {
 
   return (
     <div className="flex flex-col gap-5 justify-between">
-      <div className="w-fit">
-        <TokenPairSelect pair={pair} setPair={setPair} />
-      </div>
-      <div className="w-fit">
-        <AmmClammSwitch setVariant={setVariant} variant={variant} />
-      </div>
-      <div className="flex gap-2 items-center">
-        <P4 className="text-dark-secondary font-semibold">MATURITY</P4>
-        {maturities
-          .sort((a, b) => a - b)
-          .map((m, i) => (
-            <Button
-              type="secondary"
-              outlined={m !== maturity}
-              onClick={() => setMaturity(m)}
-              key={i}
-            >
-              {formatTimestamp(m)}
-            </Button>
-          ))}
-      </div>
-      <H6>Size</H6>
-      <input
-        onChange={handleChange}
-        type="text"
-        placeholder="size"
-        value={amountText}
-        className="bg-dark-card border-dark-primary border-[0.5px] w-28 h-10 p-2"
-      />
-      <H6>Price at</H6>
-      {price && priceRange && (
-        <PriceAt
-          pair={pair}
-          price={priceAt}
-          setPrice={setPriceAt}
-          minPrice={priceRange[0]}
-          maxPrice={priceRange[1]}
-          tokenPrice={price}
-        />
-      )}
+      <Item
+        title="Pool Type"
+        description="Choose between Uniswap V2 AMM or Uniswap V3 Concentrated Liquidity
+          AMM."
+      >
+        <div className="w-fit">
+          <AmmClammSwitch setVariant={setVariant} variant={variant} />
+        </div>
+      </Item>
+      <Item
+        title="Token Pair"
+        description="Select token pair that you want to protect."
+      >
+        <div className="w-fit">
+          <TokenPairSelect pair={pair} setPair={setPair} />
+        </div>
+      </Item>
+      <Item
+        title="Maturity"
+        description="Choose when the protection will mature."
+      >
+        <div className="flex gap-2 items-center">
+          <P4 className="text-dark-secondary font-semibold">MATURITY</P4>
+          {maturities
+            .sort((a, b) => a - b)
+            .map((m, i) => (
+              <Button
+                type="secondary"
+                outlined={m !== maturity}
+                onClick={() => setMaturity(m)}
+                key={i}
+              >
+                {formatTimestamp(m)}
+              </Button>
+            ))}
+        </div>
+      </Item>
+      <Item
+        title="Size"
+        description={`Choose size to protect. Size is denominated in the base token (${pair.baseToken.symbol}).`}
+      >
+        <SizeInput size={amount} setSize={setAmount} />
+      </Item>
+
+      <Item
+        title="Price At"
+        description="Choose which price to protect at. Either choose specific price or use the current price."
+      >
+        {price && priceRange ? (
+          <PriceAt
+            pair={pair}
+            price={priceAt}
+            setPrice={setPriceAt}
+            minPrice={priceRange[0]}
+            maxPrice={priceRange[1]}
+            tokenPrice={price}
+          />
+        ) : (
+          <LoadingAnimation />
+        )}
+      </Item>
       {!maturity ? (
         <P3>Choose maturity</P3>
+      ) : !amount ? (
+        <P3>Choose size</P3>
       ) : price === undefined ? (
         <div className="w-80">
           <LoadingAnimation />
