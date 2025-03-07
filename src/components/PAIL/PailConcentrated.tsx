@@ -1,9 +1,65 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, CSSProperties, useEffect, useState } from "react";
 import { Pair } from "../../classes/Pair";
-import { Divider, H6 } from "../common";
+import { Divider, H5, P3 } from "../common";
 import { BuyConcentrated } from "./BuyConcentrated";
 import { Call, ProviderInterface } from "starknet";
 import { RequestResult } from "@starknet-react/core";
+import { LoadingAnimation } from "../Loading/Loading";
+
+type NumberInputProps = {
+  value: number;
+  setValue: (n: number) => void;
+  placeholder: string;
+};
+
+export const NumberInput = ({
+  value,
+  setValue,
+  placeholder,
+}: NumberInputProps) => {
+  const [displayValue, setDisplayValue] = useState(
+    value.toString().replace(",", ".")
+  );
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    let inputValue = e.target.value;
+
+    inputValue = inputValue.replace(/^0{2,}/, "0"); // replace two leading 0 by one
+    inputValue = inputValue.replace(/^0(?=[1-9])/, ""); // remove leading 0 if followed by number
+
+    if (inputValue === "") {
+      setDisplayValue("");
+      setValue(0);
+      return;
+    }
+
+    const pattern = /^[0-9]+(?:[.,][0-9]*)?$/;
+
+    if (!pattern.test(inputValue)) {
+      return;
+    }
+
+    setDisplayValue(inputValue.replace(",", "."));
+    const n = parseFloat(inputValue);
+    setValue(n);
+  };
+  return (
+    <div>
+      <input
+        onChange={handleChange}
+        type="text"
+        placeholder={placeholder}
+        value={displayValue}
+        style={
+          {
+            fieldSizing: "content",
+          } as CSSProperties
+        }
+        className="bg-dark-card border-dark-primary text-center border-[1px] min-w-32 h-10 py-2 px-4 rounded-full"
+      />
+    </div>
+  );
+};
 
 type Props = {
   pair: Pair;
@@ -43,41 +99,43 @@ export const PailConcentrated = ({
 
   return (
     <div className="flex flex-col gap-5 justify-between">
-      <div>
-        <H6>Concentrated liquidity AMM price range</H6>
+      <div className="flex flex-col gap-2">
+        <H5>Concentrated liquidity price range</H5>
+        <P3>Choose range for the concentrated liquidity</P3>
         <div className="flex items-center gap-3">
-          <input
-            onChange={(e) => setRangeLeft(Number(e.target.value))}
+          <NumberInput
+            placeholder="Range left"
+            setValue={setRangeLeft}
             value={rangeLeft}
-            type="number"
-            placeholder="range left"
-            className={`bg-dark-card border-dark-primary border-[0.5px] w-28 h-10 p-2`}
           />
           <Divider className="w-10" />
-          <input
-            onChange={(e) => setRangeRight(Number(e.target.value))}
+          <NumberInput
+            placeholder="Range right"
+            setValue={setRangeRight}
             value={rangeRight}
-            type="number"
-            placeholder="range right"
-            className={`bg-dark-card border-dark-primary border-[0.5px] w-28 h-10 p-2`}
           />
         </div>
       </div>
+      <div className="h-8"></div>
 
-      <BuyConcentrated
-        tokenPair={pair}
-        tokenPrice={tokenPrice}
-        expiry={maturity}
-        notional={size}
-        priceAt={price}
-        rangeLeft={rangeLeft}
-        rangeRight={rangeRight}
-        address={address}
-        baseBalance={baseBalance}
-        quoteBalance={quoteBalance}
-        provider={provider}
-        sendAsync={sendAsync}
-      />
+      {rangeLeft !== undefined && rangeRight && rangeLeft < rangeRight ? (
+        <BuyConcentrated
+          tokenPair={pair}
+          tokenPrice={tokenPrice}
+          expiry={maturity}
+          notional={size}
+          priceAt={price}
+          rangeLeft={rangeLeft}
+          rangeRight={rangeRight}
+          address={address}
+          baseBalance={baseBalance}
+          quoteBalance={quoteBalance}
+          provider={provider}
+          sendAsync={sendAsync}
+        />
+      ) : (
+        <LoadingAnimation />
+      )}
     </div>
   );
 };

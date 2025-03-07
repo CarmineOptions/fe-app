@@ -32,7 +32,10 @@ export const PriceAt = memo(
     const isValid = internalPrice >= minPrice && internalPrice <= maxPrice;
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-      const inputValue = e.target.value;
+      let inputValue = e.target.value;
+
+      inputValue = inputValue.replace(/^0{2,}/, "0"); // replace two leading 0 by one
+      inputValue = inputValue.replace(/^0(?=[1-9])/, ""); // remove leading 0 if followed by number
 
       if (inputValue === "") {
         setDisplayValue("");
