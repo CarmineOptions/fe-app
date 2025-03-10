@@ -36,6 +36,7 @@ const reportReferral = (referredAddress: string) => {
     body: JSON.stringify({
       referred_wallet_address: referredAddress,
       referral_code: code,
+      source: "carmineoptions",
     }),
   };
 
