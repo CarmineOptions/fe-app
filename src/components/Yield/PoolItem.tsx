@@ -106,7 +106,8 @@ export const PoolItem = ({ pool }: Props) => {
 
   const unlocked = shortInteger(state.unlocked_cap, pool.underlying.decimals);
   // const locked = shortInteger(state.locked_cap, pool.underlying.decimals);
-  const poolPosition = math64toDecimal(state.pool_position);
+  const poolPosition =
+    state.pool_position === null ? 0 : math64toDecimal(state.pool_position);
   const tvl = unlocked + poolPosition;
 
   const finalApy = !pool.isDefispringEligible
