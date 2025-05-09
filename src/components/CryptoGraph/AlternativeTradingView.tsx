@@ -19,7 +19,7 @@ function TradingViewWidget() {
           "BINANCE:wBTCUSD|1M|USD"
         ],
         [
-          "BINANCE:STRKUSD|1M|USD"
+          "COINBASE:STRKUSD|1M|USD"
         ]
       ],
       "chartOnly": false,

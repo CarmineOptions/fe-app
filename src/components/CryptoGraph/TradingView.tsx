@@ -73,7 +73,7 @@ export const TradingViewMultichart = memo(({ pair }: { pair: PairKey }) => {
 
   const btcTicker = ["BINANCE:wBTCUSD|1M|USD"];
   const ethTicker = ["BINANCE:ETHUSD|1M|USD"];
-  const strkTicker = ["BINANCE:STRKUSD|1M|USD"];
+  const strkTicker = ["COINBASE:STRKUSD|1M|USD"];
 
   return (
     <div className="h-full">

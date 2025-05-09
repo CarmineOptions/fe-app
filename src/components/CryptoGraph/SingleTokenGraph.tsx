@@ -59,7 +59,7 @@ export const SingleTokenMultichart = ({
   return (
     <div className="h-full">
       <div className={`h-full${show === 1 ? "" : " hidden"}`}>
-        <SingleTokenGraph ticker="BINANCE:STRKUSD" />
+        <SingleTokenGraph ticker="COINBASE:STRKUSD" />
       </div>
       <div className={`h-full${show === 2 ? "" : " hidden"}`}>
         <SingleTokenGraph ticker="BINANCE:wBTCUSD" />
