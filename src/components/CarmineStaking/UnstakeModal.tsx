@@ -18,7 +18,7 @@ import { LoadingAnimation } from "../Loading/Loading";
 import { unstake } from "../../calls/carmineStake";
 import { CarmineStake } from "../../classes/CarmineStake";
 
-import { Button, H5 } from "../common";
+import { Button, H5, P3 } from "../common";
 import { formatNumber, stateToButtonType } from "../../utils/utils";
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -145,16 +145,25 @@ export const UnstakeModal = ({ stake, open, setOpen }: Props) => {
       onClose={handleClose}
       aria-labelledby="unstake-crm"
       aria-describedby="unstake-crm-modal"
-      PaperProps={{ sx: { borderRadius: 0, background: "none" } }}
+      PaperProps={{
+        sx: {
+          borderRadius: 0,
+          backgroundColor: "transparent",
+          boxShadow: "none",
+          overflow: "hidden",
+        },
+      }}
     >
       <div className="w-64 sm:w-[500px] bg-dark-card border-dark-primary text-dark-primary border-[1px] p-6 flex flex-col gap-4">
         <H5>Restake & Unstake</H5>
-        <p>
+        <P3>
           Your stake of {formatNumber(stake.amountStakedHumanReadable)}{" "}
           <b>CRM</b> has expired.
-        </p>
-        <p>You can stake again for a period.</p>
-        <p>You can claim and stake for any of these periods:</p>
+        </P3>
+        <P3>
+          You can stake again for a period. You can claim and stake for any of
+          these periods:
+        </P3>
         <div className="flex flex-col sm:flex-row justify-around sm:items-center gap-2">
           <Tooltip title="Staking for 1 month gives multiplier 1.0x">
             <Button
@@ -202,7 +211,11 @@ export const UnstakeModal = ({ stake, open, setOpen }: Props) => {
             </Button>
           </Tooltip>
         </div>
-        Alternatively, you can unstake your <b>veCRM</b> to <b>CRM</b>:
+        <P3>
+          Alternatively, you can unstake your{" "}
+          <span className="text-bold">veCRM</span> to{" "}
+          <span className="text-bold">CRM</span>:
+        </P3>
         <div className="align-middle m-auto">
           <Button
             type={stateToButtonType(unstakeState)}

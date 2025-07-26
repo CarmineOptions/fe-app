@@ -124,7 +124,7 @@ export const Stakes = ({ stakes, veBalance }: Props) => {
           <div className="w-full">
             <Button
               type="primary"
-              className="h-8"
+              className="h-10"
               onClick={() => setUnstakeOpen(true)}
             >
               Restake & Unstake
