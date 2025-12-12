@@ -1,5 +1,10 @@
-import { Option } from "../../classes/Option";
-import { OptionSide, OptionType } from "../../types/options";
+import {
+  Option,
+  OptionTypeCall,
+  OptionTypePut,
+  OptionSideLong,
+  OptionSideShort,
+} from "carmine-sdk/core";
 
 export type CurrencyData = { usd: number; market: number };
 
@@ -39,27 +44,34 @@ export const getProfitGraphData = (
   premia: number,
   size: number
 ): GraphData => {
-  const { strike: strikePrice, type, side } = option;
+  const { strikePrice, optionType: type, optionSide: side } = option;
 
   // if premia is nearing 0, use 2% of strike price to calculate X axis
-  const spreadPremia = Math.max(premia, strikePrice / 50);
+  const spreadPremia = Math.max(premia, strikePrice.val / 50);
 
   const spread = [
-    Math.max(strikePrice - 10 * spreadPremia, 0),
-    Math.min(strikePrice + 10 * spreadPremia, 2 * strikePrice),
+    Math.max(strikePrice.val - 10 * spreadPremia, 0),
+    Math.min(strikePrice.val + 10 * spreadPremia, 2 * strikePrice.val),
   ];
   const step = getStep(spread as [number, number]);
   const granuality = 1 / step;
 
-  console.log({ spread, step, granuality, strikePrice, premia });
+  console.log({
+    spread,
+    step,
+    granuality,
+    strikePrice: strikePrice.val,
+    premia,
+  });
 
   const plot = [];
-  const currency = option.strikeCurrency;
+  const currency = option.quote.symbol;
 
-  if (side === OptionSide.Long && type === OptionType.Call) {
+  if (side === OptionSideLong && type === OptionTypeCall) {
     for (let i = spread[0] * granuality; i <= spread[1] * granuality; i++) {
       const x = round(i * step, step);
-      const y = x < strikePrice ? -premia : (x - strikePrice) * size - premia;
+      const y =
+        x < strikePrice.val ? -premia : (x - strikePrice.val) * size - premia;
 
       plot.push({ market: x, usd: y });
     }
@@ -70,10 +82,11 @@ export const getProfitGraphData = (
     return { plot, domain, currency };
   }
 
-  if (side === OptionSide.Short && type === OptionType.Call) {
+  if (side === OptionSideShort && type === OptionTypeCall) {
     for (let i = spread[0] * granuality; i <= spread[1] * granuality; i++) {
       const x = round(i * step, step);
-      const y = x < strikePrice ? premia : (strikePrice - x) * size + premia;
+      const y =
+        x < strikePrice.val ? premia : (strikePrice.val - x) * size + premia;
       plot.push({ market: x, usd: y });
     }
 
@@ -82,10 +95,11 @@ export const getProfitGraphData = (
     return { plot, domain, currency };
   }
 
-  if (side === OptionSide.Long && type === OptionType.Put) {
+  if (side === OptionSideLong && type === OptionTypePut) {
     for (let i = spread[0] * granuality; i <= spread[1] * granuality; i++) {
       const x = round(i * step, step);
-      const y = x < strikePrice ? (strikePrice - x) * size - premia : -premia;
+      const y =
+        x < strikePrice.val ? (strikePrice.val - x) * size - premia : -premia;
       plot.push({ market: x, usd: y });
     }
 
@@ -94,10 +108,11 @@ export const getProfitGraphData = (
     return { plot, domain, currency };
   }
 
-  if (side === OptionSide.Short && type === OptionType.Put) {
+  if (side === OptionSideShort && type === OptionTypePut) {
     for (let i = spread[0] * granuality; i <= spread[1] * granuality; i++) {
       const x = round(i * step, step);
-      const y = x < strikePrice ? (x - strikePrice) * size + premia : premia;
+      const y =
+        x < strikePrice.val ? (x - strikePrice.val) * size + premia : premia;
       plot.push({ market: x, usd: y });
     }
 

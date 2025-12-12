@@ -9,18 +9,20 @@ import {
   GetTransactionReceiptResponse,
   ProviderInterface,
   ReceiptTx,
-  RejectedTransactionReceiptResponse,
-  RevertedTransactionReceiptResponse,
   SuccessfulTransactionReceiptResponse,
 } from "starknet";
 
-export const AMMContract = new Contract(AmmAbi, AMM_ADDRESS, provider);
+export const AMMContract = new Contract({
+  abi: AmmAbi,
+  address: AMM_ADDRESS,
+  providerOrAccount: provider,
+});
 
-export const GovernanceContract = new Contract(
-  GovernanceAbi,
-  GOVERNANCE_ADDRESS,
-  provider
-);
+export const GovernanceContract = new Contract({
+  abi: GovernanceAbi,
+  address: GOVERNANCE_ADDRESS,
+  providerOrAccount: provider,
+});
 
 export const afterTransaction = (
   tx: string,
@@ -44,12 +46,7 @@ export interface ExecuteHooks {
   onSuccess?: SyncOrAsyncVoidFunction<
     [SuccessfulTransactionReceiptResponse & ReceiptTx]
   >;
-  onReject?: SyncOrAsyncVoidFunction<
-    [
-      | (RevertedTransactionReceiptResponse & ReceiptTx)
-      | (RejectedTransactionReceiptResponse & ReceiptTx)
-    ]
-  >;
+  onReject?: SyncOrAsyncVoidFunction;
 }
 
 export interface ExecuteBase {
@@ -109,9 +106,9 @@ export const _execute: Execute = async ({
   }
 
   console.error("Transaction rejected or reverted", awaitedTransaction);
-  if (hooks?.onReject) {
-    await hooks.onReject(awaitedTransaction);
-  }
+  // if (hooks?.onReject) {
+  //   await hooks.onReject(awaitedTransaction);
+  // }
 
   throw Error("transaction failed");
 };

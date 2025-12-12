@@ -1,5 +1,6 @@
-import { Token } from "../../classes/Token";
+import { Token } from "carmine-sdk/core";
 import { H4, P3 } from "../common/Typography";
+import { carmineTokenToIcon } from "../../classes/Token";
 
 type Badge = {
   token: Token;
@@ -21,7 +22,7 @@ export const TokenBadge = ({
   className,
   color: colorMaybe,
 }: Badge) => {
-  const { icon: Icon } = token;
+  const Icon = carmineTokenToIcon(token.symbol);
 
   const color = colorMaybe || "white";
 
@@ -139,6 +140,8 @@ export const PairNameAboveBadge = ({
   const inside = tokenA.symbol + "/" + tokenB.symbol;
   const size = "12px";
   const color = colorMaybe || "white";
+  const TokenAIcon = carmineTokenToIcon(tokenA.symbol);
+  const TokenBIcon = carmineTokenToIcon(tokenB.symbol);
 
   return (
     <div className="flex flex-col gap-1">
@@ -147,14 +150,14 @@ export const PairNameAboveBadge = ({
       </div>
       <div className="relative w-[26px] h-[14px]">
         <div className="box-border absolute left-0 top-0 rounded-full border-dark-primary border-[1px] bg-dark">
-          <tokenA.icon
+          <TokenAIcon
             className={color === "white" ? "fill-dark-primary" : "fill-dark"}
             width={size}
             height={size}
           />
         </div>
         <div className="box-border absolute right-0 z-10 top-0 rounded-full border-dark-primary border-[1px] bg-dark">
-          <tokenB.icon
+          <TokenBIcon
             className={color === "white" ? "fill-dark-primary" : "fill-dark"}
             width={size}
             height={size}

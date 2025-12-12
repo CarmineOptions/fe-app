@@ -1,24 +1,17 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useAccount, useSendTransaction } from "@starknet-react/core";
 import { Tooltip } from "@mui/material";
 
 import { PairNamedBadge } from "../TokenBadge";
 import { handleNumericChangeFactory } from "../../utils/inputHandling";
-import { useCurrency } from "../../hooks/useCurrency";
+import { useTokenPrice } from "../../hooks/useCurrency";
 import { useUserBalance } from "../../hooks/useUserBalance";
 import { shortInteger } from "../../utils/computations";
 import { TransactionState } from "../../types/network";
-import { OptionWithPremia } from "../../classes/Option";
-import {
-  debounce,
-  formatNumber,
-  timestampToPriceGuardDate,
-} from "../../utils/utils";
-import { fetchModalData } from "../TradeTable/fetchModalData";
+import { formatNumber, timestampToPriceGuardDate } from "../../utils/utils";
 import { debug, LogTypes } from "../../utils/debugger";
 import { LoadingAnimation } from "../Loading/Loading";
-import { TokenKey } from "../../classes/Token";
 import { closeSidebar, setSidebarContent } from "../../redux/actions";
 import { approveAndTradeOpenNew } from "../../calls/tradeOpen";
 import { OptionSidebarSuccess } from "./OptionSidebarSuccess";
@@ -29,6 +22,9 @@ import { Button, Divider, P3, P4 } from "../common";
 import { PrimaryConnectWallet } from "../ConnectWallet/Button";
 import { NavLink } from "react-router-dom";
 import { Warning } from "../Icons";
+import { OptionWithPremia } from "carmine-sdk/core";
+import { usePremia } from "../../hooks/usePremia";
+import { useDebounce } from "../../hooks/useDebounce";
 
 type Props = {
   option: OptionWithPremia;
@@ -37,29 +33,26 @@ type Props = {
 export const OptionSidebar = ({ option }: Props) => {
   const { sendAsync } = useSendTransaction({});
   const { address } = useAccount();
-  const price = useCurrency(option.underlying.id);
+  const price = useTokenPrice(option.underlying);
   const { data: balanceRaw } = useUserBalance(option.underlying.address);
-  const defaultAmount =
-    option.baseToken.id === TokenKey.BTC ||
-    option.quoteToken.id === TokenKey.BTC
-      ? 0.1
-      : 1;
-  const [amount, setAmount] = useState<number>(defaultAmount);
-  const [amountText, setAmountText] = useState<string>(
-    defaultAmount.toString()
-  );
-  const [loading, setLoading] = useState<boolean>(false);
-  const [sizeOnePremia, setSizeOnePremia] = useState<number>();
-  const [premiaUsd, setPremiaUsd] = useState<number>();
-  const [premia, setPremia] = useState<number>();
-  const [premiaMath64, setPremiaMath64] = useState<bigint | undefined>();
+  const defaultSize = [option.base.symbol, option.quote.symbol].includes("wBTC")
+    ? 0.1
+    : 1;
+  const [size, setSize] = useState<number>(defaultSize);
+  const debouncedSize = useDebounce(size, 400);
+
+  const [amountText, setAmountText] = useState<string>(defaultSize.toString());
+
+  const { data: premia } = usePremia(option, debouncedSize, false);
+  const sizeOnePremia = premia ? premia.val / debouncedSize : undefined;
+  const premiaUsd = premia && price ? premia.val * price : undefined;
   const [txState, setTxState] = useState<TransactionState>(
     TransactionState.Initial
   );
 
   const handleChange = handleNumericChangeFactory(
     setAmountText,
-    setAmount,
+    setSize,
     (n) => {
       return n;
     }
@@ -71,19 +64,21 @@ export const OptionSidebar = ({ option }: Props) => {
       return;
     }
 
-    if (balanceRaw === undefined || premiaMath64 === undefined) {
+    console.log({ balanceRaw, premia });
+
+    if (balanceRaw === undefined || premia === undefined) {
       debug(LogTypes.WARN, "No user balance");
       return;
     }
 
-    if (!amount) {
+    if (!debouncedSize) {
       toast.error("Cannot trade size 0");
       return;
     }
 
     const callback = (tx: string) => {
       setSidebarContent(
-        <OptionSidebarSuccess option={option} tx={tx} size={amount} />
+        <OptionSidebarSuccess option={option} tx={tx} size={debouncedSize} />
       );
     };
 
@@ -91,8 +86,8 @@ export const OptionSidebar = ({ option }: Props) => {
       address,
       sendAsync,
       option,
-      amount,
-      premiaMath64,
+      debouncedSize,
+      premia,
       balanceRaw,
       setTxState,
       false, // not priceguard
@@ -100,44 +95,12 @@ export const OptionSidebar = ({ option }: Props) => {
     ).catch(() => setTxState(TransactionState.Fail));
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const callWithDelay = useCallback(
-    debounce((size: number, controller: AbortController) => {
-      fetchModalData(size, option, address, controller.signal)
-        .then((v) => {
-          if (v && v.prices && v.premiaMath64) {
-            const { prices } = v;
-            setPremia(prices.premia);
-            setPremiaUsd(prices.premiaUsd);
-            setSizeOnePremia(prices.sizeOnePremia);
-            setPremiaMath64(v.premiaMath64);
-            setLoading(false);
-          }
-        })
-        .catch((e) => {
-          debug("Failed fetching modal data");
-          debug("warn", e.message);
-        });
-    }),
-    [option.optionId]
-  );
-
-  useEffect(() => {
-    const controller = new AbortController();
-    setLoading(true);
-    callWithDelay(amount, controller);
-    return () => {
-      controller.abort();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [amount, option.optionId]);
-
   useEffect(() => {
     // sets default amounts when option changes
-    setAmount(defaultAmount);
-    setAmountText(defaultAmount.toString());
+    setSize(defaultSize);
+    setAmountText(defaultSize.toString());
     setTxState(TransactionState.Initial);
-  }, [defaultAmount, option.optionId]);
+  }, [defaultSize, option.optionId]);
 
   const balance =
     balanceRaw === undefined
@@ -147,40 +110,40 @@ export const OptionSidebar = ({ option }: Props) => {
   const [date, time] = timestampToPriceGuardDate(option.maturity);
 
   const graphData =
-    premiaUsd === undefined || amount === 0
+    premiaUsd === undefined || size === 0
       ? undefined
-      : getProfitGraphData(option, premiaUsd, amount);
+      : getProfitGraphData(option, premiaUsd, debouncedSize);
 
   const limited =
     premia === undefined
       ? "--"
-      : formatNumber(premia, 4) + " " + option.underlying.symbol;
+      : formatNumber(premia.val, 4) + " " + option.underlying.symbol;
   const limitedUsd =
     premiaUsd === undefined ? "--" : "$" + formatNumber(premiaUsd, 4);
   const unlimited = "UNLIMITED";
   const breakEven =
     sizeOnePremia === undefined || price === undefined
       ? "--"
-      : `${option.quoteToken.id === TokenKey.USDC ? "$" : ""}` +
+      : `${option.quote.symbol === "USDC" ? "$" : ""}` +
         formatNumber(
           option.isCall
-            ? option.strike + sizeOnePremia * price
-            : option.strike - sizeOnePremia * price,
+            ? option.strikePrice.val + sizeOnePremia * price
+            : option.strikePrice.val - sizeOnePremia * price,
           2
         ) +
-        `${
-          option.quoteToken.id === TokenKey.USDC ? "" : option.quoteToken.symbol
-        }`;
+        `${option.quote.symbol === "USDC" ? "" : option.quote.symbol}`;
 
   const getRequired = (): number | undefined => {
-    if (premia === undefined || amount === 0) {
+    if (premia === undefined || debouncedSize === 0) {
       return;
     }
     if (option.isLong) {
-      return premia;
+      return premia.val;
     }
-    const value = option.isPut ? amount * option.strike : amount;
-    return value - premia;
+    const value = option.isPut
+      ? debouncedSize * option.strikePrice.val
+      : debouncedSize;
+    return value - premia.val;
   };
 
   const required = getRequired();
@@ -198,7 +161,7 @@ export const OptionSidebar = ({ option }: Props) => {
   return (
     <div className="bg-dark-card py-10 px-5 flex flex-col gap-7 h-full">
       <div className="flex flex-col gap-2">
-        <PairNamedBadge tokenA={option.baseToken} tokenB={option.quoteToken} />
+        <PairNamedBadge tokenA={option.base} tokenB={option.quote} />
         <div
           className={`rounded-sm py-[2px] px-3 w-fit uppercase ${
             option.isLong
@@ -206,7 +169,9 @@ export const OptionSidebar = ({ option }: Props) => {
               : "bg-ui-errorBg text-ui-errorAccent"
           }`}
         >
-          <P3 className="font-semibold">{option.sideAsText}</P3>
+          <P3 className="font-semibold">
+            {option.optionSide === 0 ? "Long" : "Short"}
+          </P3>
         </div>
       </div>
       <div className="flex flex-col gap-[18px]">
@@ -230,17 +195,17 @@ export const OptionSidebar = ({ option }: Props) => {
             <P3 className="font-semibold">Amount</P3>
           </div>
           <div>
-            {loading || !premia || !price ? (
+            {!premia || !price ? (
               <div className="h-[40.5px] w-[40.5px]">
                 <LoadingAnimation size={25} />
               </div>
             ) : (
               <div className="flex flex-col items-end">
                 <P3 className="font-semibold">
-                  {`${formatNumber(premia, 4)} ${option.underlying.symbol}`}
+                  {`${formatNumber(premia.val, 4)} ${option.underlying.symbol}`}
                 </P3>
                 <P4 className="text-dark-secondary font-bold">{`$${formatNumber(
-                  price * premia,
+                  price * premia.val,
                   4
                 )}`}</P4>
               </div>
@@ -314,9 +279,9 @@ export const OptionSidebar = ({ option }: Props) => {
             <P3 className="font-semibold text-dark-secondary">STRIKE PRICE</P3>
           </div>
           <div className="flex flex-col items-end">
-            <P3 className="font-semibold">${option.strike}</P3>
+            <P3 className="font-semibold">${option.strikePrice.val}</P3>
             <P4 className="text-dark-secondary font-bold">
-              1 {option.baseToken.symbol} = ${option.strike}
+              1 {option.base.symbol} = ${option.strikePrice.val}
             </P4>
           </div>
         </div>
@@ -373,7 +338,7 @@ export const OptionSidebar = ({ option }: Props) => {
           <div className="flex flex-col items-end">
             <P3 className="font-semibold">{breakEven}</P3>
             <P4 className="text-dark-secondary font-bold">
-              1 {option.baseToken.symbol} = {breakEven}
+              1 {option.base.symbol} = {breakEven}
             </P4>
           </div>
         </div>
@@ -395,18 +360,21 @@ export const OptionSidebar = ({ option }: Props) => {
               </div>
               <div className="flex flex-col items-end">
                 <P3 className="font-semibold">
-                  {amount === 0
+                  {debouncedSize === 0
                     ? "--"
-                    : `${amount * (option.isPut ? option.strike : 1)} ${
-                        option.underlying.symbol
-                      }`}
+                    : `${
+                        debouncedSize *
+                        (option.isPut ? option.strikePrice.val : 1)
+                      } ${option.underlying.symbol}`}
                 </P3>
                 <P4 className="text-dark-secondary font-bold">
                   $
-                  {price === undefined || amount === 0
+                  {price === undefined || debouncedSize === 0
                     ? "--"
                     : formatNumber(
-                        price * amount * (option.isPut ? option.strike : 1)
+                        price *
+                          debouncedSize *
+                          (option.isPut ? option.strikePrice.val : 1)
                       )}
                 </P4>
               </div>

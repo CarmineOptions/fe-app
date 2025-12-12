@@ -1,9 +1,8 @@
 import { FinancialData } from "../../types/options";
-import { getPremia } from "../../calls/getPremia";
 import { LogTypes, debug } from "../../utils/debugger";
 import { math64toDecimal } from "../../utils/units";
 import { balanceOf } from "../../calls/balanceOf";
-import { OptionWithPremia } from "../../classes/Option";
+import { CarmineAmm, OptionWithPremia } from "carmine-sdk/core";
 
 type ModalData = {
   prices: FinancialData;
@@ -19,7 +18,11 @@ export const fetchModalData = async (
 ): Promise<ModalData | undefined> => {
   const [{ base, quote }, premiaMath64, balance] = await Promise.all([
     option.tokenPricesInUsd(),
-    getPremia(option, size, false),
+    CarmineAmm.getTotalPremia(
+      option.descriptor,
+      option.underlying.toRaw(size),
+      false
+    ),
     address ? balanceOf(address, option.underlying.address) : undefined,
   ]).catch((e: Error) => {
     debug("Failed fetching ETH or premia", e.message);

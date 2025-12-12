@@ -15,7 +15,11 @@ export const balanceFromTokenAddress = async (
   account: AccountInterface,
   tokenAddress: string
 ): Promise<bigint> => {
-  const contract = new Contract(ABI, tokenAddress, account);
+  const contract = new Contract({
+    abi: ABI,
+    address: tokenAddress,
+    providerOrAccount: account,
+  });
   const balance = await contract.balanceOf(account.address);
   return balance;
 };
@@ -25,7 +29,11 @@ export const balanceFromKey = async (
   token: TokenKey
 ): Promise<bigint> => {
   const address = Token.byKey(token).address;
-  const contract = new Contract(ABI, address, account);
+  const contract = new Contract({
+    abi: ABI,
+    address,
+    providerOrAccount: account,
+  });
   const balance = await contract.balanceOf(account.address);
   return balance;
 };
@@ -62,7 +70,11 @@ export const balanceOf = async (
   address: string,
   token: string
 ): Promise<bigint> => {
-  const contract = new Contract(ABI, token, provider);
+  const contract = new Contract({
+    abi: ABI,
+    address: token,
+    providerOrAccount: provider,
+  });
   const balance = await contract.balanceOf(address);
   return balance;
 };

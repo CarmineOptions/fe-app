@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import { QueryKeys } from "../queries/keys";
-import { fetchOptions } from "../components/TradeTable/fetchOptions";
-import { OptionWithPremia } from "../classes/Option";
 
-export const useOptions = () => {
+import { CarmineAmm, OptionWithPremia } from "carmine-sdk/core";
+
+export const useOptions = (lpAddress: string) => {
   const { data, ...rest } = useQuery({
-    queryKey: [QueryKeys.options],
-    queryFn: fetchOptions,
+    queryKey: ["live-options-with-premia", lpAddress],
+    queryFn: async () =>
+      CarmineAmm.getAllNonExpiredOptionsWithPremia(lpAddress),
   });
 
   return {
