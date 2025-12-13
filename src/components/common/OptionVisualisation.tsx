@@ -1,7 +1,12 @@
+import {
+  OptionSide,
+  OptionSideLong,
+  OptionType,
+  OptionTypeCall,
+} from "carmine-sdk/core";
 import { P3, P4 } from ".";
 import { Token } from "../../classes/Token";
-import { useCurrency } from "../../hooks/useCurrency";
-import { OptionSide, OptionType } from "../../types/options";
+import { useTokenPrice } from "../../hooks/usePrice";
 import { formatNumber } from "../../utils/utils";
 
 type SideType = {
@@ -23,13 +28,13 @@ export const SideTypeStacked = ({ side, type }: SideType) => {
     <div>
       <P3
         className={`font-semibold ${
-          side === OptionSide.Long ? "text-ui-successBg" : "text-ui-errorBg"
+          side === OptionSideLong ? "text-ui-successBg" : "text-ui-errorBg"
         }`}
       >
-        {side === OptionSide.Long ? "LONG" : "SHORT"}
+        {side === OptionSideLong ? "LONG" : "SHORT"}
       </P3>
       <P4 className="text-dark-secondary">
-        {type === OptionType.Call ? "CALL" : "PUT"}
+        {type === OptionTypeCall ? "CALL" : "PUT"}
       </P4>
     </div>
   );
@@ -77,7 +82,7 @@ export const MaturityStacked = ({ timestamp }: Maturity) => {
 };
 
 export const TokenValueStacked = ({ amount, token }: TokenValueProps) => {
-  const price = useCurrency(token.id);
+  const price = useTokenPrice(token.symbol);
 
   return (
     <MajorMinorStacked

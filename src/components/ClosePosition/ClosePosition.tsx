@@ -4,7 +4,6 @@ import { useAccount, useSendTransaction } from "@starknet-react/core";
 
 import { PairNamedBadge } from "../TokenBadge";
 import { handleNumericChangeFactory } from "../../utils/inputHandling";
-import { useCurrency } from "../../hooks/useCurrency";
 import { TransactionState } from "../../types/network";
 import { OptionWithPosition } from "../../classes/Option";
 import { formatNumber, timestampToPriceGuardDate } from "../../utils/utils";
@@ -15,6 +14,7 @@ import { useDebounce } from "../../hooks/useDebounce";
 import { usePremiaQuery } from "../../hooks/usePremiaQuery";
 import { tradeClose } from "../../calls/tradeClose";
 import { math64toDecimal } from "../../utils/units";
+import { useTokenPrice } from "../../hooks/usePrice";
 
 type Props = {
   option: OptionWithPosition;
@@ -23,7 +23,7 @@ type Props = {
 export const ClosePosition = ({ option }: Props) => {
   const { sendAsync } = useSendTransaction({});
   const { address } = useAccount();
-  const price = useCurrency(option.underlying.id);
+  const price = useTokenPrice(option.underlying.symbol);
   const [shouldReset, setShouldReset] = useState<boolean>(false);
   const [amount, setAmount] = useState<number>(option.size);
   const [amountText, setAmountText] = useState<string>(
