@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Option, Cubit } from "carmine-sdk/core";
+import { Option, Cubit } from "@carmine-options/sdk/core";
 
 export const usePremia = (option: Option, size: number, isClosing: boolean) =>
   useQuery<Cubit, Error>({

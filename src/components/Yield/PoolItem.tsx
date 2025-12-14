@@ -7,7 +7,7 @@ import { useUserPoolStakes } from "../../hooks/useStakes";
 import { useDefispringApy } from "../../hooks/useDefyspringApy";
 import { Button, MajorMinorStacked, P3, TokenValueStacked } from "../common";
 import { usePoolState } from "../../hooks/usePoolState";
-import { LiquidityPool, OptionTypeCall } from "carmine-sdk/core";
+import { LiquidityPool, OptionTypeCall } from "@carmine-options/sdk/core";
 import { isDefiEligible } from "../../utils/utils";
 
 type Props = {

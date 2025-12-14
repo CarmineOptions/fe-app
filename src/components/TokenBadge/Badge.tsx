@@ -1,4 +1,4 @@
-import { Token } from "carmine-sdk/core";
+import { Token } from "@carmine-options/sdk/core";
 import { H4, P3 } from "../common/Typography";
 import { carmineTokenToIcon } from "../../classes/Token";
 

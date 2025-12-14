@@ -19,7 +19,7 @@ import {
   liquidityPoolBySymbol,
   OptionSide,
   OptionType,
-} from "carmine-sdk/core";
+} from "@carmine-options/sdk/core";
 
 export const TradeTable = () => {
   const [searchParams, setSearchParams] = useSearchParams();

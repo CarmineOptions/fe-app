@@ -1,4 +1,4 @@
-import { CarmineApi } from "carmine-sdk/api";
+import { CarmineApi } from "@carmine-options/sdk/api";
 import { useQuery } from "@tanstack/react-query";
 
 export const usePoolState = (lpAddress: string) => {

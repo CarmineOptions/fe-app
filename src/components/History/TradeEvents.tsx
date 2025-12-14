@@ -4,10 +4,10 @@ import { useState } from "react";
 import { SecondaryConnectWallet } from "../ConnectWallet/Button";
 import { LoadingAnimation } from "../Loading/Loading";
 import { MaturityStacked, P3, P4, SideTypeStacked } from "../common";
-import { TradeEvent } from "carmine-sdk/api";
+import { TradeEvent } from "@carmine-options/sdk/api";
 import { formatNumber } from "../../utils/utils";
 import { PairNameAboveBadge } from "../TokenBadge";
-import { liquidityPoolByLpAddress } from "carmine-sdk/core";
+import { liquidityPoolByLpAddress } from "@carmine-options/sdk/core";
 import { PaginationButtons } from "./PaginationButtons";
 
 type Props = {

@@ -5,7 +5,7 @@ import { PairNamedBadgeDark } from "../TokenBadge";
 import { useTokenPrice } from "../../hooks/useCurrency";
 import { LoadingAnimation } from "../Loading/Loading";
 import { formatNumber } from "../../utils/utils";
-import { OptionWithPremia } from "carmine-sdk/core";
+import { OptionWithPremia } from "@carmine-options/sdk/core";
 
 interface OptionSidebarSuccessProps {
   option: OptionWithPremia;

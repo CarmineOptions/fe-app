@@ -1,6 +1,6 @@
 import { PoolItem } from "./PoolItem";
 import { L2, P4 } from "../common";
-import { allLiquidityPools } from "carmine-sdk/core";
+import { allLiquidityPools } from "@carmine-options/sdk/core";
 
 export const PoolTable = () => {
   return (

@@ -4,7 +4,7 @@ import {
   OptionTypePut,
   OptionSideLong,
   OptionSideShort,
-} from "carmine-sdk/core";
+} from "@carmine-options/sdk/core";
 
 export type CurrencyData = { usd: number; market: number };
 

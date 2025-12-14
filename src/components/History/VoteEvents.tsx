@@ -4,7 +4,7 @@ import { useState } from "react";
 import { SecondaryConnectWallet } from "../ConnectWallet/Button";
 import { LoadingAnimation } from "../Loading/Loading";
 import { MaturityStacked, P3, P4 } from "../common";
-import { VoteEvent } from "carmine-sdk/api";
+import { VoteEvent } from "@carmine-options/sdk/api";
 import { PaginationButtons } from "./PaginationButtons";
 
 type Props = {

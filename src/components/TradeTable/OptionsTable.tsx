@@ -10,7 +10,7 @@ import { TokenKey } from "../../classes/Token";
 import { P3, P4 } from "../common";
 import { ReactNode } from "react";
 import { SidebarWidth } from "../../redux/reducers/ui";
-import { OptionSide, OptionWithPremia } from "carmine-sdk/core";
+import { OptionSide, OptionWithPremia } from "@carmine-options/sdk/core";
 
 type Props = {
   options: OptionWithPremia[];

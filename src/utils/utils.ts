@@ -15,7 +15,7 @@ import {
   ETH_STRK_PUT_ADDRESS,
   ETH_USDC_CALL_ADDRESS,
   STRK_USDC_CALL_ADDRESS,
-} from "carmine-sdk/core";
+} from "@carmine-options/sdk/core";
 
 export const isNonEmptyArray = (v: unknown): v is Array<any> =>
   !!(v && Array.isArray(v) && v.length > 0);

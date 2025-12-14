@@ -1,4 +1,4 @@
-import { CarmineApi, TopUsers } from "carmine-sdk/api";
+import { CarmineApi, TopUsers } from "@carmine-options/sdk/api";
 import { useQuery } from "@tanstack/react-query";
 
 export const useUserPoints = (user?: string) =>

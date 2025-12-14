@@ -16,7 +16,7 @@ import { afterTransaction } from "../../utils/blockchain";
 import { TransactionState, TxTracking } from "../../types/network";
 import { RequestResult } from "@starknet-react/core";
 import toast from "react-hot-toast";
-import { LiquidityPool } from "carmine-sdk/core";
+import { LiquidityPool } from "@carmine-options/sdk/core";
 
 export const handleDeposit = async (
   sendAsync: (

@@ -2,7 +2,7 @@ import { FinancialData } from "../../types/options";
 import { LogTypes, debug } from "../../utils/debugger";
 import { math64toDecimal } from "../../utils/units";
 import { balanceOf } from "../../calls/balanceOf";
-import { CarmineAmm, OptionWithPremia } from "carmine-sdk/core";
+import { CarmineAmm, OptionWithPremia } from "@carmine-options/sdk/core";
 
 type ModalData = {
   prices: FinancialData;

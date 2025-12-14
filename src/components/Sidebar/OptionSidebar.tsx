@@ -22,7 +22,7 @@ import { Button, Divider, P3, P4 } from "../common";
 import { PrimaryConnectWallet } from "../ConnectWallet/Button";
 import { NavLink } from "react-router-dom";
 import { Warning } from "../Icons";
-import { OptionWithPremia } from "carmine-sdk/core";
+import { OptionWithPremia } from "@carmine-options/sdk/core";
 import { usePremia } from "../../hooks/usePremia";
 import { useDebounce } from "../../hooks/useDebounce";
 

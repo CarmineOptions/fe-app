@@ -1,5 +1,5 @@
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
-import { CarmineApi, LivePrices } from "carmine-sdk/api";
+import { CarmineApi, LivePrices } from "@carmine-options/sdk/api";
 
 export const usePrices = (): UseQueryResult<LivePrices, Error> => {
   return useQuery({

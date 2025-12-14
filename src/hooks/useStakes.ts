@@ -1,4 +1,4 @@
-import { CarmineAmm } from "carmine-sdk/core";
+import { CarmineAmm } from "@carmine-options/sdk/core";
 import { useQuery } from "@tanstack/react-query";
 import { getUserPoolInfo } from "../calls/getUserPoolInfo";
 import { UserPoolInfo } from "../classes/Pool";

@@ -5,7 +5,7 @@ import { useDomains } from "../../hooks/useDomains";
 import { useDomain } from "../../hooks/useDomain";
 import { Leaderboard } from "../Leaderboard";
 import { useUserPoints } from "../../hooks/useUserPoints";
-import { UserPoints } from "carmine-sdk/api";
+import { UserPoints } from "@carmine-options/sdk/api";
 
 const parseData = ({
   tradePoints,

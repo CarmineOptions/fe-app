@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { CarmineAmm, OptionWithPremia } from "carmine-sdk/core";
+import { CarmineAmm, OptionWithPremia } from "@carmine-options/sdk/core";
 
 export const useOptions = (lpAddress: string) => {
   const { data, ...rest } = useQuery({

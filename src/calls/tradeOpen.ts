@@ -12,7 +12,7 @@ import { math64ToInt } from "../utils/units";
 import { apiUrl } from "../api";
 import { isMainnet } from "../constants/amm";
 import { TransactionState, TxTracking } from "../types/network";
-import { Cubit, Option } from "carmine-sdk/core";
+import { Cubit, Option } from "@carmine-options/sdk/core";
 
 export const approveAndTradeOpen = async (
   address: string,

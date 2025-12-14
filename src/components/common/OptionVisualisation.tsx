@@ -4,7 +4,7 @@ import {
   OptionType,
   OptionTypeCall,
   Token,
-} from "carmine-sdk/core";
+} from "@carmine-options/sdk/core";
 import { P3, P4 } from ".";
 import { useTokenPrice } from "../../hooks/usePrice";
 import { formatNumber } from "../../utils/utils";

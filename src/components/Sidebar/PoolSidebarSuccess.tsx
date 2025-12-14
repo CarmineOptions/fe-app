@@ -5,7 +5,7 @@ import { useStakes } from "../../hooks/useStakes";
 import { formatNumber } from "../../utils/utils";
 import { Button, H4, P3, P4 } from "../common";
 import { LoadingAnimation } from "../Loading/Loading";
-import { LiquidityPool, OptionTypeCall } from "carmine-sdk/core";
+import { LiquidityPool, OptionTypeCall } from "@carmine-options/sdk/core";
 import { useTokenPrice } from "../../hooks/usePrice";
 
 interface PoolSucessSidebarProps {

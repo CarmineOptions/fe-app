@@ -32,7 +32,7 @@ import {
   TradeDashboardPage,
   YieldPage,
 } from "./pages";
-import { initCarmineSdk } from "carmine-sdk/core";
+import { initCarmineSdk } from "@carmine-options/sdk/core";
 
 const App = () => {
   const [check, rerender] = useState(false);

@@ -3,7 +3,7 @@ import { TokenKey } from "../classes/Token";
 import { apiUrl } from "../api";
 import { ApiResponse, TokenPriceData } from "../types/api";
 import { QueryKeys } from "../queries/keys";
-import { Token } from "carmine-sdk/core";
+import { Token } from "@carmine-options/sdk/core";
 
 const toTokenKey = (symbol: string): TokenKey | undefined => {
   const normalized = symbol.toLowerCase();

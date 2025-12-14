@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { CarmineApi } from "carmine-sdk/api";
+import { CarmineApi } from "@carmine-options/sdk/api";
 
 export const useTradeEvents = (user: string, limit: number, offset: number) => {
   return useQuery({

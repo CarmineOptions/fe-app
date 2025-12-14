@@ -16,7 +16,7 @@ import { useDefispringApy } from "../../hooks/useDefyspringApy";
 import { Button, Divider, H5, P3, P4 } from "../common";
 import { PrimaryConnectWallet } from "../ConnectWallet/Button";
 import { StarknetIcon } from "../Icons";
-import { LiquidityPool } from "carmine-sdk/core";
+import { LiquidityPool } from "@carmine-options/sdk/core";
 import { usePoolState } from "../../hooks/usePoolState";
 import { useTokenPrice } from "../../hooks/usePrice";
 
