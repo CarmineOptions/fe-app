@@ -43,7 +43,8 @@ const App = () => {
     ["/staking", "/yield"],
     ["/rewards", "/portfolio/airdrops"],
   ];
-  initCarmineSdk({ rpcUrl: "https://api.carmine.finance/api/v1/mainnet/call" });
+  // initCarmineSdk({ rpcUrl: "https://api.carmine.finance/api/v1/mainnet/call" });
+  initCarmineSdk({ rpcUrl: "https://backend.carmine.finance/rpc-call/" });
 
   return (
     <Provider store={store}>
