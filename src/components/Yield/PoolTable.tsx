@@ -1,6 +1,6 @@
 import { PoolItem } from "./PoolItem";
-import { pools } from "../AddProposal/pools";
 import { L2, P4 } from "../common";
+import { allLiquidityPools } from "carmine-sdk/core";
 
 export const PoolTable = () => {
   return (
@@ -32,7 +32,7 @@ export const PoolTable = () => {
           {/* Empty room for button */}
           <div className="w-full" />
         </div>
-        {pools.map((pool, i) => (
+        {allLiquidityPools.map((pool, i) => (
           <PoolItem key={i} pool={pool} />
         ))}
       </div>

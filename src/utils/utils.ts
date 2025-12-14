@@ -9,6 +9,13 @@ import {
 import { TESTNET_CHAINID } from "../constants/starknet";
 import { OptionSide, OptionType } from "../types/options";
 import { TransactionState } from "../types/network";
+import {
+  EKUBO_USDC_CALL_ADDRESS,
+  ETH_STRK_CALL_ADDRESS,
+  ETH_STRK_PUT_ADDRESS,
+  ETH_USDC_CALL_ADDRESS,
+  STRK_USDC_CALL_ADDRESS,
+} from "carmine-sdk/core";
 
 export const isNonEmptyArray = (v: unknown): v is Array<any> =>
   !!(v && Array.isArray(v) && v.length > 0);
@@ -243,4 +250,14 @@ export const stateToButtonType = (
     return "primary";
   }
   return "primary";
+};
+
+export const isDefiEligible = (lpAddress: string): boolean => {
+  return [
+    ETH_USDC_CALL_ADDRESS,
+    STRK_USDC_CALL_ADDRESS,
+    ETH_STRK_CALL_ADDRESS,
+    ETH_STRK_PUT_ADDRESS,
+    EKUBO_USDC_CALL_ADDRESS,
+  ].includes(lpAddress);
 };

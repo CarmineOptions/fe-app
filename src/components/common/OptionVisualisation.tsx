@@ -3,9 +3,9 @@ import {
   OptionSideLong,
   OptionType,
   OptionTypeCall,
+  Token,
 } from "carmine-sdk/core";
 import { P3, P4 } from ".";
-import { Token } from "../../classes/Token";
 import { useTokenPrice } from "../../hooks/usePrice";
 import { formatNumber } from "../../utils/utils";
 

@@ -1,78 +1,35 @@
 import { PairNameAboveBadge } from "../TokenBadge";
-import { Pool } from "../../classes/Pool";
-import { shortInteger } from "../../utils/computations";
-import { math64toDecimal } from "../../utils/units";
 import { openSidebar, setSidebarContent } from "../../redux/actions";
 import { PoolSidebar } from "../Sidebar";
 import { LoadingAnimation } from "../Loading/Loading";
 import { DefispringBadge } from "../Badges";
-import { useStakes } from "../../hooks/useStakes";
+import { useUserPoolStakes } from "../../hooks/useStakes";
 import { useDefispringApy } from "../../hooks/useDefyspringApy";
-import { usePoolApy } from "../../hooks/usePoolApy";
-import { usePoolState } from "../../hooks/usePoolState";
 import { Button, MajorMinorStacked, P3, TokenValueStacked } from "../common";
+import { usePoolState } from "../../hooks/usePoolState";
+import { LiquidityPool, OptionTypeCall } from "carmine-sdk/core";
+import { isDefiEligible } from "../../utils/utils";
 
 type Props = {
-  pool: Pool;
-};
-
-const usePoolData = (pool: Pool) => {
-  const {
-    apy,
-    isLoading: isApyLoading,
-    isError: isApyError,
-  } = usePoolApy(pool);
-  const {
-    poolState,
-    isLoading: isPoolStateLoading,
-    isError: isPoolStateError,
-  } = usePoolState(pool);
-
-  if (isApyError || isPoolStateError) {
-    return {
-      data: undefined,
-      isError: true,
-      isLoading: false,
-    };
-  }
-
-  if (isApyLoading || isPoolStateLoading) {
-    return {
-      data: undefined,
-      isError: false,
-      isLoading: true,
-    };
-  }
-
-  if (apy && poolState) {
-    return {
-      data: { state: poolState, apy },
-      isLoading: false,
-      isError: false,
-    };
-  }
-
-  throw Error("Pool state - unreachable");
+  pool: LiquidityPool;
 };
 
 export const PoolItem = ({ pool }: Props) => {
-  const { data, isLoading, isError } = usePoolData(pool);
+  const { data, isLoading, isError } = usePoolState(pool.lpAddress);
   const { defispringApy } = useDefispringApy();
-  const { stakes } = useStakes();
+  const { data: stakes } = useUserPoolStakes(pool.lpAddress);
   const handleClick = () => {
     setSidebarContent(<PoolSidebar pool={pool} />);
     openSidebar();
   };
+  const isPoolDefiEligible = !isDefiEligible(pool.lpAddress);
 
   if (isLoading) {
     return (
       <div className="flex text-left justify-between mb-8">
         <div className="flex flex-col g-4">
-          <PairNameAboveBadge
-            tokenA={pool.baseToken}
-            tokenB={pool.quoteToken}
-          />
-          {pool.isDefispringEligible && <DefispringBadge />}
+          <PairNameAboveBadge tokenA={pool.base} tokenB={pool.quote} />
+          {isPoolDefiEligible && <DefispringBadge />}
         </div>
         <div>
           <LoadingAnimation />
@@ -87,11 +44,8 @@ export const PoolItem = ({ pool }: Props) => {
     return (
       <div className="flex text-left justify-between mb-8">
         <div className="flex flex-col g-4">
-          <PairNameAboveBadge
-            tokenA={pool.baseToken}
-            tokenB={pool.quoteToken}
-          />
-          {pool.isDefispringEligible && <DefispringBadge />}
+          <PairNameAboveBadge tokenA={pool.base} tokenB={pool.quote} />
+          {isPoolDefiEligible && <DefispringBadge />}
         </div>
         <div>
           <p>Failed getting pool data</p>
@@ -102,47 +56,34 @@ export const PoolItem = ({ pool }: Props) => {
     );
   }
 
-  const { state, apy } = data;
-
-  const unlocked = shortInteger(state.unlocked_cap, pool.underlying.decimals);
+  const unlocked = pool.underlying.toHumanReadable(data.unlocked);
   // const locked = shortInteger(state.locked_cap, pool.underlying.decimals);
-  const poolPosition =
-    state.pool_position === null ? 0 : math64toDecimal(state.pool_position);
+  const poolPosition = data.position ? data.position.val : 0;
   const tvl = unlocked + poolPosition;
 
-  const finalApy = !pool.isDefispringEligible
-    ? apy.launch_annualized
+  const finalApy = !isPoolDefiEligible
+    ? data.apyAllTime
     : defispringApy === undefined
     ? undefined
-    : defispringApy + apy.launch_annualized;
+    : defispringApy + data.apyAllTime;
 
-  const finalApyWeekly = !pool.isDefispringEligible
-    ? apy.week_annualized
+  const finalApyWeekly = !isPoolDefiEligible
+    ? data.apyWeek
     : defispringApy === undefined
     ? undefined
-    : defispringApy + apy.week_annualized;
+    : defispringApy + data.apyWeek;
 
-  const poolData =
-    stakes === undefined
-      ? undefined
-      : stakes.find((p) => p.lpAddress === pool.lpAddress);
-
-  const userPosition =
-    stakes === undefined
-      ? undefined
-      : poolData === undefined // got data and found nothing about this pool
-      ? 0
-      : poolData.value;
+  const valueOfUserStake = stakes && stakes.valueOfUserStake;
 
   return (
     <div className="w-big py-3 flex text-left justify-between">
       <div className="w-full flex flex-col gap-3">
-        <PairNameAboveBadge tokenA={pool.baseToken} tokenB={pool.quoteToken} />
-        {pool.isDefispringEligible && <DefispringBadge />}
+        <PairNameAboveBadge tokenA={pool.base} tokenB={pool.quote} />
+        {isPoolDefiEligible && <DefispringBadge />}
       </div>
       <div className="w-full">
         <MajorMinorStacked
-          major={`${pool.typeAsText} Pool`}
+          major={`${pool.optionType === OptionTypeCall ? "Call" : "Put"} Pool`}
           minor={pool.underlying.symbol}
         />
       </div>
@@ -173,11 +114,13 @@ export const PoolItem = ({ pool }: Props) => {
         <TokenValueStacked amount={tvl} token={pool.underlying} />
       </div>
       <div className="w-full">
-        <TokenValueStacked amount={userPosition} token={pool.underlying} />
+        <TokenValueStacked amount={valueOfUserStake} token={pool.underlying} />
       </div>
       <div className="w-full">
         <Button type="primary" className="w-full" onClick={handleClick}>
-          {userPosition === undefined || userPosition === 0 ? "View" : "Manage"}
+          {valueOfUserStake === undefined || valueOfUserStake === 0
+            ? "View"
+            : "Manage"}
         </Button>
       </div>
     </div>

@@ -1,15 +1,15 @@
-import { Pool } from "../../classes/Pool";
 import { PairNamedBadgeDark } from "../TokenBadge";
-import { useCurrency } from "../../hooks/useCurrency";
 import { useNavigate } from "react-router-dom";
 import { closeSidebar } from "../../redux/actions";
 import { useStakes } from "../../hooks/useStakes";
 import { formatNumber } from "../../utils/utils";
 import { Button, H4, P3, P4 } from "../common";
 import { LoadingAnimation } from "../Loading/Loading";
+import { LiquidityPool, OptionTypeCall } from "carmine-sdk/core";
+import { useTokenPrice } from "../../hooks/usePrice";
 
 interface PoolSucessSidebarProps {
-  pool: Pool;
+  pool: LiquidityPool;
   deposited: number;
   tx: string;
 }
@@ -20,7 +20,7 @@ export const PoolSidebarSuccess = ({
   tx,
 }: PoolSucessSidebarProps) => {
   const { stakes } = useStakes();
-  const price = useCurrency(pool.underlying.id);
+  const price = useTokenPrice(pool.underlying.symbol);
   const navigate = useNavigate();
 
   const handlePortfolioClick = () => {
@@ -81,8 +81,8 @@ export const PoolSidebarSuccessView = ({
     <div className="flex flex-col bg-brand text-dark py-20 px-5 gap-6 h-full">
       <h3 className="text-[48px] text-black font-bold">SUCCESSFUL</h3>
       <div className="flex flex-col gap-1">
-        <PairNamedBadgeDark tokenA={pool.baseToken} tokenB={pool.quoteToken} />
-        <H4>{pool.typeAsText} Pool</H4>
+        <PairNamedBadgeDark tokenA={pool.base} tokenB={pool.quote} />
+        <H4>{pool.optionType === OptionTypeCall ? "Call" : "Put"} Pool</H4>
       </div>
 
       <div className="flex justify-between">

@@ -30,11 +30,11 @@ const method = AMM_METHODS.GET_USER_POOL_INFOS;
 const getUserPoolInfoAuxContract = async (
   address: string
 ): Promise<UserPoolInfo[]> => {
-  const AuxContract = new Contract(
-    AuxAbi,
-    MAINNET_AUX_CONTRACT_ADDRESS,
-    provider
-  );
+  const AuxContract = new Contract({
+    abi: AuxAbi,
+    address: MAINNET_AUX_CONTRACT_ADDRESS,
+    providerOrAccount: provider,
+  });
 
   const lpAddresses = [
     ETH_USDC_CALL_ADDRESS,

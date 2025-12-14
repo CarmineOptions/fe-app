@@ -1,39 +1,36 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-import { Pool } from "../../classes/Pool";
 import { PairBadge, TokenNamedBadge } from "../TokenBadge";
 import { handleNumericChangeFactory } from "../../utils/inputHandling";
-import { useCurrency } from "../../hooks/useCurrency";
 import { useUserBalance } from "../../hooks/useUserBalance";
-import { shortInteger } from "../../utils/computations";
-import { math64toDecimal } from "../../utils/units";
 import { useAccount, useSendTransaction } from "@starknet-react/core";
 import { setSidebarContent } from "../../redux/actions";
 import { PoolSidebarSuccess } from "./PoolSidebarSuccess";
 import { TransactionState } from "../../types/network";
 import { useStakes } from "../../hooks/useStakes";
 import { handleDeposit, handleWithdraw } from "../Yield/handleAction";
-import { usePoolInfo } from "../../hooks/usePoolInfo";
-import { formatNumber } from "../../utils/utils";
-import { TokenKey } from "../../classes/Token";
+import { formatNumber, isDefiEligible } from "../../utils/utils";
 import { LoadingAnimation } from "../Loading/Loading";
 import { useDefispringApy } from "../../hooks/useDefyspringApy";
 import { Button, Divider, H5, P3, P4 } from "../common";
 import { PrimaryConnectWallet } from "../ConnectWallet/Button";
 import { StarknetIcon } from "../Icons";
+import { LiquidityPool } from "carmine-sdk/core";
+import { usePoolState } from "../../hooks/usePoolState";
+import { useTokenPrice } from "../../hooks/usePrice";
 
 type Props = {
-  pool: Pool;
+  pool: LiquidityPool;
   initialAction?: "deposit" | "withdraw";
 };
 
 export const PoolSidebar = ({ pool, initialAction }: Props) => {
   const { address } = useAccount();
   const { sendAsync } = useSendTransaction({});
-  const { poolInfo } = usePoolInfo(pool);
+  const { data } = usePoolState(pool.lpAddress);
   const { stakes } = useStakes();
-  const price = useCurrency(pool.underlying.id);
+  const price = useTokenPrice(pool.underlying.symbol);
   const { data: balanceRaw } = useUserBalance(pool.underlying.address);
   const [action, setAction] = useState<"deposit" | "withdraw">(
     initialAction === undefined ? "deposit" : initialAction
@@ -52,49 +49,28 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
     setTxState(TransactionState.Initial);
   }, [pool.poolId]);
 
-  const state = poolInfo?.state;
-  const apy = poolInfo?.apy;
-  const unlocked =
-    state === undefined
-      ? undefined
-      : shortInteger(state.unlocked_cap, pool.underlying.decimals);
-  const locked =
-    state === undefined
-      ? undefined
-      : shortInteger(state.locked_cap, pool.underlying.decimals);
-  const poolPosition =
-    state === undefined ? undefined : math64toDecimal(state.pool_position);
-  const tvl =
-    unlocked === undefined || poolPosition === undefined
-      ? undefined
-      : unlocked + poolPosition;
+  const unlocked = data && pool.underlying.toHumanReadable(data.unlocked);
+  const locked = data && pool.underlying.toHumanReadable(data.locked);
+
+  const poolPosition = data && data.position.val;
+  const tvl = unlocked && poolPosition && unlocked + poolPosition;
   const balance =
     balanceRaw === undefined
       ? undefined
-      : shortInteger(balanceRaw, pool.underlying.decimals);
+      : pool.underlying.toHumanReadable(balanceRaw);
 
-  const poolData =
-    stakes === undefined
-      ? undefined
-      : stakes.find((p) => p.lpAddress === pool.lpAddress);
+  const poolData = stakes && stakes.find((p) => p.lpAddress === pool.lpAddress);
 
-  const userPosition =
-    stakes === undefined
-      ? undefined
-      : poolData === undefined // got data and found nothing about this pool
-      ? 0
-      : poolData.value;
+  const userPosition = stakes && poolData ? poolData.value : 0;
 
-  const isDefispringPool =
-    pool.baseToken.id !== TokenKey.BTC && pool.quoteToken.id !== TokenKey.BTC;
-  const finalApy =
-    apy === undefined
-      ? undefined
-      : !isDefispringPool
-      ? apy.launch_annualized
-      : defispringApy === undefined
-      ? undefined
-      : defispringApy + apy.launch_annualized;
+  const isDefispringPool = isDefiEligible(pool.lpAddress);
+  const finalApy = !data
+    ? undefined
+    : !isDefispringPool
+    ? data.apyAllTime
+    : defispringApy === undefined
+    ? undefined
+    : defispringApy + data.apyAllTime;
 
   const handleChange = handleNumericChangeFactory(
     setAmountText,
@@ -152,9 +128,9 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
   return (
     <div className="bg-dark-card py-10 px-5 flex flex-col gap-7 h-full">
       <div className="flex items-center gap-2">
-        <PairBadge tokenA={pool.baseToken} tokenB={pool.quoteToken} />
+        <PairBadge tokenA={pool.base} tokenB={pool.quote} />
         <H5>
-          {pool.baseToken.symbol}/{pool.quoteToken.symbol} {pool.typeAsText}{" "}
+          {pool.base.symbol}/{pool.quote.symbol} {pool.isCall ? "Call" : "Put"}{" "}
           Pool
         </H5>
       </div>
@@ -360,9 +336,9 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
             <div className="flex justify-between">
               <P4 className="text-dark-secondary">Supply APY</P4>
               <P4 className="text-dark-primary">
-                {apy === undefined
+                {data?.apyAllTime === undefined
                   ? "--"
-                  : formatNumber(apy.launch_annualized) + "%"}
+                  : formatNumber(data.apyAllTime) + "%"}
               </P4>
             </div>
             <div className="flex justify-between">

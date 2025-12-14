@@ -11,6 +11,11 @@ export const usePrices = (): UseQueryResult<LivePrices, Error> => {
 export const useTokenPrice = (symbol: string): number | undefined => {
   const { data } = usePrices();
 
+  if (symbol === "USDC") {
+    // assuming USDC never depegs
+    return 1;
+  }
+
   if (!data) {
     return undefined;
   }

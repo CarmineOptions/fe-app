@@ -1,3 +1,4 @@
+import { CarmineAmm } from "carmine-sdk/core";
 import { useQuery } from "@tanstack/react-query";
 import { getUserPoolInfo } from "../calls/getUserPoolInfo";
 import { UserPoolInfo } from "../classes/Pool";
@@ -27,4 +28,13 @@ export const useStakes = () => {
     stakes,
     ...rest,
   };
+};
+
+export const useUserPoolStakes = (lpAddress: string) => {
+  const { address } = useAccount();
+  return useQuery({
+    queryKey: ["user-pool-stakes", address, lpAddress],
+    queryFn: () => CarmineAmm.getUserPoolInfo(address!, lpAddress),
+    enabled: !!address,
+  });
 };

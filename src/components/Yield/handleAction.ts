@@ -1,5 +1,5 @@
 import { Call } from "starknet";
-import { Pool, UserPoolInfo } from "../../classes/Pool";
+import { UserPoolInfo } from "../../classes/Pool";
 import { invalidateStake } from "../../queries/client";
 import {
   addTx,
@@ -16,6 +16,7 @@ import { afterTransaction } from "../../utils/blockchain";
 import { TransactionState, TxTracking } from "../../types/network";
 import { RequestResult } from "@starknet-react/core";
 import toast from "react-hot-toast";
+import { LiquidityPool } from "carmine-sdk/core";
 
 export const handleDeposit = async (
   sendAsync: (
@@ -23,7 +24,7 @@ export const handleDeposit = async (
   ) => Promise<RequestResult<"wallet_addInvokeTransaction">>,
   address: string | undefined,
   amount: number,
-  pool: Pool,
+  pool: LiquidityPool,
   setTxState: TxTracking,
   done: (tx: string) => void
 ) => {
