@@ -1,5 +1,4 @@
 import { Call } from "starknet";
-import { Pool, UserPoolInfo } from "../../classes/Pool";
 import { invalidateStake } from "../../queries/client";
 import {
   addTx,
@@ -9,13 +8,17 @@ import {
 } from "../../redux/actions";
 import { longInteger, shortInteger } from "../../utils/computations";
 import { debug } from "../../utils/debugger";
-import { decimalToInt } from "../../utils/units";
 import { balanceOf } from "../../calls/balanceOf";
 import { TransactionAction } from "../../redux/reducers/transactions";
 import { afterTransaction } from "../../utils/blockchain";
 import { TransactionState, TxTracking } from "../../types/network";
 import { RequestResult } from "@starknet-react/core";
 import toast from "react-hot-toast";
+import {
+  LiquidityPool,
+  lpTokensToHumanReadable,
+  UserPoolInfo,
+} from "@carmine-options/sdk/core";
 
 export const handleDeposit = async (
   sendAsync: (
@@ -23,7 +26,7 @@ export const handleDeposit = async (
   ) => Promise<RequestResult<"wallet_addInvokeTransaction">>,
   address: string | undefined,
   amount: number,
-  pool: Pool,
+  pool: LiquidityPool,
   setTxState: TxTracking,
   done: (tx: string) => void
 ) => {
@@ -40,44 +43,28 @@ export const handleDeposit = async (
 
   const balance = await balanceOf(address, pool.underlying.address);
 
-  const bnAmount = longInteger(amount, pool.digits);
+  const bnAmount = longInteger(amount, pool.underlying.decimals);
 
   if (balance < bnAmount) {
     const [has, needs] = [
-      shortInteger(balance.toString(10), pool.digits),
+      shortInteger(balance.toString(10), pool.underlying.decimals),
       amount,
     ];
     toast.error(
-      `Trying to stake ${pool.symbol} ${needs.toFixed(4)}, but you only have ${
-        pool.symbol
-      }${has.toFixed(4)}`
+      `Trying to stake ${pool.underlying.symbol} ${needs.toFixed(
+        4
+      )}, but you only have ${pool.underlying.symbol}${has.toFixed(4)}`
     );
     setTxState(TransactionState.Fail);
     return;
   }
 
-  const size = decimalToInt(amount, pool.digits);
+  const call = pool.depositCall(amount);
 
-  const approveCalldata = pool.underlying.approveCalldata(size);
-
-  const depositLiquidityCalldata = pool.depositLiquidityCalldata(size);
-
-  debug("Depositing liquidity with calldata:", [
-    approveCalldata,
-    depositLiquidityCalldata,
-  ]);
-
-  pool.sendStakeBeginCheckoutEvent(amount);
-
-  const res = await sendAsync([
-    approveCalldata,
-    depositLiquidityCalldata,
-  ]).catch((e: Error) => {
+  const res = await sendAsync([call]).catch((e: Error) => {
     debug('"Stake capital" user rejected or failed', e);
     setTxState(TransactionState.Fail);
   });
-
-  pool.sendStakePurchaseEvent(amount);
 
   if (!res) {
     setTxState(TransactionState.Fail);
@@ -112,14 +99,15 @@ const calculateTokens = (
   const NUM_PRECISSION = 1_000_000;
 
   const percentageWithPrecission =
-    (BigInt(Math.round(amount * NUM_PRECISSION)) * 10n ** BigInt(pool.digits)) /
-    pool.valueBase;
+    (BigInt(Math.round(amount * NUM_PRECISSION)) *
+      10n ** BigInt(pool.underlying.decimals)) /
+    pool.valueRaw.low;
 
   const tokens =
-    (percentageWithPrecission * pool.sizeBase) / BigInt(NUM_PRECISSION);
+    (percentageWithPrecission * pool.sizeRaw.low) / BigInt(NUM_PRECISSION);
 
   const value =
-    (percentageWithPrecission * pool.valueBase) / BigInt(NUM_PRECISSION);
+    (percentageWithPrecission * pool.valueRaw.low) / BigInt(NUM_PRECISSION);
 
   return [tokens, value];
 };
@@ -139,7 +127,7 @@ export const handleWithdraw = async (
 
   setTxState(TransactionState.Processing);
 
-  const unlocked = await pool.getUnlocked();
+  const unlocked = pool.unlocked;
 
   const [tokens, value] = calculateTokens(pool, amount);
 
@@ -152,7 +140,7 @@ export const handleWithdraw = async (
     return;
   }
 
-  const withdraw = pool.withdrawLiquidityCalldata(tokens);
+  const withdraw = pool.withdraw(lpTokensToHumanReadable(tokens));
 
   debug("Withdraw call", withdraw);
 

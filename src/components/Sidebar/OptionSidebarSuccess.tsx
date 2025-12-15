@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { closeSidebar } from "../../redux/actions";
-import { OptionWithPremia } from "../../classes/Option";
 import { Button, H6, P3, P4 } from "../common";
 import { PairNamedBadgeDark } from "../TokenBadge";
-import { useCurrency } from "../../hooks/useCurrency";
+import { useTokenPrice } from "../../hooks/useCurrency";
 import { LoadingAnimation } from "../Loading/Loading";
 import { formatNumber } from "../../utils/utils";
+import { OptionWithPremia } from "@carmine-options/sdk/core";
 
 interface OptionSidebarSuccessProps {
   option: OptionWithPremia;
@@ -19,7 +19,7 @@ export const OptionSidebarSuccess = ({
   tx,
 }: OptionSidebarSuccessProps) => {
   const navigate = useNavigate();
-  const price = useCurrency(option.underlying.id);
+  const price = useTokenPrice(option.underlying);
 
   const handlePortfolioClick = () => {
     navigate("/portfolio");
@@ -30,8 +30,8 @@ export const OptionSidebarSuccess = ({
     <OptionSidebarSuccessView
       option={option}
       size={size}
-      amount={option.premia}
-      amountUsd={price === undefined ? undefined : option.premia * price}
+      amount={option.premia.val}
+      amountUsd={price === undefined ? undefined : option.premia.val * price}
       tx={tx}
       handlePortfolioClick={handlePortfolioClick}
     />
@@ -56,10 +56,7 @@ export const OptionSidebarSuccessView = ({
     <div className="flex flex-col bg-brand text-dark py-20 px-5 gap-6 h-full">
       <h3 className="text-[48px] text-black font-bold">SUCCESSFUL</h3>
       <div className="flex flex-col gap-1">
-        <PairNamedBadgeDark
-          tokenA={option.baseToken}
-          tokenB={option.quoteToken}
-        />
+        <PairNamedBadgeDark tokenA={option.base} tokenB={option.quote} />
         <div
           className={`${
             option.isLong
@@ -67,7 +64,9 @@ export const OptionSidebarSuccessView = ({
               : "text-ui-errorAccent bg-ui-errorBg"
           } rounded-sm w-fit uppercase px-3 py-[2px]`}
         >
-          <P3 className="font-semibold">{option.sideAsText}</P3>
+          <P3 className="font-semibold">
+            {option.optionSide === 0 ? "Short" : "Long"}
+          </P3>
         </div>
       </div>
       <div className="flex justify-between">

@@ -36,7 +36,11 @@ export type TransferData = {
   shouldTransfer: boolean;
 };
 
-const LegacyAmmContract = new Contract(LegacyAmmAbi, LEGACY_AMM, provider);
+const LegacyAmmContract = new Contract({
+  abi: LegacyAmmAbi,
+  address: LEGACY_AMM,
+  providerOrAccount: provider,
+});
 
 const poolInfoToBalance = (poolInfo: LegacyPoolInfo): UserPoolBalance => ({
   size: uint256.uint256ToBN(poolInfo.size_of_users_tokens),

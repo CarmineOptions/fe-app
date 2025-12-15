@@ -1,13 +1,16 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { OptionSidebarSuccessView } from "./OptionSidebarSuccess";
-import { OptionWithPremia } from "../../classes/Option";
 import { STRK_ADDRESS, USDC_ADDRESS } from "../../constants/amm";
-import { OptionSide, OptionType } from "../../types/options";
 import { SidebarView } from "./Sidebar";
 import { SidebarWidth } from "../../redux/reducers/ui";
 import { PoolSidebarSuccessView } from "./PoolSidebarSuccess";
-import { Pool } from "../../classes/Pool";
+import {
+  LiquidityPool,
+  OptionSideLong,
+  OptionTypeCall,
+  OptionWithPremia,
+} from "@carmine-options/sdk/core";
 
 const meta: Meta<typeof OptionSidebarSuccessView> = {
   component: OptionSidebarSuccessView,
@@ -20,13 +23,15 @@ const meta: Meta<typeof OptionSidebarSuccessView> = {
 export default meta;
 
 const opt = new OptionWithPremia(
-  STRK_ADDRESS,
-  USDC_ADDRESS,
-  OptionType.Call,
-  OptionSide.Long,
-  1764749405,
-  "0x7333333333333400",
-  12345
+  {
+    base_token_address: STRK_ADDRESS,
+    quote_token_address: USDC_ADDRESS,
+    option_type: OptionTypeCall,
+    option_side: OptionSideLong,
+    maturity: 1764749405,
+    strike_price: { mag: 8301034833169298432n, sign: false },
+  },
+  { mag: 12345n, sign: false }
 );
 
 export const OptionSuccessSidebar: StoryObj = {
@@ -58,7 +63,7 @@ export const PoolSuccessSidebar: StoryObj = {
         sidebarContent={
           <PoolSidebarSuccessView
             handlePortfolioClick={() => {}}
-            pool={new Pool(STRK_ADDRESS, USDC_ADDRESS, OptionType.Call)}
+            pool={new LiquidityPool(STRK_ADDRESS, USDC_ADDRESS, OptionTypeCall)}
             deposited={120}
             depositedUsd={84}
             currentPosition={1250000}

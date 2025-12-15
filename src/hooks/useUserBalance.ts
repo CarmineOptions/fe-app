@@ -1,7 +1,6 @@
 import { useAccount } from "@starknet-react/core";
 import { balanceOf } from "./../calls/balanceOf";
 import { useQuery } from "@tanstack/react-query";
-import { QueryKeys } from "../queries/keys";
 
 export const queryUserBalance = async (
   userAddress: string,
@@ -14,7 +13,7 @@ export const useUserBalance = (tokenAddress: string) => {
   const { address } = useAccount();
 
   return useQuery({
-    queryKey: [QueryKeys.userBalance, address, tokenAddress],
+    queryKey: ["user-balance", address, tokenAddress],
     queryFn: async () => queryUserBalance(address!, tokenAddress),
     enabled: !!address,
   });

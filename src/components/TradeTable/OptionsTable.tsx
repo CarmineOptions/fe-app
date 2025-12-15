@@ -1,27 +1,28 @@
-import { OptionWithPremia } from "../../classes/Option";
-import { Pair } from "../../classes/Pair";
-import { useCurrency } from "../../hooks/useCurrency";
-import { OptionSide } from "../../types/options";
+import { useTokenPrice } from "../../hooks/useCurrency";
 import {
   openSidebar,
   setSidebarContent,
   setSidebarWidth,
 } from "../../redux/actions";
 import { OptionSidebar } from "../Sidebar";
-import { TokenKey } from "../../classes/Token";
 import { P3, P4 } from "../common";
 import { ReactNode } from "react";
 import { SidebarWidth } from "../../redux/reducers/ui";
+import {
+  OptionSide,
+  OptionWithPremia,
+  TokenPair,
+} from "@carmine-options/sdk/core";
 
 type Props = {
   options: OptionWithPremia[];
-  tokenPair: Pair;
+  tokenPair: TokenPair;
   side: OptionSide | "all";
 };
 
 const OptionsTable = ({ options, tokenPair, side }: Props) => {
-  const basePrice = useCurrency(tokenPair.baseToken.id);
-  const quotePrice = useCurrency(tokenPair.quoteToken.id);
+  const basePrice = useTokenPrice(options[0].base);
+  const quotePrice = useTokenPrice(options[0].quote);
 
   const priceReady = basePrice !== undefined && quotePrice !== undefined;
 
@@ -29,22 +30,22 @@ const OptionsTable = ({ options, tokenPair, side }: Props) => {
     setSidebarContent(<OptionSidebar option={o} />);
     setSidebarWidth(SidebarWidth.Base);
     openSidebar();
-    o.sendViewEvent();
   };
 
   const filtered = options.filter(
-    (o) => (side === "all" && o.side === OptionSide.Long) || o.side === side
+    (o) => (side === "all" && o.optionSide === 0) || o.optionSide === side
   );
 
   const index =
-    priceReady && filtered.findIndex((o) => o.strike > basePrice / quotePrice);
+    priceReady &&
+    filtered.findIndex((o) => o.strikePrice.val > basePrice / quotePrice);
 
   const PriceSlip = () => (
     <div className="flex -my-4">
       <div className="w-24 border-dark-secondary border-b-[1px] mb-3" />
       <div className="h-5 px-4 g-3 content-center rounded-sm bg-dark-secondary text-dark-primary">
         <P4>
-          {tokenPair.baseToken.symbol}/{tokenPair.quoteToken.symbol}{" "}
+          {tokenPair.base.symbol}/{tokenPair.quote.symbol}{" "}
           {(basePrice! / quotePrice!).toFixed(3)}
         </P4>
       </div>
@@ -73,7 +74,7 @@ const OptionsTable = ({ options, tokenPair, side }: Props) => {
         <div className="w-full">
           <P4 className="text-dark-secondary">strike</P4>
         </div>
-        {(side === OptionSide.Long || side === "all") && (
+        {(side === 0 || side === "all") && (
           <div className="w-full">
             <div className="flex gap-2 text-left">
               <P4 className="text-dark-secondary">ask price</P4>
@@ -81,7 +82,7 @@ const OptionsTable = ({ options, tokenPair, side }: Props) => {
             </div>
           </div>
         )}
-        {(side === OptionSide.Short || side === "all") && (
+        {(side === 1 || side === "all") && (
           <div className="w-full">
             <div className="flex gap-2 text-left">
               <P4 className="text-dark-secondary">bid price</P4>
@@ -94,8 +95,8 @@ const OptionsTable = ({ options, tokenPair, side }: Props) => {
         {filtered.map((o, i) => {
           const short = options.find(
             (other) =>
-              other.side === OptionSide.Short &&
-              other.strike === o.strike &&
+              other.optionSide === 1 &&
+              other.strikePrice.val === o.strikePrice.val &&
               other.maturity === o.maturity
           );
 
@@ -103,8 +104,7 @@ const OptionsTable = ({ options, tokenPair, side }: Props) => {
             return null;
           }
 
-          const isBtc =
-            o.baseToken.id === TokenKey.BTC || o.quoteToken.id === TokenKey.BTC;
+          const isBtc = o.base.symbol === "wBTC" || o.quote.symbol === "wBTC";
 
           return (
             <div key={i}>
@@ -112,30 +112,30 @@ const OptionsTable = ({ options, tokenPair, side }: Props) => {
               <div className="flex justify-between my-1 py-3">
                 <div className="w-full">
                   <P3 className="font-semibold">
-                    {tokenPair.quoteToken.id === TokenKey.USDC
-                      ? `$${o.strike}`
-                      : `${o.strike} ${tokenPair.quoteToken.symbol}`}
+                    {tokenPair.quote.symbol === "USDC"
+                      ? `$${o.strikePrice.val}`
+                      : `${o.strikePrice.val} ${tokenPair.quote.symbol}`}
                   </P3>
                 </div>
-                {(side === OptionSide.Long || side === "all") && (
+                {(side === 0 || side === "all") && (
                   <div
                     className="flex w-full gap-2 items-center text-left cursor-pointer text-ui-successBg"
                     onClick={() => handleOptionClick(o)}
                   >
                     <P3 className="font-semibold">
-                      {o.premia.toFixed(3)} {o.symbol}{" "}
+                      {o.premia.val.toFixed(3)} {o.underlying.symbol}{" "}
                       {isBtc && <span className="l2">size 0.1</span>}
                     </P3>
                     <Square className="bg-ui-successBg"></Square>
                   </div>
                 )}
-                {side === OptionSide.Short && (
+                {side === 1 && (
                   <div
                     className="flex w-full gap-2 items-center text-left cursor-pointer text-ui-errorBg"
                     onClick={() => handleOptionClick(o)}
                   >
                     <P3 className="font-semibold">
-                      {o.premia.toFixed(3)} {o.symbol}{" "}
+                      {o.premia.val.toFixed(3)} {o.underlying.symbol}{" "}
                       {isBtc && <span className="l2">size 0.1</span>}
                     </P3>
                     <Square className="bg-ui-errorBg"></Square>
@@ -147,7 +147,7 @@ const OptionsTable = ({ options, tokenPair, side }: Props) => {
                     onClick={() => handleOptionClick(short!)}
                   >
                     <P3 className="font-semibold">
-                      {short!.premia.toFixed(3)} {o.symbol}{" "}
+                      {short!.premia.val.toFixed(3)} {o.underlying.symbol}{" "}
                       {isBtc && <span className="l2">size 0.1</span>}
                     </P3>
                     <Square className="bg-ui-errorBg"></Square>

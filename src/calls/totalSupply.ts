@@ -3,7 +3,11 @@ import ABI from "../abi/lptoken_abi.json";
 import { provider } from "../network/provider";
 
 export const getTotalSupply = async (tokenAddress: string): Promise<bigint> => {
-  const contract = new Contract(ABI, tokenAddress, provider);
+  const contract = new Contract({
+    abi: ABI,
+    address: tokenAddress,
+    providerOrAccount: provider,
+  });
   const supply = await contract.totalSupply();
   return supply;
 };

@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { Airdrop } from "../components/Airdrop/Airdrop";
 import { Layout } from "../components/Layout";
-import { TradeHistory } from "../components/History/History";
+import { History } from "../components/History/History";
 import { usePortfolioParam } from "../hooks/usePortfolio";
 import { setPortfolioParam } from "../redux/actions";
 import { PortfolioParamType } from "../redux/reducers/ui";
@@ -95,7 +95,7 @@ const PortfolioPage = () => {
         <Referral />
       )}
       {portfolioParam === PortfolioParamType.MyPortfolio && <MyPortfolio />}
-      {portfolioParam === PortfolioParamType.History && <TradeHistory />}
+      {portfolioParam === PortfolioParamType.History && <History />}
     </Layout>
   );
 };

@@ -1,6 +1,6 @@
-import { Token, TokenKey } from "../../classes/Token";
 import { Close } from "@mui/icons-material";
 import { TokenNamedBadge } from "../TokenBadge";
+import { allTokens, Token } from "@carmine-options/sdk/core";
 
 export type SelectableToken = {
   icon: string;
@@ -23,8 +23,7 @@ export const TokenSelect = ({ close, setSelection, other }: Props) => {
           <Close />
         </div>
       </div>
-      {Object.values(TokenKey).map((tokenKey, i) => {
-        const token = Token.byKey(tokenKey);
+      {allTokens.map((token, i) => {
         if (token.address === other.address) {
           // do not show the other part of the pair
           return null;

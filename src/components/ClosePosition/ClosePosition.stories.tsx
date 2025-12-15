@@ -1,10 +1,12 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { ReactNode } from "react";
-
 import { ClosePosition } from "./ClosePosition";
-import { OptionWithPosition } from "../../classes/Option";
 import { ETH_ADDRESS, USDC_ADDRESS } from "../../constants/amm";
-import { OptionSide, OptionType } from "../../types/options";
+import {
+  OptionSideLong,
+  OptionTypePut,
+  OptionWithUserPosition,
+} from "@carmine-options/sdk/core";
 
 const MockSidebar = ({ children }: { children: ReactNode }) => (
   <div className="w-sidebar border-dark-primary border-2 h-dvh py-10 px-5">
@@ -13,15 +15,17 @@ const MockSidebar = ({ children }: { children: ReactNode }) => (
   </div>
 );
 
-const longPut = new OptionWithPosition(
-  ETH_ADDRESS,
-  USDC_ADDRESS,
-  OptionType.Put,
-  OptionSide.Long,
-  1764577072,
-  "0x8980000000000000000",
-  "0xde0b6b3a7640000",
-  "0x409b35b669c08a12"
+const longPut = new OptionWithUserPosition(
+  {
+    base_token_address: ETH_ADDRESS,
+    quote_token_address: USDC_ADDRESS,
+    option_type: OptionTypePut,
+    option_side: OptionSideLong,
+    maturity: 1764577072,
+    strike_price: { mag: 40582836962161013555200n, sign: false },
+  },
+  { mag: 1000000000000000000n, sign: false },
+  { low: 4655373697392086016n, high: 0n }
 );
 
 export const LongPut: StoryObj = {

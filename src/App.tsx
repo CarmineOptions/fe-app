@@ -32,6 +32,7 @@ import {
   TradeDashboardPage,
   YieldPage,
 } from "./pages";
+import { initCarmineSdk } from "@carmine-options/sdk/core";
 
 const App = () => {
   const [check, rerender] = useState(false);
@@ -42,6 +43,8 @@ const App = () => {
     ["/staking", "/yield"],
     ["/rewards", "/portfolio/airdrops"],
   ];
+  // initCarmineSdk({ rpcUrl: "https://api.carmine.finance/api/v1/mainnet/call" });
+  initCarmineSdk({ rpcUrl: "https://backend.carmine.finance/rpc-call/" });
 
   return (
     <Provider store={store}>

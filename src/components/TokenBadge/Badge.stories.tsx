@@ -6,7 +6,7 @@ import {
   PairBadge,
   PairNamedBadge,
 } from "./Badge";
-import { EthToken, StrkToken, UsdcToken } from "../../classes/Token";
+import { tokenBySymbol } from "@carmine-options/sdk/core";
 
 const meta: Meta<typeof TokenBadge> = {
   component: TokenBadge,
@@ -20,18 +20,22 @@ export default meta;
 
 type Story = StoryObj<typeof TokenBadge>;
 
+const strkToken = tokenBySymbol("STRK").unwrap();
+const ethToken = tokenBySymbol("ETH").unwrap();
+const usdcToken = tokenBySymbol("USDC").unwrap();
+
 export const StrkBadge: Story = {
-  render: () => <TokenBadge token={StrkToken} />,
+  render: () => <TokenBadge token={strkToken} />,
 };
 
 export const StrkNamedBadge: Story = {
-  render: () => <TokenNamedBadge token={StrkToken} />,
+  render: () => <TokenNamedBadge token={strkToken} />,
 };
 
 export const EthUsdcBadge: Story = {
-  render: () => <PairBadge tokenA={EthToken} tokenB={UsdcToken} />,
+  render: () => <PairBadge tokenA={ethToken} tokenB={usdcToken} />,
 };
 
 export const EthUsdcNamedBadge: Story = {
-  render: () => <PairNamedBadge tokenA={EthToken} tokenB={UsdcToken} />,
+  render: () => <PairNamedBadge tokenA={ethToken} tokenB={usdcToken} />,
 };

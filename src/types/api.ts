@@ -1,3 +1,5 @@
+import type { TokenKey } from "../classes/Token";
+
 export type PoolData = {
   unlocked_cap: string;
   locked_cap: string;
@@ -18,13 +20,7 @@ export type APYData = {
   launch_annualized: number;
 };
 
-export type TokenPriceData = {
-  eth: number;
-  usdc: number;
-  strk: number;
-  btc: number;
-  ekubo: number;
-};
+export type TokenPriceData = Record<TokenKey, number>;
 
 export type ApiResponse<Data> = {
   status: "success" | "fail";

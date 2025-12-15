@@ -1,12 +1,36 @@
 import { useQuery } from "@tanstack/react-query";
-import { QueryKeys } from "../queries/keys";
-import { fetchOptions } from "../components/TradeTable/fetchOptions";
-import { OptionWithPremia } from "../classes/Option";
 
-export const useOptions = () => {
+import {
+  allLiquidityPools,
+  CarmineAmm,
+  OptionWithPremia,
+} from "@carmine-options/sdk/core";
+
+export const useOptions = (lpAddress: string) => {
   const { data, ...rest } = useQuery({
-    queryKey: [QueryKeys.options],
-    queryFn: fetchOptions,
+    queryKey: ["live-options-with-premia", lpAddress],
+    queryFn: async () =>
+      CarmineAmm.getAllNonExpiredOptionsWithPremia(lpAddress),
+  });
+
+  return {
+    ...rest,
+    options: data as OptionWithPremia[] | undefined,
+  };
+};
+
+export const useOptionsAllPools = () => {
+  const { data, ...rest } = useQuery({
+    queryKey: ["live-options-with-premia", "all-pools"],
+    queryFn: async () => {
+      const optionsPerPool = await Promise.all(
+        allLiquidityPools.map((pool) =>
+          CarmineAmm.getAllNonExpiredOptionsWithPremia(pool.lpAddress)
+        )
+      );
+
+      return optionsPerPool.flat();
+    },
   });
 
   return {

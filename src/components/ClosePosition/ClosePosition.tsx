@@ -4,69 +4,64 @@ import { useAccount, useSendTransaction } from "@starknet-react/core";
 
 import { PairNamedBadge } from "../TokenBadge";
 import { handleNumericChangeFactory } from "../../utils/inputHandling";
-import { useCurrency } from "../../hooks/useCurrency";
 import { TransactionState } from "../../types/network";
-import { OptionWithPosition } from "../../classes/Option";
 import { formatNumber, timestampToPriceGuardDate } from "../../utils/utils";
 import { LoadingAnimation } from "../Loading/Loading";
 import { Button, Divider, P3, P4 } from "../common";
 import { PrimaryConnectWallet } from "../ConnectWallet/Button";
 import { useDebounce } from "../../hooks/useDebounce";
-import { usePremiaQuery } from "../../hooks/usePremiaQuery";
 import { tradeClose } from "../../calls/tradeClose";
-import { math64toDecimal } from "../../utils/units";
+import { useTokenPrice } from "../../hooks/usePrice";
+import { OptionWithUserPosition } from "@carmine-options/sdk/core";
+import { usePremia } from "../../hooks/usePremia";
 
 type Props = {
-  option: OptionWithPosition;
+  option: OptionWithUserPosition;
 };
 
 export const ClosePosition = ({ option }: Props) => {
   const { sendAsync } = useSendTransaction({});
   const { address } = useAccount();
-  const price = useCurrency(option.underlying.id);
+  const price = useTokenPrice(option.underlying.symbol);
   const [shouldReset, setShouldReset] = useState<boolean>(false);
-  const [amount, setAmount] = useState<number>(option.size);
-  const [amountText, setAmountText] = useState<string>(
-    option.size.toString(10)
-  );
+  const sizeHuman = option.underlying.toHumanReadable(option.size);
+  const [amount, setAmount] = useState<number>(sizeHuman);
+  const [amountText, setAmountText] = useState<string>(sizeHuman.toString(10));
   const [txState, setTxState] = useState<TransactionState>(
     TransactionState.Initial
   );
   const debouncedAmount = useDebounce<number>(amount);
 
   const {
-    data: premiaMath64,
+    data: premia,
     isLoading,
     isFetching,
-  } = usePremiaQuery(option, debouncedAmount, true);
+  } = usePremia(option, debouncedAmount, true);
 
   if (shouldReset) {
-    setAmount(option.size);
-    setAmountText(option.size.toString(10));
+    setAmount(sizeHuman);
+    setAmountText(sizeHuman.toString(10));
     setShouldReset(false);
   }
-
-  const premia =
-    premiaMath64 === undefined ? undefined : math64toDecimal(premiaMath64);
 
   const handleChange = handleNumericChangeFactory(
     setAmountText,
     setAmount,
     (n) => {
-      if (n > option.size) {
-        return option.size;
+      if (n > sizeHuman) {
+        return sizeHuman;
       }
       return n;
     }
   );
 
   const handleClose = () => {
-    if (!address || !premiaMath64) {
+    if (!address || !premia) {
       toast.error("Cannot close size 0");
       return;
     }
 
-    tradeClose(sendAsync, option, premiaMath64, amount, true);
+    tradeClose(sendAsync, option, premia, amount);
   };
 
   useEffect(() => {
@@ -79,7 +74,7 @@ export const ClosePosition = ({ option }: Props) => {
   return (
     <div className="bg-dark-card py-10 px-5 flex flex-col gap-7 h-full">
       <div className="flex flex-col gap-2">
-        <PairNamedBadge tokenA={option.baseToken} tokenB={option.quoteToken} />
+        <PairNamedBadge tokenA={option.base} tokenB={option.quote} />
         <div
           className={`rounded-sm py-[2px] px-3 w-fit uppercase ${
             option.isLong
@@ -118,10 +113,10 @@ export const ClosePosition = ({ option }: Props) => {
             ) : (
               <div className="flex flex-col items-end">
                 <P3 className="font-semibold">
-                  {`${formatNumber(premia, 4)} ${option.underlying.symbol}`}
+                  {`${formatNumber(premia.val, 4)} ${option.underlying.symbol}`}
                 </P3>
                 <P4 className="text-dark-secondary font-bold">{`$${formatNumber(
-                  price * premia,
+                  price * premia.val,
                   4
                 )}`}</P4>
               </div>
@@ -167,9 +162,9 @@ export const ClosePosition = ({ option }: Props) => {
             <P3 className="font-semibold text-dark-secondary">STRIKE PRICE</P3>
           </div>
           <div className="flex flex-col items-end">
-            <P3 className="font-semibold">${option.strike}</P3>
+            <P3 className="font-semibold">${option.strikePrice.val}</P3>
             <P4 className="text-dark-secondary font-bold">
-              1 {option.baseToken.symbol} = ${option.strike}
+              1 {option.base.symbol} = ${option.strikePrice.val}
             </P4>
           </div>
         </div>

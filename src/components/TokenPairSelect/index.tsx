@@ -1,33 +1,41 @@
 import { useState } from "react";
-import { Pair, PairKey } from "../../classes/Pair";
 import { PairNamedBadge, TokenNamedBadge } from "../TokenBadge";
 
 import CaretDown from "./CaretDown.svg?react";
-import { allSupportedTokens, Token } from "../../classes/Token";
 import { Pool } from "../../classes/Pool";
 import { pools } from "../AddProposal/pools";
 import { P3 } from "../common";
+import {
+  allTokens,
+  BTC_ADDRESS,
+  EKUBO_ADDRESS,
+  ETH_ADDRESS,
+  STRK_ADDRESS,
+  Token,
+  TokenPair,
+  USDC_ADDRESS,
+} from "@carmine-options/sdk/core";
 
 type TokenPairSelectProps = {
-  pair: Pair;
-  setPair: (p: Pair) => void;
+  pair: TokenPair;
+  setPair: (p: TokenPair) => void;
 };
+
+const options = [
+  new TokenPair(STRK_ADDRESS, USDC_ADDRESS),
+  new TokenPair(ETH_ADDRESS, USDC_ADDRESS),
+  new TokenPair(ETH_ADDRESS, STRK_ADDRESS),
+  new TokenPair(BTC_ADDRESS, USDC_ADDRESS),
+  new TokenPair(EKUBO_ADDRESS, USDC_ADDRESS),
+];
 
 export const TokenPairSelect = ({ pair, setPair }: TokenPairSelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleClick = (p: Pair) => {
+  const handleClick = (p: TokenPair) => {
     setPair(p);
     setIsOpen(false);
   };
-
-  const options = [
-    PairKey.STRK_USDC,
-    PairKey.ETH_USDC,
-    PairKey.ETH_STRK,
-    PairKey.BTC_USDC,
-    PairKey.EKUBO_USDC,
-  ].map((key) => Pair.pairByKey(key));
 
   return (
     <div className="relative inline-block">
@@ -37,7 +45,7 @@ export const TokenPairSelect = ({ pair, setPair }: TokenPairSelectProps) => {
         onClick={() => setIsOpen((prev) => !prev)}
       >
         <div className="flex items-center gap-2">
-          <PairNamedBadge tokenA={pair.baseToken} tokenB={pair.quoteToken} />
+          <PairNamedBadge tokenA={pair.base} tokenB={pair.quote} />
           <CaretDown />
         </div>
       </button>
@@ -51,7 +59,7 @@ export const TokenPairSelect = ({ pair, setPair }: TokenPairSelectProps) => {
                 className="bg-dark-container cursor-pointer py-1"
                 onClick={() => handleClick(p)}
               >
-                <PairNamedBadge tokenA={p.baseToken} tokenB={p.quoteToken} />
+                <PairNamedBadge tokenA={p.base} tokenB={p.quote} />
               </li>
             ))}
         </ul>
@@ -74,7 +82,7 @@ export const TokenSelect = ({ token, setToken, tokens }: TokenSelectProps) => {
     setIsOpen(false);
   };
 
-  const list = tokens || allSupportedTokens;
+  const list = tokens || allTokens;
 
   return (
     <div className="relative inline-block">
@@ -91,7 +99,7 @@ export const TokenSelect = ({ token, setToken, tokens }: TokenSelectProps) => {
       {isOpen && (
         <ul className="z-20 absolute mt-1 w-full rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
           {list
-            .filter((v) => v.id !== token.id)
+            .filter((v) => v.symbol !== token.symbol)
             .map((t, i) => (
               <li
                 key={i}

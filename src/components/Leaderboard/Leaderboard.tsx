@@ -61,7 +61,7 @@ const LeaderboardItem = ({
   username,
   data,
   className,
-  braavos,
+  // braavos,
   isCurrentUser = false,
 }: ItemProps) => {
   console.log(address, isCurrentUser);
@@ -73,7 +73,7 @@ const LeaderboardItem = ({
           address={address}
           username={username}
           position={position}
-          braavos={braavos}
+          // braavos={braavos}
         />
       </td>
       {data.map((v, i) => (

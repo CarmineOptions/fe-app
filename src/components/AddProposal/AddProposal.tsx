@@ -12,7 +12,7 @@ import { decimalToMath64 } from "../../utils/units";
 import { ProposalText } from "./ProposalText";
 import { proposeOptions } from "./proposeOptions";
 import { useAccount, useSendTransaction } from "@starknet-react/core";
-import { useOptions } from "../../hooks/useOptions";
+import { useOptionsAllPools } from "../../hooks/useOptions";
 import { stringToBigint } from "../../utils/conversions";
 import { pools } from "./pools";
 import { Button, P3 } from "../common";
@@ -54,7 +54,7 @@ const getRelevantMaturities = (count = 20, offset = 1) => {
 export const AddProposal = () => {
   const { account } = useAccount();
   const { sendAsync } = useSendTransaction({});
-  const { isLoading, isError, options: data } = useOptions();
+  const { isLoading, isError, options: data } = useOptionsAllPools();
   const [options, setOptions] = useState<ProposalOption[]>([]);
   const maturities = getRelevantMaturities();
 

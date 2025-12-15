@@ -29,7 +29,6 @@ type CustomTooltipProps = {
 
 export const ProfitGraph = ({ data }: ProfitGraphProps) => {
   const { currency, plot, domain } = data;
-  console.log("GRAPH DATA", data);
   const defaultTooltipData = {
     active: false,
     color: Color.Green,

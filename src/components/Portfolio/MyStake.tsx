@@ -2,7 +2,6 @@ import { useAccount } from "@starknet-react/core";
 import { LoadingAnimation } from "../Loading/Loading";
 
 import { PairNameAboveBadge } from "../TokenBadge";
-import { UserPoolInfo } from "../../classes/Pool";
 import { useStakes } from "../../hooks/useStakes";
 import { openSidebar, setSidebarContent } from "../../redux/actions";
 import { PoolSidebar } from "../Sidebar";
@@ -14,29 +13,32 @@ import {
   TokenValueStacked,
 } from "../common";
 import { SecondaryConnectWallet } from "../ConnectWallet/Button";
+import {
+  liquidityPoolByLpAddress,
+  UserPoolInfo,
+} from "@carmine-options/sdk/core";
 
 const Item = ({ stake }: { stake: UserPoolInfo }) => {
+  const pool = liquidityPoolByLpAddress(stake.lpAddress).unwrap();
+
   const handleClick = () => {
-    setSidebarContent(<PoolSidebar pool={stake} initialAction="withdraw" />);
+    setSidebarContent(<PoolSidebar pool={pool} initialAction="withdraw" />);
     openSidebar();
   };
 
   return (
     <div className="flex justify-between my-2 py-3 text-left w-[550px]">
       <div className="w-full">
-        <PairNameAboveBadge
-          tokenA={stake.baseToken}
-          tokenB={stake.quoteToken}
-        />
+        <PairNameAboveBadge tokenA={pool.base} tokenB={pool.quote} />
       </div>
       <div className="w-full">
         <MajorMinorStacked
-          major={`${stake.typeAsText} Pool`}
-          minor={stake.underlying.symbol}
+          major={`${pool.typeAsText} Pool`}
+          minor={pool.underlying.symbol}
         />
       </div>
       <div className="w-full">
-        <TokenValueStacked amount={stake.value} token={stake.underlying} />
+        <TokenValueStacked amount={stake.value} token={pool.underlying} />
       </div>
       <div className="w-full">
         <Button type="primary" className="w-full" onClick={handleClick}>
@@ -48,7 +50,7 @@ const Item = ({ stake }: { stake: UserPoolInfo }) => {
 };
 
 export const MyStakeWithAccount = () => {
-  const { isLoading, isError, stakes } = useStakes();
+  const { isLoading, isError, data: stakes } = useStakes();
 
   if (isLoading) {
     return (

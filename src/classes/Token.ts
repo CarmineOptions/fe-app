@@ -85,6 +85,27 @@ const tokenKeyToIcon = (
   throw Error("Invalid token key");
 };
 
+export const carmineTokenToIcon = (
+  symbol: string
+): FunctionComponent<SVGProps<SVGSVGElement>> => {
+  if (symbol === "wBTC") {
+    return BtcIcon;
+  }
+  if (symbol === "ETH") {
+    return EthIcon;
+  }
+  if (symbol === "STRK") {
+    return StrkIcon;
+  }
+  if (symbol === "USDC") {
+    return UsdcIcon;
+  }
+  if (symbol === "EKUBO") {
+    return EkuboIcon;
+  }
+  throw Error("Invalid token key");
+};
+
 export class Token {
   private _id: TokenKey;
   private _symbol: string;

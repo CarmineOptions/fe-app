@@ -2,7 +2,6 @@ import { useAccount, useSendTransaction } from "@starknet-react/core";
 import toast from "react-hot-toast";
 
 import { LoadingAnimation } from "../Loading/Loading";
-import { OptionWithPosition } from "../../classes/Option";
 import { PairNameAboveBadge } from "../TokenBadge";
 import { formatNumber } from "../../utils/utils";
 import {
@@ -25,6 +24,7 @@ import {
 import { SecondaryConnectWallet } from "../ConnectWallet/Button";
 import { ClosePosition } from "../ClosePosition";
 import { SidebarWidth } from "../../redux/reducers/ui";
+import { OptionWithUserPosition } from "@carmine-options/sdk/core";
 
 const Header = () => {
   return (
@@ -55,7 +55,7 @@ const Header = () => {
   );
 };
 
-const LiveItem = ({ option }: { option: OptionWithPosition }) => {
+const LiveItem = ({ option }: { option: OptionWithUserPosition }) => {
   const handleClick = () => {
     setSidebarContent(<ClosePosition option={option} />);
     setSidebarWidth(SidebarWidth.Base);
@@ -64,23 +64,27 @@ const LiveItem = ({ option }: { option: OptionWithPosition }) => {
   return (
     <div className="flex justify-between my-2 py-3 text-left w-big">
       <div className="w-full">
-        <PairNameAboveBadge
-          tokenA={option.baseToken}
-          tokenB={option.quoteToken}
-        />
+        <PairNameAboveBadge tokenA={option.base} tokenB={option.quote} />
       </div>
       <div className="w-full">
-        <SideTypeStacked side={option.side} type={option.type} />
+        <SideTypeStacked side={option.optionSide} type={option.optionType} />
       </div>
       <div className="w-full">
-        <P3 className="font-semibold">{option.strikeWithCurrency}</P3>
+        <P3 className="font-semibold">
+          {option.underlying.symbol} {option.strikePrice.val}
+        </P3>
       </div>
       <div className="w-full">
         <MaturityStacked timestamp={option.maturity} />
       </div>
-      <div className="w-full">{formatNumber(option.size, 4)}</div>
       <div className="w-full">
-        <TokenValueStacked amount={option.value} token={option.underlying} />
+        {formatNumber(option.underlying.toHumanReadable(option.size), 4)}
+      </div>
+      <div className="w-full">
+        <TokenValueStacked
+          amount={option.value.val}
+          token={option.underlying}
+        />
       </div>
       <div className="w-full">
         <Button className="w-full" type="primary" onClick={handleClick}>
@@ -91,7 +95,7 @@ const LiveItem = ({ option }: { option: OptionWithPosition }) => {
   );
 };
 
-const OtmItem = ({ option }: { option: OptionWithPosition }) => {
+const OtmItem = ({ option }: { option: OptionWithUserPosition }) => {
   const { sendAsync } = useSendTransaction({});
   const { address } = useAccount();
 
@@ -112,21 +116,22 @@ const OtmItem = ({ option }: { option: OptionWithPosition }) => {
   return (
     <div className="flex justify-between my-2 py-3 text-left w-big">
       <div className="w-full">
-        <PairNameAboveBadge
-          tokenA={option.baseToken}
-          tokenB={option.quoteToken}
-        />
+        <PairNameAboveBadge tokenA={option.base} tokenB={option.quote} />
       </div>
       <div className="w-full">
-        <SideTypeStacked side={option.side} type={option.type} />
+        <SideTypeStacked side={option.optionSide} type={option.optionType} />
       </div>
       <div className="w-full">
-        <P3 className="font-semibold">{option.strikeWithCurrency}</P3>
+        <P3 className="font-semibold">
+          {option.underlying.symbol} {option.strikePrice.val}
+        </P3>
       </div>
       <div className="w-full">
         <MaturityStacked timestamp={option.maturity} />
       </div>
-      <div className="w-full">{formatNumber(option.size, 4)}</div>
+      <div className="w-full">
+        {formatNumber(option.underlying.toHumanReadable(option.size), 4)}
+      </div>
       <div className="w-full">0</div>
       <div className="w-full">
         <Button className="w-full" type="primary" onClick={handleSettle}>
@@ -137,12 +142,12 @@ const OtmItem = ({ option }: { option: OptionWithPosition }) => {
   );
 };
 
-const ItmItem = ({ option }: { option: OptionWithPosition }) => {
+const ItmItem = ({ option }: { option: OptionWithUserPosition }) => {
   const { sendAsync } = useSendTransaction({});
   const { address } = useAccount();
 
   const handleSettle = () => {
-    if (!address || !option?.sizeHex) {
+    if (!address || !option?.size) {
       return;
     }
 
@@ -163,23 +168,27 @@ const ItmItem = ({ option }: { option: OptionWithPosition }) => {
   return (
     <div className="flex justify-between my-2 py-3 text-left w-big">
       <div className="w-full">
-        <PairNameAboveBadge
-          tokenA={option.baseToken}
-          tokenB={option.quoteToken}
-        />
+        <PairNameAboveBadge tokenA={option.base} tokenB={option.quote} />
       </div>
       <div className="w-full">
-        <SideTypeStacked side={option.side} type={option.type} />
+        <SideTypeStacked side={option.optionSide} type={option.optionType} />
       </div>
       <div className="w-full">
-        <P3 className="font-semibold">{option.strikeWithCurrency}</P3>
+        <P3 className="font-semibold">
+          {option.underlying.symbol} {option.strikePrice.val}
+        </P3>
       </div>
       <div className="w-full">
         <MaturityStacked timestamp={option.maturity} />
       </div>
-      <div className="w-full">{formatNumber(option.size, 4)}</div>
       <div className="w-full">
-        <TokenValueStacked amount={option.value} token={option.underlying} />
+        {formatNumber(option.underlying.toHumanReadable(option.size), 4)}
+      </div>
+      <div className="w-full">
+        <TokenValueStacked
+          amount={option.value.val}
+          token={option.underlying}
+        />
       </div>
       <div className="w-full">
         <Button className="w-full" type="primary" onClick={handleSettle}>
