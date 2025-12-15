@@ -1,5 +1,4 @@
 import { memo, useEffect, useRef } from "react";
-import { TokenKey } from "../../classes/Token";
 
 type Props = {
   ticker: string;
@@ -49,13 +48,13 @@ export const SingleTokenGraph = memo(({ ticker }: Props) => {
 });
 
 type SingleTokenMultichartProps = {
-  token: TokenKey;
+  token: string;
 };
 
 export const SingleTokenMultichart = ({
   token,
 }: SingleTokenMultichartProps) => {
-  const show = token === TokenKey.STRK ? 1 : token === TokenKey.BTC ? 2 : 3;
+  const show = token === "STRK" ? 1 : token === "wBTC" ? 2 : 3;
   return (
     <div className="h-full">
       <div className={`h-full${show === 1 ? "" : " hidden"}`}>

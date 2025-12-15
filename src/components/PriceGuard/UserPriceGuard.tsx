@@ -1,6 +1,5 @@
 import { LoadingAnimation } from "../Loading/Loading";
 import { useAccount, useSendTransaction } from "@starknet-react/core";
-import { OptionWithPosition } from "../../classes/Option";
 import { useTxPending } from "../../hooks/useRecentTxs";
 import { TransactionAction } from "../../redux/reducers/transactions";
 import { ReactNode, useState } from "react";
@@ -13,21 +12,22 @@ import { usePositions } from "../../hooks/usePositions";
 import toast from "react-hot-toast";
 import { Button, MaturityStacked, P3, P4 } from "../common";
 import { SecondaryConnectWallet } from "../ConnectWallet/Button";
+import { OptionWithUserPosition } from "@carmine-options/sdk/core";
 
-const PriceGuardDisplay = ({ option }: { option: OptionWithPosition }) => {
+const PriceGuardDisplay = ({ option }: { option: OptionWithUserPosition }) => {
   const { sendAsync } = useSendTransaction({});
   const txPending = useTxPending(
     option.optionId,
     TransactionAction.TradeSettle
   );
   const [_settling, setSettling] = useState(false);
-  const token = option.baseToken;
+  const token = option.base;
 
   const settling = txPending || _settling;
 
   const handleButtonClick = () => {
     setSettling(true);
-    sendAsync([option.tradeSettleCalldata])
+    sendAsync([option.tradeSettle()])
       .then((res) => {
         if (res?.transaction_hash) {
           afterTransaction(res.transaction_hash, () => {
@@ -46,15 +46,15 @@ const PriceGuardDisplay = ({ option }: { option: OptionWithPosition }) => {
   return (
     <div className="flex justify-between my-2 py-3 text-left w-big">
       <div className="w-full">
-        <TokenNamedBadge token={option.baseToken} size="small" />
+        <TokenNamedBadge token={option.base} size="small" />
       </div>
       <div className="w-full">
         <P3>
-          {option.size} {token.symbol}
+          {option.underlying.toHumanReadable(option.size)} {token.symbol}
         </P3>
       </div>
       <div className="w-full">
-        <P3>${option.strike}</P3>
+        <P3>${option.strikePrice.val}</P3>
       </div>
       <div className="w-full">
         <MaturityStacked timestamp={option.maturity} />
@@ -110,11 +110,10 @@ export const UserPriceGuard = () => {
     setOrder("asc");
   };
 
-  const sort = (opts: OptionWithPosition[]): OptionWithPosition[] => {
+  const sort = (opts: OptionWithUserPosition[]): OptionWithUserPosition[] => {
     if (sortBy === "asset") {
       return opts.sort((a, b) => {
-        const res =
-          a.baseToken.symbol.toLowerCase() < b.baseToken.symbol.toLowerCase();
+        const res = a.base.symbol.toLowerCase() < b.base.symbol.toLowerCase();
         if (order === "asc") {
           if (res) {
             return -1;
@@ -131,12 +130,14 @@ export const UserPriceGuard = () => {
     }
     if (sortBy === "amount") {
       return opts.sort((a, b) =>
-        order === "asc" ? a.size - b.size : b.size - a.size
+        order === "asc" ? a.sizeHuman - b.sizeHuman : b.sizeHuman - a.sizeHuman
       );
     }
     if (sortBy === "price") {
       return opts.sort((a, b) =>
-        order === "asc" ? a.strike - b.strike : b.strike - a.strike
+        order === "asc"
+          ? a.strikePrice.val - b.strikePrice.val
+          : b.strikePrice.val - a.strikePrice.val
       );
     }
     if (sortBy === "duration") {
@@ -145,7 +146,7 @@ export const UserPriceGuard = () => {
       );
     }
     if (sortBy === "status") {
-      const optionToStatusValue = (o: OptionWithPosition) => {
+      const optionToStatusValue = (o: OptionWithUserPosition) => {
         if (o.isFresh) {
           return 2;
         }
@@ -359,7 +360,7 @@ export const UserPriceGuard = () => {
   const currentChoice =
     asset === "all"
       ? priceGuard
-      : priceGuard.filter((o) => o.baseToken.id === asset);
+      : priceGuard.filter((o) => o.base.symbol === asset);
 
   const sorted = sort(currentChoice);
 

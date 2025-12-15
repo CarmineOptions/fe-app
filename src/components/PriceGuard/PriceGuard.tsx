@@ -13,12 +13,12 @@ import { SidebarContent } from "./SidebarContent";
 export const PriceGuard = () => {
   const background = "linear-gradient(267.89deg, #BA902E -1.69%, #332609 100%)";
 
-  const handleClick = (tokenKey: TokenKey) => {
+  const handleClick = (tokenKey: string) => {
     // remove previous content
     setSidebarContent(null);
     // wait for the content to be removed
     setTimeout(() => {
-      setSidebarContent(<SidebarContent initialTokenKey={tokenKey} />);
+      setSidebarContent(<SidebarContent initialToken={tokenKey} />);
       setSidebarWidth(SidebarWidth.PriceProtect);
       openSidebar();
     }, 0);

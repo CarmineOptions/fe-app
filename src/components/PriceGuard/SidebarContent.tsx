@@ -3,7 +3,6 @@ import { useAccount, useSendTransaction } from "@starknet-react/core";
 import { NavLink } from "react-router-dom";
 
 import { useUserBalance } from "../../hooks/useUserBalance";
-import { useCurrency } from "../../hooks/useCurrency";
 import { LoadingAnimation } from "../Loading/Loading";
 import { shortInteger } from "../../utils/computations";
 import {
@@ -13,19 +12,10 @@ import {
   uniquePrimitiveValues,
 } from "../../utils/utils";
 import { handleNumericChangeFactory } from "../../utils/inputHandling";
-import {
-  BtcToken,
-  EthToken,
-  StrkToken,
-  Token,
-  TokenKey,
-} from "../../classes/Token";
-import { getPremia } from "../../calls/getPremia";
-import { math64toDecimal } from "../../utils/units";
 import { approveAndTradeOpenNew } from "../../calls/tradeOpen";
 import CogIcon from "./cog.svg?react";
 import { TransactionState } from "../../types/network";
-import { useOptions } from "../../hooks/useOptions";
+import { useOptionsAllPools } from "../../hooks/useOptions";
 import { Button, Divider, H5, H6, P3, P4 } from "../common";
 import { SingleTokenMultichart } from "../CryptoGraph/SingleTokenGraph";
 import { TokenSelect } from "../TokenPairSelect";
@@ -37,37 +27,35 @@ import { closeSidebar } from "../../redux/actions";
 import { getProfitGraphData } from "../CryptoGraph/profitGraphData";
 import { ProfitGraph } from "../CryptoGraph/ProfitGraph";
 import { Warning } from "../Icons";
+import { Cubit, Token, tokenBySymbol } from "@carmine-options/sdk/core";
+import { useTokenPrice } from "../../hooks/usePrice";
 
 type Props = {
-  initialTokenKey: TokenKey;
+  initialToken: string;
 };
 
-export const SidebarContent = ({ initialTokenKey }: Props) => {
+export const SidebarContent = ({ initialToken }: Props) => {
   const { address } = useAccount();
   const { sendAsync } = useSendTransaction({});
-  const [token, setToken] = useState<Token>(Token.byKey(initialTokenKey));
+  const [token, setToken] = useState<Token>(
+    tokenBySymbol(initialToken).unwrap()
+  );
   const { data: balance } = useUserBalance(USDC_ADDRESS); // currently price protect only vs USDC
   const floatBalance =
     balance === undefined ? undefined : shortInteger(balance.toString(10), 6); // always USDC
   const displayBalance =
     floatBalance === undefined ? undefined : floatBalance.toFixed(4);
-  const valueInUsd = useCurrency(token.id);
-  const { options, isLoading, isError } = useOptions();
+  const valueInUsd = useTokenPrice(token.symbol);
+  const { options, isLoading, isError } = useOptionsAllPools();
   const [currentStrike, setCurrentStrike] = useState<number>();
   const [priceLoading, setPriceLoading] = useState(false);
   const [size, setSize] = useState<number>(0);
   const [textSize, setTextSize] = useState<string>("");
   const [expiry, setExpiry] = useState<number>();
-  const [priceMath64, setPrice] = useState<bigint | undefined>();
+  const [price, setPrice] = useState<Cubit | undefined>();
   const [isMaturitySelectOpen, setMaturitySelectOpen] =
     useState<boolean>(false);
   const [isStrikeSelectOpen, setStrikeSelectOpen] = useState<boolean>(false);
-
-  // TODO: slipapge
-  const slippage = 5;
-
-  const price =
-    priceMath64 === undefined ? undefined : math64toDecimal(priceMath64);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const callWithDelay = useCallback(
@@ -78,26 +66,28 @@ export const SidebarContent = ({ initialTokenKey }: Props) => {
       const longPuts = options.filter(
         // only Long Puts for the chosen currency
         (o) =>
-          o.baseToken.id === token.id &&
-          o.quoteToken.id === TokenKey.USDC &&
+          o.base.symbol === token.symbol &&
+          o.quote.symbol === "USDC" &&
           o.isPut &&
           o.isLong &&
           o.isFresh
       );
       const pickedOption = longPuts.find(
-        (o) => o.maturity === expiry && o.strike === currentStrike
+        (o) => o.maturity === expiry && o.strikePrice.val === currentStrike
       )!;
 
       if (!pickedOption) {
         return;
       }
       setPriceLoading(true);
-      getPremia(pickedOption, size, false)
+
+      pickedOption
+        .getPremia(size, false)
         .then((res) => {
           if (controller.signal.aborted) {
             return;
           }
-          setPrice(res as bigint);
+          setPrice(res.withFees);
           setPriceLoading(false);
         })
         .catch(() => {
@@ -117,7 +107,7 @@ export const SidebarContent = ({ initialTokenKey }: Props) => {
       controller.abort();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token.id, expiry, currentStrike, size, options]);
+  }, [token.symbol, expiry, currentStrike, size, options]);
 
   if (valueInUsd === undefined || isLoading) {
     return <LoadingAnimation />;
@@ -127,13 +117,13 @@ export const SidebarContent = ({ initialTokenKey }: Props) => {
     return <p>Something went wrong, please try again later</p>;
   }
 
-  const notEnoughFunds = !!(floatBalance && price && floatBalance < price);
+  const notEnoughFunds = !!(floatBalance && price && floatBalance < price.val);
 
   const longPuts = options.filter(
     // only Long Puts for the chosen currency
     (o) =>
-      o.baseToken.id === token.id &&
-      o.quoteToken.id === TokenKey.USDC &&
+      o.base.symbol === token.symbol &&
+      o.quote.symbol === "USDC" &&
       o.isPut &&
       o.isLong &&
       o.isFresh
@@ -143,15 +133,15 @@ export const SidebarContent = ({ initialTokenKey }: Props) => {
     const longPuts = options.filter(
       // only Long Puts for the chosen currency
       (o) =>
-        o.baseToken.id === newToken.id &&
-        o.quoteToken.id === TokenKey.USDC &&
+        o.base.symbol === newToken.symbol &&
+        o.quote.symbol === "USDC" &&
         o.isPut &&
         o.isLong &&
         o.isFresh
     );
     setToken(newToken);
     if (longPuts.length) {
-      setCurrentStrike(longPuts[0].strike);
+      setCurrentStrike(longPuts[0].strikePrice.val);
     }
   };
 
@@ -184,7 +174,7 @@ export const SidebarContent = ({ initialTokenKey }: Props) => {
   // show strikes for current expiry
   const strikes = longPuts
     .filter((o) => o.maturity === expiry)
-    .map((o) => o.strike)
+    .map((o) => o.strikePrice.val)
     .filter(uniquePrimitiveValues)
     .sort((a, b) => a - b);
 
@@ -196,7 +186,7 @@ export const SidebarContent = ({ initialTokenKey }: Props) => {
   }
 
   const pickedOption = longPuts.find(
-    (o) => o.maturity === expiry && o.strike === currentStrike
+    (o) => o.maturity === expiry && o.strikePrice.val === currentStrike
   )!;
 
   const BuyPriceGuardButton = () => {
@@ -214,24 +204,16 @@ export const SidebarContent = ({ initialTokenKey }: Props) => {
     }
 
     const handleButtonClick = () => {
-      if (
-        !address ||
-        priceMath64 === undefined ||
-        price === undefined ||
-        balance === undefined
-      ) {
+      if (!address || price === undefined || balance === undefined) {
         return;
       }
-      const premiaWithSlippage =
-        (priceMath64 * (100000n + BigInt(Math.round(slippage * 1000)))) /
-        100000n;
 
       approveAndTradeOpenNew(
         address,
         sendAsync,
         pickedOption,
         size,
-        premiaWithSlippage,
+        price,
         balance,
         updateTradeState,
         true
@@ -241,7 +223,7 @@ export const SidebarContent = ({ initialTokenKey }: Props) => {
     const disabled = tradeState === TransactionState.Processing;
     const content =
       tradeState === TransactionState.Initial ? (
-        `Buy Protection with ${pickedOption.baseToken.symbol}`
+        `Buy Protection with ${pickedOption.base.symbol}`
       ) : tradeState === TransactionState.Processing ? (
         <LoadingAnimation size={13} />
       ) : tradeState === TransactionState.Fail ? (
@@ -275,7 +257,7 @@ export const SidebarContent = ({ initialTokenKey }: Props) => {
   const graphData =
     price === undefined || size === 0 || !pickedOption
       ? undefined
-      : getProfitGraphData(pickedOption, price, size);
+      : getProfitGraphData(pickedOption, price.val, size);
 
   return (
     <div className="px-4 py-5">
@@ -299,7 +281,7 @@ export const SidebarContent = ({ initialTokenKey }: Props) => {
               <Divider className="grow" />
             </div>
             <div className="max-w-[536px] h-[245px]">
-              <SingleTokenMultichart token={token.id} />
+              <SingleTokenMultichart token={token.symbol} />
             </div>
           </div>
           <div className="flex flex-col gap-3">
@@ -357,7 +339,11 @@ export const SidebarContent = ({ initialTokenKey }: Props) => {
               <TokenSelect
                 token={token}
                 setToken={handleTokenChange}
-                tokens={[EthToken, BtcToken, StrkToken]}
+                tokens={[
+                  tokenBySymbol("ETH").unwrap(),
+                  tokenBySymbol("wBTC").unwrap(),
+                  tokenBySymbol("STRK").unwrap(),
+                ]}
               />
             </div>
           </div>
@@ -452,10 +438,10 @@ export const SidebarContent = ({ initialTokenKey }: Props) => {
                 </P4>
                 <div className="flex gap-3 items-baseline">
                   <P3 className="font-semibold">
-                    {formatNumber(price, price < 1 ? 5 : 2)} USDC
+                    {formatNumber(price.val, price.val < 1 ? 5 : 2)} USDC
                   </P3>
                   <P4 className="text-dark-secondary">
-                    ${formatNumber(price, price < 1 ? 5 : 2)}
+                    ${formatNumber(price.val, price.val < 1 ? 5 : 2)}
                   </P4>
                 </div>
               </div>
@@ -476,9 +462,9 @@ export const SidebarContent = ({ initialTokenKey }: Props) => {
                 </div>
               ) : (
                 <div className="flex flex-col items-end">
-                  <H6>{formatNumber(price, price < 1 ? 5 : 2)} USDC</H6>
+                  <H6>{formatNumber(price.val, price.val < 1 ? 5 : 2)} USDC</H6>
                   <P4 className="text-dark-secondary">
-                    ${formatNumber(price, price < 1 ? 5 : 2)}
+                    ${formatNumber(price.val, price.val < 1 ? 5 : 2)}
                   </P4>
                 </div>
               )}
@@ -504,8 +490,8 @@ export const SidebarContent = ({ initialTokenKey }: Props) => {
                   <P4 className="text-ui-errorAccent">
                     You need{" "}
                     {formatNumber(
-                      price - floatBalance,
-                      price - floatBalance < 0 ? 5 : 2
+                      price.val - floatBalance,
+                      price.val - floatBalance < 0 ? 5 : 2
                     )}{" "}
                     USDC more to open this position.
                   </P4>
