@@ -6,7 +6,6 @@ import { Settings, WarningAmber } from "@mui/icons-material";
 import toast from "react-hot-toast";
 
 import { TokenSelect } from "./TokenSelect";
-import { StrkToken, Token, UsdcToken } from "../../classes/Token";
 import { LoadingAnimation } from "../Loading/Loading";
 import { addTx, markTxAsDone, markTxAsFailed } from "../../redux/actions";
 import { TransactionAction } from "../../redux/reducers/transactions";
@@ -21,6 +20,7 @@ import { debug } from "../../utils/debugger";
 import { TokenNamedBadge } from "../TokenBadge";
 import { Button, H4 } from "../common";
 import { SecondaryConnectWallet } from "../ConnectWallet/Button";
+import { Token, tokenBySymbol } from "@carmine-options/sdk/core";
 
 const AVNU_BASE_URL = "https://starknet.api.avnu.fi";
 const CARMINE_BENEFICIARY_ADDRESS =
@@ -149,8 +149,12 @@ export const Widget = () => {
   const [tokenSelectOpen, setTokenSelectOpen] = useState<
     undefined | "buy" | "sell"
   >(undefined);
-  const [sellToken, setSellToken] = useState<Token>(UsdcToken);
-  const [buyToken, setBuyToken] = useState<Token>(StrkToken);
+  const [sellToken, setSellToken] = useState<Token>(
+    tokenBySymbol("USDC").unwrap()
+  );
+  const [buyToken, setBuyToken] = useState<Token>(
+    tokenBySymbol("STRK").unwrap()
+  );
   const [slippage, setSlippage] = useState<number>(0.005); // default slippage .5%
   const [slippageOpen, setslippageOpen] = useState<boolean>(false);
   const [refreshCounter, setRefresh] = useState(0);
@@ -200,7 +204,7 @@ export const Widget = () => {
     }
 
     const fetchData = async () => {
-      if (!account || buyToken.id === sellToken.id) {
+      if (!account || buyToken.symbol === sellToken.symbol) {
         setQuotes([]);
         return;
       }

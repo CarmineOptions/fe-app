@@ -29,7 +29,7 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
   const { address } = useAccount();
   const { sendAsync } = useSendTransaction({});
   const { data } = usePoolState(pool.lpAddress);
-  const { stakes } = useStakes();
+  const { data: stakes } = useStakes();
   const price = useTokenPrice(pool.underlying.symbol);
   const { data: balanceRaw } = useUserBalance(pool.underlying.address);
   const [action, setAction] = useState<"deposit" | "withdraw">(
@@ -61,7 +61,7 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
 
   const poolData = stakes && stakes.find((p) => p.lpAddress === pool.lpAddress);
 
-  const userPosition = stakes && poolData ? poolData.value : 0;
+  const userPosition = stakes && poolData ? poolData.valueOfUserStake : 0;
 
   const isDefispringPool = isDefiEligible(pool.lpAddress);
   const finalApy = !data

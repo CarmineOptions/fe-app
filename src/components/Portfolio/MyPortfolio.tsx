@@ -2,23 +2,34 @@ import { useState } from "react";
 import { MyOptions } from "./MyOptions";
 import { Tooltip } from "@mui/material";
 import { MyStake } from "./MyStake";
-import { OptionWithPosition } from "../../classes/Option";
-import { useCurrencies } from "../../hooks/useCurrencies";
-import { TokenPriceData } from "../../types/api";
-import { UserPoolInfo } from "../../classes/Pool";
 import { usePositions } from "../../hooks/usePositions";
 import { useStakes } from "../../hooks/useStakes";
 import { LoadingAnimation } from "../Loading/Loading";
 import { formatNumber } from "../../utils/utils";
 import { Button, Divider, H4, H5, P3 } from "../common";
+import {
+  liquidityPoolByLpAddress,
+  OptionWithUserPosition,
+  UserPoolInfo,
+} from "@carmine-options/sdk/core";
+import { usePrices } from "../../hooks/usePrice";
+import { LivePrices } from "@carmine-options/sdk/api";
+
+const getPrice = (s: string, p: LivePrices) => {
+  if (s in p) {
+    const price = p[s as keyof typeof p] as number;
+    return price;
+  }
+  throw Error(`Cannot get price for ${s}`);
+};
 
 const calcPositionsValue = (
-  positions: OptionWithPosition[],
-  prices: TokenPriceData
+  positions: OptionWithUserPosition[],
+  prices: LivePrices
 ): number => {
   const values = positions
-    .filter((opt) => opt.value > 0)
-    .map((opt) => opt.value * prices[opt.underlying.id]);
+    .filter((opt) => opt.value.val > 0)
+    .map((opt) => opt.value.val * getPrice(opt.underlying.symbol, prices));
 
   return values.reduce((accumulator, currentValue) => {
     return accumulator + currentValue;
@@ -27,11 +38,14 @@ const calcPositionsValue = (
 
 const calcStakesValue = (
   stakes: UserPoolInfo[],
-  prices: TokenPriceData
+  prices: LivePrices
 ): number => {
   const values = stakes
     .filter((stake) => stake.value > 0)
-    .map((stake) => stake.value * prices[stake.underlying.id]);
+    .map((stake) => {
+      const pool = liquidityPoolByLpAddress(stake.lpAddress).unwrap();
+      return stake.value * getPrice(pool.underlying.symbol, prices);
+    });
 
   return values.reduce((accumulator, currentValue) => {
     return accumulator + currentValue;
@@ -45,9 +59,9 @@ type PortfolioValue = {
 };
 
 const calcPortfolioValue = (
-  positions?: OptionWithPosition[],
+  positions?: OptionWithUserPosition[],
   stakes?: UserPoolInfo[],
-  prices?: TokenPriceData
+  prices?: LivePrices
 ): PortfolioValue => {
   const res: PortfolioValue = {
     positionsValueUsd: undefined,
@@ -76,9 +90,9 @@ const calcPortfolioValue = (
 };
 
 export const MyPortfolio = () => {
-  const prices = useCurrencies();
+  const { data: prices } = usePrices();
   const { data: positions } = usePositions();
-  const { stakes } = useStakes();
+  const { data: stakes } = useStakes();
   const [options, setOptions] = useState<"live" | "itm" | "otm">("live");
 
   const { positionsValueUsd, stakesValueUsd, totalValueUsd } =

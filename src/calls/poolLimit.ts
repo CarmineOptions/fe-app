@@ -10,10 +10,9 @@ import {
 import { AMMContract } from "../utils/blockchain";
 import { shortInteger } from "../utils/computations";
 import { debug } from "../utils/debugger";
-import { Result } from "starknet";
 
 export const lpoolBalance = async (lpoolAddress: string): Promise<bigint> => {
-  const balance: Result = await AMMContract.call(AMM_METHODS.GET_LOOP_BALANCE, [
+  const balance = await AMMContract.call(AMM_METHODS.GET_LOOP_BALANCE, [
     lpoolAddress,
   ]).catch((e: Error) => {
     debug(`Failed while calling ${AMM_METHODS.GET_LOOP_BALANCE}`, e.message);

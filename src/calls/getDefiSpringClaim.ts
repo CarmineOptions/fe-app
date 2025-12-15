@@ -18,7 +18,11 @@ export const getDefiSpringClaimedQuery = async ({
 export const getDefiSpringClaimed = async (
   address: string
 ): Promise<bigint> => {
-  const contract = new Contract(ABI, defiSpringContractAddress, provider);
+  const contract = new Contract({
+    abi: ABI,
+    address: defiSpringContractAddress,
+    providerOrAccount: provider,
+  });
   const res = await contract
     .call("amount_already_claimed", [address])
     .catch((e: Error) => {

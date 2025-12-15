@@ -1,9 +1,9 @@
-import { Option } from "./../../classes/Option";
 import { fetchTokenPrices } from "../../api";
 import { Pool } from "../../classes/Pool";
 import { TokenPriceData } from "../../types/api";
 import { ProposalOption } from "./AddProposal";
 import { pools } from "./pools";
+import { Option } from "@carmine-options/sdk/core";
 
 export const isDuplicate = (
   options: Option[],
@@ -13,7 +13,9 @@ export const isDuplicate = (
 ): boolean => {
   const filtered = options.filter((o) => {
     return (
-      o.poolId === poolId && o.strike === strike && o.maturity === maturity
+      o.poolId === poolId &&
+      o.strikePrice.val === strike &&
+      o.maturity === maturity
     );
   });
 

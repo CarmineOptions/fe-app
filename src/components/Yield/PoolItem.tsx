@@ -73,7 +73,7 @@ export const PoolItem = ({ pool }: Props) => {
     ? undefined
     : defispringApy + data.apyWeek;
 
-  const valueOfUserStake = stakes && stakes.valueOfUserStake;
+  const valueOfUserStake = stakes && stakes.value;
 
   return (
     <div className="w-big py-3 flex text-left justify-between">
