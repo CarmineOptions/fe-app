@@ -19,7 +19,7 @@ export const PoolSidebarSuccess = ({
   deposited,
   tx,
 }: PoolSucessSidebarProps) => {
-  const { stakes } = useStakes();
+  const { data: stakes } = useStakes();
   const price = useTokenPrice(pool.underlying.symbol);
   const navigate = useNavigate();
 

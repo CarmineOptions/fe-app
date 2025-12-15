@@ -61,7 +61,7 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
 
   const poolData = stakes && stakes.find((p) => p.lpAddress === pool.lpAddress);
 
-  const userPosition = stakes && poolData ? poolData.valueOfUserStake : 0;
+  const userPosition = stakes && poolData ? poolData.value : 0;
 
   const isDefispringPool = isDefiEligible(pool.lpAddress);
   const finalApy = !data

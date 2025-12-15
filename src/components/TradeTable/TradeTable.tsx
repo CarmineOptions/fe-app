@@ -2,7 +2,6 @@ import { ReactNode, useState } from "react";
 import OptionsTable from "./OptionsTable";
 import { uniquePrimitiveValues } from "../../utils/utils";
 import { LoadingAnimation } from "../Loading/Loading";
-import { Pair } from "../../classes/Pair";
 import { InfoIcon } from "../InfoIcon";
 
 import { useOptions } from "../../hooks/useOptions";
@@ -19,6 +18,7 @@ import {
   liquidityPoolBySymbol,
   OptionSide,
   OptionType,
+  TokenPair,
 } from "@carmine-options/sdk/core";
 
 export const TradeTable = () => {
@@ -31,7 +31,7 @@ export const TradeTable = () => {
     : fallbackPool;
 
   const [pool, setPool] = useState<LiquidityPool>(initialPool);
-  const pair = new Pair(pool.base.address, pool.quote.address);
+  const pair = new TokenPair(pool.base.address, pool.quote.address);
   const { isLoading, isError, error, options } = useOptions(pool.lpAddress);
   const [side, setSide] = useState<OptionSide | "all">("all");
   const [maturity, setMaturity] = useState<number | undefined>();
@@ -53,10 +53,10 @@ export const TradeTable = () => {
     }
   };
 
-  const handlePairChange = (newPair: Pair) => {
+  const handlePairChange = (newPair: TokenPair) => {
     const newPoolMaybe = liquidityPoolByAddress(
-      newPair.baseToken.address,
-      newPair.quoteToken.address,
+      newPair.base.address,
+      newPair.quote.address,
       pool.optionType
     );
 
@@ -154,7 +154,7 @@ SHORT: Sell a right to buy/sell (for Call/Put) underlying asset at strike price.
         <H4>Chart</H4>
         <div className="flex justify-evenly gap-10">
           <div className="w-full min-w-[45%] h-[500px]">
-            <TradingViewMultichart pair={pair.pairId} />
+            <TradingViewMultichart pair={pair} />
           </div>
         </div>
       </div>

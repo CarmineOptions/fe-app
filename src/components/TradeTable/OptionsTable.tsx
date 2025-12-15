@@ -1,4 +1,3 @@
-import { Pair } from "../../classes/Pair";
 import { useTokenPrice } from "../../hooks/useCurrency";
 import {
   openSidebar,
@@ -6,15 +5,18 @@ import {
   setSidebarWidth,
 } from "../../redux/actions";
 import { OptionSidebar } from "../Sidebar";
-import { TokenKey } from "../../classes/Token";
 import { P3, P4 } from "../common";
 import { ReactNode } from "react";
 import { SidebarWidth } from "../../redux/reducers/ui";
-import { OptionSide, OptionWithPremia } from "@carmine-options/sdk/core";
+import {
+  OptionSide,
+  OptionWithPremia,
+  TokenPair,
+} from "@carmine-options/sdk/core";
 
 type Props = {
   options: OptionWithPremia[];
-  tokenPair: Pair;
+  tokenPair: TokenPair;
   side: OptionSide | "all";
 };
 
@@ -43,7 +45,7 @@ const OptionsTable = ({ options, tokenPair, side }: Props) => {
       <div className="w-24 border-dark-secondary border-b-[1px] mb-3" />
       <div className="h-5 px-4 g-3 content-center rounded-sm bg-dark-secondary text-dark-primary">
         <P4>
-          {tokenPair.baseToken.symbol}/{tokenPair.quoteToken.symbol}{" "}
+          {tokenPair.base.symbol}/{tokenPair.quote.symbol}{" "}
           {(basePrice! / quotePrice!).toFixed(3)}
         </P4>
       </div>
@@ -110,9 +112,9 @@ const OptionsTable = ({ options, tokenPair, side }: Props) => {
               <div className="flex justify-between my-1 py-3">
                 <div className="w-full">
                   <P3 className="font-semibold">
-                    {tokenPair.quoteToken.id === TokenKey.USDC
+                    {tokenPair.quote.symbol === "USDC"
                       ? `$${o.strikePrice.val}`
-                      : `${o.strikePrice.val} ${tokenPair.quoteToken.symbol}`}
+                      : `${o.strikePrice.val} ${tokenPair.quote.symbol}`}
                   </P3>
                 </div>
                 {(side === 0 || side === "all") && (

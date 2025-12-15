@@ -1,5 +1,5 @@
 import { memo, useEffect, useRef } from "react";
-import { PairKey } from "../../classes/Pair";
+import { TokenPair } from "@carmine-options/sdk/core";
 
 export const TradingViewChart = memo(({ symbols }: { symbols: string }) => {
   const container = useRef(null);
@@ -67,9 +67,9 @@ export const TradingViewChart = memo(({ symbols }: { symbols: string }) => {
   );
 });
 
-export const TradingViewMultichart = memo(({ pair }: { pair: PairKey }) => {
+export const TradingViewMultichart = memo(({ pair }: { pair: TokenPair }) => {
   const show =
-    pair === PairKey.BTC_USDC ? 1 : pair === PairKey.STRK_USDC ? 2 : 3;
+    pair.pairId === "wBTC-USDC" ? 1 : pair.pairId === "STRK-USDC" ? 2 : 3;
 
   const btcTicker = ["BINANCE:wBTCUSD|1M|USD"];
   const ethTicker = ["BINANCE:ETHUSD|1M|USD"];
