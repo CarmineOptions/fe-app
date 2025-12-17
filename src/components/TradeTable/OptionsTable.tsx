@@ -1,4 +1,3 @@
-import { useTokenPrice } from "../../hooks/useCurrency";
 import {
   openSidebar,
   setSidebarContent,
@@ -13,6 +12,7 @@ import {
   OptionWithPremia,
   TokenPair,
 } from "@carmine-options/sdk/core";
+import { useTokenPrice } from "../../hooks/usePrice";
 
 type Props = {
   options: OptionWithPremia[];
@@ -21,8 +21,8 @@ type Props = {
 };
 
 const OptionsTable = ({ options, tokenPair, side }: Props) => {
-  const basePrice = useTokenPrice(options[0].base);
-  const quotePrice = useTokenPrice(options[0].quote);
+  const basePrice = useTokenPrice(options[0].base.symbol);
+  const quotePrice = useTokenPrice(options[0].quote.symbol);
 
   const priceReady = basePrice !== undefined && quotePrice !== undefined;
 

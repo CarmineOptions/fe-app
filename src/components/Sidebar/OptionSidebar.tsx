@@ -5,7 +5,6 @@ import { Tooltip } from "@mui/material";
 
 import { PairNamedBadge } from "../TokenBadge";
 import { handleNumericChangeFactory } from "../../utils/inputHandling";
-import { useTokenPrice } from "../../hooks/useCurrency";
 import { useUserBalance } from "../../hooks/useUserBalance";
 import { shortInteger } from "../../utils/computations";
 import { TransactionState } from "../../types/network";
@@ -25,6 +24,7 @@ import { Warning } from "../Icons";
 import { OptionWithPremia } from "@carmine-options/sdk/core";
 import { usePremia } from "../../hooks/usePremia";
 import { useDebounce } from "../../hooks/useDebounce";
+import { useTokenPrice } from "../../hooks/usePrice";
 
 type Props = {
   option: OptionWithPremia;
@@ -33,7 +33,7 @@ type Props = {
 export const OptionSidebar = ({ option }: Props) => {
   const { sendAsync } = useSendTransaction({});
   const { address } = useAccount();
-  const price = useTokenPrice(option.underlying);
+  const price = useTokenPrice(option.underlying.symbol);
   const { data: balanceRaw } = useUserBalance(option.underlying.address);
   const defaultSize = [option.base.symbol, option.quote.symbol].includes("wBTC")
     ? 0.1

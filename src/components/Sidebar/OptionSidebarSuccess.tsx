@@ -2,10 +2,10 @@ import { useNavigate } from "react-router-dom";
 import { closeSidebar } from "../../redux/actions";
 import { Button, H6, P3, P4 } from "../common";
 import { PairNamedBadgeDark } from "../TokenBadge";
-import { useTokenPrice } from "../../hooks/useCurrency";
 import { LoadingAnimation } from "../Loading/Loading";
 import { formatNumber } from "../../utils/utils";
 import { OptionWithPremia } from "@carmine-options/sdk/core";
+import { useTokenPrice } from "../../hooks/usePrice";
 
 interface OptionSidebarSuccessProps {
   option: OptionWithPremia;
@@ -19,7 +19,7 @@ export const OptionSidebarSuccess = ({
   tx,
 }: OptionSidebarSuccessProps) => {
   const navigate = useNavigate();
-  const price = useTokenPrice(option.underlying);
+  const price = useTokenPrice(option.underlying.symbol);
 
   const handlePortfolioClick = () => {
     navigate("/portfolio");
