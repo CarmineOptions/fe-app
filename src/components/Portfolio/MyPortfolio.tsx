@@ -16,6 +16,9 @@ import { usePrices } from "../../hooks/usePrice";
 import { LivePrices } from "@carmine-options/sdk/api";
 
 const getPrice = (s: string, p: LivePrices) => {
+  if (s === "USDC") {
+    return 1;
+  }
   if (s in p) {
     const price = p[s as keyof typeof p] as number;
     return price;
