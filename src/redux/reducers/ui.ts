@@ -80,7 +80,6 @@ export const ui = createSlice({
       return state;
     },
     setCloseOptionState: (state, action: { payload: OptionWithPosition }) => {
-      // @ts-expect-error TS thinks it may be infinite, it isn't
       state.activeCloseOption = action.payload;
     },
     setTransferDataModalState: (state, action: { payload: TransferData }) => {
