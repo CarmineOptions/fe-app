@@ -97,17 +97,19 @@ const calculateTokens = (
   // amount * digits / value = percentage to withdraw
   // percentage * size = tokens to withdraw
   const NUM_PRECISSION = 1_000_000;
+  const BI_NUM_PRECISSION = BigInt(NUM_PRECISSION);
+
+  const poolValueRaw = pool.valueRaw as unknown as bigint;
+  const poolSizeRaw = pool.sizeRaw as unknown as bigint;
 
   const percentageWithPrecission =
     (BigInt(Math.round(amount * NUM_PRECISSION)) *
       10n ** BigInt(pool.underlying.decimals)) /
-    pool.valueRaw.low;
+    poolValueRaw;
 
-  const tokens =
-    (percentageWithPrecission * pool.sizeRaw.low) / BigInt(NUM_PRECISSION);
+  const tokens = (percentageWithPrecission * poolSizeRaw) / BI_NUM_PRECISSION;
 
-  const value =
-    (percentageWithPrecission * pool.valueRaw.low) / BigInt(NUM_PRECISSION);
+  const value = (percentageWithPrecission * poolValueRaw) / BI_NUM_PRECISSION;
 
   return [tokens, value];
 };

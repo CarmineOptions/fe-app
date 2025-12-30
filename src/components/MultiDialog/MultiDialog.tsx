@@ -24,7 +24,10 @@ const NetworkMismatch = () => (
       Wallet - dApp network mismatch
     </DialogTitle>
     <DialogContent>
-      <DialogContentText id="alert-dialog-description">
+      <DialogContentText
+        id="alert-dialog-description"
+        style={{ color: "white" }}
+      >
         Your wallet appears to be connected to a different network than this
         application. Please ensure that your wallet is connected to the same
         network as the app, or change the network that the app is using, in
@@ -43,7 +46,10 @@ const MetamaskMissing = () => (
   <>
     <DialogTitle id="alert-dialog-title">Metamask wallet not found</DialogTitle>
     <DialogContent>
-      <DialogContentText id="alert-dialog-description">
+      <DialogContentText
+        id="alert-dialog-description"
+        style={{ color: "white" }}
+      >
         It appears that you do not have the Metamask wallet installed in your
         browser.
         <br />
@@ -81,7 +87,10 @@ const NotEnoughUnlocked = () => (
       Not Enough Unlocked Capital
     </DialogTitle>
     <DialogContent>
-      <DialogContentText id="alert-dialog-description">
+      <DialogContentText
+        id="alert-dialog-description"
+        style={{ color: "white" }}
+      >
         Unfortunatelly, there is not enough unlocked capital in the AMM. Please
         try again after <strong>{getNextFridayMidnightUTC()}</strong>, when
         options expire and more capital will be unlocked.
@@ -127,14 +136,11 @@ type Props = {
 };
 
 const Border = ({ children }: Props) => {
-  const style = {
-    background: "black",
-    border: "1px solid white",
-    borderRadius: 0,
-    overflow: "hidden",
-  };
-
-  return <div style={style}>{children}</div>;
+  return (
+    <div className="bg-black text-white border-solid border-white border-[1px] overflow-hidden rounded-none">
+      {children}
+    </div>
+  );
 };
 
 export const MultiDialog = () => {
