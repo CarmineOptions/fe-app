@@ -1,14 +1,28 @@
 import { useQuery } from "@tanstack/react-query";
 import { QueryKeys } from "../queries/keys";
-import { apiUrl } from "../api";
+
+type OblData = {
+  date: string;
+  protocol: string;
+  allocation: number;
+  tvl: number;
+  volumes: number;
+  beta_fees: number;
+  apr: number;
+};
+
+type OblResponse = { Carmine: OblData[] };
 
 export const queryDefiSpringApy = async (): Promise<number> => {
-  const res = await fetch(
-    apiUrl("defispring", { version: 1, network: "mainnet" })
+  const res: OblResponse = await fetch(
+    // OBL allocations
+    "https://kx58j6x5me.execute-api.us-east-1.amazonaws.com/starknet/fetchFile?file=prod-api/perps/perps_strk_grant.json"
   ).then((response) => response.json());
 
-  if (res && res.status === "success" && res?.data?.apy) {
-    return res.data.apy * 100;
+  const last = res.Carmine.at(-1);
+
+  if (last) {
+    return last.apr * 100;
   }
 
   throw Error("Failed getting defispring APY");
