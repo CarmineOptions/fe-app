@@ -129,9 +129,18 @@ export const handleWithdraw = async (
 
   setTxState(TransactionState.Processing);
 
-  const unlocked = pool.unlocked;
+  const unlocked = pool.unlockedRaw as unknown as bigint;
 
   const [tokens, value] = calculateTokens(pool, amount);
+
+  console.log({
+    pool,
+    amount,
+    tokens,
+    value,
+    unlocked,
+    isEnoughUnlocked: value < unlocked,
+  });
 
   // if withdrawing more than unlocked
   // show dialog and stop transaction
