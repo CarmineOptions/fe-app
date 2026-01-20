@@ -201,7 +201,7 @@ export const standardiseAddress = (address: string): string =>
 export const uniquePrimitiveValues = (
   value: any,
   index: number,
-  array: any[]
+  array: any[],
 ) => array.indexOf(value) === index;
 
 /**
@@ -210,11 +210,11 @@ export const uniquePrimitiveValues = (
  */
 export const isEqual = (
   a: string | number | bigint,
-  b: string | number | bigint
+  b: string | number | bigint,
 ): boolean => BigInt(a) === BigInt(b);
 
 export const isPromiseFulfilled = <T>(
-  result: PromiseSettledResult<T>
+  result: PromiseSettledResult<T>,
 ): result is PromiseFulfilledResult<T> => {
   return result.status === "fulfilled";
 };
@@ -238,7 +238,7 @@ export const formatNumber = (num: number, maxDecimals = 2): string => {
 };
 
 export const stateToButtonType = (
-  state: TransactionState
+  state: TransactionState,
 ): "success" | "error" | "secondary" | "primary" => {
   if (state === TransactionState.Success) {
     return "success";

@@ -22,13 +22,13 @@ import {
 
 export const handleDeposit = async (
   sendAsync: (
-    args?: Call[]
+    args?: Call[],
   ) => Promise<RequestResult<"wallet_addInvokeTransaction">>,
   address: string | undefined,
   amount: number,
   pool: LiquidityPool,
   setTxState: TxTracking,
-  done: (tx: string) => void
+  done: (tx: string) => void,
 ) => {
   if (!address) {
     toast.error("Could not read address");
@@ -52,8 +52,8 @@ export const handleDeposit = async (
     ];
     toast.error(
       `Trying to stake ${pool.underlying.symbol} ${needs.toFixed(
-        4
-      )}, but you only have ${pool.underlying.symbol}${has.toFixed(4)}`
+        4,
+      )}, but you only have ${pool.underlying.symbol}${has.toFixed(4)}`,
     );
     setTxState(TransactionState.Fail);
     return;
@@ -86,13 +86,13 @@ export const handleDeposit = async (
       debug("Tx failed");
       setTxState(TransactionState.Fail);
       markTxAsFailed(hash);
-    }
+    },
   );
 };
 
 const calculateTokens = (
   pool: UserPoolInfo,
-  amount: number
+  amount: number,
 ): [bigint, bigint] => {
   // amount * digits / value = percentage to withdraw
   // percentage * size = tokens to withdraw
@@ -107,20 +107,29 @@ const calculateTokens = (
       10n ** BigInt(pool.underlying.decimals)) /
     poolValueRaw;
 
-  const tokens = (percentageWithPrecission * poolSizeRaw) / BI_NUM_PRECISSION;
+  const decimalAlign = 18 - pool.underlying.decimals;
+
+  const tokensPreAlign =
+    (percentageWithPrecission * poolSizeRaw) / BI_NUM_PRECISSION;
+  const tokens =
+    decimalAlign < 0
+      ? tokensPreAlign
+      : tokensPreAlign * 10n ** BigInt(decimalAlign);
 
   const value = (percentageWithPrecission * poolValueRaw) / BI_NUM_PRECISSION;
+
+  console.log({ pool, amount, tokens, value });
 
   return [tokens, value];
 };
 
 export const handleWithdraw = async (
   sendAsync: (
-    args?: Call[]
+    args?: Call[],
   ) => Promise<RequestResult<"wallet_addInvokeTransaction">>,
   amount: number,
   pool: UserPoolInfo,
-  setTxState: TxTracking
+  setTxState: TxTracking,
 ) => {
   if (!amount) {
     toast("Cannot withdraw 0");
@@ -133,7 +142,7 @@ export const handleWithdraw = async (
 
   const [tokens, value] = calculateTokens(pool, amount);
 
-  console.log({
+  console.log("HANDLE WITHDRAWL", {
     pool,
     amount,
     tokens,
@@ -179,6 +188,6 @@ export const handleWithdraw = async (
       setTxState(TransactionState.Fail);
       toast("Capital withdrawl failed");
       markTxAsFailed(hash);
-    }
+    },
   );
 };

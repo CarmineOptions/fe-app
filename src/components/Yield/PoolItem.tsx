@@ -22,7 +22,7 @@ export const PoolItem = ({ pool }: Props) => {
     setSidebarContent(<PoolSidebar pool={pool} />);
     openSidebar();
   };
-  const isPoolDefiEligible = !isDefiEligible(pool.lpAddress);
+  const isPoolDefiEligible = isDefiEligible(pool.lpAddress);
 
   if (isLoading) {
     return (
@@ -64,14 +64,14 @@ export const PoolItem = ({ pool }: Props) => {
   const finalApy = !isPoolDefiEligible
     ? data.apyAllTime
     : defispringApy === undefined
-    ? undefined
-    : defispringApy + data.apyAllTime;
+      ? undefined
+      : defispringApy + data.apyAllTime;
 
   const finalApyWeekly = !isPoolDefiEligible
     ? data.apyWeek
     : defispringApy === undefined
-    ? undefined
-    : defispringApy + data.apyWeek;
+      ? undefined
+      : defispringApy + data.apyWeek;
 
   const valueOfUserStake = stakes && stakes.value;
 
