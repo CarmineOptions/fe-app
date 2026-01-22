@@ -27,7 +27,7 @@ export const GovernanceContract = new Contract({
 export const afterTransaction = (
   tx: string,
   ok: () => void,
-  nok?: () => void
+  nok?: () => void,
 ) => {
   provider.waitForTransaction(tx).then(ok).catch(nok);
 };
@@ -49,12 +49,14 @@ export interface ExecuteHooks {
   onReject?: SyncOrAsyncVoidFunction;
 }
 
+export type ExecuteFunction = (
+  args?: Call[],
+) => Promise<RequestResult<"wallet_addInvokeTransaction">>;
+
 export interface ExecuteBase {
   // this would normally be account.execute, but there is a third party library error
   // sendAsync must be used instead - this abstraction allows for easy switching between the 2
-  executeFunc: (
-    args?: Call[]
-  ) => Promise<RequestResult<"wallet_addInvokeTransaction">>;
+  executeFunc: ExecuteFunction;
   provider: ProviderInterface;
   hooks?: ExecuteHooks;
 }
@@ -91,7 +93,7 @@ export const _execute: Execute = async ({
     await hooks.preAwait(executeResult);
   }
   const awaitedTransaction = await provider.waitForTransaction(
-    executeResult.transaction_hash
+    executeResult.transaction_hash,
   );
   console.log("awaited transaction", awaitedTransaction);
   if (hooks?.postAwait) {
