@@ -5,50 +5,100 @@ import { SecondaryConnectWallet } from "../ConnectWallet/Button";
 import { useNonSettledOptions } from "../../hooks/useNonSettledOptions";
 import { NonSettledOption, OptionSideLong } from "@carmine-options/sdk/core";
 import { timestampToDateAndTime } from "../../utils/utils";
-import { Button } from "../common";
+import { Button, P3 } from "../common";
 import { useState } from "react";
 import { afterTransaction } from "../../utils/blockchain";
 import { AccountInterface } from "starknet";
+import toast from "react-hot-toast";
 
-const SingleNonSettledOption = ({ opt }: { opt: NonSettledOption }) => {
+type CheckMap = { [key: string]: boolean };
+type SetCheckMap = (cm: CheckMap) => void;
+
+const SingleNonSettledOption = ({
+  opt,
+  user,
+  checkMap,
+  setCheckMap,
+}: {
+  opt: NonSettledOption;
+  user: string;
+  checkMap: CheckMap;
+  setCheckMap: SetCheckMap;
+}) => {
   const [maturityDate] = timestampToDateAndTime(opt.maturity * 1000);
+  const [size, setSize] = useState(opt.size);
+  const [fetching, setFetching] = useState(false);
+
+  if (!fetching) {
+    opt.fetchSizeWithCallback(user).then((res) => {
+      setSize(res);
+      opt.size = res;
+    });
+    setFetching(true);
+  }
+
+  const readableSize =
+    size === undefined ? undefined : opt.base.toHumanReadable(size);
+  const id = `opt-${opt.optionAddress}`;
+
   return (
-    <div className="flex gap-4">
-      <div className="w-36">{opt.poolId.toLocaleUpperCase()}</div>
-      <div className="w-20">
-        {opt.optionSide === OptionSideLong ? "Long" : "Short"}
+    <div className="flex gap-4 justify-between">
+      <div>
+        <input
+          type="checkbox"
+          name={id}
+          checked={checkMap[opt.optionAddress]}
+          onClick={() => {
+            const updated: CheckMap = { ...checkMap };
+            updated[opt.optionAddress] = !checkMap[opt.optionAddress];
+            setCheckMap(updated);
+          }}
+          disabled={opt.size === undefined}
+        />
       </div>
-      <div className="w-32">{maturityDate}</div>
+      <div>{opt.poolId.toLocaleUpperCase()}</div>
+      <div>{opt.optionSide === OptionSideLong ? "Long" : "Short"}</div>
+      <div>{maturityDate}</div>
       <div>
         {opt.quote.symbol} {opt.strikePrice.val}
       </div>
+      <div>{size ? readableSize : "--"}</div>
     </div>
   );
 };
 
 const handleSettleBundle = async (
-  user: string,
   opts: NonSettledOption[],
   account: AccountInterface,
   setProgress: (n: number) => void,
 ) => {
-  setProgress(1);
-  const promises = opts.map((o) => o.tradeSettle(user));
-  const calls = await Promise.all(promises).catch(() => null);
-
-  if (calls === null) {
-    setProgress(2);
+  if (opts.length === 0) {
+    toast("Select which options you want to settle");
+    return;
+  }
+  if (opts.length > 10) {
+    toast("Do not settle more than 10 options at once");
     return;
   }
 
+  setProgress(1);
+
+  console.log(
+    "settling...",
+    opts.map((o) => o.tradeSettle()),
+  );
+
+  const calls = opts
+    .map((o) => o.tradeSettle())
+    .filter((m) => m.isSome)
+    .map((m) => m.unwrap());
+
   console.log("non settled calls", calls);
 
-  const tx = await account
-    .execute(calls.filter((c) => c !== null))
-    .catch((e) => {
-      console.error("Failed sending tx:", e);
-      return null;
-    });
+  const tx = await account.execute(calls).catch((e) => {
+    console.error("Failed sending tx:", e);
+    return null;
+  });
 
   console.log("non settled tx", tx);
 
@@ -64,34 +114,45 @@ const handleSettleBundle = async (
   );
 };
 
-const NonSettledChunk = ({
-  chunk,
+const NonSettledOptions = ({
+  options,
+  account,
   user,
 }: {
-  chunk: NonSettledOption[];
+  options: NonSettledOption[];
+  account: AccountInterface;
   user: string;
 }) => {
-  const { account } = useAccount();
   const [progress, setProgress] = useState(0);
+  const defaultCheckMap = options.reduce((acc, cur) => {
+    const updated = { ...acc };
+    updated[cur.optionAddress] = false;
+    return updated;
+  }, {} as CheckMap);
+  const [checked, setChecked] = useState<CheckMap>(defaultCheckMap);
 
-  if (!account) {
-    return;
-  }
+  const selected = options.filter((o) => checked[o.optionAddress]);
 
   return (
-    <div className="max-w-[525px] flex-col gap-5 border-[#414142] border-[1px] rounded p-4">
-      {chunk.map((o, i) => (
-        <SingleNonSettledOption opt={o} key={i} />
-      ))}
-      <div className="w-full flex justify-center pt-3">
+    <div className="max-w-[570px] flex flex-col gap-5">
+      <div className="flex flex-col gap-3 overflow-x-auto">
+        {options.map((o, i) => (
+          <SingleNonSettledOption
+            opt={o}
+            user={user}
+            checkMap={checked}
+            setCheckMap={setChecked}
+            key={i}
+          />
+        ))}
+      </div>
+      <div className="w-full flex justify-center">
         {progress === 0 && (
           <Button
             type="primary"
-            onClick={() =>
-              handleSettleBundle(user, chunk, account, setProgress)
-            }
+            onClick={() => handleSettleBundle(selected, account, setProgress)}
           >
-            Settle option bundle
+            Settle selected options
           </Button>
         )}
         {progress === 1 && (
@@ -108,9 +169,7 @@ const NonSettledChunk = ({
         {progress === 2 && (
           <Button
             type="error"
-            onClick={() =>
-              handleSettleBundle(user, chunk, account, setProgress)
-            }
+            onClick={() => handleSettleBundle(selected, account, setProgress)}
           >
             Failed
           </Button>
@@ -118,9 +177,7 @@ const NonSettledChunk = ({
         {progress === 3 && (
           <Button
             type="success"
-            onClick={() =>
-              handleSettleBundle(user, chunk, account, setProgress)
-            }
+            onClick={() => handleSettleBundle(selected, account, setProgress)}
           >
             Success
           </Button>
@@ -132,6 +189,7 @@ const NonSettledChunk = ({
 
 const MyNonSettledOptionsWithUser = ({ user }: { user: string }) => {
   const { isLoading, isError, data } = useNonSettledOptions(user);
+  const { account } = useAccount();
 
   if (isLoading) {
     return (
@@ -141,7 +199,7 @@ const MyNonSettledOptionsWithUser = ({ user }: { user: string }) => {
     );
   }
 
-  if (isError || !data) {
+  if (isError || !data || !account) {
     return (
       <div>
         <span>Something went wrong</span>
@@ -149,18 +207,22 @@ const MyNonSettledOptionsWithUser = ({ user }: { user: string }) => {
     );
   }
 
-  const chunkSize = 10;
-  const chunks = [];
-  for (let i = 0; i < data.length; i += chunkSize) {
-    const chunk = data.slice(i, i + chunkSize);
-    chunks.push(chunk);
+  const nonZeroData = data.filter((o) => o.size !== 0n);
+
+  if (nonZeroData.length === 0) {
+    return (
+      <div>
+        <P3>No options to settle.</P3>
+      </div>
+    );
   }
 
   return (
-    <div className="flex flex-col gap-3 overflow-x-auto">
-      {chunks.map((ch, i) => (
-        <NonSettledChunk user={user} chunk={ch} key={i} />
-      ))}
+    <div>
+      <P3>
+        Select which options to settle, do not settle more than 10 at once.
+      </P3>
+      <NonSettledOptions user={user} account={account} options={nonZeroData} />
     </div>
   );
 };
