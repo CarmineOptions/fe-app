@@ -3,13 +3,13 @@ import { useAccount } from "@starknet-react/core";
 import { LoadingAnimation } from "../Loading/Loading";
 import { SecondaryConnectWallet } from "../ConnectWallet/Button";
 import { useNonSettledOptions } from "../../hooks/useNonSettledOptions";
-import { NonSettledOption, OptionSideLong } from "@carmine-options/sdk/core";
-import { timestampToDateAndTime } from "../../utils/utils";
-import { Button, P3 } from "../common";
+import { NonSettledOption } from "@carmine-options/sdk/core";
+import { Button, MaturityStacked, P3, P4, SideTypeStacked } from "../common";
 import { useState } from "react";
 import { afterTransaction } from "../../utils/blockchain";
 import { AccountInterface } from "starknet";
 import toast from "react-hot-toast";
+import { PairNameAboveBadge } from "../TokenBadge";
 
 type CheckMap = { [key: string]: boolean };
 type SetCheckMap = (cm: CheckMap) => void;
@@ -25,7 +25,6 @@ const SingleNonSettledOption = ({
   checkMap: CheckMap;
   setCheckMap: SetCheckMap;
 }) => {
-  const [maturityDate] = timestampToDateAndTime(opt.maturity * 1000);
   const [size, setSize] = useState(opt.size);
   const [fetching, setFetching] = useState(false);
 
@@ -42,8 +41,8 @@ const SingleNonSettledOption = ({
   const id = `opt-${opt.optionAddress}`;
 
   return (
-    <div className="flex gap-4 justify-between">
-      <div>
+    <div className="flex justify-between my-2 py-3 text-left w-big">
+      <div className="w-full flex justify-center">
         <input
           type="checkbox"
           name={id}
@@ -53,16 +52,24 @@ const SingleNonSettledOption = ({
             updated[opt.optionAddress] = !checkMap[opt.optionAddress];
             setCheckMap(updated);
           }}
-          disabled={opt.size === undefined}
+          disabled={size === undefined}
         />
       </div>
-      <div>{opt.poolId.toLocaleUpperCase()}</div>
-      <div>{opt.optionSide === OptionSideLong ? "Long" : "Short"}</div>
-      <div>{maturityDate}</div>
-      <div>
-        {opt.quote.symbol} {opt.strikePrice.val}
+      <div className="w-full">
+        <PairNameAboveBadge tokenA={opt.base} tokenB={opt.quote} />
       </div>
-      <div>{size ? readableSize : "--"}</div>
+      <div className="w-full">
+        <SideTypeStacked side={opt.optionSide} type={opt.optionType} />
+      </div>
+      <div className="w-full">
+        <P3 className="font-semibold">
+          {opt.underlying.symbol} {opt.strikePrice.val}
+        </P3>
+      </div>
+      <div className="w-full">
+        <MaturityStacked timestamp={opt.maturity} />
+      </div>
+      <div className="w-full">{size ? readableSize : "--"}</div>
     </div>
   );
 };
@@ -134,7 +141,7 @@ const NonSettledOptions = ({
   const selected = options.filter((o) => checked[o.optionAddress]);
 
   return (
-    <div className="max-w-[570px] flex flex-col gap-5">
+    <div className="flex flex-col gap-5">
       <div className="flex flex-col gap-3 overflow-x-auto">
         {options.map((o, i) => (
           <SingleNonSettledOption
@@ -222,6 +229,29 @@ const MyNonSettledOptionsWithUser = ({ user }: { user: string }) => {
       <P3>
         Select which options to settle, do not settle more than 10 at once.
       </P3>
+      <div>
+        <div className="flex justify-between my-2 py-3 border-dark-tertiary border-y-[0.5px] text-left w-big">
+          {/* Empty for checkbox */}
+          <div className="w-full" />
+          <div className="w-full">
+            <P4 className="text-dark-secondary">PAIR</P4>
+          </div>
+          <div className="w-full">
+            <P4 className="text-dark-secondary">
+              SIDE <span className="text-dark-primary">/ TYPE</span>
+            </P4>
+          </div>
+          <div className="w-full">
+            <P4 className="text-dark-secondary">STRIKE</P4>
+          </div>
+          <div className="w-full">
+            <P4 className="text-dark-secondary">MATURITY</P4>
+          </div>
+          <div className="w-full">
+            <P4 className="text-dark-secondary">SIZE</P4>
+          </div>
+        </div>
+      </div>
       <NonSettledOptions user={user} account={account} options={nonZeroData} />
     </div>
   );
@@ -234,5 +264,9 @@ export const MyNonSettledOptions = () => {
     return <SecondaryConnectWallet msg="Connect wallet to see your options." />;
   }
 
-  return <MyNonSettledOptionsWithUser user={address} />;
+  return (
+    <MyNonSettledOptionsWithUser
+      user={"0x11d341c6e841426448ff39aa443a6dbb428914e05ba2259463c18308b86233"}
+    />
+  );
 };
