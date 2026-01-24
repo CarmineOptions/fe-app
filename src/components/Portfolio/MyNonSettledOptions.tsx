@@ -264,9 +264,5 @@ export const MyNonSettledOptions = () => {
     return <SecondaryConnectWallet msg="Connect wallet to see your options." />;
   }
 
-  return (
-    <MyNonSettledOptionsWithUser
-      user={"0x11d341c6e841426448ff39aa443a6dbb428914e05ba2259463c18308b86233"}
-    />
-  );
+  return <MyNonSettledOptionsWithUser user={address} />;
 };

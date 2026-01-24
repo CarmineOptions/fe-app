@@ -4,7 +4,6 @@ import { uniquePrimitiveValues } from "../../utils/utils";
 import { LoadingAnimation } from "../Loading/Loading";
 import { InfoIcon } from "../InfoIcon";
 
-import { useOptions } from "../../hooks/useOptions";
 import { useSearchParams } from "react-router-dom";
 import { Button } from "../common/Button";
 import { TokenPairSelect } from "../TokenPairSelect";
@@ -18,6 +17,7 @@ import {
   liquidityPoolBySymbol,
   OptionSide,
   OptionType,
+  OptionWithPremia,
   TokenPair,
 } from "@carmine-options/sdk/core";
 
@@ -32,7 +32,13 @@ export const TradeTable = () => {
 
   const [pool, setPool] = useState<LiquidityPool>(initialPool);
   const pair = new TokenPair(pool.base.address, pool.quote.address);
-  const { isLoading, isError, error, options } = useOptions(pool.lpAddress);
+  // const { isLoading, isError, error, options } = useOptions(pool.lpAddress);
+  const [isLoading, isError, error, options] = [
+    false,
+    false,
+    undefined,
+    [] as OptionWithPremia[],
+  ];
   const [side, setSide] = useState<OptionSide | "all">("all");
   const [maturity, setMaturity] = useState<number | undefined>();
 
@@ -40,7 +46,7 @@ export const TradeTable = () => {
     const newPoolMaybe = liquidityPoolBySymbol(
       pool.base.symbol,
       pool.quote.symbol,
-      newType
+      newType,
     );
 
     if (newPoolMaybe.isSome) {
@@ -57,7 +63,7 @@ export const TradeTable = () => {
     const newPoolMaybe = liquidityPoolByAddress(
       newPair.base.address,
       newPair.quote.address,
-      pool.optionType
+      pool.optionType,
     );
 
     if (newPoolMaybe.isSome) {
@@ -198,7 +204,7 @@ SHORT: Sell a right to buy/sell (for Call/Put) underlying asset at strike price.
     .filter(
       (option) =>
         (side === "all" ? true : option.optionSide === Number(side)) &&
-        option.maturity === maturity
+        option.maturity === maturity,
     )
     .sort((a, b) => a.strikePrice.val - b.strikePrice.val);
 
