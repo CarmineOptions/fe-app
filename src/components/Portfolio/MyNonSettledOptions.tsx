@@ -10,34 +10,36 @@ import { afterTransaction } from "../../utils/blockchain";
 import { AccountInterface } from "starknet";
 import toast from "react-hot-toast";
 import { PairNameAboveBadge } from "../TokenBadge";
+import { useBalance } from "../../hooks/useBalance";
 
 type CheckMap = { [key: string]: boolean };
 type SetCheckMap = (cm: CheckMap) => void;
 
 const SingleNonSettledOption = ({
   opt,
-  user,
   checkMap,
   setCheckMap,
 }: {
   opt: NonSettledOption;
-  user: string;
   checkMap: CheckMap;
   setCheckMap: SetCheckMap;
 }) => {
-  const [size, setSize] = useState(opt.size);
-  const [fetching, setFetching] = useState(false);
+  const { isLoading, isError, data } = useBalance(opt.optionAddress);
 
-  if (!fetching) {
-    opt.fetchSizeWithCallback(user).then((res) => {
-      setSize(res);
-      opt.size = res;
-    });
-    setFetching(true);
+  if (isLoading) {
+    return (
+      <div className="h-12">
+        <LoadingAnimation size={30} />
+      </div>
+    );
+  }
+
+  if (isError) {
+    return <P3>Failed getting balance of {opt.optionAddress}</P3>;
   }
 
   const readableSize =
-    size === undefined ? undefined : opt.base.toHumanReadable(size);
+    data === undefined ? undefined : opt.base.toHumanReadable(data);
   const id = `opt-${opt.optionAddress}`;
 
   return (
@@ -52,7 +54,7 @@ const SingleNonSettledOption = ({
             updated[opt.optionAddress] = !checkMap[opt.optionAddress];
             setCheckMap(updated);
           }}
-          disabled={size === undefined}
+          disabled={data === undefined}
         />
       </div>
       <div className="w-full">
@@ -69,7 +71,7 @@ const SingleNonSettledOption = ({
       <div className="w-full">
         <MaturityStacked timestamp={opt.maturity} />
       </div>
-      <div className="w-full">{size ? readableSize : "--"}</div>
+      <div className="w-full">{data ? readableSize : "--"}</div>
     </div>
   );
 };
@@ -124,11 +126,9 @@ const handleSettleBundle = async (
 const NonSettledOptions = ({
   options,
   account,
-  user,
 }: {
   options: NonSettledOption[];
   account: AccountInterface;
-  user: string;
 }) => {
   const [progress, setProgress] = useState(0);
   const defaultCheckMap = options.reduce((acc, cur) => {
@@ -146,7 +146,6 @@ const NonSettledOptions = ({
         {options.map((o, i) => (
           <SingleNonSettledOption
             opt={o}
-            user={user}
             checkMap={checked}
             setCheckMap={setChecked}
             key={i}
@@ -252,7 +251,7 @@ const MyNonSettledOptionsWithUser = ({ user }: { user: string }) => {
           </div>
         </div>
       </div>
-      <NonSettledOptions user={user} account={account} options={nonZeroData} />
+      <NonSettledOptions account={account} options={nonZeroData} />
     </div>
   );
 };
