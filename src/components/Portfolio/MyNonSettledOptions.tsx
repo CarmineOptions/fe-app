@@ -41,6 +41,7 @@ const SingleNonSettledOption = ({
   const readableSize =
     data === undefined ? undefined : opt.base.toHumanReadable(data);
   const id = `opt-${opt.optionAddress}`;
+  opt.size = data;
 
   return (
     <div className="flex justify-between my-2 py-3 text-left w-big">
