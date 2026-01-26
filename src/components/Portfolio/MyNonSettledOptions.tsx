@@ -11,6 +11,7 @@ import { AccountInterface } from "starknet";
 import toast from "react-hot-toast";
 import { PairNameAboveBadge } from "../TokenBadge";
 import { useBalance } from "../../hooks/useBalance";
+import { debug } from "../../utils/debugger";
 
 type CheckMap = { [key: string]: boolean };
 type SetCheckMap = (cm: CheckMap) => void;
@@ -38,10 +39,23 @@ const SingleNonSettledOption = ({
     return <P3>Failed getting balance of {opt.optionAddress}</P3>;
   }
 
+  if (data === 0n) {
+    debug("zero size non settled options", {
+      option: opt,
+      size: data?.toString(10),
+    });
+    return null;
+  }
+
   const readableSize =
     data === undefined ? undefined : opt.base.toHumanReadable(data);
   const id = `opt-${opt.optionAddress}`;
   opt.size = data;
+
+  debug("non settled options", {
+    option: opt,
+    size: data?.toString(10),
+  });
 
   return (
     <div className="flex justify-between my-2 py-3 text-left w-big">
@@ -50,7 +64,7 @@ const SingleNonSettledOption = ({
           type="checkbox"
           name={id}
           checked={checkMap[opt.optionAddress]}
-          onClick={() => {
+          onChange={() => {
             const updated: CheckMap = { ...checkMap };
             updated[opt.optionAddress] = !checkMap[opt.optionAddress];
             setCheckMap(updated);
@@ -72,7 +86,7 @@ const SingleNonSettledOption = ({
       <div className="w-full">
         <MaturityStacked timestamp={opt.maturity} />
       </div>
-      <div className="w-full">{data ? readableSize : "--"}</div>
+      <div className="w-full">{readableSize ? readableSize : "--"}</div>
     </div>
   );
 };
@@ -93,16 +107,7 @@ const handleSettleBundle = async (
 
   setProgress(1);
 
-  console.log(
-    "settling...",
-    opts.map((o) => o.tradeSettle()),
-  );
-
-  const calls = opts
-    .map((o) => o.tradeSettle())
-    .filter((m) => m.isSome)
-    .map((m) => m.unwrap());
-
+  const calls = opts.map((o) => o.tradeSettle());
   console.log("non settled calls", calls);
 
   const tx = await account.execute(calls).catch((e) => {
