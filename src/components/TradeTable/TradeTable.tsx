@@ -17,9 +17,9 @@ import {
   liquidityPoolBySymbol,
   OptionSide,
   OptionType,
-  OptionWithPremia,
   TokenPair,
 } from "@carmine-options/sdk/core";
+import { useOptions } from "../../hooks/useOptions";
 
 export const TradeTable = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -32,13 +32,7 @@ export const TradeTable = () => {
 
   const [pool, setPool] = useState<LiquidityPool>(initialPool);
   const pair = new TokenPair(pool.base.address, pool.quote.address);
-  // const { isLoading, isError, error, options } = useOptions(pool.lpAddress);
-  const [isLoading, isError, error, options] = [
-    false,
-    false,
-    undefined,
-    [] as OptionWithPremia[],
-  ];
+  const { isLoading, isError, error, options } = useOptions(pool.lpAddress);
   const [side, setSide] = useState<OptionSide | "all">("all");
   const [maturity, setMaturity] = useState<number | undefined>();
 

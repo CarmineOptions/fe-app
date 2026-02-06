@@ -69,6 +69,7 @@ export const coreTeamAddresses = [
   "0x29af9cf62c9d871453f3b033e514dc790ce578e0e07241d6a5fedf19ceeaf08",
   // my wallet without hardware signer
   "0x4073fe20a735d12179d6bb64298d7b460b218c0d7e9c6841404f89f499680e5",
+  "0x528f064c43e2d6ee73bcbfb725baa293cd31ea1f1861ea2f80bc283ea4ad728",
 ];
 
 export const SLIPPAGE = 0.1;
