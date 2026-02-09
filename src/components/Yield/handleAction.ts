@@ -59,9 +59,9 @@ export const handleDeposit = async (
     return;
   }
 
-  const call = pool.depositCall(amount);
+  const call = pool.deposit(amount);
 
-  const res = await sendAsync([call]).catch((e: Error) => {
+  const res = await sendAsync(call).catch((e: Error) => {
     debug('"Stake capital" user rejected or failed', e);
     setTxState(TransactionState.Fail);
   });
