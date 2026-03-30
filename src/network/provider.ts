@@ -13,8 +13,7 @@ export const testnetOptions: RpcProviderOptions = {
 };
 
 export const mainnetOptions: RpcProviderOptions = {
-  nodeUrl: "https://backend.carmine.finance/rpc-call/",
-  // nodeUrl: "http://178.32.172.155:5050/rpc", // dev mainnet
+  nodeUrl: "https://starknet.api.onfinality.io/public",
   chainId: constants.StarknetChainId.SN_MAIN,
 };
 
