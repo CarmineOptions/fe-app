@@ -326,12 +326,6 @@ export const Airdrop = () => {
       <div className="flex flex-col gap-7">
         <SecondaryConnectWallet msg="Connect your wallet to view your airdrops." />
         <NoWalletAirdropTemplate
-          headingClass="text-misc-starknet"
-          headingText="Starknet DeFi Spring Rewards"
-          text="40M STRK up for grabs! Provide liquidity to start earning."
-          Logo={StarknetLogo}
-        />
-        <NoWalletAirdropTemplate
           headingClass="text-brand"
           headingText="Carmine CRM Airdrop"
           text="CRM Airdrop for Carmine OGs!"
