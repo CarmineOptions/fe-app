@@ -2,7 +2,6 @@ import { Helmet } from "react-helmet";
 import { Layout } from "../components/Layout";
 import { PoolTable } from "../components/Yield";
 import { Divider, H4 } from "../components/common";
-import { StarknetDefispring } from "../components/Airdrop/Airdrop";
 
 const YieldPage = () => {
   return (
@@ -17,7 +16,6 @@ const YieldPage = () => {
       <H4>Liquidity Pools</H4>
       <PoolTable />
       <Divider className="my-12" />
-      <StarknetDefispring />
     </Layout>
   );
 };

@@ -204,7 +204,7 @@ export const StarknetDefispring = () => {
         () => {
           markTxAsFailed(hash);
           toast.error("Claim failed");
-        }
+        },
       );
     } catch (e) {
       console.error(e);
@@ -344,7 +344,6 @@ export const Airdrop = () => {
   return (
     <div className="flex flex-col gap-7">
       <CarmineAirdropWithAccount />
-      <StarknetDefispring />
     </div>
   );
 };
