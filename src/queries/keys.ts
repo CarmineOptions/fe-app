@@ -15,7 +15,6 @@ export enum QueryKeys {
   liveProposals = "LIVE_PROPOSALS",
   defispring = "DEFISPRING",
   tokenPrices = "TOKEN_PRICES",
-  defispringApy = "DEFISPRING_APY",
   proposalVotes = "PROPOSAL_VOTES",
   totalSupply = "TOTAL_SUPPLY",
   userDomain = "USER_DOMAIN",

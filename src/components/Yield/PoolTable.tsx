@@ -1,5 +1,5 @@
 import { PoolItem } from "./PoolItem";
-import { L2, P4 } from "../common";
+import { P4 } from "../common";
 import { allLiquidityPools } from "@carmine-options/sdk/core";
 
 export const PoolTable = () => {
@@ -14,14 +14,7 @@ export const PoolTable = () => {
             <P4 className="text-dark-secondary">TYPE</P4>
           </div>
           <div className="w-full">
-            <P4 className="text-dark-secondary">
-              APY <L2 className="text-dark-tertiary">/ ALL TIME</L2>
-            </P4>
-          </div>
-          <div className="w-full">
-            <P4 className="text-dark-secondary">
-              APY <L2 className="text-dark-tertiary">/ LAST WEEK</L2>
-            </P4>
+            <P4 className="text-dark-secondary">LP TOKEN VALUE</P4>
           </div>
           <div className="w-full">
             <P4 className="text-dark-secondary">TVL</P4>

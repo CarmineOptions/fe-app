@@ -10,15 +10,15 @@ import { PoolSidebarSuccess } from "./PoolSidebarSuccess";
 import { TransactionState } from "../../types/network";
 import { useStakes } from "../../hooks/useStakes";
 import { handleDeposit, handleWithdraw } from "../Yield/handleAction";
-import { formatNumber, isDefiEligible } from "../../utils/utils";
+import { formatNumber } from "../../utils/utils";
 import { LoadingAnimation } from "../Loading/Loading";
-import { useDefispringApy } from "../../hooks/useDefyspringApy";
 import { Button, Divider, H5, P3, P4 } from "../common";
 import { PrimaryConnectWallet } from "../ConnectWallet/Button";
-import { StarknetIcon } from "../Icons";
 import { LiquidityPool } from "@carmine-options/sdk/core";
-import { usePoolState } from "../../hooks/usePoolState";
-import { useTokenPrice } from "../../hooks/usePrice";
+import {
+  getPoolSnapshot,
+  POOL_SNAPSHOT_DATE,
+} from "../../constants/poolSnapshot";
 
 type Props = {
   pool: LiquidityPool;
@@ -28,9 +28,8 @@ type Props = {
 export const PoolSidebar = ({ pool, initialAction }: Props) => {
   const { address } = useAccount();
   const { sendAsync } = useSendTransaction({});
-  const { data } = usePoolState(pool.lpAddress);
+  const snapshot = getPoolSnapshot(pool.lpAddress);
   const { data: stakes } = useStakes();
-  const price = useTokenPrice(pool.underlying.symbol);
   const { data: balanceRaw } = useUserBalance(pool.underlying.address);
   const [action, setAction] = useState<"deposit" | "withdraw">(
     initialAction === undefined ? "deposit" : initialAction
@@ -40,7 +39,6 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
   const [txState, setTxState] = useState<TransactionState>(
     TransactionState.Initial
   );
-  const { defispringApy } = useDefispringApy();
 
   useEffect(() => {
     // sets default amounts when option changes
@@ -49,11 +47,10 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
     setTxState(TransactionState.Initial);
   }, [pool.poolId]);
 
-  const unlocked = data && pool.underlying.toHumanReadable(data.unlocked);
-  const locked = data && pool.underlying.toHumanReadable(data.locked);
-
-  const poolPosition = data && data.position.val;
-  const tvl = unlocked && poolPosition && unlocked + poolPosition;
+  const unlocked = snapshot && snapshot.unlocked;
+  const locked = snapshot && snapshot.locked;
+  const tvl = snapshot && snapshot.tvl;
+  const lpTokenValue = snapshot && snapshot.lpTokenValue;
   const balance =
     balanceRaw === undefined
       ? undefined
@@ -62,15 +59,6 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
   const poolData = stakes && stakes.find((p) => p.lpAddress === pool.lpAddress);
 
   const userPosition = stakes && poolData ? poolData.value : 0;
-
-  const isDefispringPool = isDefiEligible(pool.lpAddress);
-  const finalApy = !data
-    ? undefined
-    : !isDefispringPool
-    ? data.apyAllTime
-    : defispringApy === undefined
-    ? undefined
-    : defispringApy + data.apyAllTime;
 
   const handleChange = handleNumericChangeFactory(
     setAmountText,
@@ -160,11 +148,6 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
                 onChange={handleChange}
                 className="w-full bg-[#1A1C1E]"
               />
-              <P4 className="font-bold text-dark-secondary">
-                {price === undefined
-                  ? "$--"
-                  : `$${formatNumber(price * amount)}`}
-              </P4>
             </div>
             <div className="bg-light-secondary flex items-center justify-center px-2">
               <TokenNamedBadge token={pool.underlying} size="small" />
@@ -233,14 +216,9 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
 
         <div className="flex flex-col items-start">
           <P3 className="font-semibold">
-            {userPosition === undefined ? "--" : formatNumber(userPosition, 4)}
+            {userPosition === undefined ? "--" : formatNumber(userPosition, 4)}{" "}
             {pool.underlying.symbol}
           </P3>
-          <P4 className="text-dark-secondary">
-            {userPosition === undefined || price === undefined
-              ? "--"
-              : `$${formatNumber(userPosition * price, 2)}`}
-          </P4>
         </div>
       </div>
       <div className="flex items-center gap-2">
@@ -249,18 +227,18 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
       </div>
       <div className="flex flex-col gap-4">
         <div className="flex justify-between">
-          <P4 className="font-semibold text-dark-secondary">APY</P4>
-          {finalApy === undefined ? (
-            <P3 className="font-semibold">--</P3>
-          ) : (
-            <P3
-              className={`font-semibold ${
-                finalApy < 0 ? "text-ui-errorBg" : "text-ui-successBg"
-              }`}
-            >
-              {finalApy.toFixed(2)}%
+          <div>
+            <P4 className="font-semibold text-dark-secondary">
+              LP TOKEN VALUE
+            </P4>
+          </div>
+          <div className="flex flex-col items-end">
+            <P3 className="font-semibold">
+              {lpTokenValue === undefined
+                ? "--"
+                : `${formatNumber(lpTokenValue, 4)} ${pool.underlying.symbol}`}
             </P3>
-          )}
+          </div>
         </div>
 
         <div className="flex justify-between">
@@ -273,12 +251,6 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
                 ? "--"
                 : `${formatNumber(tvl, 0)} ${pool.underlying.symbol}`}
             </P3>
-            <P4 className="text-dark-secondary">
-              $
-              {price === undefined || tvl === undefined
-                ? "--"
-                : formatNumber(price * tvl)}
-            </P4>
           </div>
         </div>
 
@@ -292,12 +264,6 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
                 ? "--"
                 : `${formatNumber(unlocked, 0)} ${pool.underlying.symbol}`}
             </P3>
-            <P4 className="text-dark-secondary">
-              $
-              {price === undefined || unlocked === undefined
-                ? "--"
-                : formatNumber(price * unlocked)}
-            </P4>
           </div>
         </div>
 
@@ -311,60 +277,14 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
                 ? "--"
                 : `${formatNumber(locked, 0)} ${pool.underlying.symbol}`}
             </P3>
-            <P4 className="text-dark-secondary">
-              $
-              {price === undefined || locked === undefined
-                ? "--"
-                : formatNumber(price * locked)}
-            </P4>
           </div>
         </div>
 
-        <div className="flex flex-col bg-light-secondary p-4 rounded-sm gap-4">
-          <div className="flex justify-between">
-            <div className="text-misc-starknet">
-              <P3 className="font-semibold">Starknet DeFi</P3>
-              <P3 className="font-semibold">Spring Incentive</P3>
-            </div>
-            <div className="flex items-center justify-center">
-              <div className="w-9 h-9">
-                <StarknetIcon />
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-col gap-2">
-            <div className="flex justify-between">
-              <P4 className="text-dark-secondary">Supply APY</P4>
-              <P4 className="text-dark-primary">
-                {data?.apyAllTime === undefined
-                  ? "--"
-                  : formatNumber(data.apyAllTime) + "%"}
-              </P4>
-            </div>
-            <div className="flex justify-between">
-              <P4 className="text-dark-secondary">STRK Incentive</P4>
-              <P4 className="text-dark-primary">
-                {defispringApy === undefined
-                  ? "--"
-                  : formatNumber(defispringApy) + "%"}
-              </P4>
-            </div>
-            <div className="flex justify-between">
-              <P4 className="text-dark-secondary">Total APY</P4>
-              <P4
-                className={`font-semibold ${
-                  !finalApy
-                    ? "text-ui-primary"
-                    : finalApy < 0
-                    ? "text-ui-errorBg"
-                    : "text-ui-successBg"
-                }`}
-              >
-                {finalApy === undefined ? "--" : formatNumber(finalApy) + "%"}
-              </P4>
-            </div>
-          </div>
-        </div>
+        <P4 className="text-dark-tertiary">
+          Pool numbers are a snapshot from {POOL_SNAPSHOT_DATE}. No new options
+          are issued, so they no longer change. Your position is read live from
+          the contract.
+        </P4>
       </div>
     </div>
   );

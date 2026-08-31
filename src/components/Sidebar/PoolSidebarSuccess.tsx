@@ -6,7 +6,6 @@ import { formatNumber } from "../../utils/utils";
 import { Button, H4, P3, P4 } from "../common";
 import { LoadingAnimation } from "../Loading/Loading";
 import { LiquidityPool, OptionTypeCall } from "@carmine-options/sdk/core";
-import { useTokenPrice } from "../../hooks/usePrice";
 
 interface PoolSucessSidebarProps {
   pool: LiquidityPool;
@@ -20,7 +19,6 @@ export const PoolSidebarSuccess = ({
   tx,
 }: PoolSucessSidebarProps) => {
   const { data: stakes } = useStakes();
-  const price = useTokenPrice(pool.underlying.symbol);
   const navigate = useNavigate();
 
   const handlePortfolioClick = () => {
@@ -33,8 +31,6 @@ export const PoolSidebarSuccess = ({
       ? undefined
       : stakes.find((p) => p.lpAddress === pool.lpAddress);
 
-  const depositedUsd = price === undefined ? undefined : price * deposited;
-
   const currentPosition =
     stakes === undefined
       ? undefined
@@ -42,17 +38,10 @@ export const PoolSidebarSuccess = ({
       ? 0
       : poolData.value;
 
-  const currentPositionUsd =
-    currentPosition !== undefined && price !== undefined
-      ? currentPosition * price
-      : undefined;
-
   return (
     <PoolSidebarSuccessView
       deposited={deposited}
-      depositedUsd={depositedUsd}
       currentPosition={currentPosition}
-      currentPositionUsd={currentPositionUsd}
       handlePortfolioClick={handlePortfolioClick}
       pool={pool}
       tx={tx}
@@ -62,18 +51,14 @@ export const PoolSidebarSuccess = ({
 
 interface PoolSucessSidebarViewProps extends PoolSucessSidebarProps {
   deposited: number;
-  depositedUsd?: number;
   currentPosition?: number;
-  currentPositionUsd?: number;
   handlePortfolioClick: () => void;
 }
 
 export const PoolSidebarSuccessView = ({
   pool,
   deposited,
-  depositedUsd,
   currentPosition,
-  currentPositionUsd,
   tx,
   handlePortfolioClick,
 }: PoolSucessSidebarViewProps) => {
@@ -90,21 +75,11 @@ export const PoolSidebarSuccessView = ({
           <P3 className="font-semibold">Deposited</P3>
         </div>
         <div>
-          {depositedUsd === undefined ? (
-            <div className="h-[40.5px] w-[40.5px]">
-              <LoadingAnimation size={25} />
-            </div>
-          ) : (
-            <div className="flex flex-col items-end">
-              <P3 className="font-semibold">
-                {`${formatNumber(deposited, 4)} ${pool.underlying.symbol}`}
-              </P3>
-              <P4 className="text-dark-tertiary font-bold">{`$${formatNumber(
-                depositedUsd,
-                4
-              )}`}</P4>
-            </div>
-          )}
+          <div className="flex flex-col items-end">
+            <P3 className="font-semibold">
+              {`${formatNumber(deposited, 4)} ${pool.underlying.symbol}`}
+            </P3>
+          </div>
         </div>
       </div>
 
@@ -113,7 +88,7 @@ export const PoolSidebarSuccessView = ({
           <P3 className="font-semibold">Deposited</P3>
         </div>
         <div>
-          {currentPositionUsd === undefined || currentPosition === undefined ? (
+          {currentPosition === undefined ? (
             <div className="h-[40.5px] w-[40.5px]">
               <LoadingAnimation size={25} />
             </div>
@@ -124,10 +99,6 @@ export const PoolSidebarSuccessView = ({
                   pool.underlying.symbol
                 }`}
               </P3>
-              <P4 className="text-dark-tertiary font-bold">{`$${formatNumber(
-                currentPositionUsd,
-                4
-              )}`}</P4>
             </div>
           )}
         </div>

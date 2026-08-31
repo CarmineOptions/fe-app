@@ -33,6 +33,7 @@ import {
   YieldPage,
 } from "./pages";
 import { initCarmineSdk } from "@carmine-options/sdk/core";
+import { RPC_URL } from "./constants/amm";
 
 const App = () => {
   const [check, rerender] = useState(false);
@@ -43,7 +44,7 @@ const App = () => {
     ["/staking", "/yield"],
     ["/rewards", "/portfolio/airdrops"],
   ];
-  initCarmineSdk();
+  initCarmineSdk({ rpcUrl: RPC_URL });
 
   return (
     <Provider store={store}>
@@ -60,7 +61,7 @@ const App = () => {
                       element={<Navigate to={newPath} replace />}
                     />
                   ))}
-                  <Route path="/" element={<TradePage />} />
+                  <Route path="/" element={<YieldPage />} />
                   <Route path="/trade" element={<TradePage />} />
                   <Route
                     path="/portfolio/:target?"

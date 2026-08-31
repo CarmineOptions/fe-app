@@ -97,3 +97,12 @@ export const TokenValueStacked = ({ amount, token }: TokenValueProps) => {
     />
   );
 };
+
+export const TokenAmountStacked = ({ amount, token }: TokenValueProps) => {
+  return (
+    <MajorMinorStacked
+      major={amount === undefined ? "--" : formatNumber(amount)}
+      minor={token.symbol}
+    />
+  );
+};

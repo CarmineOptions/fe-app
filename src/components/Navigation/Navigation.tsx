@@ -120,33 +120,33 @@ export const Navigation = () => {
       <nav className="w-[160px] flex flex-col gap-[50px]">
         <ul className="flex flex-col gap-[12px]">
           <Nav
+            title="Yield"
+            path="yield"
+            icon={Subtract}
+            isActive={current === "yield"}
+          />
+          <Nav
             title="Portfolio"
             path="portfolio"
             icon={Wallet}
             isActive={current === "portfolio"}
             badge={<AirdropBadge active={current === "portfolio"} />}
           />
-          <Nav
+          {/* <Nav
             title="Options"
             path="trade"
             icon={Strategy}
             isActive={current === "trade" || current === ""}
-          />
-          <Nav
+          /> */}
+          {/* <Nav
             title="Price Protect"
             path="priceprotect"
             icon={ShieldPlus}
             badge={<NewBadge active={current === "priceprotect"} />}
             isActive={current === "priceprotect"}
-          />
-          <Nav
-            title="Yield"
-            path="yield"
-            icon={Subtract}
-            isActive={current === "yield"}
-            badge={<RewardsBadge active={current === "yield"} />}
-          />
-          <Nav
+          /> */}
+
+          {/* <Nav
             title="Swap"
             path="swap"
             icon={ShuffleAngular}
@@ -157,20 +157,20 @@ export const Navigation = () => {
             path="leaderboard"
             icon={Medal}
             isActive={current === "leaderboard"}
-          />
+          /> */}
           <Nav
             title="Governance"
             path="governance"
             icon={Scroll}
             isActive={current === "governance"}
           />
-          <Nav
+          {/* <Nav
             title="Battlecharts"
             path="battlecharts"
             icon={Sword}
             badge={<NewBadge active={current === "battlecharts"} />}
             isActive={current === "battlecharts"}
-          />
+          /> */}
         </ul>
         <ul className="flex flex-col gap-[12px] border-dark-tertiary border-t-[1px] pt-[12px]">
           <li>
