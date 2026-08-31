@@ -10,7 +10,7 @@ import { PoolSidebarSuccess } from "./PoolSidebarSuccess";
 import { TransactionState } from "../../types/network";
 import { useStakes } from "../../hooks/useStakes";
 import { handleDeposit, handleWithdraw } from "../Yield/handleAction";
-import { formatNumber } from "../../utils/utils";
+import { formatNumber, formatTokenAmount } from "../../utils/utils";
 import { LoadingAnimation } from "../Loading/Loading";
 import { Button, Divider, H5, P3, P4 } from "../common";
 import { PrimaryConnectWallet } from "../ConnectWallet/Button";
@@ -249,7 +249,7 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
             <P3 className="font-semibold">
               {tvl === undefined
                 ? "--"
-                : `${formatNumber(tvl, 0)} ${pool.underlying.symbol}`}
+                : `${formatTokenAmount(tvl)} ${pool.underlying.symbol}`}
             </P3>
           </div>
         </div>
@@ -262,7 +262,7 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
             <P3 className="font-semibold">
               {unlocked === undefined
                 ? "--"
-                : `${formatNumber(unlocked, 0)} ${pool.underlying.symbol}`}
+                : `${formatTokenAmount(unlocked)} ${pool.underlying.symbol}`}
             </P3>
           </div>
         </div>
@@ -275,7 +275,7 @@ export const PoolSidebar = ({ pool, initialAction }: Props) => {
             <P3 className="font-semibold">
               {locked === undefined
                 ? "--"
-                : `${formatNumber(locked, 0)} ${pool.underlying.symbol}`}
+                : `${formatTokenAmount(locked)} ${pool.underlying.symbol}`}
             </P3>
           </div>
         </div>

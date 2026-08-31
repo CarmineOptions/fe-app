@@ -1,23 +1,12 @@
 import { FunctionComponent, ReactNode, SVGProps } from "react";
 import { NavLink } from "react-router-dom";
-import {
-  Medal,
-  Scroll,
-  ShieldPlus,
-  ShuffleAngular,
-  Strategy,
-  Subtract,
-  Sword,
-  Wallet,
-} from "../Icons";
+import { Scroll, Subtract, Wallet } from "../Icons";
 import { setShowNavigation } from "../../redux/actions";
 import { L2, P3 } from "../common/Typography";
 import { useShowNavigation } from "../../hooks/useShowNavigation";
 
 import Parachute from "./Parachute.svg?react";
-import Stark from "./Strk.svg?react";
 import ParachuteActive from "./ParachuteActive.svg?react";
-import StarkActive from "./StrkActive.svg?react";
 
 const Nav = ({
   title,
@@ -69,14 +58,6 @@ type BadgeProps = {
   active: boolean;
 };
 
-const NewBadge = ({ active }: BadgeProps) => (
-  <div className={`${active ? "bg-dark" : "bg-brand"} p-1 flex rounded-[2px]`}>
-    <L2 className={`font-bold ${active ? "text-dark-primary" : "text-dark"}`}>
-      NEW
-    </L2>
-  </div>
-);
-
 const AirdropBadge = ({ active }: BadgeProps) => (
   <div
     className={`${
@@ -86,23 +67,6 @@ const AirdropBadge = ({ active }: BadgeProps) => (
     {active ? <ParachuteActive /> : <Parachute />}
     <L2 className={`font-bold ${active ? "text-dark-primary" : "text-dark"}`}>
       AIRDROP
-    </L2>
-  </div>
-);
-
-const RewardsBadge = ({ active }: BadgeProps) => (
-  <div
-    className={`${
-      active ? "bg-dark" : "bg-[#FF75C8]"
-    }  p-1 flex items-center gap-1 rounded-[2px]`}
-  >
-    {active ? (
-      <StarkActive width="10px" height="10px" />
-    ) : (
-      <Stark width="10px" height="10px" />
-    )}
-    <L2 className={`font-bold ${active ? "text-dark-primary" : "text-dark"}`}>
-      REWARDS
     </L2>
   </div>
 );
@@ -132,45 +96,12 @@ export const Navigation = () => {
             isActive={current === "portfolio"}
             badge={<AirdropBadge active={current === "portfolio"} />}
           />
-          {/* <Nav
-            title="Options"
-            path="trade"
-            icon={Strategy}
-            isActive={current === "trade" || current === ""}
-          /> */}
-          {/* <Nav
-            title="Price Protect"
-            path="priceprotect"
-            icon={ShieldPlus}
-            badge={<NewBadge active={current === "priceprotect"} />}
-            isActive={current === "priceprotect"}
-          /> */}
-
-          {/* <Nav
-            title="Swap"
-            path="swap"
-            icon={ShuffleAngular}
-            isActive={current === "swap"}
-          />
-          <Nav
-            title="Points"
-            path="leaderboard"
-            icon={Medal}
-            isActive={current === "leaderboard"}
-          /> */}
           <Nav
             title="Governance"
             path="governance"
             icon={Scroll}
             isActive={current === "governance"}
           />
-          {/* <Nav
-            title="Battlecharts"
-            path="battlecharts"
-            icon={Sword}
-            badge={<NewBadge active={current === "battlecharts"} />}
-            isActive={current === "battlecharts"}
-          /> */}
         </ul>
         <ul className="flex flex-col gap-[12px] border-dark-tertiary border-t-[1px] pt-[12px]">
           <li>

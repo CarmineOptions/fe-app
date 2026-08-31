@@ -230,6 +230,22 @@ export const formatNumber = (num: number, maxDecimals = 2): string => {
     .replace(",", ".");
 };
 
+/**
+ * Token amounts span many orders of magnitude (thousands of STRK down to
+ * fractions of a wBTC), so small balances get more decimals instead of
+ * rounding away to "0".
+ */
+export const formatTokenAmount = (num: number): string => {
+  if (num === 0) {
+    return "0";
+  }
+  const abs = Math.abs(num);
+  if (abs >= 1) {
+    return formatNumber(num, 2);
+  }
+  return formatNumber(num, abs >= 0.0001 ? 6 : 10);
+};
+
 export const stateToButtonType = (
   state: TransactionState,
 ): "success" | "error" | "secondary" | "primary" => {

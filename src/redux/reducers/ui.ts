@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { OptionWithPosition } from "../../classes/Option";
 import { TransferData } from "../../components/Transfer/transfer";
 import { ReactNode } from "react";
 
@@ -43,7 +42,6 @@ export type ReferralSent = {
 export interface UiState {
   dialogOpen: boolean;
   dialogContent: DialogContentElem;
-  activeCloseOption?: OptionWithPosition;
   transferData?: TransferData;
   transferDialogShown: boolean;
   portfolioParam?: PortfolioParamType;
@@ -78,9 +76,6 @@ export const ui = createSlice({
         state.dialogContent = action.payload.dialogContent;
       }
       return state;
-    },
-    setCloseOptionState: (state, action: { payload: OptionWithPosition }) => {
-      state.activeCloseOption = action.payload;
     },
     setTransferDataModalState: (state, action: { payload: TransferData }) => {
       state.transferData = action.payload;
@@ -132,7 +127,6 @@ export const ui = createSlice({
 
 export const {
   toggleDialog,
-  setCloseOptionState,
   setTransferDataModalState,
   setTransferDialogShown,
   setParamState,
