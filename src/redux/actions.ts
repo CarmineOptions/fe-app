@@ -6,7 +6,6 @@ import {
   GovernanceSubpage,
   PortfolioParamType,
   ReferralSent,
-  setCloseOptionState,
   setGovernanceSubpageState,
   setIsMobileState,
   setParamState,
@@ -22,7 +21,6 @@ import {
 import { store } from "./store";
 import { Settings } from "../types/settings";
 import { NetworkState } from "../types/network";
-import { OptionWithPosition } from "../classes/Option";
 import { TransferData } from "../components/Transfer/transfer";
 import {
   addTxReducer,
@@ -80,9 +78,6 @@ export const openBraavosBonusDialog = () =>
   openDialogWithContent(DialogContentElem.BraavosBonusModal);
 
 export const setSlippage = (n: number) => store.dispatch(setSlippageState(n));
-
-export const setCloseOption = (option: OptionWithPosition) =>
-  store.dispatch(setCloseOptionState(option));
 
 export const setPortfolioParam = (option: PortfolioParamType) =>
   store.dispatch(setParamState(option));

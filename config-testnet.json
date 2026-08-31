@@ -1,6 +1,7 @@
 {
   "NETWORK": "testnet",
   "API_URL": "https://api.carmine.finance",
+  "RPC_URL": "https://rpc.starknet.lava.build:443",
   "AMM_ADDRESS": "0x07b2898d3be20f3b9dc64c583b92258b98d132ef289a38f3741335d4585dd58e",
   "GOVERNANCE_ADDRESS": "0x02c027aad2668aa66d232d846c190785ade993b032f9ad44893739b365b89d34",
   "ETH_ADDRESS": "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",

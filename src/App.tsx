@@ -17,19 +17,12 @@ import { queryClient } from "./queries/client";
 import { store } from "./redux/store";
 import {
   APYInfoPage,
-  BattlechartsPage,
   GovernancePage,
   NotFoundPage,
-  PointsPage,
   PortfolioPage,
-  PriceProtectPage,
-  PriceProtectVideoPage,
   SettingsPage,
   StakingExplainedPage,
-  SwapPage,
   TermsAndConditionsPage,
-  TradePage,
-  TradeDashboardPage,
   YieldPage,
 } from "./pages";
 import { initCarmineSdk } from "@carmine-options/sdk/core";
@@ -62,31 +55,21 @@ const App = () => {
                     />
                   ))}
                   <Route path="/" element={<YieldPage />} />
-                  <Route path="/trade" element={<TradePage />} />
                   <Route
                     path="/portfolio/:target?"
                     element={<PortfolioPage />}
                   />
-                  <Route path="/swap" element={<SwapPage />} />
                   <Route
                     path="/staking-explained"
                     element={<StakingExplainedPage />}
                   />
                   <Route path="/apy-info" element={<APYInfoPage />} />
                   <Route path="/settings" element={<SettingsPage />} />
-                  <Route path="/dashboard" element={<TradeDashboardPage />} />
                   <Route
                     path="/governance/:target?"
                     element={<GovernancePage />}
                   />
-                  <Route path="/leaderboard" element={<PointsPage />} />
-                  <Route path="/battlecharts" element={<BattlechartsPage />} />
-                  <Route path="/priceprotect" element={<PriceProtectPage />} />
                   <Route path="/yield" element={<YieldPage />} />
-                  <Route
-                    path="/price-protect-video"
-                    element={<PriceProtectVideoPage />}
-                  />
                   <Route path="*" element={<NotFoundPage />} />
                 </Routes>
               </Router>

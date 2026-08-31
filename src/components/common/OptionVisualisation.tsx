@@ -7,7 +7,7 @@ import {
 } from "@carmine-options/sdk/core";
 import { P3, P4 } from ".";
 import { useTokenPrice } from "../../hooks/usePrice";
-import { formatNumber } from "../../utils/utils";
+import { formatNumber, formatTokenAmount } from "../../utils/utils";
 
 type SideType = {
   side: OptionSide;
@@ -101,7 +101,7 @@ export const TokenValueStacked = ({ amount, token }: TokenValueProps) => {
 export const TokenAmountStacked = ({ amount, token }: TokenValueProps) => {
   return (
     <MajorMinorStacked
-      major={amount === undefined ? "--" : formatNumber(amount)}
+      major={amount === undefined ? "--" : formatTokenAmount(amount)}
       minor={token.symbol}
     />
   );
