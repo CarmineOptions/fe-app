@@ -1,6 +1,6 @@
 import { RpcProvider, RpcProviderOptions, constants } from "starknet";
 import { Network, NetworkName } from "../types/network";
-import { NETWORK } from "../constants/amm";
+import { NETWORK, RPC_URL } from "../constants/amm";
 import { apiUrl } from "../api";
 
 // TODO: should be constants.StarknetChainId.SN_SEPOLIA - upgrade starknetjs
@@ -13,7 +13,7 @@ export const testnetOptions: RpcProviderOptions = {
 };
 
 export const mainnetOptions: RpcProviderOptions = {
-  nodeUrl: "https://starknet.api.onfinality.io/public",
+  nodeUrl: RPC_URL,
   chainId: constants.StarknetChainId.SN_MAIN,
 };
 

@@ -14,7 +14,7 @@ import { isMainnet } from "../constants/amm";
 import { MyPortfolio } from "../components/Portfolio";
 import { H4 } from "../components/common";
 
-const PortfolioPage = () => {
+const _PortfolioPageDeprecated = () => {
   const portfolioParam = usePortfolioParam();
   const navigate = useNavigate();
   const { target } = useParams();
@@ -96,6 +96,21 @@ const PortfolioPage = () => {
       )}
       {portfolioParam === PortfolioParamType.MyPortfolio && <MyPortfolio />}
       {portfolioParam === PortfolioParamType.History && <History />}
+    </Layout>
+  );
+};
+
+const PortfolioPage = () => {
+  return (
+    <Layout>
+      <Helmet>
+        <title>Portfolio | Carmine Options AMM</title>
+        <meta
+          name="description"
+          content="Your current positions and history of your activity"
+        />
+      </Helmet>
+      <MyPortfolio />
     </Layout>
   );
 };

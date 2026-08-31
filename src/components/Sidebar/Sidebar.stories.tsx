@@ -65,9 +65,7 @@ export const PoolSuccessSidebar: StoryObj = {
             handlePortfolioClick={() => {}}
             pool={new LiquidityPool(STRK_ADDRESS, USDC_ADDRESS, OptionTypeCall)}
             deposited={120}
-            depositedUsd={84}
             currentPosition={1250000}
-            currentPositionUsd={875000}
             tx={"0x1234567890"}
           />
         }

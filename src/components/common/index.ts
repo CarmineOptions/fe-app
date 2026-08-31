@@ -5,6 +5,7 @@ import {
   MajorMinorStacked,
   MaturityStacked,
   SideTypeStacked,
+  TokenAmountStacked,
   TokenValueStacked,
 } from "./OptionVisualisation";
 
@@ -24,5 +25,6 @@ export {
   MajorMinorStacked,
   MaturityStacked,
   SideTypeStacked,
+  TokenAmountStacked,
   TokenValueStacked,
 };

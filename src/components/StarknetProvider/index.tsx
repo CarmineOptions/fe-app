@@ -7,7 +7,7 @@ import {
   jsonRpcProvider,
   starkscan,
 } from "@starknet-react/core";
-import { isMainnet } from "../../constants/amm";
+import { isMainnet, RPC_URL } from "../../constants/amm";
 import { apiUrl } from "../../api";
 
 export const StarknetProvider = ({
@@ -25,7 +25,7 @@ export const StarknetProvider = ({
   });
 
   const [chain, nodeUrl] = isMainnet
-    ? [mainnet, apiUrl("call", { network: "mainnet" })]
+    ? [mainnet, RPC_URL]
     : [sepolia, apiUrl("call", { network: "testnet" })];
 
   const rpc = () => ({
